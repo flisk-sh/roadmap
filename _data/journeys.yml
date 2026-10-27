@@ -15,7 +15,7 @@
 #     side   Tool ids worth knowing: branch lines off the station.
 #     tip    One line of advice for this track at this level.
 
-flisk_issue: https://github.com/flisk-sh/flisk/issues
+flisk_issue: https://github.com/flisk-sh/flisk/issues/2647
 
 levels:
   - n: 1
