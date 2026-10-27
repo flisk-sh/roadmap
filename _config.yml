@@ -1,19 +1,17 @@
 # Site settings. Jekyll does not reload this file during `jekyll serve`,
 # so restart the server after editing it.
-title: Comparer
-tagline: Compare the commands of tools, side by side
+title: DevEx Roadmap
+tagline: A community map of local developer tools
 description: >-
-  A searchable side-by-side table of the commands different tools give you for the same
-  tasks, with a source link for every cell.
+  300+ developer tools on four views: the Compass (ergonomics vs. parity), the Adoption Radar,
+  the Lab (a periodic table) and Journeys from beginner to platform architect. Community-edited,
+  every placement follows a public rubric.
 lang: en
 
-# Where the site is served.
-#   Project page:  url "https://OWNER.github.io",  baseurl "/REPO"
-#   Custom domain: url "https://your.domain",      baseurl ""
-url: "https://flisk-sh.github.io"
-baseurl: "/comparer"
+url: "https://roadmap.flisk.sh"
+baseurl: ""
 
-repo_url: "https://github.com/flisk-sh/comparer"
+repo_url: "https://github.com/flisk-sh/roadmap"
 
 markdown: kramdown
 
@@ -21,8 +19,8 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
+  - CONTRIBUTING.md
   - LICENSE
   - scripts/
-  - docs/
   - vendor/
   - node_modules/

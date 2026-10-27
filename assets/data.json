@@ -1,0 +1,11 @@
+---
+layout: null
+permalink: /assets/data.json
+---
+{
+  "families": {{ site.data.families | jsonify }},
+  "rubric": {{ site.data.rubric | jsonify }},
+  "tools": {{ site.data.tools | jsonify }},
+  "journeys": {{ site.data.journeys | jsonify }},
+  "views": {{ site.data.meta.views | jsonify }}
+}

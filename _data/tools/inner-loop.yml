@@ -1,0 +1,718 @@
+# Inner loop: live-update loops, Kubernetes dev tools, cluster bridges, cluster UIs and process runners.
+# Rings follow the rule in _data/rubric.yml. Release dates checked against GitHub in October 2026.
+
+# --- Live-update loops ---
+- id: flisk
+  name: Flisk
+  sym: Fl
+  cat: Live-update loops
+  tagline: Local dev loop for microservices and multi-agent stacks
+  url: https://flisk.sh
+  repo: flisk-sh/flisk
+  license: oss
+  ring: assess
+  evidence: https://github.com/flisk-sh/flisk/releases
+  dx: [one-command, zero-config, fast-feedback, clear-errors, ui, docs, offline, agent-ready]
+  parity: [containers, multi-service, networking, state, team-scale]
+  note: First released October 2026. Local only by design, no Kubernetes manifests. Runs on Docker and Tilt.
+
+- id: tilt
+  name: Tilt
+  sym: Tl
+  cat: Live-update loops
+  tagline: Live-update loop for multi-service apps
+  url: https://tilt.dev
+  repo: tilt-dev/tilt
+  license: oss
+  ring: adopt
+  evidence: https://github.com/tilt-dev/tilt/releases
+  dx: [one-command, fast-feedback, ui, docs, cross-platform, offline, agent-ready]
+  parity: [containers, multi-service, networking, state, prod-artifacts, k8s]
+  note: Kubernetes mode needs a local cluster; Compose mode is lighter. Tiltfiles are Starlark code.
+
+- id: skaffold
+  name: Skaffold
+  sym: Sk
+  cat: Live-update loops
+  tagline: Build, push and deploy loop for Kubernetes apps
+  url: https://skaffold.dev
+  repo: GoogleContainerTools/skaffold
+  license: oss
+  ring: adopt
+  evidence: https://github.com/GoogleContainerTools/skaffold/releases
+  dx: [one-command, fast-feedback, docs, cross-platform, offline, agent-ready]
+  parity: [containers, multi-service, networking, prod-artifacts, k8s]
+  note: Kubernetes only; no built-in UI, feedback comes through the terminal.
+
+- id: garden
+  name: Garden
+  sym: Gd
+  cat: Live-update loops
+  tagline: Graph-based build, deploy and test for Kubernetes
+  url: https://garden.io
+  repo: garden-io/garden
+  license: oss
+  ring: trial
+  evidence: https://github.com/garden-io/garden/releases
+  dx: [one-command, fast-feedback, docs, cross-platform]
+  parity: [containers, multi-service, networking, state, prod-artifacts, k8s, team-scale]
+  note: Still 0.x and the last release was February 2026. Remote build cache needs Garden's hosted service.
+
+- id: devspace
+  name: DevSpace
+  sym: Ds
+  cat: Live-update loops
+  tagline: File sync and dev mode for Kubernetes workloads
+  url: https://devspace.sh
+  repo: devspace-sh/devspace
+  license: oss
+  ring: trial
+  evidence: https://github.com/devspace-sh/devspace/releases
+  dx: [one-command, fast-feedback, ui, docs, cross-platform, offline]
+  parity: [containers, multi-service, networking, state, prod-artifacts, k8s]
+  note: Last release April 2026, just outside the six-month adopt window.
+
+- id: okteto
+  name: Okteto
+  sym: Ok
+  cat: Live-update loops
+  tagline: Dev environments and file sync on a Kubernetes cluster
+  url: https://www.okteto.com
+  repo: okteto/okteto
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/okteto/okteto/releases
+  dx: [one-command, fast-feedback, ui, docs, cross-platform]
+  parity: [containers, multi-service, networking, state, prod-artifacts, k8s, team-scale]
+  note: The CLI is open source, but most workflows target the commercial Okteto platform on a remote cluster.
+
+- id: tye
+  name: Project Tye
+  sym: Ty
+  cat: Live-update loops
+  tagline: Experimental .NET multi-service runner
+  url: https://github.com/dotnet/tye
+  repo: dotnet/tye
+  license: oss
+  ring: hold
+  evidence: https://github.com/dotnet/tye
+  dx: [one-command, ui, offline]
+  parity: [containers, multi-service]
+  note: Archived by Microsoft in 2023; .NET Aspire is the suggested successor.
+
+# --- Kubernetes dev ---
+- id: draft
+  name: Draft
+  sym: Dr
+  cat: Kubernetes dev
+  tagline: Generates Dockerfiles, manifests and pipelines for AKS
+  url: https://github.com/Azure/draft
+  repo: Azure/draft
+  license: oss
+  ring: trial
+  evidence: https://github.com/Azure/draft/releases
+  dx: [zero-config, docs, cross-platform, offline]
+  parity: [containers, k8s]
+  note: Still 0.x. A scaffolder, not a live loop; output leans toward Azure Kubernetes Service.
+
+- id: werf
+  name: werf
+  sym: Wf
+  cat: Kubernetes dev
+  tagline: Git-driven build and deploy CLI built on Helm
+  url: https://werf.io
+  repo: werf/werf
+  license: oss
+  ring: adopt
+  evidence: https://github.com/werf/werf/releases
+  dx: [docs, cross-platform, offline]
+  parity: [containers, multi-service, prod-artifacts, k8s]
+  note: Closer to CI/CD than an inner loop; needs a registry and a cluster.
+
+- id: helm
+  name: Helm
+  sym: He
+  cat: Kubernetes dev
+  tagline: Package manager and templating for Kubernetes
+  url: https://helm.sh
+  repo: helm/helm
+  license: oss
+  ring: adopt
+  evidence: https://github.com/helm/helm/releases
+  dx: [docs, cross-platform, offline]
+  parity: [multi-service, prod-artifacts, k8s]
+  note: Go-template charts get hard to read; Helm 4 changed some plugin and SDK behavior.
+
+- id: kustomize
+  name: Kustomize
+  sym: Kz
+  cat: Kubernetes dev
+  tagline: Template-free overlays for Kubernetes manifests
+  url: https://kustomize.io
+  repo: kubernetes-sigs/kustomize
+  license: oss
+  ring: adopt
+  evidence: https://github.com/kubernetes-sigs/kustomize/releases
+  dx: [zero-config, docs, cross-platform, offline]
+  parity: [prod-artifacts, k8s, config-secrets]
+  note: The copy bundled in kubectl often lags the standalone release.
+
+- id: timoni
+  name: Timoni
+  sym: Tm
+  cat: Kubernetes dev
+  tagline: CUE-based package manager for Kubernetes
+  url: https://timoni.sh
+  repo: stefanprodan/timoni
+  license: oss
+  ring: trial
+  evidence: https://github.com/stefanprodan/timoni/releases
+  dx: [docs, offline]
+  parity: [prod-artifacts, k8s]
+  note: Pre-1.0 and requires learning CUE; small ecosystem next to Helm.
+
+- id: kapp
+  name: kapp
+  sym: Kp
+  cat: Kubernetes dev
+  tagline: Deploys a set of resources as one app with diffs
+  url: https://carvel.dev/kapp/
+  repo: carvel-dev/kapp
+  license: oss
+  ring: adopt
+  evidence: https://github.com/carvel-dev/kapp/releases
+  dx: [docs, cross-platform, offline]
+  parity: [prod-artifacts, k8s]
+  note: Part of Carvel; long-standing but still versioned 0.x.
+
+- id: kubectl
+  name: kubectl
+  sym: Kc
+  cat: Kubernetes dev
+  tagline: The official Kubernetes command-line client
+  url: https://kubernetes.io/docs/reference/kubectl/
+  repo: kubernetes/kubectl
+  license: oss
+  ring: adopt
+  evidence: https://github.com/kubernetes/kubernetes/releases
+  dx: [docs, cross-platform, offline, agent-ready]
+  parity: [k8s]
+  note: Released with Kubernetes itself; the kubectl repo is a read-only staging mirror.
+
+- id: helmfile
+  name: Helmfile
+  sym: Hf
+  cat: Kubernetes dev
+  tagline: Declarative spec for deploying many Helm releases
+  url: https://helmfile.readthedocs.io
+  repo: helmfile/helmfile
+  license: oss
+  ring: adopt
+  evidence: https://github.com/helmfile/helmfile/releases
+  dx: [one-command, cross-platform, offline]
+  parity: [multi-service, prod-artifacts, k8s, config-secrets]
+  note: Adds a layer on top of Helm; errors often surface from Helm underneath.
+
+- id: tanka
+  name: Tanka
+  sym: Ta
+  cat: Kubernetes dev
+  tagline: Jsonnet-based Kubernetes configuration tool
+  url: https://tanka.dev
+  repo: grafana/tanka
+  license: oss
+  ring: adopt
+  evidence: https://github.com/grafana/tanka/releases
+  dx: [docs, offline]
+  parity: [prod-artifacts, k8s]
+  note: Requires learning Jsonnet; mostly used by teams already in the Grafana ecosystem.
+
+- id: cdk8s
+  name: cdk8s
+  sym: Ck
+  cat: Kubernetes dev
+  tagline: Kubernetes manifests from TypeScript, Python, Go or Java
+  url: https://cdk8s.io
+  repo: cdk8s-team/cdk8s
+  license: oss
+  ring: adopt
+  evidence: https://github.com/cdk8s-team/cdk8s-cli/releases
+  dx: [docs, cross-platform, offline]
+  parity: [prod-artifacts, k8s]
+  note: Synthesizes YAML only; deploying it is left to kubectl or another tool.
+
+- id: krew
+  name: Krew
+  sym: Kw
+  cat: Kubernetes dev
+  tagline: Plugin manager for kubectl
+  url: https://krew.sigs.k8s.io
+  repo: kubernetes-sigs/krew
+  license: oss
+  ring: trial
+  evidence: https://github.com/kubernetes-sigs/krew/releases
+  dx: [docs, cross-platform, light]
+  parity: [k8s]
+  note: Last release February 2026; plugins in the index are not vetted for security.
+
+- id: stern
+  name: stern
+  sym: St
+  cat: Kubernetes dev
+  tagline: Tails logs from many pods and containers at once
+  url: https://github.com/stern/stern
+  repo: stern/stern
+  license: oss
+  ring: adopt
+  evidence: https://github.com/stern/stern/releases
+  dx: [zero-config, cross-platform, offline, light, agent-ready]
+  parity: [k8s]
+
+- id: kubectx
+  name: kubectx
+  sym: Kx
+  cat: Kubernetes dev
+  tagline: Fast switching between kubectl contexts and namespaces
+  url: https://kubectx.dev
+  repo: ahmetb/kubectx
+  license: oss
+  ring: trial
+  evidence: https://github.com/ahmetb/kubectx/releases
+  dx: [zero-config, cross-platform, offline, light]
+  parity: [k8s]
+  note: Last release March 2026. Switching context is global and affects every open shell.
+
+- id: kubie
+  name: kubie
+  sym: Ki
+  cat: Kubernetes dev
+  tagline: Per-shell Kubernetes context and namespace switching
+  url: https://github.com/kubie-org/kubie
+  repo: kubie-org/kubie
+  license: oss
+  ring: trial
+  evidence: https://github.com/kubie-org/kubie/releases
+  dx: [zero-config, offline, light]
+  parity: [k8s]
+  note: Pre-1.0 and a smaller project than kubectx.
+
+# --- Cluster bridges ---
+- id: telepresence
+  name: Telepresence
+  sym: Te
+  cat: Cluster bridges
+  tagline: Runs a local process as if it were inside the cluster
+  url: https://www.telepresence.io
+  repo: telepresenceio/telepresence
+  license: oss
+  ring: adopt
+  evidence: https://github.com/telepresenceio/telepresence/releases
+  dx: [fast-feedback, docs, cross-platform]
+  parity: [networking, state, k8s, config-secrets]
+  note: Installs a traffic manager in the cluster; personal intercepts for teams moved to Ambassador's paid product.
+
+- id: mirrord
+  name: mirrord
+  sym: Mr
+  cat: Cluster bridges
+  tagline: Mirrors cluster traffic, files and env into a local process
+  url: https://metalbear.com/mirrord/
+  repo: metalbear-co/mirrord
+  license: oss
+  ring: adopt
+  evidence: https://github.com/metalbear-co/mirrord/releases
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform]
+  parity: [networking, state, k8s, config-secrets]
+  note: No cluster-side install for the OSS mode; traffic stealing on shared clusters needs the paid Teams plan.
+
+- id: gefyra
+  name: Gefyra
+  sym: Ge
+  cat: Cluster bridges
+  tagline: Runs local containers inside a Kubernetes network
+  url: https://gefyra.dev
+  repo: gefyrahq/gefyra
+  license: oss
+  ring: trial
+  evidence: https://github.com/gefyrahq/gefyra/releases
+  dx: [ui, docs, cross-platform]
+  parity: [containers, networking, state, k8s]
+  note: Smaller community than Telepresence or mirrord; needs Docker locally.
+
+- id: signadot
+  name: Signadot
+  sym: Sg
+  cat: Cluster bridges
+  tagline: Request-routed sandboxes on a shared Kubernetes cluster
+  url: https://www.signadot.com
+  repo: signadot/cli
+  license: freemium
+  ring: trial
+  evidence: https://github.com/signadot/cli/releases
+  dx: [ui, docs, cross-platform, agent-ready]
+  parity: [multi-service, networking, state, k8s, team-scale]
+  note: Hosted control plane and account required; routing relies on header propagation in your services.
+
+- id: kubefwd
+  name: kubefwd
+  sym: Kf
+  cat: Cluster bridges
+  tagline: Bulk port-forwards cluster services with local DNS names
+  url: https://github.com/txn2/kubefwd
+  repo: txn2/kubefwd
+  license: oss
+  ring: adopt
+  evidence: https://github.com/txn2/kubefwd/releases
+  dx: [one-command, zero-config, light]
+  parity: [networking, k8s]
+  note: Needs root to edit /etc/hosts; outbound only, cluster traffic does not reach your machine.
+
+- id: bridge-to-kubernetes
+  name: Bridge to Kubernetes
+  sym: Br
+  cat: Cluster bridges
+  tagline: Retired VS Code bridge from Microsoft
+  url: https://github.com/Azure/Bridge-To-Kubernetes
+  repo: Azure/Bridge-To-Kubernetes
+  license: oss
+  ring: hold
+  evidence: https://github.com/Azure/Bridge-To-Kubernetes
+  dx: [fast-feedback, cross-platform]
+  parity: [networking, k8s]
+  note: Retired by Microsoft and the repository is archived.
+
+# --- Cluster UIs ---
+- id: k9s
+  name: k9s
+  sym: K9
+  cat: Cluster UIs
+  tagline: Terminal UI for navigating and managing clusters
+  url: https://k9scli.io
+  repo: derailed/k9s
+  license: oss
+  ring: adopt
+  evidence: https://github.com/derailed/k9s/releases
+  dx: [zero-config, ui, docs, cross-platform, offline, light]
+  parity: [k8s]
+  note: Keyboard-driven with a learning curve; long-standing but still 0.x.
+
+- id: lens
+  name: Lens
+  sym: Ln
+  cat: Cluster UIs
+  tagline: Desktop app for managing Kubernetes clusters
+  url: https://k8slens.dev
+  license: freemium
+  ring: adopt
+  evidence: https://docs.k8slens.dev/release-notes/
+  dx: [zero-config, ui, docs, cross-platform]
+  parity: [k8s, observability]
+  note: Closed source now and requires a Lens ID login; commercial use needs a paid plan.
+
+- id: headlamp
+  name: Headlamp
+  sym: Hl
+  cat: Cluster UIs
+  tagline: Extensible web and desktop UI for Kubernetes
+  url: https://headlamp.dev
+  repo: kubernetes-sigs/headlamp
+  license: oss
+  ring: adopt
+  evidence: https://github.com/kubernetes-sigs/headlamp/releases
+  dx: [zero-config, ui, docs, cross-platform, offline]
+  parity: [k8s]
+  note: Now a Kubernetes SIG project and the suggested replacement for the retired Dashboard.
+
+- id: freelens
+  name: Freelens
+  sym: Fe
+  cat: Cluster UIs
+  tagline: Open source desktop UI forked from Lens
+  url: https://freelens.app
+  repo: freelensapp/freelens
+  license: oss
+  ring: trial
+  evidence: https://github.com/freelensapp/freelens/releases
+  dx: [zero-config, ui, cross-platform, offline]
+  parity: [k8s, observability]
+  note: Community fork started in 2025; extension compatibility with Lens is partial.
+
+- id: kubetail
+  name: Kubetail
+  sym: Kt
+  cat: Cluster UIs
+  tagline: Real-time log viewer for Kubernetes in browser or terminal
+  url: https://kubetail.com
+  repo: kubetail-org/kubetail
+  license: oss
+  ring: trial
+  evidence: https://github.com/kubetail-org/kubetail/releases
+  dx: [zero-config, ui, cross-platform, offline, light]
+  parity: [k8s]
+  note: Pre-1.0 and focused on logs only.
+
+- id: aptakube
+  name: Aptakube
+  sym: Ap
+  cat: Cluster UIs
+  tagline: Native desktop client for many clusters at once
+  url: https://aptakube.com
+  repo: aptakube/aptakube
+  license: paid
+  ring: trial
+  evidence: https://github.com/aptakube/aptakube/releases
+  dx: [zero-config, ui, cross-platform, offline, light]
+  parity: [k8s]
+  note: Paid license after a trial; small single-vendor project. The GitHub repo hosts releases, not source.
+
+- id: kdash
+  name: KDash
+  sym: Kb
+  cat: Cluster UIs
+  tagline: Lightweight terminal dashboard for Kubernetes
+  url: https://github.com/kdash-rs/kdash
+  repo: kdash-rs/kdash
+  license: oss
+  ring: trial
+  evidence: https://github.com/kdash-rs/kdash/releases
+  dx: [zero-config, ui, cross-platform, offline, light]
+  parity: [k8s]
+  note: Fewer actions than k9s; mostly read-only views.
+
+- id: kubernetes-dashboard
+  name: Kubernetes Dashboard
+  sym: Ku
+  cat: Cluster UIs
+  tagline: Retired official web UI for Kubernetes
+  url: https://github.com/kubernetes/dashboard
+  repo: kubernetes/dashboard
+  license: oss
+  ring: hold
+  evidence: https://github.com/kubernetes/dashboard
+  dx: [ui]
+  parity: [k8s]
+  note: Repository archived in January 2026; the project points users to Headlamp.
+
+# --- Process runners ---
+- id: pm2
+  name: PM2
+  sym: P2
+  cat: Process runners
+  tagline: Process manager for Node.js and other runtimes
+  url: https://pm2.keymetrics.io
+  repo: Unitech/pm2
+  license: oss
+  ring: adopt
+  evidence: https://github.com/Unitech/pm2/releases
+  dx: [one-command, ui, docs, cross-platform, offline, light, agent-ready]
+  parity: [multi-service]
+  note: Built for production hosts more than dev loops; watch mode is basic.
+
+- id: process-compose
+  name: process-compose
+  sym: Pb
+  cat: Process runners
+  tagline: Compose-style orchestration for plain processes
+  url: https://f1bonacc1.github.io/process-compose/
+  repo: F1bonacc1/process-compose
+  license: oss
+  ring: adopt
+  evidence: https://github.com/F1bonacc1/process-compose/releases
+  dx: [one-command, ui, docs, cross-platform, offline, light, agent-ready]
+  parity: [multi-service]
+  note: No containers or network isolation; dependencies must be installed on the host.
+
+- id: overmind
+  name: Overmind
+  sym: Ov
+  cat: Process runners
+  tagline: Procfile runner on tmux with per-process restart
+  url: https://github.com/DarthSim/overmind
+  repo: DarthSim/overmind
+  license: oss
+  ring: hold
+  evidence: https://github.com/DarthSim/overmind/releases
+  dx: [one-command, offline, light]
+  parity: [multi-service]
+  note: No release since March 2024. Needs tmux; no Windows support.
+
+- id: foreman
+  name: Foreman
+  sym: Fm
+  cat: Process runners
+  tagline: The original Procfile process runner
+  url: https://ddollar.github.io/foreman/
+  repo: ddollar/foreman
+  license: oss
+  ring: trial
+  evidence: https://rubygems.org/gems/foreman
+  dx: [one-command, zero-config, offline, light]
+  parity: [multi-service]
+  note: Releases are rare (last July 2025). Needs Ruby; no restart of a single process.
+
+- id: hivemind
+  name: Hivemind
+  sym: Hv
+  cat: Process runners
+  tagline: Minimal Procfile runner without tmux
+  url: https://github.com/DarthSim/hivemind
+  repo: DarthSim/hivemind
+  license: oss
+  ring: hold
+  evidence: https://github.com/DarthSim/hivemind/releases
+  dx: [one-command, offline, light]
+  parity: [multi-service]
+  note: No release since December 2021.
+
+- id: honcho
+  name: Honcho
+  sym: Ho
+  cat: Process runners
+  tagline: Python port of Foreman for Procfiles
+  url: https://github.com/nickstenning/honcho
+  repo: nickstenning/honcho
+  license: oss
+  ring: hold
+  evidence: https://github.com/nickstenning/honcho/releases
+  dx: [one-command, zero-config, cross-platform, offline, light]
+  parity: [multi-service]
+  note: No release since October 2024.
+
+- id: goreman
+  name: goreman
+  sym: Go
+  cat: Process runners
+  tagline: Single-binary Foreman clone written in Go
+  url: https://github.com/mattn/goreman
+  repo: mattn/goreman
+  license: oss
+  ring: trial
+  evidence: https://github.com/mattn/goreman/releases
+  dx: [one-command, zero-config, cross-platform, offline, light]
+  parity: [multi-service]
+  note: Still 0.x with sparse docs.
+
+- id: concurrently
+  name: concurrently
+  sym: Cn
+  cat: Process runners
+  tagline: Runs several npm scripts or commands in one terminal
+  url: https://github.com/open-cli-tools/concurrently
+  repo: open-cli-tools/concurrently
+  license: oss
+  ring: adopt
+  evidence: https://github.com/open-cli-tools/concurrently/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline, light]
+  parity: [multi-service]
+  note: No dependency ordering or health checks between commands.
+
+- id: mprocs
+  name: mprocs
+  sym: Mp
+  cat: Process runners
+  tagline: TUI that runs several commands side by side
+  url: https://github.com/pvolok/mprocs
+  repo: pvolok/mprocs
+  license: oss
+  ring: trial
+  evidence: https://github.com/pvolok/mprocs/releases
+  dx: [one-command, zero-config, ui, cross-platform, offline, light]
+  parity: [multi-service]
+  note: Pre-1.0; no dependency ordering between processes.
+
+- id: nodemon
+  name: nodemon
+  sym: Nd
+  cat: Process runners
+  tagline: Restarts a Node.js process when files change
+  url: https://nodemon.io
+  repo: remy/nodemon
+  license: oss
+  ring: trial
+  evidence: https://github.com/remy/nodemon/releases
+  dx: [zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: []
+  note: Last release February 2026; Node's built-in --watch now covers many cases.
+
+- id: air
+  name: Air
+  sym: Ai
+  cat: Process runners
+  tagline: Live reload for Go applications
+  url: https://github.com/air-verse/air
+  repo: air-verse/air
+  license: oss
+  ring: adopt
+  evidence: https://github.com/air-verse/air/releases
+  dx: [zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: []
+  note: Full rebuild and restart on each change; no hot code swap.
+
+- id: watchexec
+  name: watchexec
+  sym: Wx
+  cat: Process runners
+  tagline: Runs a command when files change, any language
+  url: https://watchexec.github.io
+  repo: watchexec/watchexec
+  license: oss
+  ring: adopt
+  evidence: https://github.com/watchexec/watchexec/releases
+  dx: [zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: []
+
+- id: bacon
+  name: bacon
+  sym: Bc
+  cat: Process runners
+  tagline: Background Rust checker that reruns on change
+  url: https://dystroy.org/bacon/
+  repo: Canop/bacon
+  license: oss
+  ring: adopt
+  evidence: https://github.com/Canop/bacon/releases
+  dx: [zero-config, fast-feedback, ui, docs, cross-platform, offline, light]
+  parity: []
+  note: Rust and cargo focused; the suggested successor to cargo-watch.
+
+- id: cargo-watch
+  name: cargo-watch
+  sym: Ca
+  cat: Process runners
+  tagline: Archived cargo subcommand that reruns on change
+  url: https://github.com/watchexec/cargo-watch
+  repo: watchexec/cargo-watch
+  license: oss
+  ring: hold
+  evidence: https://github.com/watchexec/cargo-watch
+  dx: [zero-config, fast-feedback, cross-platform, offline, light]
+  parity: []
+  note: Archived in January 2025; maintainers point to bacon or watchexec.
+
+- id: watchman
+  name: Watchman
+  sym: Wm
+  cat: Process runners
+  tagline: File watching service used by build tools
+  url: https://facebook.github.io/watchman/
+  repo: facebook/watchman
+  license: oss
+  ring: adopt
+  evidence: https://github.com/facebook/watchman/releases
+  dx: [fast-feedback, cross-platform, offline, agent-ready]
+  parity: []
+  note: A building block for other tools more than something you run directly.
+
+- id: reflex
+  name: reflex
+  sym: Rx
+  cat: Process runners
+  tagline: Small Go tool that reruns commands on file change
+  url: https://github.com/cespare/reflex
+  repo: cespare/reflex
+  license: oss
+  ring: trial
+  evidence: https://github.com/cespare/reflex/releases
+  dx: [zero-config, fast-feedback, offline, light]
+  parity: []
+  note: Rarely released (last February 2026); only tested on Linux and macOS.

@@ -1,0 +1,14 @@
+{%- comment -%}Sets cur_view, cur_sub and cur_sub_name for the page being built.{%- endcomment -%}
+{%- assign cur_view = nil -%}
+{%- assign cur_sub_name = nil -%}
+{%- if page.view -%}
+  {%- assign cur_view = site.data.meta.views | where: "id", page.view | first -%}
+  {%- if page.sub -%}
+    {%- if cur_view.subtabs == "tracks" -%}
+      {%- assign cur_sub_obj = site.data.journeys.tracks | where: "id", page.sub | first -%}
+    {%- else -%}
+      {%- assign cur_sub_obj = site.data.families | where: "id", page.sub | first -%}
+    {%- endif -%}
+    {%- assign cur_sub_name = cur_sub_obj.name -%}
+  {%- endif -%}
+{%- endif -%}

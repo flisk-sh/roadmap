@@ -1,0 +1,401 @@
+# Dev environments: reproducible shells, dev containers, cloud workspaces and local stacks.
+# Rings follow the rule in _data/rubric.yml. Release dates checked in October 2026.
+
+# --- Reproducible shells ---
+- id: nix
+  name: Nix
+  sym: Ni
+  cat: Reproducible shells
+  tagline: Purely functional package manager and dev shells
+  url: https://nixos.org
+  repo: NixOS/nix
+  license: oss
+  ring: adopt
+  evidence: https://github.com/NixOS/nix/tags
+  dx: [cross-platform, offline]
+  parity: [prod-artifacts]
+  note: Steep learning curve; the Nix language and flakes take real time to learn.
+
+- id: devenv
+  name: devenv
+  sym: Da
+  cat: Reproducible shells
+  tagline: Nix-based dev environments with services and processes
+  url: https://devenv.sh
+  repo: cachix/devenv
+  license: oss
+  ring: adopt
+  evidence: https://github.com/cachix/devenv/releases
+  dx: [one-command, docs, cross-platform, offline, agent-ready]
+  parity: [containers, multi-service, state, prod-artifacts]
+  note: Requires Nix underneath; first evaluation can be slow.
+
+- id: devbox
+  name: Devbox
+  sym: Db
+  cat: Reproducible shells
+  tagline: Isolated shells from Nix packages without writing Nix
+  url: https://www.jetify.com/devbox
+  repo: jetify-com/devbox
+  license: oss
+  ring: trial
+  evidence: https://github.com/jetify-com/devbox/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline]
+  parity: [multi-service, state, prod-artifacts]
+  note: Still 0.x; installs Nix for you, which is the source of most errors.
+
+- id: flox
+  name: Flox
+  sym: Fx
+  cat: Reproducible shells
+  tagline: Nix-backed environments you can share and layer
+  url: https://flox.dev
+  repo: flox/flox
+  license: oss
+  ring: trial
+  evidence: https://github.com/flox/flox/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline]
+  parity: [multi-service, state, prod-artifacts]
+  note: Sharing environments through FloxHub needs an account.
+
+- id: direnv
+  name: direnv
+  sym: Di
+  cat: Reproducible shells
+  tagline: Loads and unloads env vars per directory
+  url: https://direnv.net
+  repo: direnv/direnv
+  license: oss
+  ring: adopt
+  evidence: https://github.com/direnv/direnv/releases
+  dx: [zero-config, docs, cross-platform, offline, light]
+  parity: []
+  note: Only manages environment variables; pair it with Nix, devenv or a version manager.
+
+- id: distrobox
+  name: Distrobox
+  sym: Dx
+  cat: Reproducible shells
+  tagline: Any Linux distro in a container, integrated with the host
+  url: https://distrobox.it
+  repo: 89luca89/distrobox
+  license: oss
+  ring: trial
+  evidence: https://github.com/89luca89/distrobox/releases
+  dx: [one-command, docs, offline, light]
+  parity: [containers]
+  note: Linux only. Shares your home directory, so it is not an isolation boundary. Last release April 2026.
+
+- id: toolbx
+  name: Toolbx
+  sym: Tb
+  cat: Reproducible shells
+  tagline: Container-based mutable shells for Fedora and RHEL
+  url: https://containertoolbx.org
+  repo: containers/toolbox
+  license: oss
+  ring: trial
+  evidence: https://github.com/containers/toolbox/releases
+  dx: [one-command, offline, light]
+  parity: [containers]
+  note: Linux only and best supported on Fedora; still 0.x, last release September 2025.
+
+# --- Dev containers ---
+- id: dev-containers
+  name: Dev Containers
+  sym: Do
+  cat: Dev containers
+  tagline: Open spec and CLI for container-based dev environments
+  url: https://containers.dev
+  repo: devcontainers/spec
+  license: oss
+  ring: adopt
+  evidence: https://github.com/devcontainers/cli/tags
+  dx: [one-command, ui, docs, cross-platform, offline]
+  parity: [containers, multi-service, state]
+  note: The spec and CLI are open source; the VS Code extension that provides the UI is not.
+
+- id: devpod
+  name: DevPod
+  sym: Df
+  cat: Dev containers
+  tagline: Client-only dev containers on any backend
+  url: https://devpod.sh
+  repo: loft-sh/devpod
+  license: oss
+  ring: hold
+  evidence: https://github.com/loft-sh/devpod/releases
+  dx: [one-command, ui, docs, cross-platform, offline]
+  parity: [containers, multi-service, state, k8s]
+  note: No release since March 2025. A community fork continues as Devsy (devsy.sh).
+
+- id: vagrant
+  name: Vagrant
+  sym: Vg
+  cat: Dev containers
+  tagline: Reproducible VM-based dev environments
+  url: https://developer.hashicorp.com/vagrant
+  repo: hashicorp/vagrant
+  license: free
+  ring: trial
+  evidence: https://github.com/hashicorp/vagrant/releases
+  dx: [one-command, docs, cross-platform, offline]
+  parity: [multi-service, networking, state]
+  note: Business Source License since 2023. Full VMs are heavy. Last release August 2025.
+
+# --- Cloud workspaces ---
+- id: codespaces
+  name: GitHub Codespaces
+  sym: Gc
+  cat: Cloud workspaces
+  tagline: Hosted dev containers attached to GitHub repos
+  url: https://github.com/features/codespaces
+  license: freemium
+  ring: adopt
+  evidence: https://github.blog/changelog/
+  dx: [one-command, zero-config, ui, docs, cross-platform]
+  parity: [containers, multi-service, state, config-secrets, team-scale]
+  note: Billed per core-hour beyond the free quota; GitHub-hosted repositories only.
+
+- id: ona
+  name: Ona
+  sym: Oa
+  cat: Cloud workspaces
+  tagline: Cloud environments and AI agents, formerly Gitpod
+  url: https://ona.com
+  license: freemium
+  ring: trial
+  evidence: https://ona.com/stories/gitpod-is-now-ona
+  dx: [one-command, zero-config, ui, docs, cross-platform, agent-ready]
+  parity: [containers, multi-service, state, config-secrets, team-scale]
+  note: Gitpod renamed to Ona in 2025 and refocused on AI agents; Gitpod Classic was shut down.
+
+- id: coder
+  name: Coder
+  sym: Cr
+  cat: Cloud workspaces
+  tagline: Self-hosted remote workspaces defined in Terraform
+  url: https://coder.com
+  repo: coder/coder
+  license: oss
+  ring: adopt
+  evidence: https://github.com/coder/coder/releases
+  dx: [ui, docs, cross-platform, agent-ready]
+  parity: [containers, k8s, cloud-apis, team-scale]
+  note: You run and operate the control plane; some governance features are in the paid edition.
+
+- id: eclipse-che
+  name: Eclipse Che
+  sym: Ch
+  cat: Cloud workspaces
+  tagline: Kubernetes-native browser IDE workspaces
+  url: https://eclipse.dev/che/
+  repo: eclipse-che/che
+  license: oss
+  ring: adopt
+  evidence: https://github.com/eclipse-che/che/releases
+  dx: [ui, docs, cross-platform]
+  parity: [containers, multi-service, k8s, team-scale]
+  note: Needs a Kubernetes or OpenShift cluster to host it; heavy to operate for a small team.
+
+- id: code-server
+  name: code-server
+  sym: Cs
+  cat: Cloud workspaces
+  tagline: VS Code in the browser on any machine you run
+  url: https://coder.com/docs/code-server
+  repo: coder/code-server
+  license: oss
+  ring: adopt
+  evidence: https://github.com/coder/code-server/releases
+  dx: [zero-config, ui, docs, cross-platform, offline, light]
+  parity: []
+  note: An editor only; uses the Open VSX registry, so some Microsoft extensions are missing.
+
+- id: daytona
+  name: Daytona
+  sym: Dy
+  cat: Cloud workspaces
+  tagline: Former dev-environment manager, now AI code sandboxes
+  url: https://www.daytona.io
+  repo: daytonaio/daytona
+  license: oss
+  ring: hold
+  evidence: https://github.com/daytonaio/daytona
+  dx: [one-command, docs, cross-platform, agent-ready]
+  parity: [containers]
+  note: Pivoted from dev environments to sandboxes for AI-generated code; the GitHub repo was archived in 2026.
+
+- id: codesandbox
+  name: CodeSandbox
+  sym: Ce
+  cat: Cloud workspaces
+  tagline: Browser sandboxes and microVM dev environments
+  url: https://codesandbox.io
+  license: freemium
+  ring: trial
+  evidence: https://codesandbox.io
+  dx: [zero-config, fast-feedback, ui, docs, cross-platform]
+  parity: [containers]
+  note: Acquired by Together AI in 2024; product focus has been shifting toward AI sandboxes.
+
+- id: stackblitz
+  name: StackBlitz
+  sym: Sb
+  cat: Cloud workspaces
+  tagline: Node.js dev environments running in the browser tab
+  url: https://stackblitz.com
+  license: freemium
+  ring: adopt
+  evidence: https://blog.stackblitz.com
+  dx: [zero-config, fast-feedback, ui, docs, cross-platform, light]
+  parity: []
+  note: WebContainers run Node only; no Docker, native binaries or real databases.
+
+- id: replit
+  name: Replit
+  sym: Re
+  cat: Cloud workspaces
+  tagline: Hosted IDE with built-in hosting and an AI agent
+  url: https://replit.com
+  license: freemium
+  ring: adopt
+  evidence: https://docs.replit.com/updates
+  dx: [one-command, zero-config, ui, docs, cross-platform]
+  parity: [state, config-secrets]
+  note: Your code runs and deploys on Replit's platform; hard to mirror a non-Replit production setup.
+
+- id: cloud-workstations
+  name: Google Cloud Workstations
+  sym: Gw
+  cat: Cloud workspaces
+  tagline: Managed dev environments inside your Google Cloud project
+  url: https://cloud.google.com/workstations
+  license: paid
+  ring: adopt
+  evidence: https://cloud.google.com/workstations/docs/release-notes
+  dx: [ui, docs, cross-platform]
+  parity: [containers, cloud-apis, team-scale]
+  note: Google Cloud only, billed per hour plus a cluster management fee.
+
+- id: firebase-studio
+  name: Firebase Studio
+  sym: Fs
+  cat: Cloud workspaces
+  tagline: Sunsetting browser workspace from Google, formerly IDX
+  url: https://firebase.studio
+  license: free
+  ring: hold
+  evidence: https://firebase.google.com/docs/studio/migrating-project
+  dx: [zero-config, ui, cross-platform]
+  parity: [cloud-apis]
+  note: New workspaces disabled since June 2026; full shutdown planned for March 2027.
+
+- id: aws-cloud9
+  name: AWS Cloud9
+  sym: Aw
+  cat: Cloud workspaces
+  tagline: Browser IDE on EC2, closed to new customers
+  url: https://aws.amazon.com/cloud9/
+  license: paid
+  ring: hold
+  evidence: https://aws.amazon.com/blogs/devops/how-to-migrate-from-aws-cloud9-to-aws-ide-toolkits-or-aws-cloudshell/
+  dx: [ui, cross-platform]
+  parity: [cloud-apis]
+  note: No longer available to new customers since July 2024; AWS points to IDE toolkits and CloudShell.
+
+- id: microsoft-dev-box
+  name: Microsoft Dev Box
+  sym: Md
+  cat: Cloud workspaces
+  tagline: Cloud Windows workstations for developers
+  url: https://azure.microsoft.com/en-us/products/dev-box
+  license: paid
+  ring: hold
+  evidence: https://learn.microsoft.com/en-us/azure/dev-box/dev-box-windows-365-announcement
+  dx: [ui, docs]
+  parity: [cloud-apis, team-scale]
+  note: Closed to new customers since November 2025; features are moving into Windows 365.
+
+# --- Local stacks ---
+- id: ddev
+  name: DDEV
+  sym: Dh
+  cat: Local stacks
+  tagline: Docker-based local stacks for PHP and Node projects
+  url: https://ddev.com
+  repo: ddev/ddev
+  license: oss
+  ring: adopt
+  evidence: https://github.com/ddev/ddev/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline, agent-ready]
+  parity: [containers, multi-service, networking, state]
+  note: Opinionated toward PHP CMS projects; other stacks need custom add-ons.
+
+- id: lando
+  name: Lando
+  sym: La
+  cat: Local stacks
+  tagline: Recipe-based Docker dev environments
+  url: https://lando.dev
+  repo: lando/lando
+  license: oss
+  ring: adopt
+  evidence: https://github.com/lando/lando/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline]
+  parity: [containers, multi-service, networking, state]
+  note: Startup is slower than DDEV on large projects; the v4 rewrite has been in progress for years.
+
+- id: laravel-sail
+  name: Laravel Sail
+  sym: Sl
+  cat: Local stacks
+  tagline: Docker Compose setup for Laravel apps
+  url: https://laravel.com/docs/sail
+  repo: laravel/sail
+  license: oss
+  ring: adopt
+  evidence: https://github.com/laravel/sail/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline]
+  parity: [containers, multi-service, state]
+  note: Laravel only; a thin wrapper over Docker Compose.
+
+- id: laravel-herd
+  name: Laravel Herd
+  sym: Hd
+  cat: Local stacks
+  tagline: Native PHP and Node dev environment for Laravel
+  url: https://herd.laravel.com
+  license: freemium
+  ring: adopt
+  evidence: https://herd.laravel.com/docs/macos/changelog
+  dx: [one-command, zero-config, ui, docs, offline, light]
+  parity: [state]
+  note: macOS and Windows only. Databases, queues and mail capture need Herd Pro.
+
+- id: local-wp
+  name: Local
+  sym: Lo
+  cat: Local stacks
+  tagline: Desktop app for local WordPress sites
+  url: https://localwp.com
+  license: free
+  ring: adopt
+  evidence: https://localwp.com/releases/
+  dx: [one-command, zero-config, ui, docs, cross-platform, offline]
+  parity: [state]
+  note: WordPress only. Closed source, made by WP Engine; some features push toward its hosting.
+
+- id: docksal
+  name: Docksal
+  sym: Dk
+  cat: Local stacks
+  tagline: Docker-based stacks for Drupal and PHP
+  url: https://docksal.io
+  repo: docksal/docksal
+  license: oss
+  ring: hold
+  evidence: https://github.com/docksal/docksal/releases
+  dx: [one-command, docs, cross-platform, offline]
+  parity: [containers, multi-service, networking, state]
+  note: No release since May 2024; most users have moved to DDEV.

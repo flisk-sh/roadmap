@@ -1,0 +1,176 @@
+# Journeys: one ladder of seven levels, walked by three tracks. Each track is a sub-tab
+# (/journeys/<track id>/) and picks its own route through the same levels.
+#
+# levels
+#   n, id, name   Station number, slug and title.
+#   goal          What you can do once you clear the level. One sentence.
+#   skills        What you learn there.
+#   flisk         What Flisk does at this level, said plainly.
+#                   status: "yes" | partial | soon (quote "yes", or YAML reads it as true)
+#                   text:   one honest sentence. `soon` means Flisk does not do it yet.
+#
+# tracks
+#   stops.<level id>
+#     main   Tool ids (from _data/tools/) on the line for this track: learn these.
+#     side   Tool ids worth knowing: branch lines off the station.
+#     tip    One line of advice for this track at this level.
+
+flisk_issue: https://github.com/flisk-sh/flisk/issues
+
+levels:
+  - n: 1
+    id: package-wrangler
+    name: Package Wrangler
+    goal: Install, pin and update dependencies without breaking your teammates.
+    skills: [Lockfiles, Semantic versioning, Workspaces, Version managers, Audit and update]
+    flisk:
+      status: soon
+      text: Flisk does not touch package managers yet. Coming soon.
+  - n: 2
+    id: build-master
+    name: Build Master
+    goal: Turn source into fast, cached, repeatable builds and tasks.
+    skills: [Bundlers, Incremental builds, Task runners, Build caching, Monorepo graphs]
+    flisk:
+      status: partial
+      text: Flisk generates per-service Vite and TSConfig config from the manifests. It does not run your build graph.
+  - n: 3
+    id: container-crafter
+    name: Container Crafter
+    goal: Package any service as an image and run a few of them together.
+    skills: [Dockerfiles, Image layers, Compose files, Volumes and networks, Registries]
+    flisk:
+      status: "yes"
+      text: Flisk generates the Compose config and layered base images from each service's manifest.
+  - n: 4
+    id: inner-loop-runner
+    name: Inner-Loop Runner
+    goal: Edit code and see it live across many services in seconds.
+    skills: [Live update, File sync, Process supervision, Service discovery, Local debugging]
+    flisk:
+      status: "yes"
+      text: "This is Flisk's core: `flisk up` discovers services and runs them with live reload on Tilt."
+  - n: 5
+    id: cluster-tamer
+    name: Cluster Tamer
+    goal: Develop against Kubernetes, locally or bridged to a shared cluster.
+    skills: [Manifests and Helm, Local clusters, Port-forward and bridges, Kubernetes dev loops, Cluster UIs]
+    flisk:
+      status: soon
+      text: Flisk is local only today and emits no Kubernetes manifests. Coming soon.
+  - n: 6
+    id: agent-wrangler
+    name: Agent Wrangler
+    goal: Run multi-agent systems with tools, memory and models on your own machine.
+    skills: [Agent frameworks, MCP servers, Checkpoints and sessions, Local models, LLM tracing]
+    flisk:
+      status: "yes"
+      text: Flisk has an agent resource type with health, readiness and stored sessions, an MCP server and an agent-stack starter.
+  - n: 7
+    id: platform-architect
+    name: Platform Architect
+    goal: Give every team golden paths, a portal and infrastructure as code.
+    skills: [Developer portals, Golden paths, Infrastructure as code, GitOps, Secrets and policy]
+    flisk:
+      status: soon
+      text: Flisk has no Backstage plugin or IaC export yet. Coming soon.
+
+tracks:
+  - id: backend
+    name: Backend
+    blurb: APIs, workers and databases, from one service to a dozen.
+    stops:
+      package-wrangler:
+        main: [pnpm, uv, mise]
+        side: [npm, bun, poetry, homebrew, cargo, go-modules]
+        tip: Pick one package manager per language and commit the lockfile.
+      build-master:
+        main: [vite, make, just]
+        side: [esbuild, turborepo, nx, gradle, bazel]
+        tip: Make every build and test runnable with one short command.
+      container-crafter:
+        main: [docker-desktop, docker-compose, testcontainers]
+        side: [podman, orbstack, buildpacks, dive]
+        tip: One Dockerfile per service, one Compose file for all of them.
+      inner-loop-runner:
+        main: [compose-watch, tilt, flisk]
+        side: [process-compose, overmind, air, nodemon, localstack]
+        tip: Aim for a save-to-running loop under five seconds.
+      cluster-tamer:
+        main: [kind, helm, skaffold]
+        side: [k3d, minikube, telepresence, mirrord, k9s]
+        tip: Only reach for Kubernetes locally when production runs on it.
+      agent-wrangler:
+        main: [vercel-ai-sdk, model-context-protocol, ollama]
+        side: [langgraph, mastra, langfuse, claude-code]
+        tip: Treat the agent like another service with health checks and logs.
+      platform-architect:
+        main: [terraform, github-actions, opentelemetry]
+        side: [opentofu, pulumi, argo-cd, backstage]
+        tip: Write down the path you took so the next team gets it for free.
+
+  - id: ai-agents
+    name: AI & agents
+    blurb: Multi-agent systems with tools, memory, models and traces.
+    stops:
+      package-wrangler:
+        main: [uv, pnpm, mise]
+        side: [pip, conda, pixi, bun]
+        tip: Python and Node both show up in agent stacks; pin both runtimes.
+      build-master:
+        main: [vite, just]
+        side: [make, turborepo, nx]
+        tip: Keep prompts and tool schemas in the repo, built and versioned like code.
+      container-crafter:
+        main: [docker-desktop, docker-compose]
+        side: [podman, orbstack, docker-model-runner]
+        tip: Put every tool server and database in a container so agents can reach them.
+      inner-loop-runner:
+        main: [flisk, tilt, compose-watch]
+        side: [process-compose, mprocs]
+        tip: Restart one agent without losing the others' state.
+      cluster-tamer:
+        main: [kind, helm]
+        side: [k3d, telepresence, k9s]
+        tip: Agents rarely need Kubernetes locally; skip ahead if production does not use it.
+      agent-wrangler:
+        main: [langgraph, model-context-protocol, ollama, langfuse]
+        side: [mastra, crewai, openai-agents-sdk, claude-agent-sdk, pydantic-ai, mcp-inspector, vllm, arize-phoenix, promptfoo]
+        tip: Persist checkpoints outside the process so a restart does not lose a session.
+      platform-architect:
+        main: [backstage, opentelemetry, github-actions]
+        side: [terraform, infisical, temporal]
+        tip: Give every agent the same contract for health, sessions and traces.
+
+  - id: platform
+    name: Platform
+    blurb: Golden paths, portals and shared environments for many teams.
+    stops:
+      package-wrangler:
+        main: [mise, pnpm, homebrew]
+        side: [asdf, nix, renovate]
+        tip: Standardize runtime versions before you standardize anything else.
+      build-master:
+        main: [bazel, nx, turborepo]
+        side: [buck2, pants, dagger, earthly]
+        tip: Remote caching pays for itself as soon as CI is the bottleneck.
+      container-crafter:
+        main: [docker-desktop, buildkit, docker-compose]
+        side: [podman-desktop, rancher-desktop, buildpacks, ko]
+        tip: Publish blessed base images and keep them patched.
+      inner-loop-runner:
+        main: [tilt, flisk, garden]
+        side: [devspace, okteto, dev-containers]
+        tip: The inner loop is a product; measure time to first change for new hires.
+      cluster-tamer:
+        main: [kind, helm, kustomize, k9s]
+        side: [vcluster, telepresence, mirrord, headlamp]
+        tip: Give each developer an isolated namespace or virtual cluster.
+      agent-wrangler:
+        main: [model-context-protocol, claude-code, github-copilot]
+        side: [docker-mcp-toolkit, cursor, codex, mcp-registry]
+        tip: Ship MCP servers for your internal tools so agents use the same golden paths.
+      platform-architect:
+        main: [backstage, terraform, argo-cd, opentelemetry]
+        side: [port, crossplane, flux, vault, renovate, humanitec]
+        tip: A portal is only as good as the templates and docs behind it.

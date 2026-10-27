@@ -1,0 +1,514 @@
+# Containers & clusters: container runtimes, Compose, local Kubernetes, image builders and container UIs.
+# Scored against _data/rubric.yml.
+
+# --- Container runtimes -----------------------------------------------------
+
+- id: docker-engine
+  name: Docker Engine
+  sym: De
+  cat: Container runtimes
+  tagline: The open-source Docker daemon and CLI for Linux
+  url: https://docs.docker.com/engine/
+  repo: moby/moby
+  license: oss
+  ring: adopt
+  evidence: https://docs.docker.com/engine/release-notes/
+  dx: [one-command, docs, offline, light, agent-ready]
+  parity: [containers, networking, state, prod-artifacts]
+  note: Linux only; macOS and Windows need a VM such as Docker Desktop, OrbStack or Colima.
+
+- id: docker-desktop
+  name: Docker Desktop
+  sym: Dd
+  cat: Container runtimes
+  tagline: Docker Engine, Compose and Kubernetes in a desktop app
+  url: https://www.docker.com/products/docker-desktop/
+  license: freemium
+  ring: adopt
+  evidence: https://docs.docker.com/desktop/release-notes/
+  dx: [one-command, zero-config, clear-errors, ui, docs, cross-platform, agent-ready]
+  parity: [containers, multi-service, networking, state, prod-artifacts, k8s]
+  note: Paid subscription required for larger companies; the VM reserves several GB of RAM.
+
+- id: podman
+  name: Podman
+  sym: Pm
+  cat: Container runtimes
+  tagline: Daemonless, rootless container engine
+  url: https://podman.io
+  repo: containers/podman
+  license: oss
+  ring: adopt
+  evidence: https://github.com/containers/podman/releases
+  dx: [docs, cross-platform, offline, light, agent-ready]
+  parity: [containers, networking, state, prod-artifacts, k8s]
+  note: Mostly Docker CLI compatible, but rootless networking and some Compose files behave differently.
+
+- id: podman-desktop
+  name: Podman Desktop
+  sym: Pj
+  cat: Container runtimes
+  tagline: Desktop app for Podman, Kubernetes and other engines
+  url: https://podman-desktop.io
+  repo: podman-desktop/podman-desktop
+  license: oss
+  ring: adopt
+  evidence: https://github.com/podman-desktop/podman-desktop/releases
+  dx: [one-command, zero-config, ui, docs, cross-platform, offline]
+  parity: [containers, multi-service, networking, state, prod-artifacts, k8s]
+  note: Electron app on top of a Podman machine VM, so memory use is similar to Docker Desktop.
+
+- id: rancher-desktop
+  name: Rancher Desktop
+  sym: Rc
+  cat: Container runtimes
+  tagline: Desktop containers and k3s Kubernetes, free and open
+  url: https://rancherdesktop.io
+  repo: rancher-sandbox/rancher-desktop
+  license: oss
+  ring: adopt
+  evidence: https://github.com/rancher-sandbox/rancher-desktop/releases
+  dx: [one-command, zero-config, ui, docs, cross-platform, offline]
+  parity: [containers, multi-service, networking, state, prod-artifacts, k8s]
+  note: Heavier than Colima or OrbStack; switching between moby and containerd resets images.
+
+- id: orbstack
+  name: OrbStack
+  sym: Ob
+  cat: Container runtimes
+  tagline: Fast, light Docker and Linux VMs for macOS
+  url: https://orbstack.dev
+  license: freemium
+  ring: adopt
+  evidence: https://docs.orbstack.dev/release-notes
+  dx: [one-command, zero-config, fast-feedback, ui, docs, offline, light]
+  parity: [containers, multi-service, networking, state, prod-artifacts, k8s]
+  note: macOS only and closed source; commercial use needs a paid licence.
+
+- id: colima
+  name: Colima
+  sym: Co
+  cat: Container runtimes
+  tagline: Minimal container runtimes on macOS and Linux via Lima
+  url: https://github.com/abiosoft/colima
+  repo: abiosoft/colima
+  license: oss
+  ring: trial
+  evidence: https://github.com/abiosoft/colima/releases
+  dx: [one-command, zero-config, docs, offline, light]
+  parity: [containers, networking, state, prod-artifacts, k8s]
+  note: Pre-1.0; file sharing and VM networking are slower than OrbStack, and no Windows.
+
+- id: lima
+  name: Lima
+  sym: Li
+  cat: Container runtimes
+  tagline: Linux VMs with containerd for macOS and Linux
+  url: https://lima-vm.io
+  repo: lima-vm/lima
+  license: oss
+  ring: adopt
+  evidence: https://github.com/lima-vm/lima/releases
+  dx: [docs, offline, agent-ready]
+  parity: [containers, networking, state, prod-artifacts]
+  note: A VM building block; most people use it through Colima, Rancher Desktop or Finch.
+
+- id: containerd
+  name: containerd
+  sym: Ct
+  cat: Container runtimes
+  tagline: Industry-standard container runtime daemon
+  url: https://containerd.io
+  repo: containerd/containerd
+  license: oss
+  ring: adopt
+  evidence: https://github.com/containerd/containerd/releases
+  dx: [offline, light, agent-ready]
+  parity: [containers, prod-artifacts, k8s]
+  note: Low-level runtime with no friendly CLI of its own; pair it with nerdctl or Kubernetes.
+
+- id: nerdctl
+  name: nerdctl
+  sym: Nc
+  cat: Container runtimes
+  tagline: Docker-compatible CLI for containerd
+  url: https://github.com/containerd/nerdctl
+  repo: containerd/nerdctl
+  license: oss
+  ring: adopt
+  evidence: https://github.com/containerd/nerdctl/releases
+  dx: [docs, offline, light]
+  parity: [containers, multi-service, networking, state, prod-artifacts]
+  note: Linux native; on macOS it runs inside Lima. Compose support covers most but not all fields.
+
+- id: finch
+  name: Finch
+  sym: Fi
+  cat: Container runtimes
+  tagline: AWS's open-source client for container development
+  url: https://runfinch.com
+  repo: runfinch/finch
+  license: oss
+  ring: adopt
+  evidence: https://github.com/runfinch/finch/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline]
+  parity: [containers, multi-service, networking, state, prod-artifacts]
+  note: Smaller community than Docker or Podman; no built-in Kubernetes.
+
+- id: apple-container
+  name: Apple container
+  sym: Ac
+  cat: Container runtimes
+  tagline: Run Linux containers as light VMs on Apple silicon
+  url: https://github.com/apple/container
+  repo: apple/container
+  license: oss
+  ring: trial
+  evidence: https://github.com/apple/container/releases
+  dx: [offline, light]
+  parity: [containers, prod-artifacts]
+  note: Pre-1.0, Apple silicon and recent macOS only; no Compose and limited networking between containers.
+
+# --- Compose ----------------------------------------------------------------
+
+- id: docker-compose
+  name: Docker Compose
+  sym: Dc
+  cat: Compose
+  tagline: Define and run multi-container apps from YAML
+  url: https://docs.docker.com/compose/
+  repo: docker/compose
+  license: oss
+  ring: adopt
+  evidence: https://github.com/docker/compose/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline, agent-ready]
+  parity: [containers, multi-service, networking, state, prod-artifacts, config-secrets]
+  note: No Kubernetes semantics; Compose files drift from cluster manifests unless kept in sync.
+
+- id: compose-watch
+  name: Compose Watch
+  sym: Cw
+  cat: Compose
+  tagline: File sync and rebuild-on-change for Docker Compose
+  url: https://docs.docker.com/compose/how-tos/file-watch/
+  repo: docker/compose
+  license: oss
+  ring: adopt
+  evidence: https://github.com/docker/compose/releases
+  dx: [one-command, fast-feedback, docs, cross-platform, offline]
+  parity: [containers, multi-service, networking, state, prod-artifacts]
+  note: Sync works only for paths in the build context; large trees and bind mounts can be slow on macOS.
+
+- id: podman-compose
+  name: Podman Compose
+  sym: Pc
+  cat: Compose
+  tagline: Run Compose files with Podman
+  url: https://github.com/containers/podman-compose
+  repo: containers/podman-compose
+  license: oss
+  ring: trial
+  evidence: https://github.com/containers/podman-compose/releases
+  dx: [one-command, offline, light]
+  parity: [containers, multi-service, networking, state, prod-artifacts]
+  note: Covers less of the Compose spec than Docker Compose; podman compose can also call docker-compose.
+
+- id: kompose
+  name: Kompose
+  sym: Km
+  cat: Compose
+  tagline: Convert Compose files to Kubernetes manifests
+  url: https://kompose.io
+  repo: kubernetes/kompose
+  license: oss
+  ring: adopt
+  evidence: https://github.com/kubernetes/kompose/releases
+  dx: [zero-config, docs, cross-platform, offline, light]
+  parity: [containers, multi-service, k8s]
+  note: Output is a starting point; generated manifests usually need hand edits for probes and storage.
+
+# --- Local Kubernetes -------------------------------------------------------
+
+- id: kind
+  name: kind
+  sym: Kd
+  cat: Local Kubernetes
+  tagline: Kubernetes clusters in Docker containers
+  url: https://kind.sigs.k8s.io
+  repo: kubernetes-sigs/kind
+  license: oss
+  ring: trial
+  evidence: https://github.com/kubernetes-sigs/kind/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline]
+  parity: [containers, multi-service, networking, state, k8s]
+  note: Still 0.x; built for testing Kubernetes, so ingress and LoadBalancer need extra setup.
+
+- id: k3d
+  name: k3d
+  sym: Kh
+  cat: Local Kubernetes
+  tagline: Run k3s clusters in Docker
+  url: https://k3d.io
+  repo: k3d-io/k3d
+  license: oss
+  ring: adopt
+  evidence: https://github.com/k3d-io/k3d/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline, light]
+  parity: [containers, multi-service, networking, state, k8s]
+  note: Inherits k3s differences from upstream, such as Traefik and SQLite by default.
+
+- id: k3s
+  name: k3s
+  sym: Ks
+  cat: Local Kubernetes
+  tagline: Lightweight certified Kubernetes distribution
+  url: https://k3s.io
+  repo: k3s-io/k3s
+  license: oss
+  ring: adopt
+  evidence: https://github.com/k3s-io/k3s/releases
+  dx: [one-command, zero-config, docs, offline, light]
+  parity: [containers, multi-service, networking, state, prod-artifacts, k8s]
+  note: Linux only; on macOS or Windows run it through k3d, Rancher Desktop or a VM.
+
+- id: minikube
+  name: minikube
+  sym: Mn
+  cat: Local Kubernetes
+  tagline: Local Kubernetes for learning and development
+  url: https://minikube.sigs.k8s.io
+  repo: kubernetes/minikube
+  license: oss
+  ring: adopt
+  evidence: https://github.com/kubernetes/minikube/releases
+  dx: [one-command, zero-config, clear-errors, ui, docs, cross-platform, offline]
+  parity: [containers, multi-service, networking, state, k8s]
+  note: Heavier than kind or k3d, especially with VM drivers; start-up takes a minute or more.
+
+- id: microk8s
+  name: MicroK8s
+  sym: Mc
+  cat: Local Kubernetes
+  tagline: Canonical's low-ops Kubernetes with add-ons
+  url: https://microk8s.io
+  repo: canonical/microk8s
+  license: oss
+  ring: adopt
+  evidence: https://github.com/canonical/microk8s/releases
+  dx: [one-command, docs, cross-platform, offline]
+  parity: [containers, multi-service, networking, state, prod-artifacts, k8s, observability]
+  note: Installed as a snap on Linux; macOS and Windows go through a Multipass VM.
+
+- id: k0s
+  name: k0s
+  sym: K0
+  cat: Local Kubernetes
+  tagline: Single-binary, zero-dependency Kubernetes
+  url: https://k0sproject.io
+  repo: k0sproject/k0s
+  license: oss
+  ring: adopt
+  evidence: https://github.com/k0sproject/k0s/releases
+  dx: [one-command, zero-config, docs, offline, light]
+  parity: [containers, multi-service, networking, state, prod-artifacts, k8s]
+  note: Aimed at servers and edge; for laptop dev on macOS it needs a VM or k0s in Docker.
+
+- id: vcluster
+  name: vcluster
+  sym: Vc
+  cat: Local Kubernetes
+  tagline: Virtual Kubernetes clusters inside a host cluster
+  url: https://www.vcluster.com
+  repo: loft-sh/vcluster
+  license: oss
+  ring: trial
+  evidence: https://github.com/loft-sh/vcluster/releases
+  dx: [one-command, docs, cross-platform]
+  parity: [containers, multi-service, networking, state, prod-artifacts, k8s, team-scale]
+  note: Needs a host cluster to run in; some features sit in the paid vCluster Platform.
+
+- id: kubernetes
+  name: Kubernetes
+  sym: K8
+  cat: Local Kubernetes
+  tagline: Upstream container orchestration, as a reference point
+  url: https://kubernetes.io
+  repo: kubernetes/kubernetes
+  license: oss
+  ring: adopt
+  evidence: https://kubernetes.io/releases/
+  dx: [docs, cross-platform, agent-ready]
+  parity: [containers, multi-service, networking, state, prod-artifacts, k8s, config-secrets, observability, team-scale]
+  note: Not a local dev tool on its own; you reach it locally through kind, k3d, minikube and friends.
+
+# --- Image builders ---------------------------------------------------------
+
+- id: buildkit
+  name: BuildKit / buildx
+  sym: Bx
+  cat: Image builders
+  tagline: Docker's concurrent, cache-efficient image builder
+  url: https://docs.docker.com/build/buildkit/
+  repo: moby/buildkit
+  license: oss
+  ring: adopt
+  evidence: https://github.com/moby/buildkit/releases
+  dx: [fast-feedback, docs, cross-platform, offline]
+  parity: [containers, prod-artifacts, config-secrets]
+  note: Remote and multi-platform caching needs registry or cache backend setup to pay off.
+
+- id: buildpacks
+  name: Cloud Native Buildpacks
+  sym: Cb
+  cat: Image builders
+  tagline: Build OCI images from source without a Dockerfile
+  url: https://buildpacks.io
+  repo: buildpacks/pack
+  license: oss
+  ring: trial
+  evidence: https://github.com/buildpacks/pack/releases
+  dx: [one-command, zero-config, docs, cross-platform]
+  parity: [containers, prod-artifacts, team-scale]
+  note: pack is still 0.x; builder images are large and first builds are slow.
+
+- id: ko
+  name: ko
+  sym: Ko
+  cat: Image builders
+  tagline: Build Go container images without Docker
+  url: https://ko.build
+  repo: ko-build/ko
+  license: oss
+  ring: trial
+  evidence: https://github.com/ko-build/ko/releases
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, light]
+  parity: [containers, prod-artifacts, k8s]
+  note: Go only, pre-1.0; no Dockerfile means no system packages without a custom base image.
+
+- id: jib
+  name: Jib
+  sym: Jb
+  cat: Image builders
+  tagline: Daemonless container images for Java via Maven or Gradle
+  url: https://github.com/GoogleContainerTools/jib
+  repo: GoogleContainerTools/jib
+  license: oss
+  ring: adopt
+  evidence: https://github.com/GoogleContainerTools/jib/releases
+  dx: [zero-config, fast-feedback, docs, cross-platform]
+  parity: [containers, prod-artifacts]
+  note: JVM only, and release activity has slowed; check recent releases before adopting.
+
+- id: kaniko
+  name: Kaniko
+  sym: Ka
+  cat: Image builders
+  tagline: Build images from a Dockerfile inside Kubernetes
+  url: https://github.com/GoogleContainerTools/kaniko
+  repo: GoogleContainerTools/kaniko
+  license: oss
+  ring: hold
+  evidence: https://github.com/GoogleContainerTools/kaniko
+  dx: [cross-platform]
+  parity: [containers, prod-artifacts, k8s]
+  note: Google archived it in June 2025; Chainguard maintains a security-patch fork (chainguard-forks/kaniko).
+
+- id: buildah
+  name: Buildah
+  sym: Bh
+  cat: Image builders
+  tagline: Build OCI images without a daemon
+  url: https://buildah.io
+  repo: containers/buildah
+  license: oss
+  ring: adopt
+  evidence: https://github.com/containers/buildah/releases
+  dx: [docs, offline, light]
+  parity: [containers, prod-artifacts, k8s]
+  note: Linux only; on macOS and Windows it runs inside a Podman machine.
+
+- id: nixpacks
+  name: Nixpacks
+  sym: Np
+  cat: Image builders
+  tagline: Build images from source using Nix packages
+  url: https://nixpacks.com
+  repo: railwayapp/nixpacks
+  license: oss
+  ring: hold
+  evidence: https://github.com/railwayapp/nixpacks
+  dx: [one-command, zero-config, docs]
+  parity: [containers, prod-artifacts]
+  note: In maintenance mode and not under active development; Railway recommends Railpack.
+
+- id: railpack
+  name: Railpack
+  sym: Rp
+  cat: Image builders
+  tagline: Zero-config image builder on BuildKit, from Railway
+  url: https://railpack.com
+  repo: railwayapp/railpack
+  license: oss
+  ring: trial
+  evidence: https://github.com/railwayapp/railpack/releases
+  dx: [one-command, zero-config, docs]
+  parity: [containers, prod-artifacts]
+  note: Pre-1.0 and still labelled beta by some platforms; language coverage is narrower than Nixpacks had.
+
+- id: depot
+  name: Depot
+  sym: Dp
+  cat: Image builders
+  tagline: Hosted remote BuildKit builders with shared cache
+  url: https://depot.dev
+  repo: depot/cli
+  license: paid
+  ring: adopt
+  evidence: https://github.com/depot/cli/releases
+  dx: [fast-feedback, ui, docs, cross-platform]
+  parity: [containers, prod-artifacts, team-scale]
+  note: Builds run on Depot's servers, so it needs an account and network access.
+
+# --- Container UIs ----------------------------------------------------------
+
+- id: portainer
+  name: Portainer
+  sym: Pl
+  cat: Container UIs
+  tagline: Web UI for Docker, Podman and Kubernetes
+  url: https://www.portainer.io
+  repo: portainer/portainer
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/portainer/portainer/releases
+  dx: [one-command, ui, docs, cross-platform, offline, agent-ready]
+  parity: [containers, multi-service, k8s]
+  note: Community Edition is open source; RBAC and other team features need the paid Business Edition.
+
+- id: lazydocker
+  name: Lazydocker
+  sym: Lz
+  cat: Container UIs
+  tagline: Terminal UI for Docker and Compose
+  url: https://github.com/jesseduffield/lazydocker
+  repo: jesseduffield/lazydocker
+  license: oss
+  ring: trial
+  evidence: https://github.com/jesseduffield/lazydocker/releases
+  dx: [one-command, zero-config, ui, cross-platform, offline, light]
+  parity: [containers, multi-service]
+  note: Pre-1.0 and releases are infrequent; Docker API only, so Podman needs the Docker socket shim.
+
+- id: dive
+  name: Dive
+  sym: Dv
+  cat: Container UIs
+  tagline: Explore image layers and find wasted space
+  url: https://github.com/wagoodman/dive
+  repo: wagoodman/dive
+  license: oss
+  ring: trial
+  evidence: https://github.com/wagoodman/dive/releases
+  dx: [one-command, zero-config, ui, cross-platform, offline, light]
+  parity: [containers, prod-artifacts]
+  note: Pre-1.0 with long gaps between releases; an image inspector, not a runtime manager.

@@ -1,0 +1,712 @@
+# Platform family. Rings follow _data/rubric.yml literally, checked against release pages in Oct 2026.
+
+# --- Infrastructure as code ---
+- id: terraform
+  name: Terraform
+  sym: Tf
+  cat: Infrastructure as code
+  tagline: HashiCorp's declarative infrastructure as code in HCL
+  url: https://developer.hashicorp.com/terraform
+  repo: hashicorp/terraform
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/hashicorp/terraform/releases
+  dx: [clear-errors, docs, cross-platform, offline, light, agent-ready]
+  parity: [prod-artifacts, k8s, cloud-apis, config-secrets, team-scale]
+  note: Business Source License since 2023, not open source; HCP Terraform is the paid tier.
+
+- id: opentofu
+  name: OpenTofu
+  sym: Oo
+  cat: Infrastructure as code
+  tagline: Open-source Terraform fork under the Linux Foundation
+  url: https://opentofu.org
+  repo: opentofu/opentofu
+  license: oss
+  ring: adopt
+  evidence: https://github.com/opentofu/opentofu/releases
+  dx: [clear-errors, docs, cross-platform, offline, light, agent-ready]
+  parity: [prod-artifacts, k8s, cloud-apis, config-secrets, team-scale]
+  note: Mostly drop-in for Terraform 1.5-era code; newer features have diverged on both sides.
+
+- id: pulumi
+  name: Pulumi
+  sym: Pz
+  cat: Infrastructure as code
+  tagline: Infrastructure as code in TypeScript, Python, Go and .NET
+  url: https://www.pulumi.com
+  repo: pulumi/pulumi
+  license: oss
+  ring: adopt
+  evidence: https://github.com/pulumi/pulumi/releases
+  dx: [clear-errors, docs, cross-platform, light, agent-ready]
+  parity: [containers, prod-artifacts, k8s, cloud-apis, config-secrets, team-scale]
+  note: Defaults to the Pulumi Cloud state backend; use a local or S3 backend to run without an account.
+
+- id: aws-cdk
+  name: AWS CDK
+  sym: Ak
+  cat: Infrastructure as code
+  tagline: AWS infrastructure in code, synthesized to CloudFormation
+  url: https://aws.amazon.com/cdk/
+  repo: aws/aws-cdk
+  license: oss
+  ring: adopt
+  evidence: https://github.com/aws/aws-cdk/releases
+  dx: [docs, cross-platform, offline]
+  parity: [containers, prod-artifacts, cloud-apis, config-secrets, team-scale]
+  note: AWS only; deploys go through CloudFormation, so failures and rollbacks can be slow.
+
+- id: cloudformation
+  name: AWS CloudFormation
+  sym: Aj
+  cat: Infrastructure as code
+  tagline: AWS's native declarative infrastructure templates
+  url: https://aws.amazon.com/cloudformation/
+  license: free
+  ring: adopt
+  evidence: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/doc-history.html
+  dx: [docs, cross-platform, agent-ready]
+  parity: [prod-artifacts, cloud-apis, config-secrets, team-scale]
+  note: AWS only and runs as a cloud service; there is no local plan or apply.
+
+- id: bicep
+  name: Bicep
+  sym: Bi
+  cat: Infrastructure as code
+  tagline: Microsoft's declarative language for Azure resources
+  url: https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/
+  repo: Azure/bicep
+  license: oss
+  ring: trial
+  evidence: https://github.com/Azure/bicep/releases
+  dx: [clear-errors, docs, cross-platform, light]
+  parity: [prod-artifacts, cloud-apis, config-secrets]
+  note: Azure only. Generally available, but still versioned 0.x.
+
+- id: crossplane
+  name: Crossplane
+  sym: Xp
+  cat: Infrastructure as code
+  tagline: Kubernetes control plane for cloud infrastructure
+  url: https://www.crossplane.io
+  repo: crossplane/crossplane
+  license: oss
+  ring: adopt
+  evidence: https://github.com/crossplane/crossplane/releases
+  dx: [docs, cross-platform, agent-ready]
+  parity: [containers, k8s, cloud-apis, config-secrets, observability, team-scale]
+  note: Needs a running Kubernetes cluster, and each cloud provider adds many CRDs.
+
+- id: terragrunt
+  name: Terragrunt
+  sym: Tg
+  cat: Infrastructure as code
+  tagline: Orchestration wrapper for Terraform and OpenTofu stacks
+  url: https://terragrunt.com
+  repo: gruntwork-io/terragrunt
+  license: oss
+  ring: adopt
+  evidence: https://github.com/gruntwork-io/terragrunt/releases
+  dx: [docs, cross-platform, offline, light]
+  parity: [prod-artifacts, cloud-apis, config-secrets, team-scale]
+  note: Adds a second layer of HCL to learn on top of Terraform or OpenTofu.
+
+- id: ansible
+  name: Ansible
+  sym: Aq
+  cat: Infrastructure as code
+  tagline: Agentless configuration management over SSH
+  url: https://www.redhat.com/en/ansible-collaborative
+  repo: ansible/ansible
+  license: oss
+  ring: adopt
+  evidence: https://github.com/ansible/ansible/releases
+  dx: [docs, offline, light]
+  parity: [containers, prod-artifacts, k8s, cloud-apis, config-secrets, team-scale]
+  note: The control node needs Linux or macOS; Windows users run it through WSL.
+
+- id: cdktf
+  name: CDK for Terraform
+  sym: C3
+  cat: Infrastructure as code
+  tagline: Terraform in general-purpose languages, now deprecated
+  url: https://developer.hashicorp.com/terraform/cdktf
+  repo: hashicorp/terraform-cdk
+  license: oss
+  ring: hold
+  evidence: https://github.com/hashicorp/terraform-cdk/releases
+  dx: [docs, cross-platform, offline]
+  parity: [prod-artifacts, cloud-apis]
+  note: HashiCorp deprecated CDKTF and archived the repo; last release was v0.21.0 in Jun 2025.
+
+# --- Developer portals ---
+- id: backstage
+  name: Backstage
+  sym: Bs
+  cat: Developer portals
+  tagline: Open-source developer portal framework by Spotify
+  url: https://backstage.io
+  repo: backstage/backstage
+  license: oss
+  ring: adopt
+  evidence: https://github.com/backstage/backstage/releases
+  dx: [ui, docs, cross-platform, offline]
+  parity: [k8s, team-scale]
+  note: A framework you build and operate, not a product; plan for a team to own upgrades and plugins.
+
+- id: port
+  name: Port
+  sym: P0
+  cat: Developer portals
+  tagline: Hosted internal developer portal with a flexible data model
+  url: https://www.port.io
+  repo: port-labs/ocean
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/port-labs/ocean/releases
+  dx: [zero-config, ui, docs, agent-ready]
+  parity: [k8s, team-scale]
+  note: SaaS only; the open-source part is the Ocean integration framework.
+
+- id: cortex
+  name: Cortex
+  sym: C4
+  cat: Developer portals
+  tagline: Hosted portal focused on service scorecards and ownership
+  url: https://www.cortex.io
+  repo: cortexapps/cli
+  license: paid
+  ring: adopt
+  evidence: https://github.com/cortexapps/cli/tags
+  dx: [ui, docs, agent-ready]
+  parity: [team-scale]
+  note: Sales-led pricing with no free tier.
+
+- id: opslevel
+  name: OpsLevel
+  sym: Os
+  cat: Developer portals
+  tagline: Hosted service catalog with maturity checks
+  url: https://www.opslevel.com
+  repo: OpsLevel/cli
+  license: paid
+  ring: adopt
+  evidence: https://github.com/OpsLevel/cli/releases
+  dx: [ui, docs, cross-platform, agent-ready]
+  parity: [team-scale]
+
+- id: humanitec
+  name: Humanitec
+  sym: Hu
+  cat: Developer portals
+  tagline: Platform Orchestrator that wires workloads to infrastructure
+  url: https://humanitec.com
+  repo: humanitec/cli
+  license: paid
+  ring: trial
+  evidence: https://github.com/humanitec/cli/releases
+  dx: [ui, docs, cross-platform, agent-ready]
+  parity: [containers, k8s, cloud-apis, config-secrets, team-scale]
+  note: The Orchestrator v2 product line is new and changes how v1 setups work; pin carefully.
+
+- id: kratix
+  name: Kratix
+  sym: Ke
+  cat: Developer portals
+  tagline: Kubernetes framework for building platform APIs, by Syntasso
+  url: https://www.kratix.io
+  repo: syntasso/kratix
+  license: oss
+  ring: trial
+  evidence: https://github.com/syntasso/kratix/releases
+  dx: [docs]
+  parity: [containers, multi-service, k8s, team-scale]
+  note: Ships a rolling "latest" release; the last numbered version was v0.125.0 in Jul 2024.
+
+- id: roadie
+  name: Roadie
+  sym: Ri
+  cat: Developer portals
+  tagline: Managed, hosted Backstage
+  url: https://roadie.io
+  repo: RoadieHQ/roadie-backstage-plugins
+  license: paid
+  ring: adopt
+  evidence: https://github.com/RoadieHQ/roadie-backstage-plugins/releases
+  dx: [zero-config, ui, docs]
+  parity: [k8s, team-scale]
+
+# --- CI/CD ---
+- id: github-actions
+  name: GitHub Actions
+  sym: Gt
+  cat: CI/CD
+  tagline: CI/CD workflows built into GitHub
+  url: https://github.com/features/actions
+  repo: actions/runner
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/actions/runner/releases
+  dx: [zero-config, ui, docs, cross-platform, agent-ready]
+  parity: [containers, multi-service, prod-artifacts, cloud-apis, config-secrets, team-scale]
+  note: No official way to run workflows locally; feedback is a push-and-wait loop.
+
+- id: gitlab-ci
+  name: GitLab CI/CD
+  sym: Ga
+  cat: CI/CD
+  tagline: Pipelines built into GitLab, hosted or self-managed
+  url: https://docs.gitlab.com/ci/
+  license: freemium
+  ring: adopt
+  evidence: https://docs.gitlab.com/releases/
+  dx: [zero-config, ui, docs, cross-platform, agent-ready]
+  parity: [containers, multi-service, prod-artifacts, k8s, cloud-apis, config-secrets, team-scale]
+  note: The local pipeline-run command was removed from GitLab Runner; testing still means pushing.
+
+- id: jenkins
+  name: Jenkins
+  sym: Je
+  cat: CI/CD
+  tagline: Long-standing self-hosted automation server
+  url: https://www.jenkins.io
+  repo: jenkinsci/jenkins
+  license: oss
+  ring: adopt
+  evidence: https://www.jenkins.io/changelog/
+  dx: [ui, docs, cross-platform, offline]
+  parity: [containers, multi-service, prod-artifacts, k8s, config-secrets, team-scale]
+  note: Plugin sprawl and upgrade drift are the usual operating cost.
+
+- id: circleci
+  name: CircleCI
+  sym: C5
+  cat: CI/CD
+  tagline: Hosted CI/CD with Docker, machine and macOS executors
+  url: https://circleci.com
+  license: freemium
+  ring: adopt
+  evidence: https://circleci.com/changelog/
+  dx: [ui, docs, cross-platform, agent-ready]
+  parity: [containers, multi-service, prod-artifacts, config-secrets, team-scale]
+
+- id: buildkite
+  name: Buildkite
+  sym: Bu
+  cat: CI/CD
+  tagline: Hosted CI control plane with agents on your own machines
+  url: https://buildkite.com
+  repo: buildkite/agent
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/buildkite/agent/releases
+  dx: [ui, docs, cross-platform, agent-ready]
+  parity: [containers, multi-service, prod-artifacts, k8s, config-secrets, team-scale]
+  note: You run and pay for the build compute yourself unless you use hosted agents.
+
+- id: act
+  name: act
+  sym: Av
+  cat: CI/CD
+  tagline: Run GitHub Actions workflows locally in Docker
+  url: https://nektosact.com
+  repo: nektos/act
+  license: oss
+  ring: trial
+  evidence: https://github.com/nektos/act/releases
+  dx: [one-command, fast-feedback, docs, cross-platform, offline]
+  parity: [containers, multi-service]
+  note: Pre-1.0; runner images differ from GitHub's, so some actions behave differently or fail.
+
+- id: tekton
+  name: Tekton
+  sym: Tt
+  cat: CI/CD
+  tagline: Kubernetes-native CI/CD pipeline building blocks
+  url: https://tekton.dev
+  repo: tektoncd/pipeline
+  license: oss
+  ring: adopt
+  evidence: https://github.com/tektoncd/pipeline/releases
+  dx: [docs]
+  parity: [containers, multi-service, prod-artifacts, k8s, config-secrets, observability, team-scale]
+  note: Low-level building blocks with verbose YAML; needs a cluster even to try it.
+
+# --- GitOps ---
+- id: argo-cd
+  name: Argo CD
+  sym: Ar
+  cat: GitOps
+  tagline: Declarative GitOps continuous delivery for Kubernetes
+  url: https://argo-cd.readthedocs.io
+  repo: argoproj/argo-cd
+  license: oss
+  ring: adopt
+  evidence: https://github.com/argoproj/argo-cd/releases
+  dx: [ui, docs, cross-platform]
+  parity: [containers, multi-service, prod-artifacts, k8s, config-secrets, observability, team-scale]
+
+- id: flux
+  name: Flux
+  sym: Fu
+  cat: GitOps
+  tagline: CNCF GitOps toolkit for Kubernetes
+  url: https://fluxcd.io
+  repo: fluxcd/flux2
+  license: oss
+  ring: adopt
+  evidence: https://github.com/fluxcd/flux2/releases
+  dx: [clear-errors, docs, cross-platform]
+  parity: [containers, multi-service, prod-artifacts, k8s, config-secrets, observability, team-scale]
+  note: No built-in web UI; use the CLI or a third-party dashboard.
+
+- id: kargo
+  name: Kargo
+  sym: Kg
+  cat: GitOps
+  tagline: Promote changes across environments on top of Argo CD
+  url: https://kargo.io
+  repo: akuity/kargo
+  license: oss
+  ring: adopt
+  evidence: https://github.com/akuity/kargo/releases
+  dx: [ui, docs, cross-platform]
+  parity: [containers, multi-service, prod-artifacts, k8s, team-scale]
+  note: Assumes an existing Argo CD setup; minor versions still bring breaking changes.
+
+# --- Observability ---
+- id: opentelemetry
+  name: OpenTelemetry
+  sym: Ot
+  cat: Observability
+  tagline: Vendor-neutral APIs, SDKs and Collector for telemetry
+  url: https://opentelemetry.io
+  repo: open-telemetry/opentelemetry-collector
+  license: oss
+  ring: adopt
+  evidence: https://github.com/open-telemetry/opentelemetry-collector/releases
+  dx: [docs, cross-platform, offline, light]
+  parity: [containers, prod-artifacts, k8s, observability, team-scale]
+  note: Tracing and metrics are stable; the Collector core and many semantic conventions are still 0.x.
+
+- id: grafana
+  name: Grafana
+  sym: Gf
+  cat: Observability
+  tagline: Dashboards over metrics, logs and traces
+  url: https://grafana.com/oss/grafana/
+  repo: grafana/grafana
+  license: oss
+  ring: adopt
+  evidence: https://github.com/grafana/grafana/releases
+  dx: [one-command, ui, docs, cross-platform, offline, light, agent-ready]
+  parity: [containers, k8s, observability, team-scale]
+  note: AGPL since 2021; Grafana Cloud is the hosted paid option.
+
+- id: prometheus
+  name: Prometheus
+  sym: Pr
+  cat: Observability
+  tagline: CNCF metrics database and alerting
+  url: https://prometheus.io
+  repo: prometheus/prometheus
+  license: oss
+  ring: adopt
+  evidence: https://github.com/prometheus/prometheus/releases
+  dx: [one-command, ui, docs, cross-platform, offline, light]
+  parity: [containers, k8s, state, observability, team-scale]
+  note: Single-node by design; long-term storage needs Thanos, Mimir or similar.
+
+- id: jaeger
+  name: Jaeger
+  sym: Jg
+  cat: Observability
+  tagline: CNCF distributed tracing backend and UI
+  url: https://www.jaegertracing.io
+  repo: jaegertracing/jaeger
+  license: oss
+  ring: adopt
+  evidence: https://github.com/jaegertracing/jaeger/releases
+  dx: [one-command, zero-config, ui, docs, cross-platform, offline, light]
+  parity: [containers, k8s, observability]
+  note: v2 is rebuilt on the OpenTelemetry Collector; v1 configs need migrating.
+
+- id: otel-lgtm
+  name: grafana/otel-lgtm
+  sym: Gn
+  cat: Observability
+  tagline: OTel Collector, Grafana, Loki, Tempo and Mimir in one image
+  url: https://grafana.com/docs/opentelemetry/docker-lgtm/
+  repo: grafana/docker-otel-lgtm
+  license: oss
+  ring: trial
+  evidence: https://github.com/grafana/docker-otel-lgtm/releases
+  dx: [one-command, zero-config, ui, docs, cross-platform, offline, light]
+  parity: [containers, observability]
+  note: Meant for development and demos, not production; still 0.x.
+
+- id: signoz
+  name: SigNoz
+  sym: Sz
+  cat: Observability
+  tagline: OpenTelemetry-native logs, metrics and traces in one app
+  url: https://signoz.io
+  repo: SigNoz/signoz
+  license: oss
+  ring: trial
+  evidence: https://github.com/SigNoz/signoz/releases
+  dx: [one-command, ui, docs, cross-platform, offline]
+  parity: [containers, multi-service, state, k8s, observability]
+  note: Pre-1.0; self-hosting runs ClickHouse, which needs a few GB of RAM.
+
+- id: sentry
+  name: Sentry
+  sym: Sr
+  cat: Observability
+  tagline: Error tracking and performance monitoring
+  url: https://sentry.io
+  repo: getsentry/sentry
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/getsentry/sentry/releases
+  dx: [zero-config, ui, docs, cross-platform, agent-ready]
+  parity: [observability, team-scale]
+  note: Functional Source License, not OSI; self-hosting runs dozens of containers.
+
+- id: loki
+  name: Grafana Loki
+  sym: Gk
+  cat: Observability
+  tagline: Label-indexed log aggregation from Grafana Labs
+  url: https://grafana.com/oss/loki/
+  repo: grafana/loki
+  license: oss
+  ring: adopt
+  evidence: https://github.com/grafana/loki/releases
+  dx: [docs, cross-platform, offline]
+  parity: [containers, k8s, state, observability, team-scale]
+  note: Queries are fast only on labels; full-text search over large volumes is slow.
+
+- id: datadog
+  name: Datadog
+  sym: D0
+  cat: Observability
+  tagline: Hosted monitoring, APM and logs platform
+  url: https://www.datadoghq.com
+  repo: DataDog/datadog-agent
+  license: paid
+  ring: adopt
+  evidence: https://github.com/DataDog/datadog-agent/releases
+  dx: [zero-config, ui, docs, cross-platform, agent-ready]
+  parity: [containers, k8s, cloud-apis, observability, team-scale]
+  note: Usage-based pricing grows fast with hosts, custom metrics and log volume.
+
+# --- Secrets and supply chain ---
+- id: vault
+  name: HashiCorp Vault
+  sym: Va
+  cat: Secrets and supply chain
+  tagline: Secrets storage, dynamic credentials and encryption
+  url: https://developer.hashicorp.com/vault
+  repo: hashicorp/vault
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/hashicorp/vault/releases
+  dx: [one-command, ui, docs, cross-platform, offline, light]
+  parity: [containers, k8s, cloud-apis, config-secrets, team-scale]
+  note: Business Source License since 2023; the dev server is in-memory and unsealed, unlike production.
+
+- id: openbao
+  name: OpenBao
+  sym: Od
+  cat: Secrets and supply chain
+  tagline: Open-source Vault fork under the Linux Foundation
+  url: https://openbao.org
+  repo: openbao/openbao
+  license: oss
+  ring: adopt
+  evidence: https://github.com/openbao/openbao/releases
+  dx: [one-command, ui, docs, cross-platform, offline, light]
+  parity: [containers, k8s, cloud-apis, config-secrets, team-scale]
+  note: Some Vault Enterprise features and plugins are not available.
+
+- id: doppler
+  name: Doppler
+  sym: D1
+  cat: Secrets and supply chain
+  tagline: Hosted secrets manager that injects env vars
+  url: https://www.doppler.com
+  repo: DopplerHQ/cli
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/DopplerHQ/cli/releases
+  dx: [one-command, zero-config, ui, docs, cross-platform, light]
+  parity: [k8s, cloud-apis, config-secrets, team-scale]
+  note: SaaS only; the CLI can cache secrets for offline fallback but needs an account.
+
+- id: infisical
+  name: Infisical
+  sym: If
+  cat: Secrets and supply chain
+  tagline: Open-source secrets manager and PKI
+  url: https://infisical.com
+  repo: Infisical/infisical
+  license: oss
+  ring: trial
+  evidence: https://github.com/Infisical/infisical/releases
+  dx: [one-command, ui, docs, cross-platform, agent-ready]
+  parity: [containers, k8s, cloud-apis, config-secrets, team-scale]
+  note: Server is still versioned 0.x; some features sit in a separately licensed enterprise directory.
+
+- id: 1password-cli
+  name: 1Password CLI
+  sym: Op
+  cat: Secrets and supply chain
+  tagline: Inject secrets from 1Password vaults into commands and env
+  url: https://www.1password.dev/cli
+  license: paid
+  ring: adopt
+  evidence: https://app-updates.agilebits.com/product_history/CLI2
+  dx: [one-command, docs, cross-platform, light]
+  parity: [config-secrets, team-scale]
+  note: Needs a paid 1Password account; service accounts are required for CI.
+
+- id: sops
+  name: SOPS
+  sym: Sv
+  cat: Secrets and supply chain
+  tagline: Encrypt values in YAML, JSON and env files with KMS or age
+  url: https://getsops.io
+  repo: getsops/sops
+  license: oss
+  ring: adopt
+  evidence: https://github.com/getsops/sops/releases
+  dx: [docs, cross-platform, offline, light]
+  parity: [prod-artifacts, cloud-apis, config-secrets]
+  note: Encrypted files live in git, so key rotation and revocation are manual.
+
+- id: external-secrets
+  name: External Secrets Operator
+  sym: Es
+  cat: Secrets and supply chain
+  tagline: Sync secrets from external managers into Kubernetes
+  url: https://external-secrets.io
+  repo: external-secrets/external-secrets
+  license: oss
+  ring: adopt
+  evidence: https://github.com/external-secrets/external-secrets/releases
+  dx: [docs]
+  parity: [k8s, cloud-apis, config-secrets, team-scale]
+  note: Kubernetes only.
+
+- id: renovate
+  name: Renovate
+  sym: Rn
+  cat: Secrets and supply chain
+  tagline: Automated dependency update pull requests
+  url: https://docs.renovatebot.com
+  repo: renovatebot/renovate
+  license: oss
+  ring: adopt
+  evidence: https://github.com/renovatebot/renovate/releases
+  dx: [docs, cross-platform]
+  parity: [prod-artifacts, team-scale]
+  note: Very configurable, which makes the config itself something to maintain.
+
+- id: dependabot
+  name: Dependabot
+  sym: D2
+  cat: Secrets and supply chain
+  tagline: GitHub's built-in dependency and security updates
+  url: https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain
+  repo: dependabot/dependabot-core
+  license: free
+  ring: adopt
+  evidence: https://github.com/dependabot/dependabot-core/releases
+  dx: [zero-config, docs]
+  parity: [prod-artifacts, team-scale]
+  note: GitHub only; grouping and scheduling are less flexible than Renovate.
+
+- id: trivy
+  name: Trivy
+  sym: Tv
+  cat: Secrets and supply chain
+  tagline: Scanner for vulnerabilities, misconfigs and secrets
+  url: https://trivy.dev
+  repo: aquasecurity/trivy
+  license: oss
+  ring: trial
+  evidence: https://github.com/aquasecurity/trivy/releases
+  dx: [one-command, zero-config, docs, cross-platform, light, agent-ready]
+  parity: [containers, prod-artifacts, k8s]
+  note: Widely used but still versioned 0.x; the vulnerability database downloads on first run.
+
+- id: syft
+  name: Syft
+  sym: S0
+  cat: Secrets and supply chain
+  tagline: Generate SBOMs from images and filesystems, by Anchore
+  url: https://github.com/anchore/syft
+  repo: anchore/syft
+  license: oss
+  ring: adopt
+  evidence: https://github.com/anchore/syft/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline, light, agent-ready]
+  parity: [containers, prod-artifacts]
+
+- id: grype
+  name: Grype
+  sym: Gy
+  cat: Secrets and supply chain
+  tagline: Vulnerability scanner for images and SBOMs, by Anchore
+  url: https://github.com/anchore/grype
+  repo: anchore/grype
+  license: oss
+  ring: trial
+  evidence: https://github.com/anchore/grype/releases
+  dx: [one-command, zero-config, docs, cross-platform, light, agent-ready]
+  parity: [containers, prod-artifacts]
+  note: Still versioned 0.x; pairs with Syft SBOMs.
+
+- id: cosign
+  name: Cosign
+  sym: C6
+  cat: Secrets and supply chain
+  tagline: Sign and verify container images, part of Sigstore
+  url: https://www.sigstore.dev
+  repo: sigstore/cosign
+  license: oss
+  ring: adopt
+  evidence: https://github.com/sigstore/cosign/releases
+  dx: [docs, cross-platform, light]
+  parity: [containers, prod-artifacts, k8s]
+  note: Keyless signing uses the public Sigstore services and needs an OIDC identity.
+
+- id: gitleaks
+  name: Gitleaks
+  sym: Gb
+  cat: Secrets and supply chain
+  tagline: Find committed secrets in git history
+  url: https://gitleaks.io
+  repo: gitleaks/gitleaks
+  license: oss
+  ring: trial
+  evidence: https://github.com/gitleaks/gitleaks/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline, light]
+  parity: []
+  note: Stable 8.x, but no release since Mar 2026, so it misses the six-month bar for Adopt.
+
+- id: snyk
+  name: Snyk
+  sym: S1
+  cat: Secrets and supply chain
+  tagline: Hosted scanning for dependencies, code, containers and IaC
+  url: https://snyk.io
+  repo: snyk/cli
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/snyk/cli/releases
+  dx: [clear-errors, ui, docs, cross-platform, agent-ready]
+  parity: [containers, prod-artifacts, k8s, team-scale]
+  note: The CLI needs a Snyk account and sends dependency data to Snyk for analysis.

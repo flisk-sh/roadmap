@@ -1,22 +1,30 @@
-# Site-wide settings for the comparison.
-#
-# primary         The id (from tools.yml) of the tool this site is about. It is always the
-#                 first column and gets the accent color.
-# primary_cli     The command name of the primary tool, used by `scripts/check-data.rb --cli`.
-#                 Defaults to the id.
-# maintainer      Who maintains the page. Shown in the footer and on the About page.
-# maintainer_url  Optional link for the maintainer's name.
-# footer_note     Optional sentence added to the footer, for example what the primary tool does not do.
-# about_note      Optional extra bullet on the About page.
-# pick_default    Optional list of tool ids the Pick tools page starts with.
-# checked         The date, and the primary tool's version, the commands were last checked against.
-primary: acme
-primary_cli: acme
-maintainer: the Acme team
-maintainer_url: https://example.com
-footer_note: Acme is a made-up tool. This is sample data, so replace it with your own.
-about_note: The sample tools here are fictional. Replace them in _data/.
-pick_default: [rival-a, rival-b]
-checked:
-  date: "2026-01-01"
-  version: "1.0.0"
+# Site-wide settings.
+# publisher       Who hosts the site. Shown in the banner and footer.
+# publisher_url   Link for the publisher.
+# seeded          When and how the first dataset was written, so readers know what to double-check.
+# views           The four top-level tabs, in order. The first one is also the home page.
+#                 subtabs: families (one per _data/families.yml entry, plus "All") or tracks (journeys.yml).
+publisher: Flisk
+publisher_url: https://flisk.sh
+seeded: "October 2026, with AI-assisted research"
+views:
+  - id: compass
+    name: Compass
+    title: The DevEx Compass
+    blurb: Ergonomics runs west to east, production parity south to north. A public checklist places every dot.
+    subtabs: families
+  - id: radar
+    name: Adoption Radar
+    title: Adoption Radar
+    blurb: Adopt, Trial, Assess or Hold, decided by release and maturity signals, with a link to the evidence.
+    subtabs: families
+  - id: lab
+    name: Lab
+    title: The DevEx Lab
+    blurb: Every tool as an element. Hover a tile for its formula; pick a family to light it up.
+    subtabs: families
+  - id: journeys
+    name: Journeys
+    title: Journeys
+    blurb: Seven levels from your first lockfile to platform architect. Pick a track.
+    subtabs: tracks

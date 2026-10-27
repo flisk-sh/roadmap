@@ -1,0 +1,553 @@
+# Monorepo tools, app frameworks with a local dev story, serverless frameworks and scaffolders.
+# Rings follow _data/rubric.yml literally, as checked in late October 2026.
+
+# --- Monorepo tools ---
+- id: nx
+  name: Nx
+  sym: Nx
+  cat: Monorepo tools
+  tagline: Monorepo build system with task graph and caching
+  url: https://nx.dev
+  repo: nrwl/nx
+  license: oss
+  ring: adopt
+  evidence: https://github.com/nrwl/nx/releases
+  dx: [one-command, fast-feedback, ui, docs, cross-platform, offline, agent-ready]
+  parity: [multi-service, team-scale]
+  note: Remote caching and distributed runs go through Nx Cloud, which is paid beyond a free tier.
+
+- id: turborepo
+  name: Turborepo
+  sym: Tu
+  cat: Monorepo tools
+  tagline: Task runner and cache for JavaScript monorepos
+  url: https://turborepo.com
+  repo: vercel/turborepo
+  license: oss
+  ring: adopt
+  evidence: https://github.com/vercel/turborepo/releases
+  dx: [one-command, zero-config, fast-feedback, ui, docs, cross-platform, offline, light, agent-ready]
+  parity: [multi-service, team-scale]
+
+- id: lerna
+  name: Lerna
+  sym: Le
+  cat: Monorepo tools
+  tagline: Versioning and publishing for JavaScript monorepos
+  url: https://lerna.js.org
+  repo: lerna/lerna
+  license: oss
+  ring: adopt
+  evidence: https://github.com/lerna/lerna/releases
+  dx: [one-command, docs, cross-platform, offline, light]
+  parity: [team-scale]
+  note: Maintained by the Nx team; task running is delegated to Nx under the hood.
+
+- id: rush
+  name: Rush
+  sym: Rh
+  cat: Monorepo tools
+  tagline: Microsoft's monorepo manager for large JS repos
+  url: https://rushjs.io
+  repo: microsoft/rushstack
+  license: oss
+  ring: adopt
+  evidence: https://www.npmjs.com/package/@microsoft/rush
+  dx: [one-command, fast-feedback, cross-platform, offline]
+  parity: [team-scale]
+  note: Strict and opinionated; setup takes longer than Turborepo or Nx.
+
+- id: moonrepo
+  name: moon
+  sym: Mo
+  cat: Monorepo tools
+  tagline: Rust monorepo task runner with toolchain management
+  url: https://moonrepo.dev
+  repo: moonrepo/moon
+  license: oss
+  ring: adopt
+  evidence: https://github.com/moonrepo/moon/releases
+  dx: [one-command, fast-feedback, docs, cross-platform, offline, light, agent-ready]
+  parity: [multi-service, team-scale]
+
+- id: lage
+  name: Lage
+  sym: Lb
+  cat: Monorepo tools
+  tagline: Task runner for JS monorepos from Microsoft
+  url: https://microsoft.github.io/lage/
+  repo: microsoft/lage
+  license: oss
+  ring: adopt
+  evidence: https://www.npmjs.com/package/lage
+  dx: [fast-feedback, cross-platform, offline, light]
+  parity: [team-scale]
+  note: Far smaller community than Nx or Turborepo; mostly used in Microsoft-style repos.
+
+- id: changesets
+  name: Changesets
+  sym: Cf
+  cat: Monorepo tools
+  tagline: Versioning and changelogs for multi-package repos
+  url: https://github.com/changesets/changesets
+  repo: changesets/changesets
+  license: oss
+  ring: adopt
+  evidence: https://github.com/changesets/changesets/releases
+  dx: [zero-config, docs, cross-platform, offline, light]
+  parity: []
+  note: Release management only; it does not run builds or start services.
+
+# --- App frameworks ---
+- id: aspire
+  name: Aspire
+  sym: Ae
+  cat: App frameworks
+  tagline: Code-first app host with dashboard for distributed apps
+  url: https://aspire.dev
+  repo: dotnet/aspire
+  license: oss
+  ring: adopt
+  evidence: https://github.com/dotnet/aspire/releases
+  dx: [one-command, ui, docs, cross-platform, offline, agent-ready]
+  parity: [containers, multi-service, networking, state, cloud-apis, config-secrets, observability]
+  note: Formerly .NET Aspire; the app host is .NET-first even though it can run other languages.
+
+- id: encore
+  name: Encore
+  sym: En
+  cat: App frameworks
+  tagline: Backend framework that provisions infra from code
+  url: https://encore.dev
+  repo: encoredev/encore
+  license: oss
+  ring: adopt
+  evidence: https://github.com/encoredev/encore/releases
+  dx: [one-command, zero-config, fast-feedback, clear-errors, ui, docs, cross-platform, agent-ready]
+  parity: [containers, multi-service, state, config-secrets, observability]
+  note: Go and TypeScript only; Encore Cloud deployment is a paid product.
+
+- id: dapr
+  name: Dapr
+  sym: Dj
+  cat: App frameworks
+  tagline: Sidecar runtime APIs for distributed applications
+  url: https://dapr.io
+  repo: dapr/dapr
+  license: oss
+  ring: adopt
+  evidence: https://github.com/dapr/dapr/releases
+  dx: [one-command, ui, docs, cross-platform, offline]
+  parity: [containers, multi-service, networking, state, k8s, cloud-apis, config-secrets, observability, team-scale]
+  note: Local self-hosted mode needs Docker and a dapr init step; many concepts to learn.
+
+- id: wasp
+  name: Wasp
+  sym: Wa
+  cat: App frameworks
+  tagline: Full-stack React and Node framework with a DSL
+  url: https://wasp.sh
+  repo: wasp-lang/wasp
+  license: oss
+  ring: trial
+  evidence: https://github.com/wasp-lang/wasp/releases
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, offline]
+  parity: [containers, state]
+  note: Still pre-1.0 with breaking changes between minor versions; Windows only through WSL.
+
+- id: redwoodjs
+  name: RedwoodJS
+  sym: Rw
+  cat: App frameworks
+  tagline: Full-stack React, GraphQL and Prisma framework
+  url: https://redwoodjs.com
+  repo: redwoodjs/redwood
+  license: oss
+  ring: trial
+  evidence: https://github.com/redwoodjs/redwood/releases
+  dx: [one-command, fast-feedback, docs, cross-platform, offline]
+  parity: [state]
+  note: In maintenance mode, renamed Redwood GraphQL; no release since Oct 2025, team moved to RedwoodSDK.
+
+- id: nitric
+  name: Nitric
+  sym: Nt
+  cat: App frameworks
+  tagline: Cloud framework with infrastructure inferred from code
+  url: https://nitric.io
+  repo: nitrictech/nitric
+  license: oss
+  ring: trial
+  evidence: https://github.com/nitrictech/nitric/releases
+  dx: [one-command, zero-config, fast-feedback, ui, docs, cross-platform, offline]
+  parity: [containers, multi-service, cloud-apis]
+  note: Stable 1.x and actively released, but a small community, so not widely used.
+
+- id: quarkus
+  name: Quarkus
+  sym: Qu
+  cat: App frameworks
+  tagline: Java framework with dev mode, Dev UI and Dev Services
+  url: https://quarkus.io
+  repo: quarkusio/quarkus
+  license: oss
+  ring: adopt
+  evidence: https://github.com/quarkusio/quarkus/releases
+  dx: [one-command, zero-config, fast-feedback, ui, docs, cross-platform, offline, agent-ready]
+  parity: [containers, multi-service, state, config-secrets, observability]
+
+- id: spring-boot
+  name: Spring Boot
+  sym: Sp
+  cat: App frameworks
+  tagline: Java framework with Compose support and devtools
+  url: https://spring.io/projects/spring-boot
+  repo: spring-projects/spring-boot
+  license: oss
+  ring: adopt
+  evidence: https://github.com/spring-projects/spring-boot/releases
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, offline]
+  parity: [containers, multi-service, state, prod-artifacts, config-secrets, observability]
+
+- id: micronaut
+  name: Micronaut
+  sym: Ma
+  cat: App frameworks
+  tagline: JVM framework with Test Resources for local deps
+  url: https://micronaut.io
+  repo: micronaut-projects/micronaut-core
+  license: oss
+  ring: adopt
+  evidence: https://github.com/micronaut-projects/micronaut-core/releases
+  dx: [one-command, fast-feedback, docs, cross-platform, offline]
+  parity: [containers, state, config-secrets, observability]
+
+- id: rails
+  name: Ruby on Rails
+  sym: Ra
+  cat: App frameworks
+  tagline: Full-stack Ruby web framework
+  url: https://rubyonrails.org
+  repo: rails/rails
+  license: oss
+  ring: adopt
+  evidence: https://github.com/rails/rails/releases
+  dx: [one-command, zero-config, fast-feedback, clear-errors, docs, cross-platform, offline]
+  parity: [containers, state, prod-artifacts, config-secrets]
+  note: Windows support is through WSL.
+
+- id: laravel
+  name: Laravel
+  sym: Lr
+  cat: App frameworks
+  tagline: PHP web framework with Sail for local Docker
+  url: https://laravel.com
+  repo: laravel/framework
+  license: oss
+  ring: adopt
+  evidence: https://github.com/laravel/framework/releases
+  dx: [one-command, zero-config, fast-feedback, clear-errors, docs, cross-platform, offline, agent-ready]
+  parity: [containers, multi-service, state]
+
+- id: django
+  name: Django
+  sym: Dl
+  cat: App frameworks
+  tagline: Batteries-included Python web framework
+  url: https://www.djangoproject.com
+  repo: django/django
+  license: oss
+  ring: adopt
+  evidence: https://www.djangoproject.com/download/
+  dx: [one-command, fast-feedback, clear-errors, docs, cross-platform, offline, light]
+  parity: [state]
+  note: No built-in story for containers or service dependencies; bring your own Compose.
+
+- id: nextjs
+  name: Next.js
+  sym: Nj
+  cat: App frameworks
+  tagline: React framework for full-stack web apps
+  url: https://nextjs.org
+  repo: vercel/next.js
+  license: oss
+  ring: adopt
+  evidence: https://github.com/vercel/next.js/releases
+  dx: [one-command, zero-config, fast-feedback, clear-errors, docs, cross-platform, offline, agent-ready]
+  parity: []
+  note: Some features behave differently outside Vercel's hosting.
+
+- id: react-router
+  name: React Router
+  sym: Rr
+  cat: App frameworks
+  tagline: React framework mode, successor to Remix
+  url: https://reactrouter.com
+  repo: remix-run/react-router
+  license: oss
+  ring: adopt
+  evidence: https://github.com/remix-run/react-router/releases
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: []
+
+- id: astro
+  name: Astro
+  sym: Ao
+  cat: App frameworks
+  tagline: Content-first web framework with islands
+  url: https://astro.build
+  repo: withastro/astro
+  license: oss
+  ring: adopt
+  evidence: https://github.com/withastro/astro/releases
+  dx: [one-command, zero-config, fast-feedback, clear-errors, ui, docs, cross-platform, offline, light]
+  parity: []
+
+- id: nestjs
+  name: NestJS
+  sym: Ne
+  cat: App frameworks
+  tagline: Structured Node.js framework for server apps
+  url: https://nestjs.com
+  repo: nestjs/nest
+  license: oss
+  ring: adopt
+  evidence: https://github.com/nestjs/nest/releases
+  dx: [one-command, fast-feedback, docs, cross-platform, offline]
+  parity: []
+
+- id: hono
+  name: Hono
+  sym: Hn
+  cat: App frameworks
+  tagline: Small web framework for any JavaScript runtime
+  url: https://hono.dev
+  repo: honojs/hono
+  license: oss
+  ring: adopt
+  evidence: https://github.com/honojs/hono/releases
+  dx: [zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: []
+
+- id: fastapi
+  name: FastAPI
+  sym: Fa
+  cat: App frameworks
+  tagline: Python API framework with type-driven validation
+  url: https://fastapi.tiangolo.com
+  repo: fastapi/fastapi
+  license: oss
+  ring: adopt
+  evidence: https://github.com/fastapi/fastapi/releases
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: []
+  note: Still versioned 0.x, though long-standing and widely used.
+
+# --- Serverless frameworks ---
+- id: sst
+  name: SST
+  sym: Ss
+  cat: Serverless frameworks
+  tagline: Infra-as-code framework with live AWS dev mode
+  url: https://sst.dev
+  repo: sst/sst
+  license: oss
+  ring: adopt
+  evidence: https://github.com/sst/sst/releases
+  dx: [one-command, fast-feedback, ui, docs, cross-platform]
+  parity: [multi-service, state, prod-artifacts, cloud-apis, config-secrets]
+  note: sst dev deploys real resources to your cloud account; there is no fully offline mode.
+
+- id: serverless-framework
+  name: Serverless Framework
+  sym: Sf
+  cat: Serverless frameworks
+  tagline: Deploy and develop AWS Lambda apps from YAML
+  url: https://www.serverless.com
+  repo: serverless/serverless
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/serverless/serverless/releases
+  dx: [one-command, fast-feedback, docs, cross-platform]
+  parity: [prod-artifacts, cloud-apis, config-secrets]
+  note: v4 requires login and a paid subscription for organizations above $2M annual revenue.
+
+- id: aws-sam
+  name: AWS SAM
+  sym: Sa
+  cat: Serverless frameworks
+  tagline: AWS CLI to build and run Lambda apps locally
+  url: https://aws.amazon.com/serverless/sam/
+  repo: aws/aws-sam-cli
+  license: oss
+  ring: adopt
+  evidence: https://github.com/aws/aws-sam-cli/releases
+  dx: [one-command, fast-feedback, docs, cross-platform, offline]
+  parity: [containers, prod-artifacts, cloud-apis]
+  note: Local mode emulates Lambda and API Gateway only; other AWS services stay remote.
+
+- id: architect
+  name: Architect
+  sym: Ah
+  cat: Serverless frameworks
+  tagline: Serverless AWS apps with a local sandbox
+  url: https://arc.codes
+  repo: architect/architect
+  license: oss
+  ring: trial
+  evidence: https://www.npmjs.com/package/@architect/architect
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: [prod-artifacts, cloud-apis]
+  note: Actively released but a small community; sandbox DynamoDB is an in-memory emulation.
+
+- id: wrangler
+  name: Wrangler
+  sym: Wr
+  cat: Serverless frameworks
+  tagline: Cloudflare Workers CLI with local workerd dev
+  url: https://developers.cloudflare.com/workers/wrangler/
+  repo: cloudflare/workers-sdk
+  license: oss
+  ring: adopt
+  evidence: https://github.com/cloudflare/workers-sdk/releases
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: [state, prod-artifacts, cloud-apis]
+
+- id: vercel-cli
+  name: Vercel CLI
+  sym: Ve
+  cat: Serverless frameworks
+  tagline: Deploy and emulate Vercel projects locally
+  url: https://vercel.com/docs/cli
+  repo: vercel/vercel
+  license: freemium
+  ring: adopt
+  evidence: https://www.npmjs.com/package/vercel
+  dx: [one-command, docs, cross-platform]
+  parity: [prod-artifacts, cloud-apis, config-secrets]
+  note: Needs a Vercel account; vercel dev is a partial emulation of the hosted platform.
+
+- id: netlify-cli
+  name: Netlify CLI
+  sym: Nl
+  cat: Serverless frameworks
+  tagline: Run Netlify sites and functions locally
+  url: https://docs.netlify.com/cli/get-started/
+  repo: netlify/cli
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/netlify/cli/releases
+  dx: [one-command, fast-feedback, docs, cross-platform]
+  parity: [cloud-apis, config-secrets]
+  note: Most features need a linked Netlify site and account.
+
+- id: azure-functions-core-tools
+  name: Azure Functions Core Tools
+  sym: Af
+  cat: Serverless frameworks
+  tagline: Run and debug Azure Functions locally
+  url: https://learn.microsoft.com/azure/azure-functions/functions-run-local
+  repo: Azure/azure-functions-core-tools
+  license: oss
+  ring: adopt
+  evidence: https://github.com/Azure/azure-functions-core-tools/releases
+  dx: [one-command, docs, cross-platform, offline]
+  parity: [prod-artifacts, cloud-apis]
+  note: Storage triggers need Azurite or a real storage account running alongside.
+
+# --- Scaffolders ---
+- id: create-t3-app
+  name: create-t3-app
+  sym: T3
+  cat: Scaffolders
+  tagline: Scaffold a typesafe Next.js, tRPC and Prisma app
+  url: https://create.t3.gg
+  repo: t3-oss/create-t3-app
+  license: oss
+  ring: trial
+  evidence: https://github.com/t3-oss/create-t3-app/releases
+  dx: [one-command, zero-config, docs, cross-platform, light]
+  parity: []
+  note: No release since Nov 2025, so not Adopt by the rubric even though it is widely used.
+
+- id: create-vite
+  name: create-vite
+  sym: Cv
+  cat: Scaffolders
+  tagline: Official Vite project templates
+  url: https://vite.dev/guide/
+  repo: vitejs/vite
+  license: oss
+  ring: adopt
+  evidence: https://www.npmjs.com/package/create-vite
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, light]
+  parity: []
+
+- id: yeoman
+  name: Yeoman
+  sym: Yo
+  cat: Scaffolders
+  tagline: Generator ecosystem for scaffolding projects
+  url: https://yeoman.io
+  repo: yeoman/yo
+  license: oss
+  ring: adopt
+  evidence: https://www.npmjs.com/package/yeoman-generator
+  dx: [one-command, cross-platform, offline, light]
+  parity: []
+  note: Many community generators are unmaintained; check a generator's age before using it.
+
+- id: jhipster
+  name: JHipster
+  sym: Jh
+  cat: Scaffolders
+  tagline: Generate Spring Boot apps with Angular, React or Vue
+  url: https://www.jhipster.tech
+  repo: jhipster/generator-jhipster
+  license: oss
+  ring: adopt
+  evidence: https://github.com/jhipster/generator-jhipster/releases
+  dx: [one-command, docs, cross-platform, offline]
+  parity: [containers, multi-service, state, prod-artifacts, k8s, observability]
+  note: Generated projects are large and opinionated.
+
+- id: cookiecutter
+  name: Cookiecutter
+  sym: Ci
+  cat: Scaffolders
+  tagline: Project templates from Jinja-templated directories
+  url: https://cookiecutter.readthedocs.io
+  repo: cookiecutter/cookiecutter
+  license: oss
+  ring: trial
+  evidence: https://github.com/cookiecutter/cookiecutter/releases
+  dx: [one-command, docs, cross-platform, light]
+  parity: []
+  note: Last release Mar 2026; cannot update a project from its template, unlike Copier.
+
+- id: copier
+  name: Copier
+  sym: Cj
+  cat: Scaffolders
+  tagline: Project templates that can update generated projects
+  url: https://copier.readthedocs.io
+  repo: copier-org/copier
+  license: oss
+  ring: adopt
+  evidence: https://github.com/copier-org/copier/releases
+  dx: [one-command, docs, cross-platform, light]
+  parity: []
+
+- id: plop
+  name: Plop
+  sym: Pf
+  cat: Scaffolders
+  tagline: Micro-generator for files inside an existing repo
+  url: https://plopjs.com
+  repo: plopjs/plop
+  license: oss
+  ring: trial
+  evidence: https://github.com/plopjs/plop/releases
+  dx: [one-command, docs, cross-platform, offline, light]
+  parity: []
+  note: Last release Jan 2026; stable but slow-moving.

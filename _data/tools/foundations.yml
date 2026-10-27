@@ -1,0 +1,712 @@
+# Package & build: package managers, version managers, build tools and task runners.
+# Scored against _data/rubric.yml. These tools build or fetch artifacts, they do not run
+# a topology, so most of them legitimately score low on parity.
+
+# --- Package managers -------------------------------------------------------
+
+- id: npm
+  name: npm
+  sym: Nm
+  cat: Package managers
+  tagline: The package manager bundled with Node.js
+  url: https://www.npmjs.com
+  repo: npm/cli
+  license: oss
+  ring: adopt
+  evidence: https://github.com/npm/cli/releases
+  dx: [one-command, zero-config, docs, cross-platform, agent-ready]
+  parity: [prod-artifacts]
+  note: Slower installs and a larger node_modules than pnpm or Bun; registry install scripts run by default.
+
+- id: pnpm
+  name: pnpm
+  sym: Pn
+  cat: Package managers
+  tagline: Fast, disk-efficient Node package manager
+  url: https://pnpm.io
+  repo: pnpm/pnpm
+  license: oss
+  ring: adopt
+  evidence: https://github.com/pnpm/pnpm/releases
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: [prod-artifacts, team-scale]
+  note: Strict node_modules layout can break packages that rely on hoisting.
+
+- id: yarn
+  name: Yarn
+  sym: Yn
+  cat: Package managers
+  tagline: Node package manager with workspaces and Plug'n'Play
+  url: https://yarnpkg.com
+  repo: yarnpkg/berry
+  license: oss
+  ring: adopt
+  evidence: https://github.com/yarnpkg/berry/releases
+  dx: [one-command, docs, cross-platform, offline]
+  parity: [prod-artifacts, team-scale]
+  note: Classic (v1) and modern (v2+) behave very differently; Plug'n'Play needs editor SDK setup.
+
+- id: bun
+  name: Bun
+  sym: Bn
+  cat: Package managers
+  tagline: JavaScript runtime, package manager and bundler in one
+  url: https://bun.sh
+  repo: oven-sh/bun
+  license: oss
+  ring: adopt
+  evidence: https://github.com/oven-sh/bun/releases
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: [prod-artifacts]
+  note: Node API compatibility is high but not complete; check native addons before switching runtime.
+
+- id: deno
+  name: Deno
+  sym: Dn
+  cat: Package managers
+  tagline: JavaScript and TypeScript runtime with built-in tooling
+  url: https://deno.com
+  repo: denoland/deno
+  license: oss
+  ring: adopt
+  evidence: https://github.com/denoland/deno/releases
+  dx: [one-command, zero-config, fast-feedback, clear-errors, docs, cross-platform, light]
+  parity: [prod-artifacts]
+  note: npm compatibility is good since 2.0, but some packages still assume Node-only APIs.
+
+- id: uv
+  name: uv
+  sym: Uv
+  cat: Package managers
+  tagline: Fast Python package and project manager
+  url: https://docs.astral.sh/uv/
+  repo: astral-sh/uv
+  license: oss
+  ring: trial
+  evidence: https://github.com/astral-sh/uv/releases
+  dx: [one-command, zero-config, fast-feedback, clear-errors, docs, cross-platform, offline, light]
+  parity: [prod-artifacts]
+  note: Still 0.x with frequent releases; pin the uv version in CI. Trial only by the pre-1.0 rule.
+
+- id: pip
+  name: pip
+  sym: Pp
+  cat: Package managers
+  tagline: The standard Python package installer
+  url: https://pip.pypa.io
+  repo: pypa/pip
+  license: oss
+  ring: adopt
+  evidence: https://pip.pypa.io/en/stable/news/
+  dx: [zero-config, docs, cross-platform, light, agent-ready]
+  note: No lockfile or environment management on its own; pair with venv and a pinned requirements file.
+
+- id: poetry
+  name: Poetry
+  sym: Po
+  cat: Package managers
+  tagline: Python dependency management and packaging
+  url: https://python-poetry.org
+  repo: python-poetry/poetry
+  license: oss
+  ring: adopt
+  evidence: https://github.com/python-poetry/poetry/releases
+  dx: [one-command, docs, cross-platform, offline]
+  parity: [prod-artifacts]
+  note: Dependency resolution is noticeably slower than uv on large projects.
+
+- id: pdm
+  name: PDM
+  sym: Pd
+  cat: Package managers
+  tagline: Standards-based Python package and project manager
+  url: https://pdm-project.org
+  repo: pdm-project/pdm
+  license: oss
+  ring: adopt
+  evidence: https://github.com/pdm-project/pdm/releases
+  dx: [one-command, docs, cross-platform, offline, light]
+  parity: [prod-artifacts]
+  note: Smaller community than Poetry or uv, so fewer guides and CI examples.
+
+- id: hatch
+  name: Hatch
+  sym: Ht
+  cat: Package managers
+  tagline: Python project manager with environments and builds
+  url: https://hatch.pypa.io
+  repo: pypa/hatch
+  license: oss
+  ring: adopt
+  evidence: https://github.com/pypa/hatch/releases
+  dx: [docs, cross-platform, offline, light]
+  note: No lockfile of its own; reproducible installs need an extra tool.
+
+- id: pipenv
+  name: Pipenv
+  sym: Pe
+  cat: Package managers
+  tagline: Python virtualenv and Pipfile.lock manager
+  url: https://pipenv.pypa.io
+  repo: pypa/pipenv
+  license: oss
+  ring: adopt
+  evidence: https://github.com/pypa/pipenv/releases
+  dx: [one-command, docs, cross-platform, offline]
+  parity: [prod-artifacts]
+  note: Locking is slow on large dependency sets; most new projects pick uv or Poetry instead.
+
+- id: rye
+  name: Rye
+  sym: Ry
+  cat: Package managers
+  tagline: Experimental Python project manager, superseded by uv
+  url: https://rye.astral.sh
+  repo: astral-sh/rye
+  license: oss
+  ring: hold
+  evidence: https://github.com/astral-sh/rye
+  dx: [one-command, zero-config, docs, cross-platform, offline]
+  parity: [prod-artifacts]
+  note: Deprecated by its maintainers in favour of uv; migrate rather than adopt.
+
+- id: conda
+  name: Conda
+  sym: Cd
+  cat: Package managers
+  tagline: Cross-language package and environment manager
+  url: https://docs.conda.io
+  repo: conda/conda
+  license: oss
+  ring: adopt
+  evidence: https://github.com/conda/conda/releases
+  dx: [docs, cross-platform, agent-ready]
+  parity: [prod-artifacts]
+  note: Anaconda's default channel has commercial licence terms; use conda-forge for unrestricted use.
+
+- id: pixi
+  name: Pixi
+  sym: Px
+  cat: Package managers
+  tagline: Fast conda and PyPI project manager with lockfiles
+  url: https://pixi.sh
+  repo: prefix-dev/pixi
+  license: oss
+  ring: trial
+  evidence: https://github.com/prefix-dev/pixi/releases
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: [prod-artifacts]
+  note: Pre-1.0 and moving fast; manifest fields still change between releases.
+
+- id: cargo
+  name: Cargo
+  sym: Cg
+  cat: Package managers
+  tagline: Rust's package manager and build tool
+  url: https://doc.rust-lang.org/cargo/
+  repo: rust-lang/cargo
+  license: oss
+  ring: adopt
+  evidence: https://github.com/rust-lang/rust/releases
+  dx: [one-command, zero-config, clear-errors, docs, cross-platform, offline, agent-ready]
+  parity: [prod-artifacts, team-scale]
+  note: Incremental rebuilds of large workspaces are still slow compared with interpreted languages.
+
+- id: go-modules
+  name: Go modules
+  sym: Gm
+  cat: Package managers
+  tagline: Go's built-in dependency management
+  url: https://go.dev/ref/mod
+  repo: golang/go
+  license: oss
+  ring: adopt
+  evidence: https://go.dev/doc/devel/release
+  dx: [one-command, zero-config, fast-feedback, clear-errors, docs, cross-platform, offline, light, agent-ready]
+  parity: [prod-artifacts, team-scale]
+  note: Private modules need GOPRIVATE and proxy settings that trip up first-time setups.
+
+- id: maven
+  name: Maven
+  sym: Mv
+  cat: Package managers
+  tagline: Convention-based Java build and dependency tool
+  url: https://maven.apache.org
+  repo: apache/maven
+  license: oss
+  ring: adopt
+  evidence: https://maven.apache.org/docs/history.html
+  dx: [docs, cross-platform, offline]
+  parity: [prod-artifacts, team-scale]
+  note: Verbose XML and slow cold builds; the JVM start-up makes small edits feel heavy.
+
+- id: gradle
+  name: Gradle
+  sym: Gr
+  cat: Package managers
+  tagline: Build automation and dependency tool for the JVM
+  url: https://gradle.org
+  repo: gradle/gradle
+  license: oss
+  ring: adopt
+  evidence: https://github.com/gradle/gradle/releases
+  dx: [fast-feedback, docs, cross-platform, offline]
+  parity: [prod-artifacts, team-scale]
+  note: The daemon uses a lot of RAM, and build logic in Groovy or Kotlin DSL can grow hard to debug.
+
+- id: composer
+  name: Composer
+  sym: Cp
+  cat: Package managers
+  tagline: Dependency manager for PHP
+  url: https://getcomposer.org
+  repo: composer/composer
+  license: oss
+  ring: adopt
+  evidence: https://github.com/composer/composer/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline, light]
+  parity: [prod-artifacts]
+
+- id: bundler
+  name: Bundler
+  sym: Bd
+  cat: Package managers
+  tagline: Gem dependency manager for Ruby
+  url: https://bundler.io
+  repo: rubygems/rubygems
+  license: oss
+  ring: adopt
+  evidence: https://github.com/rubygems/rubygems/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline, light]
+  parity: [prod-artifacts]
+  note: Native extension gems often need system libraries, which is where most install failures come from.
+
+- id: nuget
+  name: NuGet
+  sym: Ng
+  cat: Package managers
+  tagline: Package manager for .NET
+  url: https://www.nuget.org
+  repo: NuGet/NuGet.Client
+  license: oss
+  ring: adopt
+  evidence: https://learn.microsoft.com/en-us/nuget/release-notes/
+  dx: [zero-config, docs, cross-platform, offline]
+  parity: [prod-artifacts, team-scale]
+  note: Lockfiles are opt-in (RestorePackagesWithLockFile), so many repos restore floating versions.
+
+- id: homebrew
+  name: Homebrew
+  sym: Hb
+  cat: Package managers
+  tagline: Package manager for macOS and Linux
+  url: https://brew.sh
+  repo: Homebrew/brew
+  license: oss
+  ring: adopt
+  evidence: https://github.com/Homebrew/brew/releases
+  dx: [one-command, zero-config, docs, agent-ready]
+  note: Not for Windows, and formulae float to latest, so it does not pin team tool versions.
+
+- id: swiftpm
+  name: Swift Package Manager
+  sym: Sw
+  cat: Package managers
+  tagline: Swift's built-in package and build manager
+  url: https://www.swift.org/documentation/package-manager/
+  repo: swiftlang/swift-package-manager
+  license: oss
+  ring: adopt
+  evidence: https://www.swift.org/install/
+  dx: [zero-config, docs, cross-platform, offline]
+  parity: [prod-artifacts]
+  note: Windows and Linux support work, but most of the ecosystem still assumes Apple platforms and Xcode.
+
+# --- Version managers -------------------------------------------------------
+
+- id: mise
+  name: mise
+  sym: Mi
+  cat: Version managers
+  tagline: Polyglot tool versions, env vars and tasks
+  url: https://mise.jdx.dev
+  repo: jdx/mise
+  license: oss
+  ring: adopt
+  evidence: https://github.com/jdx/mise/releases
+  dx: [one-command, zero-config, fast-feedback, clear-errors, docs, cross-platform, offline, light]
+  parity: [config-secrets, team-scale]
+  note: Releases land very often and calver tags make it easy to drift; pin the version in CI.
+
+- id: asdf
+  name: asdf
+  sym: As
+  cat: Version managers
+  tagline: Plugin-based version manager for many runtimes
+  url: https://asdf-vm.com
+  repo: asdf-vm/asdf
+  license: oss
+  ring: trial
+  evidence: https://github.com/asdf-vm/asdf/releases
+  dx: [docs, offline, light]
+  parity: [team-scale]
+  note: The 0.16 Go rewrite changed commands; plugins are community-maintained and vary in quality.
+
+- id: nvm
+  name: nvm
+  sym: Nv
+  cat: Version managers
+  tagline: Shell script to manage Node.js versions
+  url: https://github.com/nvm-sh/nvm
+  repo: nvm-sh/nvm
+  license: oss
+  ring: adopt
+  evidence: https://github.com/nvm-sh/nvm/releases
+  dx: [docs, offline, light]
+  note: POSIX shells only (Windows needs the separate nvm-windows), and it slows shell start-up.
+
+- id: fnm
+  name: fnm
+  sym: Fn
+  cat: Version managers
+  tagline: Fast Node.js version manager written in Rust
+  url: https://github.com/Schniz/fnm
+  repo: Schniz/fnm
+  license: oss
+  ring: adopt
+  evidence: https://github.com/Schniz/fnm/releases
+  dx: [zero-config, docs, cross-platform, offline, light]
+  note: Node only; needs a shell hook for automatic switching on cd.
+
+- id: volta
+  name: Volta
+  sym: Vt
+  cat: Version managers
+  tagline: JavaScript tool manager pinned via package.json
+  url: https://volta.sh
+  repo: volta-cli/volta
+  license: oss
+  ring: hold
+  evidence: https://github.com/volta-cli/volta/issues/2080
+  dx: [zero-config, docs, cross-platform, offline, light]
+  parity: [team-scale]
+  note: Maintainers declared it unmaintained in late 2025 and recommend migrating to mise.
+
+- id: pyenv
+  name: pyenv
+  sym: Py
+  cat: Version managers
+  tagline: Install and switch between Python versions
+  url: https://github.com/pyenv/pyenv
+  repo: pyenv/pyenv
+  license: oss
+  ring: adopt
+  evidence: https://github.com/pyenv/pyenv/releases
+  dx: [docs, offline, light]
+  note: Builds Python from source, so installs are slow and fail without build dependencies; Windows needs pyenv-win.
+
+- id: rbenv
+  name: rbenv
+  sym: Rb
+  cat: Version managers
+  tagline: Lightweight Ruby version manager
+  url: https://github.com/rbenv/rbenv
+  repo: rbenv/rbenv
+  license: oss
+  ring: adopt
+  evidence: https://github.com/rbenv/rbenv/releases
+  dx: [docs, offline, light]
+  note: Needs ruby-build to install versions, and no native Windows support.
+
+- id: rustup
+  name: rustup
+  sym: Ru
+  cat: Version managers
+  tagline: The Rust toolchain installer
+  url: https://rustup.rs
+  repo: rust-lang/rustup
+  license: oss
+  ring: adopt
+  evidence: https://github.com/rust-lang/rustup/blob/master/CHANGELOG.md
+  dx: [one-command, zero-config, docs, cross-platform, offline, light]
+  parity: [team-scale]
+
+- id: sdkman
+  name: SDKMAN!
+  sym: Sd
+  cat: Version managers
+  tagline: Manage parallel JDK and JVM tool versions
+  url: https://sdkman.io
+  repo: sdkman/sdkman-cli
+  license: oss
+  ring: adopt
+  evidence: https://github.com/sdkman/sdkman-cli/releases
+  dx: [one-command, docs, offline, light]
+  parity: [team-scale]
+  note: Bash-based; Windows only through WSL or Git Bash, and the candidate list needs network access.
+
+- id: proto
+  name: proto
+  sym: Pt
+  cat: Version managers
+  tagline: Pluggable multi-language version manager
+  url: https://moonrepo.dev/proto
+  repo: moonrepo/proto
+  license: oss
+  ring: trial
+  evidence: https://github.com/moonrepo/proto/releases
+  dx: [zero-config, docs, cross-platform, offline, light]
+  parity: [team-scale]
+  note: Pre-1.0 and its WASM plugin ecosystem is much smaller than mise or asdf.
+
+# --- Build tools ------------------------------------------------------------
+
+- id: vite
+  name: Vite
+  sym: Vi
+  cat: Build tools
+  tagline: Frontend dev server and build tool
+  url: https://vite.dev
+  repo: vitejs/vite
+  license: oss
+  ring: adopt
+  evidence: https://github.com/vitejs/vite/releases
+  dx: [one-command, zero-config, fast-feedback, clear-errors, docs, cross-platform, offline, light]
+  parity: [prod-artifacts]
+  note: Dev serves unbundled ESM, so dev and production output can still differ in edge cases.
+
+- id: esbuild
+  name: esbuild
+  sym: Eb
+  cat: Build tools
+  tagline: Extremely fast JavaScript bundler and minifier
+  url: https://esbuild.github.io
+  repo: evanw/esbuild
+  license: oss
+  ring: trial
+  evidence: https://github.com/evanw/esbuild/releases
+  dx: [zero-config, fast-feedback, clear-errors, docs, cross-platform, offline, light]
+  parity: [prod-artifacts]
+  note: Still 0.x by design and minor releases may break; pin it. No type checking.
+
+- id: rspack
+  name: Rspack
+  sym: Rs
+  cat: Build tools
+  tagline: Rust bundler compatible with the webpack API
+  url: https://rspack.rs
+  repo: web-infra-dev/rspack
+  license: oss
+  ring: adopt
+  evidence: https://github.com/web-infra-dev/rspack/releases
+  dx: [fast-feedback, docs, cross-platform, offline, light]
+  parity: [prod-artifacts, team-scale]
+  note: Most webpack loaders work, but not every webpack plugin does.
+
+- id: rolldown
+  name: Rolldown
+  sym: Rd
+  cat: Build tools
+  tagline: Rust bundler with a Rollup-compatible API
+  url: https://rolldown.rs
+  repo: rolldown/rolldown
+  license: oss
+  ring: adopt
+  evidence: https://github.com/rolldown/rolldown/releases
+  dx: [zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: [prod-artifacts]
+  note: 1.0 shipped in May 2026; watch mode and some optimisations are still marked experimental.
+
+- id: turbopack
+  name: Turbopack
+  sym: Tp
+  cat: Build tools
+  tagline: Incremental Rust bundler built into Next.js
+  url: https://nextjs.org/docs/app/api-reference/turbopack
+  repo: vercel/next.js
+  license: oss
+  ring: adopt
+  evidence: https://github.com/vercel/next.js/releases
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, offline]
+  parity: [prod-artifacts]
+  note: Only usable through Next.js; webpack plugins and custom configs do not carry over.
+
+- id: webpack
+  name: webpack
+  sym: Wp
+  cat: Build tools
+  tagline: Configurable module bundler for JavaScript
+  url: https://webpack.js.org
+  repo: webpack/webpack
+  license: oss
+  ring: adopt
+  evidence: https://github.com/webpack/webpack/releases
+  dx: [docs, cross-platform, offline]
+  parity: [prod-artifacts, team-scale]
+  note: Slow on large apps and config-heavy; new projects usually start on Vite or Rspack.
+
+- id: rollup
+  name: Rollup
+  sym: Ro
+  cat: Build tools
+  tagline: ES module bundler for libraries
+  url: https://rollupjs.org
+  repo: rollup/rollup
+  license: oss
+  ring: adopt
+  evidence: https://github.com/rollup/rollup/releases
+  dx: [docs, cross-platform, offline, light]
+  parity: [prod-artifacts]
+  note: Vite 8 moved to Rolldown, so Rollup's main role is now library builds.
+
+- id: parcel
+  name: Parcel
+  sym: Pa
+  cat: Build tools
+  tagline: Zero-configuration web application bundler
+  url: https://parceljs.org
+  repo: parcel-bundler/parcel
+  license: oss
+  ring: adopt
+  evidence: https://github.com/parcel-bundler/parcel/releases
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, offline]
+  parity: [prod-artifacts]
+  note: Release pace has slowed and its ecosystem is small next to Vite.
+
+- id: swc
+  name: SWC
+  sym: Sc
+  cat: Build tools
+  tagline: Rust compiler for JavaScript and TypeScript
+  url: https://swc.rs
+  repo: swc-project/swc
+  license: oss
+  ring: adopt
+  evidence: https://github.com/swc-project/swc/releases
+  dx: [fast-feedback, docs, cross-platform, offline, light]
+  parity: [prod-artifacts]
+  note: A compiler, not a bundler; most people use it through Next.js, Rspack or Vite plugins.
+
+- id: tsdown
+  name: tsdown
+  sym: Td
+  cat: Build tools
+  tagline: Library bundler for TypeScript, powered by Rolldown
+  url: https://tsdown.dev
+  repo: rolldown/tsdown
+  license: oss
+  ring: trial
+  evidence: https://github.com/rolldown/tsdown/releases
+  dx: [one-command, zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: [prod-artifacts]
+  note: Successor to tsup, which is no longer maintained; requires a recent Node.js.
+
+- id: bazel
+  name: Bazel
+  sym: Bz
+  cat: Build tools
+  tagline: Hermetic, multi-language build system from Google
+  url: https://bazel.build
+  repo: bazelbuild/bazel
+  license: oss
+  ring: adopt
+  evidence: https://github.com/bazelbuild/bazel/releases
+  dx: [fast-feedback, cross-platform, agent-ready]
+  parity: [containers, prod-artifacts, team-scale]
+  note: Steep learning curve and heavy setup; pays off mainly for very large monorepos.
+
+- id: buck2
+  name: Buck2
+  sym: Bk
+  cat: Build tools
+  tagline: Meta's fast multi-language build system
+  url: https://buck2.build
+  repo: facebook/buck2
+  license: oss
+  ring: trial
+  evidence: https://github.com/facebook/buck2/releases
+  dx: [fast-feedback, offline]
+  parity: [prod-artifacts, team-scale]
+  note: No semver releases and a thin open-source prelude; expect to write your own rules.
+
+- id: pants
+  name: Pants
+  sym: Ps
+  cat: Build tools
+  tagline: Monorepo build system for Python, Go, JVM and more
+  url: https://www.pantsbuild.org
+  repo: pantsbuild/pants
+  license: oss
+  ring: adopt
+  evidence: https://github.com/pantsbuild/pants/releases
+  dx: [fast-feedback, docs, offline]
+  parity: [containers, prod-artifacts, team-scale]
+  note: macOS and Linux only; Windows needs WSL.
+
+- id: earthly
+  name: Earthly
+  sym: Ea
+  cat: Build tools
+  tagline: Containerized builds from Dockerfile-like Earthfiles
+  url: https://earthly.dev
+  repo: earthly/earthly
+  license: oss
+  ring: hold
+  evidence: https://github.com/earthly/earthly
+  dx: [one-command, docs, cross-platform]
+  parity: [containers, prod-artifacts]
+  note: Upstream says it is no longer actively maintained and cloud features are gone; a community fork is EarthBuild.
+
+- id: dagger
+  name: Dagger
+  sym: Dg
+  cat: Build tools
+  tagline: Programmable CI/CD pipelines that run in containers
+  url: https://dagger.io
+  repo: dagger/dagger
+  license: oss
+  ring: trial
+  evidence: https://github.com/dagger/dagger/releases
+  dx: [docs, cross-platform, ui, agent-ready]
+  parity: [containers, multi-service, networking, state, prod-artifacts]
+  note: Pre-1.0 with API changes between releases; needs a running container engine.
+
+# --- Task runners -----------------------------------------------------------
+
+- id: make
+  name: Make
+  sym: Mk
+  cat: Task runners
+  tagline: The classic dependency-based build and task tool
+  url: https://www.gnu.org/software/make/
+  license: oss
+  ring: hold
+  evidence: https://ftp.gnu.org/gnu/make/
+  dx: [offline, light]
+  note: Stable and everywhere; hold only because GNU Make's last release (4.4.1) was Feb 2023. Tabs and shell quirks bite.
+
+- id: just
+  name: Just
+  sym: Js
+  cat: Task runners
+  tagline: A command runner with make-like recipes
+  url: https://just.systems
+  repo: casey/just
+  license: oss
+  ring: adopt
+  evidence: https://github.com/casey/just/releases
+  dx: [zero-config, clear-errors, docs, cross-platform, offline, light, agent-ready]
+  note: A command runner, not a build system; no file-based up-to-date checks.
+
+- id: task
+  name: Task
+  sym: Tk
+  cat: Task runners
+  tagline: YAML-based task runner and build tool in Go
+  url: https://taskfile.dev
+  repo: go-task/task
+  license: oss
+  ring: adopt
+  evidence: https://github.com/go-task/task/releases
+  dx: [zero-config, docs, cross-platform, offline, light, agent-ready]
+  note: Shell commands run through a Go shell interpreter, so some Bash-isms behave differently.

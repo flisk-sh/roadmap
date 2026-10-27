@@ -1,27 +1,48 @@
 ---
 layout: default
-title: About
+title: How it works
 permalink: /about/
 ---
 {%- assign meta = site.data.meta -%}
-{%- assign primary_name = site.data.tools[meta.primary].name -%}
-{%- assign tab_count = site.data.tabs | size -%}
-<section class="prose about">
-  <h1>About</h1>
+{%- assign rubric = site.data.rubric -%}
+{%- assign tool_total = 0 -%}
+{%- for f in site.data.families -%}{%- assign n = site.data.tools[f.id] | size -%}{%- assign tool_total = tool_total | plus: n -%}{%- endfor -%}
+<section class="prose">
+  <h1>How it works</h1>
+  <p>{{ tool_total }} developer tools across {{ site.data.families | size }} families, drawn four ways. It is a wiki in a Git repo: anyone can open a pull request, and the history of every dot is public.</p>
+
+  <h2>The four views</h2>
   <ul>
-    <li><strong>What it is.</strong> {{ tab_count }} tab{% if tab_count != 1 %}s{% endif %} of commands for the same jobs, with {{ primary_name }} first. Each tab pairs {{ primary_name }} with the tools people compare it to.</li>
-    {%- if meta.checked %}
-    <li><strong>Checked on {{ meta.checked.date }}.</strong> {% if meta.checked.version %}Every {{ primary_name }} command was checked against {{ primary_name }} {{ meta.checked.version }}. {% endif %}A script in the repo repeats that check.</li>
-    {%- endif %}
-    <li><strong>Every cell has a source.</strong> {{ primary_name }} cells link to its own docs or source. Other cells link to that tool's official docs.</li>
-    <li><strong>Blank is an answer.</strong> We do not invent a command to fill a cell, so a tool with no command for a task is left blank. Amber commands are the closest match to a different job.</li>
-    <li><strong>Pick your own.</strong> Use <a href="{{ '/pick/' | relative_url }}">Pick tools</a> to compare any set of tools. {{ primary_name }} stays first, and the link keeps your picks.</li>
-    {%- if meta.about_note %}
-    <li>{{ meta.about_note }}</li>
-    {%- endif %}
-    {%- if meta.maintainer %}
-    <li><strong>Conflict of interest.</strong> {{ meta.maintainer | slice: 0 | upcase }}{{ meta.maintainer | slice: 1, 200 }} maintains this page. Check the sources and tell us when a cell is wrong.</li>
-    {%- endif %}
+    <li><strong>Compass.</strong> Developer ergonomics west to east, complexity and production parity south to north. A tool earns 10 points per criterion it meets on each axis.</li>
+    <li><strong>Adoption Radar.</strong> Rings from release and maturity signals: Adopt, Trial, Assess, Hold. Each tool links its evidence.</li>
+    <li><strong>Lab.</strong> A periodic table of the same tools. The formula on each tile is its two Compass scores.</li>
+    <li><strong>Journeys.</strong> Seven levels from your first lockfile to platform architect, walked by three tracks.</li>
   </ul>
-  <p>To fix a cell or add a task, edit the YAML in <a href="{{ site.repo_url }}/tree/main/_data" rel="noopener"><code>_data/</code></a> and run <code>ruby scripts/check-data.rb</code>. The <a href="{{ site.repo_url }}#readme" rel="noopener">README</a> has the details.</p>
+  <p>Every view has sub-tabs, and each sub-tab has its own address, so you can share exactly what you are looking at. Charts show details when you hover or focus them; nothing on a chart is a link.</p>
+
+  <h2>Honesty rules</h2>
+  <ul>
+    <li><strong>Nobody places a dot by hand.</strong> Positions come from the checklist below. To move a dot, change the checklist entries for that tool and say why.</li>
+    <li><strong>{{ meta.publisher }} is on the map like everyone else.</strong> {{ meta.publisher }} publishes the site, so it gets no special color, size or position. It sits in Assess because its first release was in October 2026, which is what the rule says.</li>
+    <li><strong>Where {{ meta.publisher }} falls short, we say so.</strong> Journeys shows a {{ meta.publisher }} stop on every level, including the ones it does not cover yet, marked coming soon.</li>
+    <li><strong>The first dataset was written in {{ meta.seeded }}.</strong> Expect mistakes. Fixes are welcome.</li>
+  </ul>
+
+  <h2>The checklist</h2>
+  {%- assign axes = "dx,parity" | split: "," %}
+  {%- for ax in axes %}
+  <p><strong>{{ rubric[ax].title }}</strong> ({{ rubric[ax].low }} → {{ rubric[ax].high }})</p>
+  <ul>
+    {%- for c in rubric[ax].criteria %}<li><code>{{ c.id }}</code> {{ c.label }}. {{ c.help }}</li>{% endfor %}
+  </ul>
+  {%- endfor %}
+
+  <h2>Rings</h2>
+  <ul>
+    {%- for r in rubric.rings %}<li><strong>{{ r.label }}.</strong> {{ r.help }}</li>{% endfor %}
+  </ul>
+
+  <h2>Fix or add a tool</h2>
+  <p>Tools live in <a href="{{ site.repo_url }}/tree/main/_data/tools" rel="noopener"><code>_data/tools/&lt;family&gt;.yml</code></a>. Edit the file on GitHub, or run <code>ruby scripts/check-data.rb</code> locally before opening a pull request. The <a href="{{ site.repo_url }}/blob/main/CONTRIBUTING.md" rel="noopener">contributing guide</a> has the format.</p>
+  <p>Who decides? For now the maintainers of <a href="{{ site.repo_url }}" rel="noopener">flisk-sh/roadmap</a> review pull requests against the rules above. If you want to help edit, say so in an issue.</p>
 </section>

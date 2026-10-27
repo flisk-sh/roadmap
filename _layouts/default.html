@@ -3,12 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  {%- include current-tab.html -%}
-  {%- assign page_title = site.title -%}
+  {%- include view-context.html -%}
+  {%- assign page_title = site.title | append: " | " | append: site.tagline -%}
   {%- assign page_desc = site.description | strip -%}
-  {%- if cur_tab -%}
-    {%- if page.tab != "overview" -%}{%- assign page_title = cur_tab.title | append: " | " | append: site.title -%}{%- endif -%}
-    {%- assign page_desc = cur_tab.title | append: ". " | append: cur_tab.blurb | append: " Every command has a source link." -%}
+  {%- if cur_view -%}
+    {%- assign page_title = cur_view.title -%}
+    {%- if cur_sub_name -%}{%- assign page_title = page_title | append: ": " | append: cur_sub_name -%}{%- endif -%}
+    {%- assign page_title = page_title | append: " | " | append: site.title -%}
+    {%- assign page_desc = cur_view.blurb -%}
   {%- elsif page.title -%}
     {%- assign page_title = page.title | append: " | " | append: site.title -%}
   {%- endif %}
@@ -19,11 +21,12 @@
   <meta property="og:description" content="{{ page_desc | escape }}">
   <meta property="og:url" content="{{ page.url | absolute_url }}">
   <meta name="twitter:card" content="summary">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="dark light">
   <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
 
   <script>
-    // Apply a saved theme before first paint. Storage can be blocked, so fail quietly.
+    // Dark first. A saved choice wins; storage can be blocked, so fail quietly.
     try {
       var t = localStorage.getItem("theme");
       if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
@@ -34,11 +37,11 @@
   <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 </head>
-<body data-primary="{{ site.data.meta.primary }}"{% if page.layout == "tab" or page.app %} class="app"{% endif %}>
+<body>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="site-header">
@@ -48,7 +51,7 @@
         <span>{{ site.title }}</span>
       </a>
       <nav class="nav" aria-label="Primary">
-        <a class="nav-extra" href="{{ '/about/' | relative_url }}">About</a>
+        <a class="nav-extra" href="{{ '/about/' | relative_url }}">How it works</a>
         <a href="{{ site.repo_url }}" rel="noopener">GitHub</a>
         <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch theme">Theme</button>
       </nav>
@@ -63,13 +66,27 @@
     <div class="wrap">
       <p>
         {%- assign meta = site.data.meta -%}
-        {%- if meta.maintainer %}Made by {% if meta.maintainer_url %}<a href="{{ meta.maintainer_url }}" rel="noopener">{{ meta.maintainer }}</a>{% else %}{{ meta.maintainer }}{% endif %}, so read the sources. {% endif -%}
-        {%- if meta.footer_note %}{{ meta.footer_note }} {% endif -%}
-        Wrong cell? <a href="{{ site.repo_url }}/issues" rel="noopener">Open an issue</a>. <a href="{{ '/about/' | relative_url }}">About this site</a>.
+        Community-edited, published by <a href="{{ meta.publisher_url }}" rel="noopener">{{ meta.publisher }}</a>. {{ meta.publisher }} is on the map too, scored by the same rubric as every other tool.
+        First seeded {{ meta.seeded }}, so check the sources.
+        Wrong dot? <a href="{{ site.repo_url }}/blob/main/CONTRIBUTING.md" rel="noopener">Fix it on GitHub</a>.
+        Commands side by side: <a href="https://cmd.flisk.sh" rel="noopener">cmd.flisk.sh</a>.
       </p>
     </div>
   </footer>
 
-  <script src="{{ '/assets/js/compare.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+  <script>
+    (function () {
+      var b = document.getElementById("theme-toggle");
+      if (!b) return;
+      b.addEventListener("click", function () {
+        var next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", next);
+        try { localStorage.setItem("theme", next); } catch (e) {}
+      });
+    })();
+  </script>
+  {%- if cur_view %}
+  <script src="{{ '/assets/js/app.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+  {%- endif %}
 </body>
 </html>

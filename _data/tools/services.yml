@@ -1,0 +1,616 @@
+# Cloud emulators, local backends, mocks and tunnels, test dependencies, ORMs and migrations.
+# Rings follow _data/rubric.yml literally, as checked in late October 2026.
+
+# --- Cloud emulators ---
+- id: localstack
+  name: LocalStack
+  sym: Ls
+  cat: Cloud emulators
+  tagline: Local AWS cloud emulator in a container
+  url: https://www.localstack.cloud
+  license: freemium
+  ring: adopt
+  evidence: https://docs.localstack.cloud/aws/changelog/
+  dx: [one-command, zero-config, ui, docs, cross-platform, agent-ready]
+  parity: [containers, multi-service, cloud-apis]
+  note: Open-source repo archived in 2026; the unified image needs an auth token, free tier is non-commercial.
+
+- id: moto
+  name: Moto
+  sym: Mt
+  cat: Cloud emulators
+  tagline: Mock AWS services for Python tests or as a server
+  url: https://docs.getmoto.org
+  repo: getmoto/moto
+  license: oss
+  ring: adopt
+  evidence: https://github.com/getmoto/moto/releases
+  dx: [zero-config, docs, cross-platform, offline, light]
+  parity: [cloud-apis]
+  note: In-memory fakes; behaviour can drift from real AWS for less common APIs.
+
+- id: minio
+  name: MinIO
+  sym: Mz
+  cat: Cloud emulators
+  tagline: S3-compatible object storage server
+  url: https://www.min.io
+  repo: minio/minio
+  license: oss
+  ring: hold
+  evidence: https://github.com/minio/minio/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline, light]
+  parity: [state, cloud-apis]
+  note: Repo archived Apr 2026; community edition is source-only with no binaries or console.
+
+- id: azurite
+  name: Azurite
+  sym: Az
+  cat: Cloud emulators
+  tagline: Local emulator for Azure Blob, Queue and Table storage
+  url: https://learn.microsoft.com/azure/storage/common/storage-use-azurite
+  repo: Azure/Azurite
+  license: oss
+  ring: adopt
+  evidence: https://github.com/Azure/Azurite/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline, light]
+  parity: [state, cloud-apis]
+
+- id: firebase-emulators
+  name: Firebase Emulator Suite
+  sym: Fb
+  cat: Cloud emulators
+  tagline: Local Firestore, Auth, Functions and more with a UI
+  url: https://firebase.google.com/docs/emulator-suite
+  repo: firebase/firebase-tools
+  license: oss
+  ring: adopt
+  evidence: https://github.com/firebase/firebase-tools/releases
+  dx: [one-command, fast-feedback, ui, docs, cross-platform, offline, agent-ready]
+  parity: [multi-service, state, cloud-apis]
+  note: Needs a Java runtime; offline use requires a demo- project id.
+
+- id: gcloud-emulators
+  name: Google Cloud emulators
+  sym: Gg
+  cat: Cloud emulators
+  tagline: gcloud emulators for Pub/Sub, Firestore, Spanner, Bigtable
+  url: https://cloud.google.com/sdk/gcloud/reference/beta/emulators
+  license: free
+  ring: adopt
+  evidence: https://cloud.google.com/sdk/docs/release-notes
+  dx: [one-command, docs, cross-platform, offline]
+  parity: [cloud-apis]
+  note: One emulator per command, each with its own gaps; still under gcloud beta.
+
+- id: miniflare
+  name: Miniflare
+  sym: Mf
+  cat: Cloud emulators
+  tagline: Local simulator for Cloudflare Workers on workerd
+  url: https://developers.cloudflare.com/workers/testing/miniflare/
+  repo: cloudflare/workers-sdk
+  license: oss
+  ring: adopt
+  evidence: https://github.com/cloudflare/workers-sdk/releases
+  dx: [zero-config, fast-feedback, docs, cross-platform, offline, light]
+  parity: [state, prod-artifacts, cloud-apis]
+  note: Usually used through wrangler dev rather than directly.
+
+- id: fake-gcs-server
+  name: fake-gcs-server
+  sym: Fg
+  cat: Cloud emulators
+  tagline: Emulator for the Google Cloud Storage API
+  url: https://github.com/fsouza/fake-gcs-server
+  repo: fsouza/fake-gcs-server
+  license: oss
+  ring: adopt
+  evidence: https://github.com/fsouza/fake-gcs-server/releases
+  dx: [one-command, zero-config, cross-platform, offline, light]
+  parity: [state, cloud-apis]
+
+# --- Local backends ---
+- id: supabase-cli
+  name: Supabase CLI
+  sym: Su
+  cat: Local backends
+  tagline: Run the full Supabase stack locally in Docker
+  url: https://supabase.com/docs/guides/local-development
+  repo: supabase/cli
+  license: oss
+  ring: adopt
+  evidence: https://github.com/supabase/cli/releases
+  dx: [one-command, ui, docs, cross-platform, offline, agent-ready]
+  parity: [containers, multi-service, state, prod-artifacts]
+  note: Starts about a dozen containers; heavy on RAM.
+
+- id: appwrite
+  name: Appwrite
+  sym: At
+  cat: Local backends
+  tagline: Self-hostable backend with auth, DB, storage, functions
+  url: https://appwrite.io
+  repo: appwrite/appwrite
+  license: oss
+  ring: adopt
+  evidence: https://github.com/appwrite/appwrite/releases
+  dx: [one-command, ui, docs, cross-platform, offline, agent-ready]
+  parity: [containers, multi-service, state, prod-artifacts]
+  note: Self-hosted install is a large Compose stack.
+
+- id: pocketbase
+  name: PocketBase
+  sym: Pk
+  cat: Local backends
+  tagline: Backend in one Go binary with SQLite and admin UI
+  url: https://pocketbase.io
+  license: oss
+  ring: trial
+  evidence: https://github.com/pocketbase/pocketbase/releases
+  dx: [one-command, zero-config, ui, docs, cross-platform, offline, light]
+  parity: [state]
+  note: Pre-1.0 with breaking changes; the GitHub repo is archived and development moved off GitHub.
+
+- id: convex
+  name: Convex
+  sym: Cl
+  cat: Local backends
+  tagline: Reactive TypeScript backend with a local dev server
+  url: https://www.convex.dev
+  repo: get-convex/convex-backend
+  license: freemium
+  ring: adopt
+  evidence: https://www.npmjs.com/package/convex
+  dx: [one-command, zero-config, fast-feedback, ui, docs, cross-platform, agent-ready]
+  parity: [state]
+  note: Self-hosting exists, but most docs and tooling assume Convex Cloud.
+
+- id: nhost
+  name: Nhost
+  sym: Nh
+  cat: Local backends
+  tagline: Postgres, Hasura GraphQL, auth and storage stack
+  url: https://nhost.io
+  repo: nhost/nhost
+  license: oss
+  ring: adopt
+  evidence: https://github.com/nhost/nhost/releases
+  dx: [one-command, ui, docs, cross-platform, offline]
+  parity: [containers, multi-service, state, prod-artifacts]
+
+- id: neon
+  name: Neon
+  sym: Nn
+  cat: Local backends
+  tagline: Serverless Postgres with copy-on-write branches
+  url: https://neon.com
+  repo: neondatabase/neon
+  license: freemium
+  ring: adopt
+  evidence: https://neon.com/docs/changelog
+  dx: [zero-config, docs, cross-platform, agent-ready]
+  parity: [state]
+  note: A cloud service; branches are remote databases, not a local stack.
+
+# --- Mocks and tunnels ---
+- id: wiremock
+  name: WireMock
+  sym: Wi
+  cat: Mocks and tunnels
+  tagline: HTTP API mock server with stubbing and recording
+  url: https://wiremock.org
+  repo: wiremock/wiremock
+  license: oss
+  ring: trial
+  evidence: https://github.com/wiremock/wiremock/releases
+  dx: [one-command, docs, cross-platform, offline, agent-ready]
+  parity: []
+  note: Last stable release Nov 2025; 4.0 has been in beta for a long time.
+
+- id: mockoon
+  name: Mockoon
+  sym: Mb
+  cat: Mocks and tunnels
+  tagline: Desktop app and CLI for local mock APIs
+  url: https://mockoon.com
+  repo: mockoon/mockoon
+  license: oss
+  ring: adopt
+  evidence: https://github.com/mockoon/mockoon/releases
+  dx: [one-command, zero-config, ui, docs, cross-platform, offline, light]
+  parity: []
+
+- id: prism
+  name: Prism
+  sym: Pi
+  cat: Mocks and tunnels
+  tagline: Mock server and validator from OpenAPI documents
+  url: https://stoplight.io/open-source/prism
+  repo: stoplightio/prism
+  license: oss
+  ring: adopt
+  evidence: https://github.com/stoplightio/prism/releases
+  dx: [one-command, zero-config, clear-errors, docs, cross-platform, offline, light]
+  parity: []
+
+- id: msw
+  name: Mock Service Worker
+  sym: Ms
+  cat: Mocks and tunnels
+  tagline: API mocking by intercepting requests in browser and Node
+  url: https://mswjs.io
+  repo: mswjs/msw
+  license: oss
+  ring: adopt
+  evidence: https://github.com/mswjs/msw/releases
+  dx: [docs, cross-platform, offline, light]
+  parity: []
+
+- id: mailpit
+  name: Mailpit
+  sym: Ml
+  cat: Mocks and tunnels
+  tagline: SMTP catcher with web UI and API for testing email
+  url: https://mailpit.axllent.org
+  repo: axllent/mailpit
+  license: oss
+  ring: adopt
+  evidence: https://github.com/axllent/mailpit/releases
+  dx: [one-command, zero-config, ui, docs, cross-platform, offline, light, agent-ready]
+  parity: []
+
+- id: mailhog
+  name: MailHog
+  sym: Mh
+  cat: Mocks and tunnels
+  tagline: SMTP testing server with web UI
+  url: https://github.com/mailhog/MailHog
+  repo: mailhog/MailHog
+  license: oss
+  ring: hold
+  evidence: https://github.com/mailhog/MailHog/releases
+  dx: [one-command, zero-config, ui, cross-platform, offline, light]
+  parity: []
+  note: No release since 2020; Mailpit is the maintained replacement.
+
+- id: ngrok
+  name: ngrok
+  sym: Nr
+  cat: Mocks and tunnels
+  tagline: Public HTTPS tunnels to local services
+  url: https://ngrok.com
+  license: freemium
+  ring: adopt
+  evidence: https://ngrok.com/docs/agent/changelog
+  dx: [one-command, ui, docs, cross-platform, light, agent-ready]
+  parity: [networking]
+  note: Needs an account; free tier has random domains and usage limits.
+
+- id: cloudflare-tunnel
+  name: Cloudflare Tunnel
+  sym: Cm
+  cat: Mocks and tunnels
+  tagline: Expose local services through Cloudflare via cloudflared
+  url: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
+  repo: cloudflare/cloudflared
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/cloudflare/cloudflared/releases
+  dx: [one-command, docs, cross-platform, light]
+  parity: [networking]
+  note: Quick tunnels need no account; named tunnels need a Cloudflare account and domain.
+
+- id: localtunnel
+  name: localtunnel
+  sym: Lt
+  cat: Mocks and tunnels
+  tagline: Expose localhost through a public URL
+  url: https://theboroer.github.io/localtunnel-www/
+  repo: localtunnel/localtunnel
+  license: oss
+  ring: hold
+  evidence: https://www.npmjs.com/package/localtunnel
+  dx: [one-command, zero-config, cross-platform, light]
+  parity: [networking]
+  note: No release since 2021; the shared public server is often unreliable.
+
+- id: tailscale-funnel
+  name: Tailscale Funnel
+  sym: Ti
+  cat: Mocks and tunnels
+  tagline: Share a local port to the internet over Tailscale
+  url: https://tailscale.com/kb/1223/funnel
+  repo: tailscale/tailscale
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/tailscale/tailscale/releases
+  dx: [one-command, docs, cross-platform, light]
+  parity: [networking]
+  note: Requires a Tailscale account and the node to join a tailnet.
+
+- id: microcks
+  name: Microcks
+  sym: Me
+  cat: Mocks and tunnels
+  tagline: Mocks and contract tests from OpenAPI, AsyncAPI, gRPC
+  url: https://microcks.io
+  repo: microcks/microcks
+  license: oss
+  ring: adopt
+  evidence: https://github.com/microcks/microcks/releases
+  dx: [one-command, ui, docs, cross-platform, offline, agent-ready]
+  parity: [containers, multi-service]
+
+# --- Test dependencies ---
+- id: testcontainers
+  name: Testcontainers
+  sym: Tc
+  cat: Test dependencies
+  tagline: Throwaway Docker dependencies from test code
+  url: https://testcontainers.com
+  repo: testcontainers/testcontainers-java
+  license: oss
+  ring: adopt
+  evidence: https://github.com/testcontainers/testcontainers-node/releases
+  dx: [zero-config, docs, cross-platform, offline]
+  parity: [containers, multi-service, networking, state, prod-artifacts]
+  note: Needs a Docker-compatible runtime; each language library releases on its own schedule.
+
+- id: toxiproxy
+  name: Toxiproxy
+  sym: Tx
+  cat: Test dependencies
+  tagline: TCP proxy that injects latency and network faults
+  url: https://github.com/Shopify/toxiproxy
+  repo: Shopify/toxiproxy
+  license: oss
+  ring: adopt
+  evidence: https://github.com/Shopify/toxiproxy/releases
+  dx: [one-command, cross-platform, offline, light, agent-ready]
+  parity: [networking]
+
+- id: pact
+  name: Pact
+  sym: Pg
+  cat: Test dependencies
+  tagline: Consumer-driven contract testing between services
+  url: https://pact.io
+  repo: pact-foundation/pact-js
+  license: oss
+  ring: adopt
+  evidence: https://github.com/pact-foundation/pact-js/releases
+  dx: [fast-feedback, docs, cross-platform, offline]
+  parity: [team-scale]
+  note: Sharing contracts across teams needs a Pact Broker or the paid PactFlow.
+
+# --- ORMs and migrations ---
+- id: prisma
+  name: Prisma
+  sym: Ph
+  cat: ORMs and migrations
+  tagline: TypeScript ORM with schema migrations and Studio
+  url: https://www.prisma.io
+  repo: prisma/prisma
+  license: oss
+  ring: adopt
+  evidence: https://github.com/prisma/prisma/releases
+  dx: [one-command, clear-errors, ui, docs, cross-platform, offline, agent-ready]
+  parity: [state, prod-artifacts]
+
+- id: drizzle
+  name: Drizzle ORM
+  sym: Dz
+  cat: ORMs and migrations
+  tagline: SQL-like TypeScript ORM with drizzle-kit migrations
+  url: https://orm.drizzle.team
+  repo: drizzle-team/drizzle-orm
+  license: oss
+  ring: trial
+  evidence: https://github.com/drizzle-team/drizzle-orm/releases
+  dx: [zero-config, ui, docs, cross-platform, offline, light]
+  parity: [state, prod-artifacts]
+  note: Still 0.x; pin versions, the 1.0 line has been in beta.
+
+- id: atlas
+  name: Atlas
+  sym: Al
+  cat: ORMs and migrations
+  tagline: Declarative schema-as-code migrations with linting
+  url: https://atlasgo.io
+  repo: ariga/atlas
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/ariga/atlas/releases
+  dx: [one-command, clear-errors, docs, cross-platform, agent-ready]
+  parity: [state, prod-artifacts, team-scale]
+  note: The default binary is the commercial build; several features need Atlas Pro.
+
+- id: dbmate
+  name: dbmate
+  sym: Dm
+  cat: ORMs and migrations
+  tagline: Language-agnostic SQL migration tool
+  url: https://github.com/amacneil/dbmate
+  repo: amacneil/dbmate
+  license: oss
+  ring: adopt
+  evidence: https://github.com/amacneil/dbmate/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline, light]
+  parity: [state, prod-artifacts]
+
+- id: flyway
+  name: Flyway
+  sym: Fw
+  cat: ORMs and migrations
+  tagline: Versioned SQL migrations for many databases
+  url: https://www.red-gate.com/products/flyway/
+  repo: flyway/flyway
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/flyway/flyway/releases
+  dx: [one-command, docs, cross-platform, offline]
+  parity: [state, prod-artifacts, team-scale]
+  note: Undo migrations and some databases need a paid Redgate edition.
+
+- id: liquibase
+  name: Liquibase
+  sym: Lq
+  cat: ORMs and migrations
+  tagline: Database change management with changelogs
+  url: https://www.liquibase.com
+  repo: liquibase/liquibase
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/liquibase/liquibase/releases
+  dx: [one-command, docs, cross-platform, offline]
+  parity: [state, prod-artifacts, team-scale]
+  note: Since 5.0 the community edition uses the source-available Functional Source License.
+
+- id: golang-migrate
+  name: golang-migrate
+  sym: Gl
+  cat: ORMs and migrations
+  tagline: Database migrations CLI and Go library
+  url: https://github.com/golang-migrate/migrate
+  repo: golang-migrate/migrate
+  license: oss
+  ring: adopt
+  evidence: https://github.com/golang-migrate/migrate/releases
+  dx: [one-command, zero-config, cross-platform, offline, light]
+  parity: [state, prod-artifacts]
+
+- id: sqitch
+  name: Sqitch
+  sym: Sq
+  cat: ORMs and migrations
+  tagline: Dependency-based database change management
+  url: https://sqitch.org
+  repo: sqitchers/sqitch
+  license: oss
+  ring: trial
+  evidence: https://github.com/sqitchers/sqitch/releases
+  dx: [docs, cross-platform, offline]
+  parity: [state, prod-artifacts]
+  note: Long-standing but slow releases; last one Jan 2026.
+
+- id: alembic
+  name: Alembic
+  sym: Am
+  cat: ORMs and migrations
+  tagline: Migrations for SQLAlchemy
+  url: https://alembic.sqlalchemy.org
+  repo: sqlalchemy/alembic
+  license: oss
+  ring: adopt
+  evidence: https://github.com/sqlalchemy/alembic/releases
+  dx: [one-command, docs, cross-platform, offline, light]
+  parity: [state, prod-artifacts]
+
+- id: kysely
+  name: Kysely
+  sym: Ky
+  cat: ORMs and migrations
+  tagline: Type-safe TypeScript SQL query builder
+  url: https://kysely.dev
+  repo: kysely-org/kysely
+  license: oss
+  ring: trial
+  evidence: https://github.com/kysely-org/kysely/releases
+  dx: [zero-config, docs, cross-platform, offline, light]
+  parity: [state]
+  note: Still 0.x; a query builder, not a full ORM.
+
+- id: typeorm
+  name: TypeORM
+  sym: To
+  cat: ORMs and migrations
+  tagline: Decorator-based ORM for TypeScript
+  url: https://typeorm.io
+  repo: typeorm/typeorm
+  license: oss
+  ring: adopt
+  evidence: https://github.com/typeorm/typeorm/releases
+  dx: [docs, cross-platform, offline]
+  parity: [state, prod-artifacts]
+
+- id: sequelize
+  name: Sequelize
+  sym: Se
+  cat: ORMs and migrations
+  tagline: Promise-based ORM for Node.js
+  url: https://sequelize.org
+  repo: sequelize/sequelize
+  license: oss
+  ring: trial
+  evidence: https://github.com/sequelize/sequelize/releases
+  dx: [docs, cross-platform, offline]
+  parity: [state, prod-artifacts]
+  note: v6 last released Mar 2026; v7 has been in alpha for years.
+
+- id: sqlalchemy
+  name: SQLAlchemy
+  sym: Sh
+  cat: ORMs and migrations
+  tagline: Python SQL toolkit and ORM
+  url: https://www.sqlalchemy.org
+  repo: sqlalchemy/sqlalchemy
+  license: oss
+  ring: adopt
+  evidence: https://github.com/sqlalchemy/sqlalchemy/releases
+  dx: [docs, cross-platform, offline, light]
+  parity: [state]
+
+- id: ef-core
+  name: Entity Framework Core
+  sym: Ef
+  cat: ORMs and migrations
+  tagline: .NET ORM with code-first migrations
+  url: https://learn.microsoft.com/ef/core/
+  repo: dotnet/efcore
+  license: oss
+  ring: adopt
+  evidence: https://github.com/dotnet/efcore/releases
+  dx: [one-command, docs, cross-platform, offline]
+  parity: [state, prod-artifacts]
+
+- id: sqlc
+  name: sqlc
+  sym: Si
+  cat: ORMs and migrations
+  tagline: Generate type-safe code from SQL queries
+  url: https://sqlc.dev
+  repo: sqlc-dev/sqlc
+  license: oss
+  ring: trial
+  evidence: https://github.com/sqlc-dev/sqlc/releases
+  dx: [zero-config, clear-errors, docs, cross-platform, offline, light]
+  parity: []
+  note: Stable and widely used, but no release since Apr 2026; runs no migrations itself.
+
+- id: mikro-orm
+  name: MikroORM
+  sym: Mm
+  cat: ORMs and migrations
+  tagline: TypeScript ORM with unit of work and migrations
+  url: https://mikro-orm.io
+  repo: mikro-orm/mikro-orm
+  license: oss
+  ring: adopt
+  evidence: https://github.com/mikro-orm/mikro-orm/releases
+  dx: [docs, cross-platform, offline]
+  parity: [state, prod-artifacts]
+
+- id: sqlx
+  name: SQLx
+  sym: Sx
+  cat: ORMs and migrations
+  tagline: Async Rust SQL toolkit with compile-time checked queries
+  url: https://github.com/launchbadge/sqlx
+  repo: launchbadge/sqlx
+  license: oss
+  ring: trial
+  evidence: https://github.com/launchbadge/sqlx/blob/main/CHANGELOG.md
+  dx: [clear-errors, cross-platform, offline, light]
+  parity: [state, prod-artifacts]
+  note: Still 0.x with breaking changes between minor versions.

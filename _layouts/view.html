@@ -1,0 +1,113 @@
+---
+layout: default
+---
+{%- include view-context.html -%}
+{%- assign families = site.data.families -%}
+{%- assign rubric = site.data.rubric -%}
+{%- assign journeys = site.data.journeys -%}
+{%- assign view_id = cur_view.id -%}
+{%- assign sub = page.sub -%}
+{%- if view_id == "journeys" and sub == nil -%}{%- assign sub = journeys.tracks[0].id -%}{%- endif -%}
+{%- assign tool_total = 0 -%}
+{%- for f in families -%}{%- assign n = site.data.tools[f.id] | size -%}{%- assign tool_total = tool_total | plus: n -%}{%- endfor -%}
+
+<div id="app" data-view="{{ view_id }}" data-sub="{{ sub }}" data-base="{{ '' | relative_url }}" data-repo="{{ site.repo_url }}">
+
+  <nav class="views" aria-label="Views">
+    {%- for v in site.data.meta.views %}
+    <a class="view-tab" data-view="{{ v.id }}" href="{{ '/' | append: v.id | append: '/' | relative_url }}"{% if v.id == view_id %} aria-current="page"{% endif %}>
+      <span class="view-icon view-icon-{{ v.id }}" aria-hidden="true"></span>{{ v.name }}
+    </a>
+    {%- endfor %}
+  </nav>
+
+  <header class="view-head">
+    <div>
+      <h1 id="view-title">{{ cur_view.title }}</h1>
+      <p id="view-blurb">{{ cur_view.blurb }}</p>
+    </div>
+    <p class="view-count"><strong>{{ tool_total }}</strong> tools, <strong>{{ families | size }}</strong> families</p>
+  </header>
+
+  <nav class="subtabs" id="subtabs" aria-label="Sub-tabs">
+    {%- if cur_view.subtabs == "tracks" %}
+      {%- for t in journeys.tracks %}
+      <a class="subtab" data-sub="{{ t.id }}" href="{{ '/journeys/' | append: t.id | append: '/' | relative_url }}"{% if t.id == sub %} aria-current="page"{% endif %}>{{ t.name }}</a>
+      {%- endfor %}
+    {%- else %}
+      <a class="subtab" data-sub="" href="{{ '/' | append: view_id | append: '/' | relative_url }}"{% if sub == nil %} aria-current="page"{% endif %}><span class="sw sw-all" aria-hidden="true"></span>All</a>
+      {%- for f in families %}
+      {%- assign n = site.data.tools[f.id] | size %}
+      <a class="subtab" data-sub="{{ f.id }}" style="--c: {{ f.color }}" href="{{ '/' | append: view_id | append: '/' | append: f.id | append: '/' | relative_url }}"{% if f.id == sub %} aria-current="page"{% endif %}><span class="sw" aria-hidden="true"></span>{{ f.name }} <small>{{ n }}</small></a>
+      {%- endfor %}
+    {%- endif %}
+  </nav>
+
+  <div class="toolbar js-only" hidden>
+    <input id="q" type="search" placeholder="Find a tool: tilt, mcp, postgres..." aria-label="Find a tool" autocomplete="off" spellcheck="false">
+    <p class="hint" id="hint">Hover or focus anything for details. Nothing on the chart is a link, so explore freely.</p>
+  </div>
+
+  <section class="stage-wrap" aria-label="{{ cur_view.title }}">
+    <div id="stage" class="stage stage-{{ view_id }}" role="img" aria-label="{{ cur_view.title }} chart. The same data is in the table below."></div>
+  </section>
+
+  <section class="explain">
+    {%- if view_id == "compass" %}
+    <h2>How a dot is placed</h2>
+    <p>No dot is placed by hand. Each tool earns 10 points per criterion it meets, with a source. Ties sit in a small cluster around the same point.</p>
+    <div class="explain-cols">
+      {%- assign axes = "dx,parity" | split: "," %}
+      {%- for ax in axes %}
+      {%- assign a = rubric[ax] %}
+      <div>
+        <h3>{{ a.title }} <small>{% if ax == "dx" %}west → east{% else %}south → north{% endif %}</small></h3>
+        <ol class="criteria">
+          {%- for c in a.criteria %}<li><strong>{{ c.label }}.</strong> {{ c.help }}</li>{% endfor %}
+        </ol>
+      </div>
+      {%- endfor %}
+    </div>
+    {%- elsif view_id == "radar" %}
+    <h2>How a ring is decided</h2>
+    <ul class="rings">
+      {%- for r in rubric.rings %}<li class="ring-{{ r.id }}"><strong>{{ r.label }}.</strong> {{ r.help }}</li>{% endfor %}
+    </ul>
+    <p>Dot shape shows the license: ● open source, ■ free or free tier, ◆ paid. Every tool links the release page or notice that puts it in its ring.</p>
+    {%- elsif view_id == "lab" %}
+    <h2>How to read a tile</h2>
+    <p>Top left is the element number, top right the license (OS open source, Fr free, Fm free tier, Pd paid). The big letters are the symbol, the bar at the bottom is the ring. The formula in each tooltip is its two Compass scores: <code>Dx</code> ergonomics and <code>Pa</code> parity, in tens.</p>
+    {%- else %}
+    <h2>How to read a journey</h2>
+    <p>Each station is a level. Learn the tools on the line first; branches are worth knowing. Every level has a Flisk stop that says plainly what Flisk does there: <span class="fl-key fl-yes">does it</span> <span class="fl-key fl-partial">partly</span> <span class="fl-key fl-soon">coming soon</span>. The gaps are tracked in <a href="{{ journeys.flisk_issue }}" rel="noopener">the Flisk repo</a>.</p>
+    {%- endif %}
+  </section>
+
+  <details class="all-list">
+    <summary>The same tools as a table</summary>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Tool</th><th scope="col">Family</th><th scope="col">Category</th><th scope="col">Ring</th><th scope="col">License</th><th scope="col">Ergonomics</th><th scope="col">Parity</th></tr></thead>
+        <tbody>
+          {%- for f in families %}
+          {%- assign row_hidden = false %}
+          {%- if view_id != "journeys" and sub and sub != f.id %}{% assign row_hidden = true %}{% endif %}
+          {%- for t in site.data.tools[f.id] %}
+          <tr data-fam="{{ f.id }}"{% if row_hidden %} hidden{% endif %}>
+            <th scope="row"><a href="{{ t.url }}" rel="noopener">{{ t.name }}</a> <span class="muted">{{ t.tagline }}</span></th>
+            <td>{{ f.name }}</td>
+            <td>{{ t.cat }}</td>
+            <td><a href="{{ t.evidence }}" rel="noopener">{{ t.ring | capitalize }}</a></td>
+            <td>{{ rubric.licenses[t.license] }}</td>
+            <td>{{ t.dx | size | times: 10 }}</td>
+            <td>{{ t.parity | size | times: 10 }}</td>
+          </tr>
+          {%- endfor %}
+          {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <div id="tip" class="tip" role="tooltip" hidden></div>
+</div>

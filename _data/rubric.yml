@@ -1,0 +1,97 @@
+# How a tool's Compass position and Radar ring are decided. Nobody places a dot by hand:
+# a tool's X is 10 points per `dx` criterion it meets, its Y is 10 points per `parity` criterion.
+# To move a dot, open a PR that adds or removes a criterion id on the tool, with a source.
+
+dx:
+  title: Developer ergonomics
+  short: Ergonomics
+  low: Friction-heavy
+  high: Smooth and fast
+  criteria:
+    - id: one-command
+      label: One command starts it
+      help: A single command brings up the whole thing it manages.
+    - id: zero-config
+      label: Works with little config
+      help: Useful out of the box, or with a short generated config.
+    - id: fast-feedback
+      label: Fast feedback on change
+      help: Live reload, file sync or incremental rebuilds in seconds.
+    - id: clear-errors
+      label: Clear errors and diagnostics
+      help: Says what broke and how to fix it, or ships a doctor-style check.
+    - id: ui
+      label: Built-in UI
+      help: A web dashboard, TUI or desktop app, not only raw logs.
+    - id: docs
+      label: Quickstart in minutes
+      help: Official docs get a newcomer to a working result in about ten minutes.
+    - id: cross-platform
+      label: macOS, Linux and Windows
+      help: Supported on all three, natively or through WSL.
+    - id: offline
+      label: Local, no account
+      help: Runs on your machine without signing up or a network round trip.
+    - id: light
+      label: Light and quick to start
+      help: Starts in seconds and does not need a large VM or many GB of RAM.
+    - id: agent-ready
+      label: Agent-ready
+      help: An MCP server, a JSON output mode or an API an AI agent can drive.
+
+parity:
+  title: Complexity and production parity
+  short: Parity
+  low: Single service, quick start
+  high: Complex multi-service, deep parity
+  criteria:
+    - id: containers
+      label: Real containers
+      help: Runs or builds OCI containers.
+    - id: multi-service
+      label: Many services at once
+      help: Brings up and coordinates several services together.
+    - id: networking
+      label: Prod-like networking
+      help: Service-to-service networking, DNS or ingress like production.
+    - id: state
+      label: Real stateful dependencies
+      help: Databases, queues or volumes, not only in-memory fakes.
+    - id: prod-artifacts
+      label: Same artifacts as production
+      help: Uses the images, bundles or lockfiles that production uses.
+    - id: k8s
+      label: Kubernetes semantics
+      help: Manifests, pods, Helm charts or a real Kubernetes API.
+    - id: cloud-apis
+      label: Cloud APIs
+      help: Emulates or reaches real cloud provider APIs.
+    - id: config-secrets
+      label: Prod-like config and secrets
+      help: Environment, config and secrets handled the way production handles them.
+    - id: observability
+      label: Logs, metrics and traces
+      help: Exposes telemetry the way production does.
+    - id: team-scale
+      label: Scales to big teams
+      help: Built for many services and many developers sharing a setup.
+
+rings:
+  - id: adopt
+    label: Adopt
+    help: Stable (1.0 or later, or long-standing), a release in the last 6 months, widely used.
+  - id: trial
+    label: Trial
+    help: Pre-1.0 and actively released, stable but quiet (last release 6 to 18 months ago), or not widely used yet.
+  - id: assess
+    label: Assess
+    help: New or experimental, first release less than a year ago.
+  - id: hold
+    label: Hold
+    help: Archived, deprecated, or no release in 18 months or more.
+
+licenses:
+  oss: Open source
+  free: Free, closed source
+  freemium: Free tier, paid plans
+  paid: Paid

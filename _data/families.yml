@@ -1,0 +1,47 @@
+# The eight families. Each one is a sub-tab on every view (/compass/<id>/, /radar/<id>/, /lab/<id>/),
+# a slice of the Adoption Radar and a color in the Lab. Tools live in _data/tools/<id>.yml.
+#   id      URL slug and data file name.
+#   name    Sub-tab label.
+#   color   One color that reads on both the light and dark theme.
+#   blurb   One line: what is in this family.
+#   cats    The categories inside the family. Every tool's `cat` must be one of these.
+- id: foundations
+  name: Package & build
+  color: "#eab308"
+  blurb: Package managers, version managers, build tools and task runners.
+  cats: [Package managers, Version managers, Build tools, Task runners]
+- id: containers
+  name: Containers & clusters
+  color: "#0ea5e9"
+  blurb: Container runtimes, Compose, local Kubernetes and image builders.
+  cats: [Container runtimes, Compose, Local Kubernetes, Image builders, Container UIs]
+- id: inner-loop
+  name: Inner loop
+  color: "#22c55e"
+  blurb: Live-update loops, process runners, Kubernetes dev tools and cluster bridges.
+  cats: [Live-update loops, Process runners, Kubernetes dev, Cluster bridges, Cluster UIs]
+- id: environments
+  name: Dev environments
+  color: "#a855f7"
+  blurb: Reproducible shells, dev containers and cloud workspaces.
+  cats: [Reproducible shells, Dev containers, Cloud workspaces, Local stacks]
+- id: frameworks
+  name: Monorepos & frameworks
+  color: "#ec4899"
+  blurb: Monorepo tools, app frameworks with a local story and scaffolders.
+  cats: [Monorepo tools, App frameworks, Serverless frameworks, Scaffolders]
+- id: services
+  name: Local services & data
+  color: "#14b8a6"
+  blurb: Cloud emulators, local backends, mocks, tunnels, ORMs and migrations.
+  cats: [Cloud emulators, Local backends, Mocks and tunnels, Test dependencies, ORMs and migrations]
+- id: agents
+  name: AI & agents
+  color: "#f97316"
+  blurb: Agent frameworks, MCP and agent tools, coding agents, local models and LLM observability.
+  cats: [Agent frameworks, Agent tools and MCP, Coding agents, Local models, LLM observability]
+- id: platform
+  name: Platform
+  color: "#64748b"
+  blurb: Infrastructure as code, developer portals, CI/CD, GitOps, observability and secrets.
+  cats: [Infrastructure as code, Developer portals, CI/CD, GitOps, Observability, Secrets and supply chain]

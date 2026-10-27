@@ -1,5 +1,0 @@
----
-layout: null
-permalink: /assets/compare.json
----
-{"primary": {{ site.data.meta.primary | jsonify }}, "pick_default": {{ site.data.meta.pick_default | jsonify }}, "tools": {{ site.data.tools | jsonify }}, "tabs": {{ site.data.tabs | jsonify }}, "compare": {{ site.data.compare | jsonify }}}
