@@ -1,0 +1,49 @@
+---
+layout: default
+title: Pick tools
+permalink: /pick/
+app: true
+---
+{%- include tabs-nav.html current="pick" -%}
+
+<section id="pick" class="compare-section" aria-labelledby="pick-title"
+         data-src="{{ '/assets/compare.json' | relative_url }}"
+         data-base="{{ site.baseurl }}">
+  <div class="top">
+    <h1 id="pick-title">Pick your own comparison</h1>
+    {%- assign primary_name = site.data.tools[site.data.meta.primary].name -%}
+    <p>Add any tools. {{ primary_name }} stays first. The link keeps your picks.</p>
+  </div>
+
+  <noscript><p class="empty">This page needs JavaScript. The tabs above work without it.</p></noscript>
+
+  <div class="toolbar" id="pick-toolbar" hidden>
+    <input id="q" type="search" placeholder="Search: restart, logs, prune, mcp..." aria-label="Search tasks and commands" autocomplete="off" spellcheck="false">
+    <div class="chips" role="group" aria-label="Picked tools" id="pick-chips"></div>
+    <details class="add-menu" id="add-menu">
+      <summary class="chip chip-add">+ Add tool</summary>
+      <div class="add-list" id="add-list"></div>
+    </details>
+    <select id="preset" class="preset" aria-label="Start from a tab">
+      <option value="">Start from a tab</option>
+      {%- for t in site.data.tabs %}
+      <option value="{{ t.id }}">{{ t.name }}</option>
+      {%- endfor %}
+    </select>
+    <button type="button" class="chip chip-notes" id="notes-toggle" aria-pressed="false">Notes</button>
+    <p class="count" id="count" role="status" aria-live="polite"></p>
+  </div>
+
+  <p class="empty" id="pick-error" hidden>The data did not load. Reload the page, or use the tabs above.</p>
+  <div id="pick-out"></div>
+  <p class="empty" id="pick-empty" hidden>Add a tool to see it here.</p>
+
+  <ul class="legend" aria-label="How to read a cell">
+    <li><span class="swatch swatch-match"></span>Same job</li>
+    <li><span class="swatch swatch-partial"></span>Different job: closest command, not a swap</li>
+    <li><span class="swatch swatch-none"></span>Blank: no equivalent</li>
+    <li class="legend-hint">Hover a cell for &#8599;&#xFE0E; source and <i>i</i> note. Click a command to copy it.</li>
+  </ul>
+</section>
+
+<script src="{{ '/assets/js/pick.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>

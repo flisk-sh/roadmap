@@ -1,0 +1,27 @@
+---
+layout: default
+title: About
+permalink: /about/
+---
+{%- assign meta = site.data.meta -%}
+{%- assign primary_name = site.data.tools[meta.primary].name -%}
+{%- assign tab_count = site.data.tabs | size -%}
+<section class="prose about">
+  <h1>About</h1>
+  <ul>
+    <li><strong>What it is.</strong> {{ tab_count }} tab{% if tab_count != 1 %}s{% endif %} of commands for the same jobs, with {{ primary_name }} first. Each tab pairs {{ primary_name }} with the tools people compare it to.</li>
+    {%- if meta.checked %}
+    <li><strong>Checked on {{ meta.checked.date }}.</strong> {% if meta.checked.version %}Every {{ primary_name }} command was checked against {{ primary_name }} {{ meta.checked.version }}. {% endif %}A script in the repo repeats that check.</li>
+    {%- endif %}
+    <li><strong>Every cell has a source.</strong> {{ primary_name }} cells link to its own docs or source. Other cells link to that tool's official docs.</li>
+    <li><strong>Blank is an answer.</strong> We do not invent a command to fill a cell, so a tool with no command for a task is left blank. Amber commands are the closest match to a different job.</li>
+    <li><strong>Pick your own.</strong> Use <a href="{{ '/pick/' | relative_url }}">Pick tools</a> to compare any set of tools. {{ primary_name }} stays first, and the link keeps your picks.</li>
+    {%- if meta.about_note %}
+    <li>{{ meta.about_note }}</li>
+    {%- endif %}
+    {%- if meta.maintainer %}
+    <li><strong>Conflict of interest.</strong> {{ meta.maintainer | slice: 0 | upcase }}{{ meta.maintainer | slice: 1, 200 }} maintains this page. Check the sources and tell us when a cell is wrong.</li>
+    {%- endif %}
+  </ul>
+  <p>To fix a cell or add a task, edit the YAML in <a href="{{ site.repo_url }}/tree/main/_data" rel="noopener"><code>_data/</code></a> and run <code>ruby scripts/check-data.rb</code>. The <a href="{{ site.repo_url }}#readme" rel="noopener">README</a> has the details.</p>
+</section>

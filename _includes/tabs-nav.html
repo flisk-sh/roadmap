@@ -1,0 +1,7 @@
+{%- comment -%}The tab bar. Pass current=<tab id> or current="pick".{%- endcomment -%}
+<nav class="tabs" aria-label="Comparisons">
+  {%- for t in site.data.tabs %}
+  <a class="tab" href="{% if t.id == 'overview' %}{{ '/' | relative_url }}{% else %}{{ '/' | append: t.id | append: '/' | relative_url }}{% endif %}"{% if t.id == include.current %} aria-current="page"{% endif %}>{{ t.name }}</a>
+  {%- endfor %}
+  <a class="tab tab-pick" href="{{ '/pick/' | relative_url }}"{% if include.current == "pick" %} aria-current="page"{% endif %}>Pick tools</a>
+</nav>

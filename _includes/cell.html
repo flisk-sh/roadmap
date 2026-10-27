@@ -1,0 +1,29 @@
+{%- assign cell = include.cell -%}
+{%- if cell == "TODO" -%}
+<div class="cell cell-todo"><p class="cell-empty">TODO</p></div>
+{%- else -%}
+{%- assign status = cell.status | default: "match" -%}
+<div class="cell cell-{{ status }}">
+  {%- if status == "partial" -%}<span class="sr-only">Different job, closest command. </span>{%- endif -%}
+  {%- if status == "none" -%}
+  <span class="cell-empty sr-only">No equivalent</span>
+  {%- elsif status == "na" -%}
+  <span class="cell-empty sr-only">Not needed</span>
+  {%- elsif cell.cmd -%}
+    {%- if cell.cmd[0] -%}
+      {%- for c in cell.cmd -%}{% include cmd.html cmd=c %}{%- endfor -%}
+    {%- else -%}
+      {% include cmd.html cmd=cell.cmd %}
+    {%- endif -%}
+  {%- endif -%}
+  {%- if cell.note -%}
+  <p class="cell-note" id="note-{{ include.cid }}-{{ include.tid }}">{{ cell.note | escape }}</p>
+  {%- endif -%}
+  <div class="cell-links">
+    <a class="cell-src" href="{{ cell.source }}" target="_blank" rel="noopener" title="Open the source">&#8599;&#xFE0E;<span class="sr-only"> Source for {{ include.tool }}: {{ include.task }}</span></a>
+    {%- if cell.note -%}
+    <button type="button" class="note-btn" aria-expanded="false" aria-controls="note-{{ include.cid }}-{{ include.tid }}" title="Show the note">i<span class="sr-only"> Note for {{ include.tool }}: {{ include.task }}</span></button>
+    {%- endif -%}
+  </div>
+</div>
+{%- endif -%}

@@ -1,0 +1,2 @@
+{%- comment -%}Each word is its own span so a flag such as -replace=ADDRESS never breaks at its hyphen. The space is an expression because Liquid drops a bare space between tags. Clicking the command copies it (compare.js).{%- endcomment -%}
+<div class="cmd" data-copy="{{ include.cmd | escape }}"><code title="Click to copy">{% assign words = include.cmd | split: " " %}{% for w in words %}<span class="tok">{{ w | escape }}</span>{% unless forloop.last %}{{ " " }}{% endunless %}{% endfor %}</code></div>

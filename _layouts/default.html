@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {%- include current-tab.html -%}
+  {%- assign page_title = site.title -%}
+  {%- assign page_desc = site.description | strip -%}
+  {%- if cur_tab -%}
+    {%- if page.tab != "overview" -%}{%- assign page_title = cur_tab.title | append: " | " | append: site.title -%}{%- endif -%}
+    {%- assign page_desc = cur_tab.title | append: ". " | append: cur_tab.blurb | append: " Every command has a source link." -%}
+  {%- elsif page.title -%}
+    {%- assign page_title = page.title | append: " | " | append: site.title -%}
+  {%- endif %}
+  <title>{{ page_title | escape }}</title>
+  <meta name="description" content="{{ page_desc | escape }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ page_title | escape }}">
+  <meta property="og:description" content="{{ page_desc | escape }}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta name="twitter:card" content="summary">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
+
+  <script>
+    // Apply a saved theme before first paint. Storage can be blocked, so fail quietly.
+    try {
+      var t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  </script>
+
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+</head>
+<body data-primary="{{ site.data.meta.primary }}"{% if page.layout == "tab" or page.app %} class="app"{% endif %}>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="{{ '/' | relative_url }}">
+        <img src="{{ '/assets/favicon.svg' | relative_url }}" alt="" width="20" height="20">
+        <span>{{ site.title }}</span>
+      </a>
+      <nav class="nav" aria-label="Primary">
+        <a class="nav-extra" href="{{ '/about/' | relative_url }}">About</a>
+        <a href="{{ site.repo_url }}" rel="noopener">GitHub</a>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch theme">Theme</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    {{ content }}
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>
+        {%- assign meta = site.data.meta -%}
+        {%- if meta.maintainer %}Made by {% if meta.maintainer_url %}<a href="{{ meta.maintainer_url }}" rel="noopener">{{ meta.maintainer }}</a>{% else %}{{ meta.maintainer }}{% endif %}, so read the sources. {% endif -%}
+        {%- if meta.footer_note %}{{ meta.footer_note }} {% endif -%}
+        Wrong cell? <a href="{{ site.repo_url }}/issues" rel="noopener">Open an issue</a>. <a href="{{ '/about/' | relative_url }}">About this site</a>.
+      </p>
+    </div>
+  </footer>
+
+  <script src="{{ '/assets/js/compare.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
+</body>
+</html>

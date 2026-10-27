@@ -1,0 +1,79 @@
+---
+layout: default
+---
+{%- include current-tab.html -%}
+{%- assign tool_count = cur_tab.tools | size -%}
+{%- assign primary = site.data.meta.primary -%}
+{%- include tabs-nav.html current=page.tab -%}
+
+<section id="compare" class="compare-section" aria-labelledby="compare-title">
+  <div class="top">
+    <h1 id="compare-title">{{ cur_tab.title }}</h1>
+    <p>{{ cur_tab.blurb }}</p>
+  </div>
+
+  <div class="toolbar js-only" hidden>
+    <input id="q" type="search" placeholder="Search: restart, logs, prune, mcp..." aria-label="Search tasks and commands" autocomplete="off" spellcheck="false">
+    <div class="chips" role="group" aria-label="Tools shown" id="tools-toggle">
+      {%- for tid in cur_tab.tools %}
+      {%- assign tool = site.data.tools[tid] %}
+      <button type="button" class="chip chip-tool{% if tid == primary %} chip-primary{% endif %}" data-tool="{{ tid }}" data-name="{{ tool.name }}" aria-pressed="true"{% if tid == primary %} disabled aria-label="{{ tool.name }} is always shown"{% endif %}>{{ tool.name }}</button>
+      {%- endfor %}
+    </div>
+    <details class="add-menu">
+      <summary class="chip chip-add">+ Add tool</summary>
+      <div class="add-list">
+        <p class="add-hint">Opens a view with your tools and the new one, a table per tab that covers them.</p>
+        {%- for pair in site.data.tools %}
+          {%- assign tid = pair[0] %}
+          {%- unless cur_tab.tools contains tid %}
+          <a class="add-item" href="{{ '/pick/' | relative_url }}?tools={{ cur_tab.tools | join: ',' }},{{ tid }}"><span>{{ pair[1].name }}</span><small>{{ pair[1].tagline }}</small></a>
+          {%- endunless %}
+        {%- endfor %}
+      </div>
+    </details>
+    <button type="button" class="chip chip-notes" id="notes-toggle" aria-pressed="false">Notes</button>
+    <p class="count" id="count" role="status" aria-live="polite"></p>
+  </div>
+
+  <div class="table-wrap" data-cols="{{ tool_count }}">
+    <table class="compare" id="comparison" style="--cols: {{ tool_count }}">
+      <thead>
+        <tr>
+          <th scope="col" class="col-task">Task</th>
+          {%- for tid in cur_tab.tools %}
+          {%- assign tool = site.data.tools[tid] %}
+          <th scope="col" class="col-tool{% if tid == primary %} col-primary{% endif %}" data-tool="{{ tid }}">
+            <a href="{{ tool.docs }}" target="_blank" rel="noopener">{{ tool.name }}</a>
+            <span class="th-tag">{{ tool.tagline }}</span>
+          </th>
+          {%- endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {%- for task in cur_data.tasks %}
+        <tr data-keywords="{{ task.keywords | escape }}">
+          <th scope="row" class="cell-task">
+            <span class="cell-task-name">{{ task.task }}</span>
+          </th>
+          {%- for tid in cur_tab.tools %}
+          {%- assign tool = site.data.tools[tid] %}
+          {%- assign the_cell = task.cells[tid] %}
+          <td class="col-tool{% if tid == primary %} col-primary{% endif %}" data-tool="{{ tid }}" data-label="{{ tool.name }}">
+            {%- include cell.html cell=the_cell tool=tool.name task=task.task cid=task.id tid=tid %}
+          </td>
+          {%- endfor %}
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    <p class="empty js-only" id="empty" hidden>No task matches. Try a shorter search.</p>
+  </div>
+
+  <ul class="legend" aria-label="How to read a cell">
+    <li><span class="swatch swatch-match"></span>Same job</li>
+    <li><span class="swatch swatch-partial"></span>Different job: closest command, not a swap</li>
+    <li><span class="swatch swatch-none"></span>Blank: no equivalent</li>
+    <li class="legend-hint">Hover a cell for &#8599;&#xFE0E; source and <i>i</i> note. Click a command to copy it.</li>
+  </ul>
+</section>

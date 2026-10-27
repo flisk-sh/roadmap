@@ -1,0 +1,7 @@
+{%- comment -%}Finds the tab for page.tab and leaves it in cur_tab, with its rows in cur_data. Includes share the caller's variables.{%- endcomment -%}
+{%- if page.tab -%}
+  {%- for t in site.data.tabs -%}
+    {%- if t.id == page.tab -%}{%- assign cur_tab = t -%}{%- endif -%}
+  {%- endfor -%}
+  {%- assign cur_data = site.data.compare[page.tab] -%}
+{%- endif -%}

@@ -1,0 +1,65 @@
+# Commands for the overview tab. Tool columns come from tabs.yml.
+#
+# A row has an id, a task title, search keywords, and a cell for every tool in the tab.
+# A cell has:
+#   cmd     The command, as a string or a list of strings. Leave it out for none and na.
+#   status  match (default): does the same job. partial: the closest command, but a different
+#           job (shown amber, needs a note). none: no equivalent (shown blank). na: not needed.
+#   note    Optional. Under 110 characters. Opens behind the cell's i icon.
+#   source  Required. An https URL to the official docs. Also for none: point at the command reference.
+tasks:
+  - id: start
+    task: Start everything
+    keywords: up run launch
+    cells:
+      acme:
+        cmd: acme up
+        source: https://example.com/#acme-up
+      rival-a:
+        cmd: rival-a start
+        source: https://example.com/#rival-a-start
+      rival-b:
+        cmd: rival-b run --all
+        status: partial
+        note: Starts services but does not watch for changes.
+        source: https://example.com/#rival-b-run
+  - id: stop
+    task: Stop and tear down
+    keywords: down stop remove
+    cells:
+      acme:
+        cmd: acme down
+        source: https://example.com/#acme-down
+      rival-a:
+        cmd: rival-a stop
+        source: https://example.com/#rival-a-stop
+      rival-b:
+        status: none
+        note: No stop command. Press Ctrl+C.
+        source: https://example.com/#rival-b-commands
+  - id: status
+    task: Check status
+    keywords: ps health state
+    cells:
+      acme:
+        cmd: acme status
+        source: https://example.com/#acme-status
+      rival-a:
+        cmd: rival-a ps
+        source: https://example.com/#rival-a-ps
+      rival-b:
+        cmd: rival-b list
+        source: https://example.com/#rival-b-list
+  - id: logs
+    task: Read logs
+    keywords: output tail follow
+    cells:
+      acme:
+        cmd: acme logs -s api
+        source: https://example.com/#acme-logs
+      rival-a:
+        cmd: rival-a logs api
+        source: https://example.com/#rival-a-logs
+      rival-b:
+        status: none
+        source: https://example.com/#rival-b-commands

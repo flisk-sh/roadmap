@@ -1,0 +1,25 @@
+# Every tool that appears as a column. A tab picks its columns from this list (see tabs.yml).
+#   name     Column title.
+#   tagline  Two or three words under the title. Says what the tool is for.
+#   site     Product home page.
+#   docs     Official command reference. The column title links here.
+acme:
+  name: Acme
+  tagline: The tool this site is about
+  site: https://example.com
+  docs: https://example.com
+rival-a:
+  name: Rival A
+  tagline: A well-known alternative
+  site: https://example.com
+  docs: https://example.com
+rival-b:
+  name: Rival B
+  tagline: Another alternative
+  site: https://example.com
+  docs: https://example.com
+rival-c:
+  name: Rival C
+  tagline: Solves a nearby problem
+  site: https://example.com
+  docs: https://example.com

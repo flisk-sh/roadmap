@@ -1,0 +1,28 @@
+# Site settings. Jekyll does not reload this file during `jekyll serve`,
+# so restart the server after editing it.
+title: Comparer
+tagline: Compare the commands of tools, side by side
+description: >-
+  A searchable side-by-side table of the commands different tools give you for the same
+  tasks, with a source link for every cell.
+lang: en
+
+# Where the site is served.
+#   Project page:  url "https://OWNER.github.io",  baseurl "/REPO"
+#   Custom domain: url "https://your.domain",      baseurl ""
+url: "https://flisk-sh.github.io"
+baseurl: "/comparer"
+
+repo_url: "https://github.com/flisk-sh/comparer"
+
+markdown: kramdown
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - LICENSE
+  - scripts/
+  - docs/
+  - vendor/
+  - node_modules/
