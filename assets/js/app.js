@@ -1499,7 +1499,7 @@
       (PAGES_LIVE
         ? '<div class="pf-publish"><button type="button" class="btn" data-pf="publish">' + (ME_PUB ? "Update my CV on pages.flisk.si" : "Publish my CV to pages.flisk.si") + '</button>' +
           '<p class="pf-url" id="pf-url"></p>' +
-          '<p class="pf-note">No account needed. Your CV is public; it goes live in about 2 minutes.</p></div>'
+          '<p class="pf-note">No account needed. Your CV is public; it goes live in about a minute.</p></div>'
         : '<button type="button" class="btn" disabled title="Publishing to pages.flisk.si is almost ready">Publish to pages.flisk.si: coming soon</button>') +
       '<button type="button" class="btn" data-pf="download">Download as a web page</button>' +
       '<button type="button" class="btn" data-pf="clear">Start over</button></div><p class="pf-msg" id="pf-msg" role="status"></p>';
@@ -1538,9 +1538,37 @@
   function showPagesUrl() {
     var u = document.getElementById("pf-url");
     if (!u) return;
-    u.innerHTML = ME_PUB
-      ? 'Your CV: <a href="' + esc(ME_PUB.url) + '" target="_blank" rel="noopener">' + esc(ME_PUB.url) + '</a><br><a href="' + esc(ME_PUB.manage) + '" target="_blank" rel="noopener">Delete it</a> · keep this link: it holds the key'
-      : "";
+    if (ME_PUB && !ME_PUB.live) waitLive();
+    var manage = ME_PUB ? '<br><a href="' + esc(ME_PUB.manage) + '" target="_blank" rel="noopener">Delete it</a> · keep this link: it holds the key' : "";
+    u.innerHTML = !ME_PUB ? ""
+      : ME_PUB.live ? 'Your CV: <a href="' + esc(ME_PUB.url) + '" target="_blank" rel="noopener">' + esc(ME_PUB.url) + '</a>' + manage
+      : 'Building your CV… <b id="pf-wait">' + Math.round((Date.now() - (ME_PUB.at || Date.now())) / 1000) + ' s</b>. The link appears here when it is live.' + manage;
+  }
+
+  // A new space is live once the site is rebuilt, about a minute after publishing. GitHub Pages caches a 404 for
+  // ten minutes, so the link is only shown once the page answers; until then this checks it every few seconds.
+  var waitTimer = null;
+  function waitLive() {
+    if (waitTimer || !ME_PUB || ME_PUB.live) return;
+    var pub = ME_PUB, tries = 0;
+    var tick = function () {
+      var w = document.getElementById("pf-wait");
+      if (w) w.textContent = Math.round((Date.now() - (pub.at || Date.now())) / 1000) + " s";
+    };
+    var ticker = setInterval(tick, 1000);
+    var check = function () {
+      if (ME_PUB !== pub) { clearInterval(ticker); waitTimer = null; return; }
+      fetch(pub.url + "?live=" + Date.now(), { method: "HEAD", cache: "no-store" }).then(function (r) { return r.ok; }, function () { return false; }).then(function (ok) {
+        if (ok || ++tries > 60) {
+          clearInterval(ticker); waitTimer = null;
+          pub.live = true;
+          try { localStorage.setItem("roadmap-me-pub", JSON.stringify(pub)); } catch (e) {}
+          showPagesUrl();
+          pfMsg(ok ? "Your CV is live." : "Still building. The link should work in a minute.");
+        } else waitTimer = setTimeout(check, 4000);
+      });
+    };
+    waitTimer = setTimeout(check, 4000);
   }
   function publishPage(cv) {
     var update = !!ME_PUB;
@@ -1553,7 +1581,7 @@
     }).then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (body) {
         if (!r.ok) throw new Error(body.error || "publish failed (" + r.status + ")");
-        if (!update) ME_PUB = { id: body.id, url: body.url, token: body.token, manage: body.manage };
+        if (!update) ME_PUB = { id: body.id, url: body.url, token: body.token, manage: body.manage, at: Date.now(), live: false };
         try { localStorage.setItem("roadmap-me-pub", JSON.stringify(ME_PUB)); } catch (e) {}
         return update;
       });
@@ -1594,7 +1622,7 @@
         b.disabled = false;
         b.textContent = "Update my CV on pages.flisk.si";
         showPagesUrl();
-        pfMsg((updated ? "Updated. The new version" : "Published. Your CV") + " is live in about 2 minutes.");
+        pfMsg(updated ? "Updated. The new version is live in about a minute." : "Published. Building your page now, usually about a minute.");
       }, function (err) {
         b.disabled = false;
         pfMsg("Could not publish: " + err.message);
