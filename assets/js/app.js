@@ -1323,7 +1323,7 @@
   // pages.flisk.si publishes through a pull request to flisk-sh/pages: the button opens GitHub's
   // prefilled "new file" page for spaces/<login>/<slug>/index.md, and a bot publishes it at
   // https://pages.flisk.si/@<login>/<slug>/. Flip PAGES_LIVE once that repo and its workflow are live.
-  var PAGES_LIVE = false;
+  var PAGES_LIVE = true;
   var PAGES_REPO = "flisk-sh/pages";
   var ME_LOGIN = "", ME_SLUG = "portfolio";
 
