@@ -679,3 +679,26 @@ body.cmp-open { overflow: hidden; }
 .radar-list-wrap > summary { cursor: pointer; font-weight: 700; font-size: 0.85rem; color: var(--muted); padding: 0.3rem 0; }
 .radar-list-wrap > summary:hover { color: var(--text); }
 @media (min-width: 900px) { .radar-list-wrap > summary { display: none; } }
+
+/* Lab: one grid sized by fitLab(); the detail on a tile depends on how big it ends up. */
+
+.stage .lab { display: grid; gap: 4px; justify-content: center; align-content: start; grid-auto-rows: var(--tile); }
+.lab .tile { width: auto; height: auto; }
+.lab .t-n, .lab .t-lic { font-size: clamp(7px, calc(var(--tile) * 0.12), 11px); top: calc(var(--tile) * 0.06); }
+.lab .t-n { left: calc(var(--tile) * 0.07); }
+.lab .t-lic { right: calc(var(--tile) * 0.07); }
+.lab .t-name { font-size: clamp(7px, calc(var(--tile) * 0.125), 11px); }
+.lab .t-formula { font-size: clamp(7px, calc(var(--tile) * 0.1), 10px); }
+.lab .tile::after { height: clamp(2px, calc(var(--tile) * 0.05), 4px); }
+.lab .tile { border-radius: clamp(4px, calc(var(--tile) * 0.1), 10px); }
+
+.lab-xs .t-n, .lab-xs .t-lic, .lab-xs .t-name, .lab-xs .t-logo, .lab-xs .t-formula,
+.lab-sm .t-n, .lab-sm .t-lic, .lab-sm .t-logo, .lab-sm .t-formula,
+.lab-md .t-formula { display: none; }
+.lab-xs .t-sym, .lab-xs .tile.has-logo .t-sym { font-size: calc(var(--tile) * 0.42); margin-top: 0; }
+.lab-xs .t-sym-3, .lab-xs .tile.has-logo .t-sym-3 { font-size: calc(var(--tile) * 0.32); }
+.lab-sm .tile.has-logo .t-sym { font-size: calc(var(--tile) * 0.36); margin-top: 2px; }
+.lab-sm .tile.has-logo .t-sym-3 { font-size: calc(var(--tile) * 0.29); }
+.lab-lg .t-formula { display: block; }
+.lab-lg .t-sym { font-size: calc(var(--tile) * 0.34); }
+.cmp-cmd { font-size: 0.82rem; font-weight: 500; }

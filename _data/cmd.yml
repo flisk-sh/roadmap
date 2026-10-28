@@ -1,0 +1,46 @@
+# Tools that also have a column on cmd.flisk.sh: our tool id -> the id used there.
+# A mapped tool gets a "Commands" link, and picked tools open on cmd.flisk.sh/pick/ side by side.
+site: https://cmd.flisk.sh
+tools:
+  aspire: aspire
+  atlas: atlas
+  aws-cdk: cdk
+  claude-code: claude-code
+  cloudformation: cloudformation
+  coder: coder
+  codespaces: codespaces
+  codex: codex
+  cursor: cursor
+  dbmate: dbmate
+  dev-containers: devcontainers
+  devbox: devbox
+  devspace: devspace
+  docker-compose: compose
+  drizzle: drizzle
+  encore: encore
+  firebase-emulators: firebase
+  flisk: flisk
+  garden: garden
+  gemini-cli: gemini
+  kind: kind
+  langgraph: langgraph
+  localstack: localstack
+  mastra: mastra
+  minikube: minikube
+  mirrord: mirrord
+  nx: nx
+  opentofu: opentofu
+  overmind: overmind
+  paradev: superset
+  pm2: pm2
+  prisma: prisma
+  process-compose: process-compose
+  pulumi: pulumi
+  skaffold: skaffold
+  skills-sh: skills
+  supabase-cli: supabase
+  telepresence: telepresence
+  terraform: terraform
+  tilt: tilt
+  turborepo: turborepo
+  warp: warp

@@ -12,5 +12,6 @@ permalink: /assets/data.json
   "tools": {{ site.data.tools | jsonify }},
   "journeys": {{ site.data.journeys | jsonify }},
   "views": {{ site.data.meta.views | jsonify }},
+  "cmd": {{ site.data.cmd | jsonify }},
   "logos": {{ logo_all | map: "name" | jsonify }}
 }

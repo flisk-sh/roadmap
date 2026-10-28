@@ -21,7 +21,7 @@ views:
   - id: lab
     name: Lab
     title: The DevEx Lab
-    blurb: Every tool as an element. Hover a tile for its formula; pick a family to light it up.
+    blurb: Every tool as an element, scaled to fill your screen. Hover a tile for its formula; pick a family to zoom in.
     subtabs: families
   - id: journeys
     name: Journeys

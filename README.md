@@ -15,7 +15,7 @@ Every sub-tab has its own URL, so a link opens exactly the view you shared. Hove
 
 - **No dot is placed by hand.** A tool's Compass position is 10 points per criterion it meets in [`_data/rubric.yml`](_data/rubric.yml). Its Radar ring follows the ring rules in the same file, with an `evidence` link.
 - **Flisk publishes the site and gets no favors.** It is scored by the same checklist, has no special color or size, and sits in Assess because it first shipped in October 2026.
-- **Gaps are shown.** Journeys has a Flisk stop on every level, marked *coming soon* where Flisk does not cover it yet.
+- **Flisk appears only where it works.** On Journeys, Flisk is on a level only where it does the job today or part of it. The levels it does not cover yet are tracked in [flisk-sh/flisk#2647](https://github.com/flisk-sh/flisk/issues/2647).
 - **The first dataset was seeded in October 2026 with AI-assisted research.** It will have mistakes; that is what pull requests are for.
 
 ## Fix or add a tool

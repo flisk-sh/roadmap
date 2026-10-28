@@ -153,6 +153,20 @@
       "</p>"
     );
   }
+  // cmd.flisk.sh compares the commands of tools side by side. Its Pick page keeps Flisk first and
+  // takes the rest from ?tools=, so a link there is "these tools, command by command".
+  function cmdIds(ids) {
+    var map = (D.cmd && D.cmd.tools) || {};
+    return ids.map(function (id) { return map[id]; }).filter(Boolean);
+  }
+  function cmdUrl(ids) {
+    var site = D.cmd && D.cmd.site;
+    var found = cmdIds(ids);
+    if (!site || !found.length) return "";
+    if (found.length === 1 && found[0] === "flisk") return site + "/";
+    var list = found.indexOf("flisk") === -1 ? ["flisk"].concat(found) : found;
+    return site + "/pick/?tools=" + list.map(encodeURIComponent).join(",");
+  }
   function editUrl(t) {
     return repo + "/edit/main/_data/tools/" + t.fam + ".yml";
   }
@@ -177,7 +191,7 @@
       (t.note ? '<p class="tt-note">' + esc(t.note) + "</p>" : "") +
       '<p class="tt-meta">#' + t.n + " · " + esc(D.rubric.licenses[t.license] || t.license) + (t.repo ? " · " + esc(t.repo) : "") + "</p>" +
       pickLine(t) +
-      links([["Site", t.url], ["Evidence", t.evidence], ["Edit", editUrl(t)], ["Report", reportUrl(t)]])
+      links([["Site", t.url], ["Evidence", t.evidence], ["Commands", cmdUrl([t.id])], ["Edit", editUrl(t)], ["Report", reportUrl(t)]])
     );
   }
 
@@ -609,32 +623,49 @@
   // ---------- Lab ----------
 
   function renderLab() {
-    var lab = el("div", { class: "lab" + (state.sub ? " lab-focus" : "") }, stage);
-    D.families.forEach(function (f) {
-      var tools = TOOLS.filter(function (t) { return t.fam === f.id; });
-      var on = !state.sub || state.sub === f.id;
-      var block = el("section", { class: "lab-block" + (on ? "" : " is-dim") + (state.sub === f.id ? " is-focus" : ""), style: "--c:" + f.color }, lab);
-      var h = el("h3", null, block);
-      el("span", { class: "lab-group", text: "Group " + (f.index + 1) }, h);
-      el("span", { text: f.name }, h);
-      var grid = el("div", { class: "lab-grid" }, block);
-      tools.forEach(function (t, i) {
-        var tile = el("div", {
-          class: "tile ring-" + t.ring + (matches(t) ? "" : " is-dim") + (LOGO[t.id] ? " has-logo" : ""),
-          "data-id": t.id,
-          "data-tip": "tool",
-          tabindex: on ? 0 : -1,
-          "aria-label": t.name + ", element " + t.n,
-          style: "--d:" + Math.min(i * 12, 600) + "ms"
-        }, grid);
-        el("span", { class: "t-n", text: t.n }, tile);
-        el("span", { class: "t-lic", text: LIC_SHORT[t.license] || "" }, tile);
-        el("span", { class: "t-sym" + (t.sym.length > 2 ? " t-sym-3" : ""), text: t.sym }, tile);
-        if (LOGO[t.id]) el("span", { class: logoClass(t.id) + " t-logo", style: "--logo:url(" + logoUrl(t.id) + ")" }, tile);
-        el("span", { class: "t-name", text: t.name }, tile);
-        el("span", { class: "t-formula", text: "Dx" + t.x / 10 + "·Pa" + t.y / 10 }, tile);
-      });
+    // One grid, family by family. A family sub-tab shows only that family, so its tiles get bigger.
+    var tools = state.sub ? TOOLS.filter(function (t) { return t.fam === state.sub; }) : TOOLS;
+    var lab = el("div", { class: "lab" }, stage);
+    tools.forEach(function (t, i) {
+      var tile = el("div", {
+        class: "tile ring-" + t.ring + (matches(t) ? "" : " is-dim") + (LOGO[t.id] ? " has-logo" : ""),
+        "data-id": t.id,
+        "data-tip": "tool",
+        tabindex: 0,
+        "aria-label": t.name + ", element " + t.n,
+        style: "--c:" + FAM[t.fam].color + ";--d:" + Math.min(i * 3, 500) + "ms"
+      }, lab);
+      el("span", { class: "t-n", text: t.n }, tile);
+      el("span", { class: "t-lic", text: LIC_SHORT[t.license] || "" }, tile);
+      el("span", { class: "t-sym" + (t.sym.length > 2 ? " t-sym-3" : ""), text: t.sym }, tile);
+      if (LOGO[t.id]) el("span", { class: logoClass(t.id) + " t-logo", style: "--logo:url(" + logoUrl(t.id) + ")" }, tile);
+      el("span", { class: "t-name", text: t.name }, tile);
+      el("span", { class: "t-formula", text: "Dx" + t.x / 10 + "·Pa" + t.y / 10 }, tile);
     });
+    fitLab();
+  }
+
+  // Choose the column count that makes the tiles biggest while every tile still fits in the room
+  // under the header, then show only as much detail as a tile of that size can hold.
+  function fitLab() {
+    var lab = stage.querySelector(".lab");
+    if (!lab) return;
+    var n = lab.children.length;
+    var wrap = stage.parentNode;
+    var cs = getComputedStyle(wrap);
+    var w = wrap.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    var top = wrap.getBoundingClientRect().top + window.scrollY;
+    var h = window.innerHeight - top - 84 - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    var gap = 4, best = { s: 0, c: 1 };
+    for (var c = 1; c <= n; c++) {
+      var rows = Math.ceil(n / c);
+      var side = Math.min((w - (c - 1) * gap) / c, (h - (rows - 1) * gap) / rows);
+      if (side > best.s) best = { s: side, c: c };
+    }
+    var size = Math.max(28, Math.min(120, Math.floor(best.s)));
+    lab.style.setProperty("--tile", size + "px");
+    lab.style.gridTemplateColumns = "repeat(" + best.c + ", " + size + "px)";
+    lab.className = "lab " + (size < 46 ? "lab-xs" : size < 66 ? "lab-sm" : size < 92 ? "lab-md" : "lab-lg");
   }
 
   // ---------- Journeys ----------
@@ -684,15 +715,18 @@
       var line = el("div", { class: "line line-main" }, body);
       el("span", { class: "line-label", text: "On the line" }, line);
       (stop.main || []).forEach(function (id) { if (id !== "flisk") pill(id, "main", line); });
+      // Flisk is on the line only where it does the job today (or part of it).
       var st = lv.flisk.status;
-      var fl = el("span", {
-        class: "pill pill-flisk fl-" + st,
-        "data-tip": "flisk",
-        "data-level": lv.id,
-        tabindex: 0
-      }, line);
-      el("b", { text: "Fl" }, fl);
-      el("span", { text: st === "soon" ? "Flisk · coming soon" : st === "partial" ? "Flisk · partly" : "Flisk" }, fl);
+      if (st !== "soon") {
+        var fl = el("span", {
+          class: "pill pill-flisk fl-" + st,
+          "data-tip": "flisk",
+          "data-level": lv.id,
+          tabindex: 0
+        }, line);
+        el("b", { text: "Fl" }, fl);
+        el("span", { text: st === "partial" ? "Flisk · partly" : "Flisk" }, fl);
+      }
 
       if (stop.side && stop.side.length) {
         var side = el("div", { class: "line line-side" }, body);
@@ -893,6 +927,7 @@
     panel.innerHTML =
       '<div class="cmp-box" role="dialog" aria-modal="true" aria-label="Compare tools">' +
       '<div class="cmp-top"><h2>Compare ' + tools.length + " tools</h2>" +
+      (cmdUrl(state.cmp) ? '<a class="cmp-cmd" href="' + esc(cmdUrl(state.cmp)) + '" target="_blank" rel="noopener">Compare their commands ↗</a>' : "") +
       '<label class="cmp-diff"><input type="checkbox" id="cmp-diff"> Only differences</label>' +
       '<button type="button" class="cmp-close" data-close aria-label="Close comparison">Close</button></div>' +
       '<div class="cmp-scroll" id="cmp-table">' + panelTable(tools) + "</div>" +
@@ -933,6 +968,7 @@
   }
   window.addEventListener("resize", function () {
     if (state.view === "radar" || state.view === "compass") fitRadar();
+    if (state.view === "lab") fitLab();
     var lw = stage.querySelector(".radar-list-wrap");
     if (lw) lw.open = window.matchMedia("(min-width: 900px)").matches;
   });
