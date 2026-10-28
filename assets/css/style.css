@@ -487,7 +487,7 @@ code { font-family: var(--font-mono); font-size: 0.9em; }
 .tt-ring.ring-hold { background: var(--hold); }
 .tt-ring.fl-soon { background: var(--surface-3); color: var(--text) !important; }
 .tt-tag { margin: 0.55rem 0 0.5rem; color: var(--text); }
-.tt-bar { display: grid; grid-template-columns: 5.6rem 2rem 1fr; align-items: center; gap: 0.4rem; margin-top: 0.4rem; font-size: 0.75rem; color: var(--muted); }
+.tt-bar { display: grid; grid-template-columns: 7rem 2rem 1fr; align-items: center; gap: 0.4rem; margin-top: 0.4rem; font-size: 0.75rem; color: var(--muted); }
 .tt-bar b { font-family: var(--font-mono); color: var(--text); text-align: right; }
 .tt-bar i { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--accent) var(--v), var(--surface-3) var(--v)); }
 .tt-crit { list-style: none; display: flex; flex-wrap: wrap; gap: 0.2rem; margin: 0.3rem 0 0; padding: 0; }

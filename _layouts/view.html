@@ -59,6 +59,7 @@ layout: default
       {%- assign a = rubric[ax] %}
       <div>
         <h3>{{ a.title }} <small>{% if ax == "dx" %}west → east{% else %}south → north{% endif %}</small></h3>
+        {%- if a.explain %}<p>{{ a.explain }}</p>{% endif %}
         <ol class="criteria">
           {%- for c in a.criteria %}<li><strong>{{ c.label }}.</strong> {{ c.help }}</li>{% endfor %}
         </ol>
@@ -73,7 +74,7 @@ layout: default
     <p>Dot shape shows the license: ● open source, ■ free or free tier, ◆ paid. Every tool links the release page or notice that puts it in its ring.</p>
     {%- elsif view_id == "lab" %}
     <h2>How to read a tile</h2>
-    <p>The grid resizes to fill your window, so on a small window each tile shows less. Top left is the element number, top right the license (OS open source, Fr free, Fm free tier, Pd paid). The big letters are the symbol, the bar at the bottom is the ring. The formula in each tooltip is its two Compass scores: <code>Dx</code> ergonomics and <code>Pa</code> parity, in tens.</p>
+    <p>The grid resizes to fill your window, so on a small window each tile shows less. Top left is the element number, top right the license (OS open source, Fr free, Fm free tier, Pd paid). The big letters are the symbol, the bar at the bottom is the ring. The formula in each tooltip is its two Compass scores: <code>Dx</code> ergonomics and <code>Pr</code> production-like, in tens.</p>
     {%- else %}
     <h2>How to read a journey</h2>
     <p>Each station is a level. Learn the tools on the line first; branches are worth knowing. Flisk appears on a level only where it does the job today (<span class="fl-key fl-yes">does it</span>) or part of it (<span class="fl-key fl-partial">partly</span>). Where it does not yet, it is left off. The gaps are tracked in <a href="{{ journeys.flisk_issue }}" rel="noopener">the Flisk repo</a>.</p>
@@ -84,7 +85,7 @@ layout: default
     <summary>The same tools as a table</summary>
     <div class="table-wrap">
       <table>
-        <thead><tr><th scope="col">Tool</th><th scope="col">Family</th><th scope="col">Category</th><th scope="col">Ring</th><th scope="col">License</th><th scope="col">Ergonomics</th><th scope="col">Parity</th></tr></thead>
+        <thead><tr><th scope="col">Tool</th><th scope="col">Family</th><th scope="col">Category</th><th scope="col">Ring</th><th scope="col">License</th><th scope="col">Ergonomics</th><th scope="col">Production-like</th></tr></thead>
         <tbody>
           {%- for f in families %}
           {%- assign row_hidden = false %}

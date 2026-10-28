@@ -1,5 +1,6 @@
 # How a tool's Compass position and Radar ring are decided. Nobody places a dot by hand:
-# a tool's X is 10 points per `dx` criterion it meets, its Y is 10 points per `parity` criterion.
+# a tool's X is 10 points per `dx` criterion it meets, its Y is 10 points per `parity` criterion
+# (shown to people as "production-like").
 # To move a dot, open a PR that adds or removes a criterion id on the tool, with a source.
 
 dx:
@@ -39,11 +40,13 @@ dx:
       label: Agent-ready
       help: An MCP server, a JSON output mode or an API an AI agent can drive.
 
+# The data key stays `parity`; everything people read says "production-like".
 parity:
-  title: Complexity and production parity
-  short: Parity
-  low: Single service, quick start
-  high: Complex multi-service, deep parity
+  title: How production-like it is
+  short: Production-like
+  low: Simple, one service
+  high: Many services, close to production
+  explain: How closely a tool recreates your real production system on your machine. A low score runs one thing; a high score runs many services together with real containers, databases and networking, like production does.
   criteria:
     - id: containers
       label: Real containers
