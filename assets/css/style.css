@@ -271,7 +271,7 @@ code { font-family: var(--font-mono); font-size: 0.9em; }
 /* Adoption Radar */
 
 .radar-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
-@media (min-width: 1100px) { .radar-layout { grid-template-columns: minmax(0, 1fr) 22rem; align-items: start; } }
+@media (min-width: 900px) { .radar-layout { grid-template-columns: minmax(0, 1fr) 19rem; align-items: start; } }
 /* Sized by the window height too, so the whole circle fits on screen under the header. */
 .stage svg.radar { width: min(100%, 56rem, var(--radar-max, 70vh)); margin: 0 auto; }
 @media (max-height: 860px) { .view-head p { display: none; } }
@@ -292,7 +292,7 @@ code { font-family: var(--font-mono); font-size: 0.9em; }
 .ring-label.ring-assess { fill: var(--assess); }
 .ring-label.ring-hold { fill: var(--hold); }
 
-.radar-list { display: grid; gap: 0.9rem; max-height: 56rem; overflow: auto; padding-right: 0.25rem; }
+.radar-list { display: grid; gap: 0.8rem; max-height: min(56rem, var(--radar-max, 40rem)); overflow: auto; padding-right: 0.25rem; }
 .rl h3 { display: flex; align-items: baseline; gap: 0.5rem; font-size: 0.95rem; }
 .rl h3 small { font-family: var(--font-mono); font-size: 0.72rem; color: var(--faint); }
 .rl-adopt h3 span { color: var(--adopt); }
@@ -673,3 +673,9 @@ body.cmp-open { overflow: hidden; }
 .stage-wrap { padding: clamp(0.3rem, 1vw, 0.7rem); border-radius: 16px; }
 .stage { min-height: 16rem; }
 @media (max-width: 720px) { .subtabs .view-count { display: none; } }
+
+/* The charts are as tall as the room under the header, so a whole card fits on screen. */
+.stage svg.compass { max-height: var(--radar-max, none); }
+.radar-list-wrap > summary { cursor: pointer; font-weight: 700; font-size: 0.85rem; color: var(--muted); padding: 0.3rem 0; }
+.radar-list-wrap > summary:hover { color: var(--text); }
+@media (min-width: 900px) { .radar-list-wrap > summary { display: none; } }

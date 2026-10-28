@@ -574,7 +574,12 @@
     }
 
     // A ring-by-ring list beside the radar. Hover a name to find its dot.
-    var aside = el("aside", { class: "radar-list" }, layout);
+    // Beside the circle on wide windows; a closed "Tools by ring" section on narrow ones, so the
+    // card never grows taller than the circle.
+    var listWrap = el("details", { class: "radar-list-wrap" }, layout);
+    el("summary", { text: "Tools by ring" }, listWrap);
+    listWrap.open = window.matchMedia("(min-width: 900px)").matches;
+    var aside = el("aside", { class: "radar-list" }, listWrap);
     var pool = focus ? TOOLS.filter(function (t) { return t.fam === focus.id; }) : TOOLS;
     rings.forEach(function (ring) {
       var inRing = pool.filter(function (t) { return t.ring === ring.id; });
@@ -922,16 +927,21 @@
   function fitRadar() {
     var wrap = stage.parentNode;
     var top = wrap.getBoundingClientRect().top + window.scrollY;
-    var room = window.innerHeight - top - 76; // leaves room for the compare tray
-    stage.style.setProperty("--radar-max", Math.max(340, Math.round(room)) + "px");
+    // The card padding and the compare tray both need room too.
+    var room = window.innerHeight - top - 84;
+    stage.style.setProperty("--radar-max", Math.max(320, Math.round(room)) + "px");
   }
-  window.addEventListener("resize", function () { if (state.view === "radar") fitRadar(); });
+  window.addEventListener("resize", function () {
+    if (state.view === "radar" || state.view === "compass") fitRadar();
+    var lw = stage.querySelector(".radar-list-wrap");
+    if (lw) lw.open = window.matchMedia("(min-width: 900px)").matches;
+  });
 
   function render() {
     hideNow();
     stage.innerHTML = "";
     stage.classList.remove("is-in");
-    if (state.view === "radar") fitRadar();
+    if (state.view === "radar" || state.view === "compass") fitRadar();
     if (state.view === "compass") renderCompass();
     else if (state.view === "radar") renderRadar();
     else if (state.view === "lab") renderLab();
