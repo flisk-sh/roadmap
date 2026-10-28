@@ -78,6 +78,31 @@ journeys["tracks"].each do |tr|
   end
 end
 
+# Roles: every tool a role names must exist, in a known group.
+roles = load("_data/roles.yml") || {}
+group_ids = Array(roles["groups"]).map { |g| g["id"] }
+Array(roles["roles"]).each do |r|
+  errors << "roles #{r['id']}: unknown group #{r['group']}" unless group_ids.include?(r["group"])
+  (Array(r["core"]) + Array(r["daily"]) + Array(r["nice"])).each do |tid|
+    errors << "roles #{r['id']}: unknown tool id #{tid}" unless ids[tid]
+  end
+end
+
+# Skills: unique ids, known categories, and a full test for each (2 should, 1 near, a first step).
+cat_ids = (load("_data/skill_categories.yml") || []).map { |c| c["id"] }
+skill_ids = {}
+Dir[File.join(ROOT, "_data/skills/*.yml")].sort.each do |f|
+  (YAML.load_file(f) || []).each do |sk|
+    at = "#{File.basename(f)} #{sk['id']}"
+    errors << "#{at}: duplicate skill id" if skill_ids[sk["id"]]
+    skill_ids[sk["id"]] = true
+    errors << "#{at}: unknown category #{sk['cat']}" unless cat_ids.include?(sk["cat"])
+    errors << "#{at}: source must look like owner/name" unless sk["source"].to_s.match?(%r{\A[\w.-]+/[\w.-]+\z})
+    e = sk["eval"] || {}
+    errors << "#{at}: eval needs 2 should, 1 near and a first_step" unless Array(e["should"]).size == 2 && e["near"] && e["first_step"]
+  end
+end
+
 if ARGV.include?("--stats")
   total = counts.values.sum { |h| h.values.sum }
   puts "#{total} tools"
@@ -85,7 +110,7 @@ if ARGV.include?("--stats")
 end
 
 if errors.empty?
-  puts "OK: #{ids.size} tools, #{families.size} families, #{journeys['tracks'].size} journey tracks"
+  puts "OK: #{ids.size} tools, #{families.size} families, #{journeys['tracks'].size} journey tracks, #{Array(roles['roles']).size} roles, #{skill_ids.size} skills"
 else
   puts errors
   puts "#{errors.size} problem(s)"

@@ -702,3 +702,119 @@ body.cmp-open { overflow: hidden; }
 .lab-lg .t-formula { display: block; }
 .lab-lg .t-sym { font-size: calc(var(--tile) * 0.34); }
 .cmp-cmd { font-size: 0.82rem; font-weight: 500; }
+
+/* GitHub signals in tooltips */
+.tt-gh { margin: 0.45rem 0 0; font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+.tt-warn { margin: 0.4rem 0 0; padding: 0.35rem 0.5rem; border-radius: 8px; font-size: 0.74rem; background: color-mix(in srgb, var(--hold) 14%, transparent); }
+.tt-sub { margin: 0.55rem 0 0.2rem; font-size: 0.74rem; font-weight: 700; color: var(--text); }
+.tt-day, .tt-tests { margin: 0; padding-left: 1rem; font-size: 0.75rem; color: var(--muted); }
+.tt-tests { list-style: none; padding: 0; }
+.tt-tests li { margin: 0.15rem 0; }
+.tt-tests li.ok { color: var(--text); }
+.tt-tests li.bad { color: var(--text); }
+.tt-tests li.ok::first-letter { color: var(--adopt); }
+.tt-tests li.bad::first-letter { color: var(--hold); }
+.tt-ring.sc-good { background: var(--adopt); }
+.tt-ring.sc-mid { background: var(--assess); }
+.tt-ring.sc-bad { background: var(--hold); }
+.tt-ring.sc-none { background: var(--surface-3); color: var(--text) !important; }
+
+/* New tab icons; Ask shimmers so people find it */
+.view-icon-roles { border: 2px solid currentColor; border-radius: 50% 50% 4px 4px; transform: scaleX(0.8); }
+.view-icon-skills { background: radial-gradient(circle, currentColor 1.6px, transparent 2px) 0 0 / 5px 5px; }
+.view-icon-ask::before { content: "✦"; position: absolute; inset: -3px 0 0; font-size: 14px; line-height: 16px; color: var(--accent); }
+.view-tab-ask {
+  background: linear-gradient(90deg, var(--accent-tint), color-mix(in srgb, #a855f7 16%, transparent), var(--accent-tint));
+  background-size: 200% 100%; animation: ask-shimmer 4s linear infinite;
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent); color: var(--text);
+}
+.view-tab-ask .view-icon-ask::before { animation: ask-pulse 1.8s ease-in-out infinite; display: inline-block; }
+@keyframes ask-shimmer { to { background-position: -200% 0; } }
+@keyframes ask-pulse { 50% { transform: scale(1.35) rotate(20deg); opacity: 0.7; } }
+
+/* Roles: loadout cards */
+.roles { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: 0.7rem; }
+.role {
+  display: flex; flex-direction: column; gap: 0.45rem; padding: 0.75rem 0.8rem 0.8rem;
+  border: 1px solid var(--line); border-radius: 14px; background: var(--surface-2);
+  animation: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d, 0ms) both; transition: opacity 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.role.is-dim { opacity: 0.25; }
+.stage.has-hot .role:has(.is-hot) { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-tint); }
+.stage.has-hot .role:not(:has(.is-hot)) { opacity: 0.45; }
+.role-head { cursor: default; outline: none; }
+.role-head h3 { font-size: 1rem; }
+.role-head p { margin: 0.15rem 0 0; color: var(--muted); font-size: 0.8rem; line-height: 1.35; }
+.role-strip { display: flex; height: 6px; border-radius: 3px; overflow: hidden; gap: 2px; }
+.role-strip span { background: var(--c); min-width: 4px; }
+.slot { display: grid; grid-template-columns: 5.2rem 1fr; gap: 0.4rem; align-items: start; }
+.slot-label { font-family: var(--font-mono); font-size: 0.66rem; color: var(--faint); padding-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.slot-core .slot-label { color: var(--accent-text); }
+.slot-items { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.tok {
+  display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.12rem 0.45rem 0.12rem 0.25rem;
+  border-radius: 7px; font-size: 0.75rem; cursor: pointer; outline: none;
+  border: 1px solid color-mix(in srgb, var(--c) 45%, transparent); background: color-mix(in srgb, var(--c) 9%, var(--surface));
+  transition: transform 0.15s, background 0.15s, opacity 0.2s;
+}
+.tok b { font-size: 0.62rem; font-weight: 900; min-width: 1rem; text-align: center; color: var(--c); }
+.tok .logo { width: 0.9rem; height: 0.9rem; }
+.slot-core .tok { border-width: 2px; font-weight: 500; }
+.slot-nice .tok { border-style: dashed; background: transparent; color: var(--muted); }
+.tok.is-dim { opacity: 0.3; }
+.tok.is-hot, .tok:focus-visible { background: var(--c); color: #0b0b10; transform: translateY(-1px); }
+.tok.is-hot b, .tok.is-hot .logo { color: #0b0b10; }
+.tok.is-picked { box-shadow: 0 0 0 2px var(--accent); }
+
+/* Skills: the swarm */
+.stage svg.swarm { max-height: none; }
+.lane { fill: transparent; }
+.lane-alt { fill: var(--grid); }
+.lane-label { font-size: 12px; font-weight: 700; fill: var(--c); }
+.sdot .core { fill: var(--c); }
+.sdot.sc-good .core { fill: var(--adopt); }
+.sdot.sc-mid .core { fill: var(--assess); }
+.sdot.sc-bad .core { fill: var(--hold); }
+.sdot.sc-none .core { fill: var(--surface-3); stroke: var(--faint); }
+
+/* Ask */
+.ask { max-width: 62rem; margin: 0 auto; padding: clamp(0.5rem, 3vw, 2rem) 0 1rem; }
+.ask-form {
+  position: relative; display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.35rem 0.35rem 0.35rem 2.6rem; border-radius: 16px;
+  border: 2px solid color-mix(in srgb, var(--accent) 55%, transparent); background: var(--surface);
+  box-shadow: 0 0 0 6px var(--accent-tint), 0 18px 50px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.ask-spark { position: absolute; left: 0.95rem; color: var(--accent); font-size: 1.15rem; animation: ask-pulse 1.8s ease-in-out infinite; }
+#ask-q { flex: 1; min-width: 0; font: inherit; font-size: clamp(1rem, 2.4vw, 1.35rem); color: var(--text); background: transparent; border: 0; padding: 0.55rem 0.2rem; }
+#ask-q:focus { outline: none; }
+#ask-q::placeholder { color: var(--faint); }
+.ask-go { font: inherit; font-weight: 700; font-size: 0.95rem; padding: 0.6rem 1.1rem; border-radius: 12px; border: 0; background: var(--accent); color: var(--accent-ink); cursor: pointer; }
+.ask-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.8rem 0 0; justify-content: center; }
+.ask-chip { font: inherit; font-size: 0.78rem; color: var(--muted); background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--r-pill); padding: 0.22rem 0.7rem; cursor: pointer; }
+.ask-chip:hover { color: var(--text); border-color: var(--accent); }
+.ask-out { margin-top: 1.3rem; }
+.ask-out:empty { display: none; }
+.ask-title { font-size: clamp(1.3rem, 3vw, 1.9rem); font-weight: 900; letter-spacing: -0.03em; margin: 0 0 0.6rem; }
+.ask-title span { color: var(--faint); font-weight: 500; font-size: 0.7em; }
+.ask-verdicts { list-style: none; padding: 0; margin: 0 0 0.8rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); gap: 0.45rem; }
+.ask-verdicts li { padding: 0.55rem 0.7rem; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--line); }
+.ask-verdicts li > span:first-child { display: block; font-size: 0.72rem; color: var(--faint); text-transform: uppercase; letter-spacing: 0.05em; }
+.ask-verdicts b { font-size: 1.05rem; }
+.ask-verdicts li.warn { border-color: color-mix(in srgb, var(--hold) 55%, transparent); }
+.ask-actions, .ask-ai { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; margin: 0.6rem 0; }
+.ask-ai { margin-top: 0.9rem; font-size: 0.85rem; color: var(--muted); }
+.btn { font: inherit; font-size: 0.8rem; font-weight: 500; color: var(--text); text-decoration: none; cursor: pointer; background: var(--surface-2); border: 1px solid var(--line-strong); border-radius: var(--r-pill); padding: 0.28rem 0.8rem; }
+.btn:hover { border-color: var(--accent); }
+.ask-table { max-height: none; }
+.ask-none { color: var(--muted); text-align: center; }
+
+/* Header hook: one line that says why the site matters, no extra height. */
+.hook { flex: 1; min-width: 0; font-size: 0.78rem; color: var(--faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 980px) { .hook { display: none; } }
+
+/* Findings */
+.findings .lede { font-size: 1.05rem; color: var(--text); }
+.findings h2 small { font-family: var(--font-mono); font-size: 0.75rem; color: var(--faint); font-weight: 400; margin-left: 0.3rem; }
+.find-list { padding-left: 1.2rem; columns: 2 18rem; column-gap: 2rem; }
+.find-list li { break-inside: avoid; margin-bottom: 0.3rem; }

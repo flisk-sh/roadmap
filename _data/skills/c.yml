@@ -1,0 +1,1613 @@
+# Community agent skills (batch c). Source: popular community GitHub skill collections.
+- id: wshobson-python-testing-patterns
+  name: python-testing-patterns
+  source: wshobson/agents
+  path: plugins/python-development/skills/python-testing-patterns/SKILL.md
+  cat: test
+  what: "Write good pytest tests with fixtures, mocks, parametrize and coverage."
+  license: MIT
+  eval:
+    should:
+      - "Add unit tests for my FastAPI service with pytest, mock the DB calls"
+      - "My pytest suite is slow and messy, set up fixtures and parametrize the repeated cases"
+    near: "Write Jest tests for my React hooks"
+    first_step: "Structure each test with Arrange, Act, Assert and test one behavior per test"
+- id: wshobson-javascript-testing-patterns
+  name: javascript-testing-patterns
+  source: wshobson/agents
+  path: plugins/javascript-typescript/skills/javascript-testing-patterns/SKILL.md
+  cat: test
+  what: "Set up Jest or Vitest tests with mocks, fixtures and Testing Library."
+  license: MIT
+  eval:
+    should:
+      - "Add Vitest unit tests for my TypeScript utils and mock the fetch calls"
+      - "Set up Testing Library tests for this React form component"
+    near: "Write pytest fixtures for my Django models"
+    first_step: "Pick the framework (Jest or Vitest) and set up its config for the project, then write tests with the AAA pattern"
+- id: wshobson-e2e-testing-patterns
+  name: e2e-testing-patterns
+  source: wshobson/agents
+  path: plugins/developer-essentials/skills/e2e-testing-patterns/SKILL.md
+  cat: test
+  what: "Build stable Playwright or Cypress E2E tests and fix flaky ones."
+  license: MIT
+  eval:
+    should:
+      - "Our checkout Playwright tests fail randomly in CI, make them stable"
+      - "Set up end-to-end tests for login and signup flows with Cypress"
+    near: "Write unit tests for the pricing function"
+    first_step: "Use data-testid attributes for stable selectors and only cover critical user journeys"
+- id: wshobson-bats-testing-patterns
+  name: bats-testing-patterns
+  source: wshobson/agents
+  path: plugins/shell-scripting/skills/bats-testing-patterns/SKILL.md
+  cat: test
+  what: "Test shell scripts with Bats, helpers, fixtures and CI wiring."
+  license: MIT
+  eval:
+    should:
+      - "Write bats tests for my deploy.sh script including the failure paths"
+      - "How do I test that my bash function exits non-zero on a missing file?"
+    near: "Lint my shell script for quoting mistakes"
+    first_step: "Write one assertion-focused @test per behavior, using run and checking $status and $output"
+- id: wshobson-debugging-strategies
+  name: debugging-strategies
+  source: wshobson/agents
+  path: plugins/developer-essentials/skills/debugging-strategies/SKILL.md
+  cat: debug
+  what: "Debug step by step: reproduce, gather facts, guess cause, test the guess."
+  license: MIT
+  eval:
+    should:
+      - "This endpoint returns 500 only sometimes in prod, help me track it down"
+      - "My app leaks memory after a few hours, how do I find the cause?"
+    near: "Add a new feature flag to the checkout page"
+    first_step: "Reproduce the bug first, then gather information before forming a hypothesis"
+- id: wshobson-parallel-debugging
+  name: parallel-debugging
+  source: wshobson/agents
+  path: plugins/agent-teams/skills/parallel-debugging/SKILL.md
+  cat: debug
+  what: "Test many bug theories in parallel, collect evidence, pick the real root cause."
+  license: MIT
+  eval:
+    should:
+      - "I have three possible causes for this flaky failure, investigate them all at once"
+      - "Debug this bug that spans the auth, cache and queue modules using competing hypotheses"
+    near: "Fix this typo in the error message"
+    first_step: "Generate hypotheses across the six failure categories (logic, data, state, integration, resource, environment)"
+- id: wshobson-code-review-excellence
+  name: code-review-excellence
+  source: wshobson/agents
+  path: plugins/developer-essentials/skills/code-review-excellence/SKILL.md
+  cat: review
+  what: "Review PRs with clear, kind feedback: context, big picture, then line by line."
+  license: MIT
+  eval:
+    should:
+      - "Review this PR and give me constructive comments"
+      - "Help me write a code review checklist for our team"
+    near: "Open a pull request for my branch"
+    first_step: "Gather context first: read the PR description and linked issue before looking at code"
+- id: wshobson-multi-reviewer-patterns
+  name: multi-reviewer-patterns
+  source: wshobson/agents
+  path: plugins/agent-teams/skills/multi-reviewer-patterns/SKILL.md
+  cat: review
+  what: "Run several review angles at once, merge duplicate findings, set severity."
+  license: MIT
+  eval:
+    should:
+      - "Review this big PR from security, performance and testing angles and give me one report"
+      - "Combine the findings from my three reviewers and rate their severity"
+    near: "Do a quick style check on one file"
+    first_step: "Pick review dimensions that fit the change (security, performance, architecture, testing, a11y)"
+- id: wshobson-error-handling-patterns
+  name: error-handling-patterns
+  source: wshobson/agents
+  path: plugins/developer-essentials/skills/error-handling-patterns/SKILL.md
+  cat: code
+  what: "Handle errors well: exceptions, Result types, retries, graceful fallback."
+  license: MIT
+  eval:
+    should:
+      - "Design a consistent error handling strategy for our API client with retries"
+      - "Should I use exceptions or Result types in this Rust-style TypeScript module?"
+    near: "Debug why this stack trace shows up in production"
+    first_step: "Validate input early and fail fast, choosing exceptions or Result types per error category"
+- id: wshobson-git-advanced-workflows
+  name: git-advanced-workflows
+  source: wshobson/agents
+  path: plugins/developer-essentials/skills/git-advanced-workflows/SKILL.md
+  cat: git
+  what: "Use rebase, cherry-pick, bisect, worktrees and reflog to fix history."
+  license: MIT
+  eval:
+    should:
+      - "Squash my last 6 commits into clean ones before I open the PR"
+      - "I lost commits after a bad reset, can you recover them from reflog?"
+    near: "Write a good commit message for these changes"
+    first_step: "Use interactive rebase to reword, squash or fixup commits, and prefer --force-with-lease when pushing"
+- id: wshobson-architecture-decision-records
+  name: architecture-decision-records
+  source: wshobson/agents
+  path: plugins/documentation-generation/skills/architecture-decision-records/SKILL.md
+  cat: docs
+  what: "Write and keep ADRs that say why a technical choice was made."
+  license: MIT
+  eval:
+    should:
+      - "We picked Postgres over DynamoDB, write an ADR for it"
+      - "Set up an ADR folder, template and index for our repo"
+    near: "Write the README for this project"
+    first_step: "Decide whether the change deserves an ADR, then capture context, decision and consequences"
+- id: wshobson-changelog-automation
+  name: changelog-automation
+  source: wshobson/agents
+  path: plugins/documentation-generation/skills/changelog-automation/SKILL.md
+  cat: docs
+  what: "Make changelogs and release notes from commits in Keep a Changelog style."
+  license: MIT
+  eval:
+    should:
+      - "Set up conventional commits and auto-generated release notes for this repo"
+      - "Generate the changelog for v2.3.0 from our merged PRs"
+    near: "Bump the version in package.json and publish to npm"
+    first_step: "Follow the Keep a Changelog format and group entries from Conventional Commit messages"
+- id: wshobson-openapi-spec-generation
+  name: openapi-spec-generation
+  source: wshobson/agents
+  path: plugins/documentation-generation/skills/openapi-spec-generation/SKILL.md
+  cat: docs
+  what: "Write and check OpenAPI 3.1 specs from code or design-first."
+  license: MIT
+  eval:
+    should:
+      - "Generate an OpenAPI spec from my Express routes"
+      - "Write a design-first OpenAPI contract for the orders API so we can generate SDKs"
+    near: "Design the REST resource names and status codes for a new API"
+    first_step: "Pick the approach (code-first or design-first) and start from the OpenAPI 3.1 document structure"
+- id: wshobson-api-design-principles
+  name: api-design-principles
+  source: wshobson/agents
+  path: plugins/backend-development/skills/api-design-principles/SKILL.md
+  cat: plan
+  what: "Design REST or GraphQL APIs: resources, verbs, versions, pagination, errors."
+  license: MIT
+  eval:
+    should:
+      - "Design the REST API for a booking system, with pagination and error format"
+      - "Review our GraphQL schema design before we implement the resolvers"
+    near: "Write the OpenAPI YAML file for an existing API"
+    first_step: "Model resources as plural nouns and use HTTP methods for actions"
+- id: wshobson-github-actions-templates
+  name: github-actions-templates
+  source: wshobson/agents
+  path: plugins/cicd-automation/skills/github-actions-templates/SKILL.md
+  cat: ops
+  what: "Build GitHub Actions workflows for test, build, push image and deploy."
+  license: MIT
+  eval:
+    should:
+      - "Create a GitHub Actions workflow that runs tests on a Node matrix and builds a Docker image"
+      - "Make a reusable workflow for deploying to Kubernetes with approvals"
+    near: "Set up GitLab CI for this repo"
+    first_step: "Pin action versions (like @v4) and start from the test workflow pattern"
+- id: wshobson-deployment-pipeline-design
+  name: deployment-pipeline-design
+  source: wshobson/agents
+  path: plugins/cicd-automation/skills/deployment-pipeline-design/SKILL.md
+  cat: ops
+  what: "Design multi-stage CI/CD with gates, canary rollout and rollback."
+  license: MIT
+  eval:
+    should:
+      - "Design a pipeline with staging, manual approval and canary to production"
+      - "Our rollback leaves migrations applied, how should the pipeline handle it?"
+    near: "Fix a failing unit test in CI"
+    first_step: "State the inputs (stack, environments, risk level) and produce a staged pipeline with security and approval gates"
+- id: wshobson-secrets-management
+  name: secrets-management
+  source: wshobson/agents
+  path: plugins/cicd-automation/skills/secrets-management/SKILL.md
+  cat: security
+  what: "Keep CI/CD secrets safe with Vault, cloud secret managers and rotation."
+  license: MIT
+  eval:
+    should:
+      - "Move our API keys out of the repo into AWS Secrets Manager and read them in GitHub Actions"
+      - "Set up secret rotation for our database password"
+    near: "Scan this repo for leaked tokens in git history"
+    first_step: "Never commit secrets to git; pick a secret store (Vault, AWS, Azure, GCP) and wire it into the pipeline"
+- id: wshobson-stride-analysis-patterns
+  name: stride-analysis-patterns
+  source: wshobson/agents
+  path: plugins/security-scanning/skills/stride-analysis-patterns/SKILL.md
+  cat: security
+  what: "Threat model with STRIDE: spoofing, tampering, repudiation, leaks, DoS, privilege."
+  license: MIT
+  eval:
+    should:
+      - "Do a STRIDE threat model of our new file upload service"
+      - "Help me run a threat modeling session for the payments flow"
+    near: "Scan my code for SQL injection bugs"
+    first_step: "List the system components and data flows, then walk each STRIDE category against them"
+- id: wshobson-sast-configuration
+  name: sast-configuration
+  source: wshobson/agents
+  path: plugins/security-scanning/skills/sast-configuration/SKILL.md
+  cat: security
+  what: "Set up Semgrep, CodeQL or SonarQube static security scans in CI."
+  license: MIT
+  eval:
+    should:
+      - "Add Semgrep and CodeQL scanning to our CI pipeline with a baseline"
+      - "Write a custom Semgrep rule that flags our unsafe query helper"
+    near: "Do a manual penetration test of the login API"
+    first_step: "Identify the main languages in the codebase, then pick and configure matching SAST tools"
+- id: wshobson-bash-defensive-patterns
+  name: bash-defensive-patterns
+  source: wshobson/agents
+  path: plugins/shell-scripting/skills/bash-defensive-patterns/SKILL.md
+  cat: code
+  what: "Write safer bash: strict mode, traps, quoting, cleanup, argument checks."
+  license: MIT
+  eval:
+    should:
+      - "Rewrite this deploy script so it fails safely and cleans up temp files"
+      - "Make my bash backup script production-grade with proper error handling"
+    near: "Write unit tests for my shell script"
+    first_step: "Always use strict mode with set -Eeuo pipefail and add traps for cleanup"
+- id: wshobson-postgresql-table-design
+  name: postgresql-table-design
+  source: wshobson/agents
+  path: plugins/database-design/skills/postgresql-table-design/SKILL.md
+  cat: data
+  what: "Design Postgres tables: types, keys, constraints, indexes, partitions."
+  license: MIT
+  eval:
+    should:
+      - "Design the Postgres schema for a multi-tenant invoicing app"
+      - "Review my table definitions for bad data types and missing indexes"
+    near: "Tune a slow SELECT with EXPLAIN"
+    first_step: "Apply the core rules first, then pick data types and avoid the listed types to avoid"
+- id: wshobson-sql-optimization-patterns
+  name: sql-optimization-patterns
+  source: wshobson/agents
+  path: plugins/developer-essentials/skills/sql-optimization-patterns/SKILL.md
+  cat: data
+  what: "Make slow SQL fast: read EXPLAIN plans, add right indexes, rewrite queries."
+  license: MIT
+  eval:
+    should:
+      - "This report query takes 12 seconds, optimize it using EXPLAIN"
+      - "Which indexes should I add for these three common queries?"
+    near: "Design the schema for a new database"
+    first_step: "Run EXPLAIN on the slow query and read the plan for scans and expensive nodes"
+- id: wshobson-dependency-upgrade
+  name: dependency-upgrade
+  source: wshobson/agents
+  path: plugins/framework-migration/skills/dependency-upgrade/SKILL.md
+  cat: code
+  what: "Upgrade major dependencies in stages: audit, compat check, test each step."
+  license: MIT
+  eval:
+    should:
+      - "Upgrade React 17 to 18 safely in stages with a compatibility check"
+      - "Plan the major version bump of our ORM and handle breaking changes with codemods"
+    near: "Scan dependencies for known CVEs"
+    first_step: "Audit current dependencies and review semantic versioning impact before touching versions"
+- id: wshobson-postmortem-writing
+  name: postmortem-writing
+  source: wshobson/agents
+  path: plugins/incident-response/skills/postmortem-writing/SKILL.md
+  cat: docs
+  what: "Write blameless postmortems with timeline, root cause and action items."
+  license: MIT
+  eval:
+    should:
+      - "Write a postmortem for yesterday's 40 minute checkout outage"
+      - "Run a 5 whys analysis for this incident and draft action items"
+    near: "Write an on-call runbook for the database"
+    first_step: "Build the incident timeline first and keep the document blameless"
+- id: wshobson-wcag-audit-patterns
+  name: wcag-audit-patterns
+  source: wshobson/agents
+  path: plugins/accessibility-compliance/skills/wcag-audit-patterns/SKILL.md
+  cat: frontend
+  what: "Audit sites for WCAG 2.2 with auto tools, manual checks and fixes."
+  license: MIT
+  eval:
+    should:
+      - "Audit our signup page for WCAG 2.2 AA problems and tell me how to fix them"
+      - "Our app fails keyboard navigation and contrast checks, find all violations"
+    near: "Make the page look more modern"
+    first_step: "Check the page against the POUR principles using automated tools, then verify manually"
+- id: wshobson-python-performance-optimization
+  name: python-performance-optimization
+  source: wshobson/agents
+  path: plugins/python-development/skills/python-performance-optimization/SKILL.md
+  cat: ops
+  what: "Profile Python with cProfile and memory tools, then fix the real hotspots."
+  license: MIT
+  eval:
+    should:
+      - "My Python ETL job is slow, profile it and find the bottleneck"
+      - "Find why my service memory keeps growing with tracemalloc"
+    near: "Rewrite this Python script in Rust"
+    first_step: "Profile before optimizing so you measure the real bottleneck instead of guessing"
+- id: wshobson-distributed-tracing
+  name: distributed-tracing
+  source: wshobson/agents
+  path: plugins/observability-monitoring/skills/distributed-tracing/SKILL.md
+  cat: ops
+  what: "Add tracing with Jaeger or Tempo to follow requests across services."
+  license: MIT
+  eval:
+    should:
+      - "Add distributed tracing to our microservices so we can see where latency comes from"
+      - "Set up OpenTelemetry with Jaeger and link trace ids into our logs"
+    near: "Write a Grafana dashboard for CPU metrics"
+    first_step: "Instrument services and propagate trace context, sampling 1-10 percent in production"
+- id: wshobson-k8s-security-policies
+  name: k8s-security-policies
+  source: wshobson/agents
+  path: plugins/kubernetes-operations/skills/k8s-security-policies/SKILL.md
+  cat: security
+  what: "Lock down Kubernetes with NetworkPolicy, pod security and RBAC."
+  license: MIT
+  eval:
+    should:
+      - "Add default-deny network policies and a restricted pod security context to our namespace"
+      - "Write RBAC roles for a read-only CI service account"
+    near: "Generate a Deployment manifest for my app"
+    first_step: "Apply Pod Security Standards at the namespace level and start with default-deny network policy"
+- id: wshobson-llm-evaluation
+  name: llm-evaluation
+  source: wshobson/agents
+  path: plugins/llm-application-dev/skills/llm-evaluation/SKILL.md
+  cat: data
+  what: "Test LLM apps with metrics, human review and LLM-as-judge."
+  license: MIT
+  eval:
+    should:
+      - "Build an evaluation harness for our RAG chatbot with automated metrics"
+      - "How do I measure if my new prompt is better than the old one?"
+    near: "Fine-tune a model on our dataset"
+    first_step: "Choose evaluation types (automated metrics, human evaluation, LLM-as-judge) and follow the Quick Start"
+- id: wshobson-auth-implementation-patterns
+  name: auth-implementation-patterns
+  source: wshobson/agents
+  path: plugins/developer-essentials/skills/auth-implementation-patterns/SKILL.md
+  cat: security
+  what: "Build login right: JWT, OAuth2, sessions and RBAC done safely."
+  license: MIT
+  eval:
+    should:
+      - "Implement JWT auth with refresh tokens and role-based access in my API"
+      - "Add OAuth2 login with Google to our web app and keep sessions secure"
+    near: "Review my code for XSS bugs"
+    first_step: "Never store plain passwords; hash with bcrypt or argon2 and choose between auth strategies"
+- id: wshobson-tailwind-design-system
+  name: tailwind-design-system
+  source: wshobson/agents
+  path: plugins/frontend-mobile-development/skills/tailwind-design-system/SKILL.md
+  cat: frontend
+  what: "Build a design system with Tailwind v4: tokens, components, responsive."
+  license: MIT
+  eval:
+    should:
+      - "Set up a Tailwind v4 design system with tokens and a button component library"
+      - "Standardize our UI spacing and colors with design tokens in Tailwind"
+    near: "Debug why my CSS grid is broken in Safari"
+    first_step: "Start from the Quick Start and define the design token hierarchy before building components"
+- id: alirezarezvani-focused-fix
+  name: focused-fix
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/focused-fix/SKILL.md
+  cat: debug
+  what: "Fix one broken feature end to end: scope it, trace deps, diagnose, fix, verify."
+  license: MIT
+  eval:
+    should:
+      - "The billing module is broken in several places, make the whole thing work again"
+      - "Fix the notifications feature end to end, not just the first bug you see"
+    near: "Quick fix for a typo in a single function"
+    first_step: "Ask which feature or folder to focus on if unclear, then map its boundary (SCOPE phase)"
+- id: alirezarezvani-adversarial-reviewer
+  name: adversarial-reviewer
+  source: alirezarezvani/claude-skills
+  path: engineering-team/skills/adversarial-reviewer/SKILL.md
+  cat: review
+  what: "Hard code review with three hostile personas to beat agreeable self-review."
+  license: MIT
+  eval:
+    should:
+      - "Do a really critical review of my changes before I merge, you are being too nice"
+      - "Break this PR: find what a saboteur and a new hire would trip on"
+    near: "Summarize what changed in this PR"
+    first_step: "Gather the changes, then read the full file (not just the diff) before running the three personas"
+- id: alirezarezvani-pr-review-expert
+  name: pr-review-expert
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/pr-review-expert/SKILL.md
+  cat: review
+  what: "Review a PR for blast radius, security, test gaps and breaking changes."
+  license: MIT
+  eval:
+    should:
+      - "Review PR 482 for security and breaking changes"
+      - "What is the blast radius of this diff and do tests cover it?"
+    near: "Write the PR description for my change"
+    first_step: "Fetch the diff with gh and read the linked ticket before looking at code"
+- id: alirezarezvani-red-green-proof
+  name: red-green-proof
+  source: alirezarezvani/claude-skills
+  path: engineering-team/skills/red-green-proof/SKILL.md
+  cat: debug
+  what: "Prove a bug: failing test first, fix, then revert the fix and see red again."
+  license: MIT
+  eval:
+    should:
+      - "I think I found the cause of this bug, prove it with a failing test before fixing"
+      - "Write a regression test for the race condition and show it fails without the fix"
+    near: "Add tests to increase coverage"
+    first_step: "Verify the cause against reality instead of inferring it, then write a test that FAILS on current code"
+- id: alirezarezvani-dependency-auditor
+  name: dependency-auditor
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/dependency-auditor/SKILL.md
+  cat: security
+  what: "Audit packages for CVEs, license clashes and risky upgrades across languages."
+  license: MIT
+  eval:
+    should:
+      - "Audit our dependencies for vulnerabilities and license conflicts before release"
+      - "Which transitive dependencies are risky and what is the safe upgrade path?"
+    near: "Update React to the latest version"
+    first_step: "Run the audit scripts across the supported ecosystems and prioritize high and critical findings first"
+- id: alirezarezvani-env-secrets-manager
+  name: env-secrets-manager
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/env-secrets-manager/SKILL.md
+  cat: security
+  what: "Check .env files for leaked secrets, drift and rotation readiness."
+  license: MIT
+  eval:
+    should:
+      - "Check this repo for committed secrets in .env files and plan rotation"
+      - "We leaked an API key in git, walk me through detection and rotation"
+    near: "Design OAuth login for the app"
+    first_step: "Run scripts/env_auditor.py on the repository root"
+- id: alirezarezvani-docker-development
+  name: docker-development
+  source: alirezarezvani/claude-skills
+  path: engineering/docker-development/skills/docker-development/SKILL.md
+  cat: ops
+  what: "Shrink and harden Dockerfiles, build multi-stage images, write compose files."
+  license: MIT
+  eval:
+    should:
+      - "Optimize this Dockerfile, it makes a 1.8GB image"
+      - "Write a docker-compose for my API, Postgres and Redis and check container security"
+    near: "Write Kubernetes manifests for my app"
+    first_step: "Analyze the current Dockerfile or setup with the analyzer before suggesting changes"
+- id: alirezarezvani-ci-cd-pipeline-builder
+  name: ci-cd-pipeline-builder
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/ci-cd-pipeline-builder/SKILL.md
+  cat: ops
+  what: "Detect the stack and generate a lean CI/CD pipeline with safe deploy stages."
+  license: MIT
+  eval:
+    should:
+      - "Set up CI for this new repo, detect the stack and generate the pipeline"
+      - "Refactor our slow CI pipeline and add a staged deploy"
+    near: "Debug why this GitHub Actions job fails on checkout"
+    first_step: "Detect the stack, then confirm the test, lint and build commands actually exist in the project"
+- id: alirezarezvani-git-worktree-manager
+  name: git-worktree-manager
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/git-worktree-manager/SKILL.md
+  cat: git
+  what: "Run parallel branches in git worktrees with own ports, env and safe cleanup."
+  license: MIT
+  eval:
+    should:
+      - "Set up separate worktrees so I can run three feature branches and agents in parallel"
+      - "Clean up stale worktrees safely and allocate ports for each"
+    near: "Squash my commits"
+    first_step: "Pick a branch and worktree name, then create a fully prepared worktree with env and ports"
+- id: alirezarezvani-performance-profiler
+  name: performance-profiler
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/performance-profiler/SKILL.md
+  cat: ops
+  what: "Find CPU, memory and IO bottlenecks in Node, Python or Go; run load tests."
+  license: MIT
+  eval:
+    should:
+      - "Profile my Node API and show where the CPU time goes with a flamegraph"
+      - "Run a k6 load test on the checkout endpoint and analyze bundle size"
+    near: "Make this SQL query faster with an index"
+    first_step: "Follow the golden rule: measure first, before changing any code"
+- id: alirezarezvani-api-test-suite-builder
+  name: api-test-suite-builder
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/api-test-suite-builder/SKILL.md
+  cat: test
+  what: "Scan routes and generate REST integration and contract tests."
+  license: MIT
+  eval:
+    should:
+      - "Generate integration tests for all the Express routes in this service"
+      - "Build an auth and input validation test matrix for our FastAPI endpoints"
+    near: "Write browser tests for the checkout UI"
+    first_step: "Scan the routes with the detection commands for the framework in use"
+- id: alirezarezvani-migration-architect
+  name: migration-architect
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/migration-architect/SKILL.md
+  cat: plan
+  what: "Plan zero-downtime migrations with compat checks and rollback plans."
+  license: MIT
+  eval:
+    should:
+      - "Plan a zero-downtime migration of our users table to a new schema with rollback"
+      - "We are moving from one cloud to another, plan the cutover with a strangler pattern"
+    near: "Run the Prisma migrate command"
+    first_step: "Use the Quick Start: plan the migration, check compatibility, then generate the rollback strategy"
+- id: alirezarezvani-runbook-generator
+  name: runbook-generator
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/runbook-generator/SKILL.md
+  cat: docs
+  what: "Make ops runbooks for deploy, incident, maintenance and rollback."
+  license: MIT
+  eval:
+    should:
+      - "Generate a runbook for our payments service covering deploy and rollback"
+      - "We need on-call procedures documented for the new queue worker"
+    near: "Write the postmortem for last week's outage"
+    first_step: "Generate the initial skeleton with scripts/runbook_generator.py"
+- id: alirezarezvani-a11y-audit
+  name: a11y-audit
+  source: alirezarezvani/claude-skills
+  path: engineering-team/a11y-audit/skills/a11y-audit/SKILL.md
+  cat: frontend
+  what: "Scan, fix and verify WCAG 2.2 A and AA problems in React, Vue and HTML."
+  license: MIT
+  eval:
+    should:
+      - "Run an accessibility audit on our React app and fix the violations"
+      - "Check color contrast and missing labels across the components, then verify the fixes"
+    near: "Add dark mode to the app"
+    first_step: "Run the scanner over the codebase to list violations by severity (scan, fix, verify workflow)"
+- id: alirezarezvani-security-pen-testing
+  name: security-pen-testing
+  source: alirezarezvani/claude-skills
+  path: engineering-team/skills/security-pen-testing/SKILL.md
+  cat: security
+  what: "Do an OWASP Top 10 audit: static scan, deps, secrets, API and auth tests."
+  license: MIT
+  eval:
+    should:
+      - "Do an OWASP Top 10 security audit of our API and give me a report"
+      - "Run dependency, secret and API security checks and write an executive summary"
+    near: "Set up SAST in CI"
+    first_step: "Collect findings by running the ecosystem audit tools, then aggregate them"
+- id: alirezarezvani-tech-debt-tracker
+  name: tech-debt-tracker
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/tech-debt-tracker/SKILL.md
+  cat: code
+  what: "Scan for tech debt, score it, track trends, plan cleanup."
+  license: MIT
+  eval:
+    should:
+      - "Scan our codebase for technical debt and prioritize what to fix first"
+      - "Give me a debt score dashboard and a remediation plan for the next sprint"
+    near: "Refactor this one function"
+    first_step: "Scan the codebase, then prioritize the backlog, then track trends over time"
+- id: alirezarezvani-spec-driven-workflow
+  name: spec-driven-workflow
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/spec-driven-workflow/SKILL.md
+  cat: plan
+  what: "Write the spec and acceptance rules first, make tests from it, then code."
+  license: MIT
+  eval:
+    should:
+      - "Write a spec with acceptance criteria before we build the export feature"
+      - "Do this spec-first: spec, tests from spec, then implementation"
+    near: "Just implement the endpoint I described"
+    first_step: "Gather requirements, then write the spec before any code (Phase 1 and 2 of the 6 phases)"
+- id: alirezarezvani-ship-gate
+  name: ship-gate
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/ship-gate/SKILL.md
+  cat: ops
+  what: "Pre-deploy audit that blocks deploy until critical issues pass."
+  license: MIT
+  eval:
+    should:
+      - "Run a pre-production audit before I deploy this to prod"
+      - "Block my deploy command until security, database and observability checks pass"
+    near: "Deploy to Cloudflare Workers"
+    first_step: "Ask whether the ship gate has been run and offer to scan now, then detect the stack"
+- id: alirezarezvani-skill-security-auditor
+  name: skill-security-auditor
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/skill-security-auditor/SKILL.md
+  cat: security
+  what: "Scan an agent skill for bad scripts and prompt injection before installing."
+  license: MIT
+  eval:
+    should:
+      - "Audit this skill from GitHub for malicious code before I install it"
+      - "Scan all skills in my skills folder for prompt injection and risky dependencies"
+    near: "Write a new skill for me"
+    first_step: "Run the scanner on the skill directory or repo URL and read the report"
+- id: alirezarezvani-api-design-reviewer
+  name: api-design-reviewer
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/api-design-reviewer/SKILL.md
+  cat: review
+  what: "Lint REST APIs for naming, versions and breaking changes; score the design."
+  license: MIT
+  eval:
+    should:
+      - "Review this PR that changes our public REST API for breaking changes"
+      - "Score the API design of our OpenAPI spec and flag inconsistent naming"
+    near: "Generate an OpenAPI spec from scratch"
+    first_step: "Run the linting and breaking-change tools first, per the Quick Start, before reviewing manually"
+- id: alirezarezvani-observability-designer
+  name: observability-designer
+  source: alirezarezvani/claude-skills
+  path: engineering/skills/observability-designer/SKILL.md
+  cat: ops
+  what: "Plan metrics, logs, traces, SLOs and alerts for a service."
+  license: MIT
+  eval:
+    should:
+      - "Design observability for our new service with SLOs and low-noise alerts"
+      - "Our alerts are noisy, redesign them around golden signals"
+    near: "Write a Grafana dashboard JSON for me"
+    first_step: "Define SLIs and SLOs, then design the metrics, logs and traces around the golden signals"
+- id: jeffallan-debugging-wizard
+  name: debugging-wizard
+  source: Jeffallan/claude-skills
+  path: skills/debugging-wizard/SKILL.md
+  cat: debug
+  what: "Find bugs from stack traces and logs with a hypothesis-first method."
+  license: MIT
+  eval:
+    should:
+      - "Here is a traceback from prod, figure out what is failing and why"
+      - "Correlate these log entries to find the failure point in our worker"
+    near: "Review my PR for style issues"
+    first_step: "Reproduce the issue first and establish consistent reproduction steps"
+- id: jeffallan-test-master
+  name: test-master
+  source: Jeffallan/claude-skills
+  path: skills/test-master/SKILL.md
+  cat: test
+  what: "Make test plans, mocks and coverage checks across unit, e2e and perf tests."
+  license: MIT
+  eval:
+    should:
+      - "Create a test strategy and unit tests for our payments module with good mocking"
+      - "Analyze coverage gaps and write a defect report"
+    near: "Fix this failing test"
+    first_step: "Define scope: identify what to test and which testing types apply"
+- id: jeffallan-code-reviewer
+  name: code-reviewer
+  source: Jeffallan/claude-skills
+  path: skills/code-reviewer/SKILL.md
+  cat: review
+  what: "Review diffs for bugs, security, N+1 queries and smells; give a report."
+  license: MIT
+  eval:
+    should:
+      - "Review this diff and give me a structured report with severity"
+      - "Check my PR for SQL injection, N+1 queries and naming problems"
+    near: "Refactor this class for me"
+    first_step: "Read the PR description and summarize its intent before reviewing the code"
+- id: jeffallan-security-reviewer
+  name: security-reviewer
+  source: Jeffallan/claude-skills
+  path: skills/security-reviewer/SKILL.md
+  cat: security
+  what: "Audit code or infra for vulnerabilities and write a report with fixes."
+  license: MIT
+  eval:
+    should:
+      - "Do a security audit of our auth module and rate the findings by severity"
+      - "Review our Terraform and Dockerfiles for security issues"
+    near: "Add rate limiting to the API"
+    first_step: "Map the attack surface and confirm written authorization and rules of engagement first"
+- id: jeffallan-secure-code-guardian
+  name: secure-code-guardian
+  source: Jeffallan/claude-skills
+  path: skills/secure-code-guardian/SKILL.md
+  cat: security
+  what: "Write secure code: safe auth, input checks, hashing, OWASP Top 10 fixes."
+  license: MIT
+  eval:
+    should:
+      - "Implement login with bcrypt hashing and parameterized SQL queries"
+      - "Add input validation with Zod and secure JWT validation to this endpoint"
+    near: "Pen-test our staging site"
+    first_step: "Threat model first: identify the attack surface and threats"
+- id: jeffallan-playwright-expert
+  name: playwright-expert
+  source: Jeffallan/claude-skills
+  path: skills/playwright-expert/SKILL.md
+  cat: test
+  what: "Write Playwright E2E tests with page objects, fixtures and CI."
+  license: MIT
+  eval:
+    should:
+      - "Write Playwright tests for the signup flow using page objects"
+      - "My Playwright tests are flaky, debug them and add trace on CI"
+    near: "Write unit tests with Jest"
+    first_step: "Analyze requirements by identifying the user flows to test, using role-based selectors"
+- id: jeffallan-code-documenter
+  name: code-documenter
+  source: Jeffallan/claude-skills
+  path: skills/code-documenter/SKILL.md
+  cat: docs
+  what: "Add docstrings, JSDoc, OpenAPI specs and user guides to code."
+  license: MIT
+  eval:
+    should:
+      - "Add Google-style docstrings to every public function in this Python package"
+      - "Generate API documentation with JSDoc and an OpenAPI spec for our service"
+    near: "Write a blog post about our launch"
+    first_step: "Discover the preferred doc format and any exclusions by asking the user"
+- id: jeffallan-api-designer
+  name: api-designer
+  source: Jeffallan/claude-skills
+  path: skills/api-designer/SKILL.md
+  cat: plan
+  what: "Design REST or GraphQL APIs with resource models, OpenAPI and error standards."
+  license: MIT
+  eval:
+    should:
+      - "Design the API for a booking service with OpenAPI 3.1, pagination and RFC 7807 errors"
+      - "Plan API versioning and resource modeling for our v2"
+    near: "Implement the endpoint handlers"
+    first_step: "Analyze the domain: business requirements, data models and client needs"
+- id: jeffallan-architecture-designer
+  name: architecture-designer
+  source: Jeffallan/claude-skills
+  path: skills/architecture-designer/SKILL.md
+  cat: plan
+  what: "Design system architecture, draw Mermaid diagrams, write ADRs, weigh trade-offs."
+  license: MIT
+  eval:
+    should:
+      - "Design the architecture for a real-time notifications system and write an ADR"
+      - "Review our current architecture and compare monolith vs microservices"
+    near: "Optimize this slow endpoint"
+    first_step: "Gather functional, non-functional and constraint requirements first"
+- id: jeffallan-devops-engineer
+  name: devops-engineer
+  source: Jeffallan/claude-skills
+  path: skills/devops-engineer/SKILL.md
+  cat: ops
+  what: "Write Dockerfiles, CI/CD, Kubernetes and Terraform with a rollback plan."
+  license: MIT
+  eval:
+    should:
+      - "Create a Dockerfile, GitHub Actions pipeline and rollback procedure for our service"
+      - "Set up GitOps config and Terraform for a staging environment"
+    near: "Fix a bug in my React component"
+    first_step: "Assess the application, environments and requirements first"
+- id: jeffallan-sre-engineer
+  name: sre-engineer
+  source: Jeffallan/claude-skills
+  path: skills/sre-engineer/SKILL.md
+  cat: ops
+  what: "Set SLOs and error budgets, plan incident response and capacity."
+  license: MIT
+  eval:
+    should:
+      - "Define SLOs and error budget policy for our API with burn rate alerts"
+      - "Write a toil automation script and capacity model for our service"
+    near: "Write the unit tests for the service"
+    first_step: "Assess reliability by reviewing architecture, SLOs, incidents and toil levels"
+- id: jeffallan-database-optimizer
+  name: database-optimizer
+  source: Jeffallan/claude-skills
+  path: skills/database-optimizer/SKILL.md
+  cat: data
+  what: "Tune Postgres or MySQL: slow queries, EXPLAIN, indexes, rewrites."
+  license: MIT
+  eval:
+    should:
+      - "Find our top slow queries in Postgres and tune them with better indexes"
+      - "Read this EXPLAIN ANALYZE output and tell me what to fix"
+    near: "Design the initial schema"
+    first_step: "Capture baseline metrics and run EXPLAIN ANALYZE before changing anything"
+- id: jeffallan-spec-miner
+  name: spec-miner
+  source: Jeffallan/claude-skills
+  path: skills/spec-miner/SKILL.md
+  cat: docs
+  what: "Read old code with no docs and pull out the real specs and dependencies."
+  license: MIT
+  eval:
+    should:
+      - "Nobody documented this legacy service, reverse engineer what it does"
+      - "Extract requirements and a dependency map from this inherited codebase"
+    near: "Write a spec for a brand-new feature"
+    first_step: "Scope the analysis boundary, either full system or a specific feature"
+- id: jeffallan-feature-forge
+  name: feature-forge
+  source: Jeffallan/claude-skills
+  path: skills/feature-forge/SKILL.md
+  cat: plan
+  what: "Run a requirements workshop and write user stories, EARS rules, acceptance tests."
+  license: MIT
+  eval:
+    should:
+      - "Help me define the new invoicing feature with user stories and acceptance criteria"
+      - "Gather requirements for our export feature and write EARS functional requirements"
+    near: "Reverse engineer specs from an old system"
+    first_step: "Discover the feature goal, target users and user value by asking structured questions"
+- id: jeffallan-the-fool
+  name: the-fool
+  source: Jeffallan/claude-skills
+  path: skills/the-fool/SKILL.md
+  cat: plan
+  what: "Play devil's advocate: pre-mortem, red team and assumption checks on a plan."
+  license: MIT
+  eval:
+    should:
+      - "Poke holes in my migration plan, run a pre-mortem"
+      - "Challenge this architecture decision and audit my assumptions"
+    near: "Review my code for bugs"
+    first_step: "Identify the user's position and restate it as a steelmanned thesis for confirmation"
+- id: jeffallan-legacy-modernizer
+  name: legacy-modernizer
+  source: Jeffallan/claude-skills
+  path: skills/legacy-modernizer/SKILL.md
+  cat: code
+  what: "Plan step-by-step legacy migration with strangler facades and char tests."
+  license: MIT
+  eval:
+    should:
+      - "Plan an incremental migration of our old PHP monolith with a strangler fig facade"
+      - "Add characterization tests and a feature flag wrapper before refactoring this legacy module"
+    near: "Rewrite the whole app in a new framework this weekend"
+    first_step: "Assess the system by analyzing the codebase, dependencies and risks to produce a dependency map"
+- id: jeffallan-chaos-engineer
+  name: chaos-engineer
+  source: Jeffallan/claude-skills
+  path: skills/chaos-engineer/SKILL.md
+  cat: ops
+  what: "Design chaos experiments and game days with blast radius and rollback."
+  license: MIT
+  eval:
+    should:
+      - "Design a chaos experiment to kill pods and see if our checkout survives"
+      - "Plan a game day for our database failover with abort conditions"
+    near: "Write load tests"
+    first_step: "Map architecture, dependencies and critical paths to find failure modes"
+- id: jeffallan-cli-developer
+  name: cli-developer
+  source: Jeffallan/claude-skills
+  path: skills/cli-developer/SKILL.md
+  cat: code
+  what: "Build CLI tools: commands, flags, prompts, progress bars, shell completions."
+  license: MIT
+  eval:
+    should:
+      - "Build a CLI with subcommands, flags and bash/zsh completions in Node"
+      - "Add interactive prompts and a progress spinner to our Python CLI"
+    near: "Build a REST API"
+    first_step: "Analyze UX by listing all commands and the command hierarchy before coding"
+- id: jeffallan-monitoring-expert
+  name: monitoring-expert
+  source: Jeffallan/claude-skills
+  path: skills/monitoring-expert/SKILL.md
+  cat: ops
+  what: "Set up logs, Prometheus metrics, tracing, alerts and load tests."
+  license: MIT
+  eval:
+    should:
+      - "Add structured logging, Prometheus metrics and alert rules to our Node service"
+      - "Set up OpenTelemetry tracing and a k6 load test"
+    near: "Set up SLOs and error budgets"
+    first_step: "Assess what needs monitoring: SLIs, critical paths and business metrics"
+- id: jeffallan-typescript-pro
+  name: typescript-pro
+  source: Jeffallan/claude-skills
+  path: skills/typescript-pro/SKILL.md
+  cat: code
+  what: "Write advanced TypeScript types: generics, guards, branded types, tsconfig."
+  license: MIT
+  eval:
+    should:
+      - "Create branded types and discriminated unions for our domain model"
+      - "Fix these complex generic type errors and tighten our tsconfig"
+    near: "Write Python type hints"
+    first_step: "Analyze the type architecture: review tsconfig, type coverage and build performance"
+- id: affaan-m-tdd-workflow
+  name: tdd-workflow
+  source: affaan-m/everything-claude-code
+  path: skills/tdd-workflow/SKILL.md
+  cat: test
+  what: "TDD loop: failing test first, smallest fix to green, refactor, 80% coverage."
+  license: MIT
+  eval:
+    should:
+      - "Build the new cart discount feature test-first with unit, integration and E2E tests"
+      - "Fix this bug using TDD, write the failing test first and keep coverage over 80 percent"
+    near: "Add Playwright tests after the feature is done"
+    first_step: "Detect the project's actual test runner instead of assuming npm test"
+- id: affaan-m-verification-loop
+  name: verification-loop
+  source: affaan-m/everything-claude-code
+  path: skills/verification-loop/SKILL.md
+  cat: review
+  what: "Check finished work: build, types, lint, tests, security grep, diff review."
+  license: MIT
+  eval:
+    should:
+      - "I finished the feature, run a full verification pass and give me PASS or FAIL"
+      - "Verify everything before I create the PR: build, typecheck, lint, tests"
+    near: "Review the architecture of my design"
+    first_step: "Run Phase 1 build verification and continue through type check, lint, tests, security scan and diff review"
+- id: affaan-m-security-review
+  name: security-review
+  source: affaan-m/everything-claude-code
+  path: skills/security-review/SKILL.md
+  cat: security
+  what: "Security checklist for auth, user input, secrets, endpoints and payments."
+  license: MIT
+  eval:
+    should:
+      - "I am adding a file upload endpoint, check the security checklist"
+      - "Review my new payment API route for injection, auth and secrets issues"
+    near: "Run a dependency vulnerability scan"
+    first_step: "Walk the checklist: no hardcoded keys, secrets in env vars, validated input, parameterized SQL"
+- id: affaan-m-security-scan
+  name: security-scan
+  source: affaan-m/everything-claude-code
+  path: skills/security-scan/SKILL.md
+  cat: security
+  what: "Scan the .claude folder, hooks and MCP servers for bad config and injection."
+  license: MIT
+  eval:
+    should:
+      - "Scan my Claude Code config for security problems in settings, hooks and MCP servers"
+      - "Check CLAUDE.md and my agent definitions for injection risks"
+    near: "Scan my app source code for SQL injection"
+    first_step: "Run the basic AgentShield scan against the project's .claude directory"
+- id: affaan-m-database-migrations
+  name: database-migrations
+  source: affaan-m/everything-claude-code
+  path: skills/database-migrations/SKILL.md
+  cat: data
+  what: "Ship safe DB migrations: reversible, zero-downtime renames, safe indexes, backfills."
+  license: MIT
+  eval:
+    should:
+      - "Rename a column in production without downtime"
+      - "Add an index to a huge Postgres table without locking it and backfill data in batches"
+    near: "Design the table schema"
+    first_step: "Treat every change as a migration and check the safety checklist (UP and DOWN, no manual prod edits)"
+- id: affaan-m-deployment-patterns
+  name: deployment-patterns
+  source: affaan-m/everything-claude-code
+  path: skills/deployment-patterns/SKILL.md
+  cat: ops
+  what: "Deploy with rolling, blue-green or canary, Docker, health checks and rollback."
+  license: MIT
+  eval:
+    should:
+      - "Set up a deployment pipeline with health checks and rollback for our Node API"
+      - "Is my app production ready? Give me a deployment readiness checklist"
+    near: "Write a Kubernetes operator"
+    first_step: "Choose a deployment strategy (rolling, blue-green, canary) and confirm the previous artifact is tagged for rollback"
+- id: affaan-m-git-workflow
+  name: git-workflow
+  source: affaan-m/everything-claude-code
+  path: skills/git-workflow/SKILL.md
+  cat: git
+  what: "Pick a branching flow, write clean commits, merge vs rebase, fix conflicts."
+  license: MIT
+  eval:
+    should:
+      - "Which branching strategy fits our small team, GitHub flow or trunk based?"
+      - "Tidy my local commits before merging and write conventional commit messages"
+    near: "Create a worktree for a hotfix"
+    first_step: "Choose among GitHub Flow, trunk-based or GitFlow, then follow Conventional Commits format"
+- id: affaan-m-coding-standards
+  name: coding-standards
+  source: affaan-m/everything-claude-code
+  path: skills/coding-standards/SKILL.md
+  cat: code
+  what: "Baseline coding rules: clear names, immutability, KISS, DRY, YAGNI."
+  license: MIT
+  eval:
+    should:
+      - "Review this module for naming, readability and immutability problems"
+      - "What coding conventions should we follow across our TypeScript projects?"
+    near: "Implement React component patterns with hooks"
+    first_step: "Apply the principles: readability first, KISS, DRY, YAGNI, and immutability by default"
+- id: affaan-m-codebase-onboarding
+  name: codebase-onboarding
+  source: affaan-m/everything-claude-code
+  path: skills/codebase-onboarding/SKILL.md
+  cat: docs
+  what: "Map an unfamiliar repo and write an onboarding guide plus a starter CLAUDE.md."
+  license: MIT
+  eval:
+    should:
+      - "I just joined this project, explore it and write an onboarding guide"
+      - "Generate a CLAUDE.md for this existing repo"
+    near: "Explain what this one function does"
+    first_step: "Phase 1 reconnaissance: detect manifests and signals with Glob and Grep without reading every file"
+- id: affaan-m-browser-qa
+  name: browser-qa
+  source: affaan-m/everything-claude-code
+  path: skills/browser-qa/SKILL.md
+  cat: test
+  what: "Run post-deploy UI checks in a real browser: console errors, flows, screenshots."
+  license: MIT
+  eval:
+    should:
+      - "After deploy, smoke test the staging site for console errors and Core Web Vitals"
+      - "Click through the login and signup flow in the browser and screenshot each step"
+    near: "Write unit tests for a React component"
+    first_step: "Default to read-only, never run mutating journeys on production, use test credentials, then Phase 1 smoke test"
+- id: affaan-m-canary-watch
+  name: canary-watch
+  source: affaan-m/everything-claude-code
+  path: skills/canary-watch/SKILL.md
+  cat: ops
+  what: "Watch a live URL after release for errors, slow pages and broken endpoints."
+  license: MIT
+  eval:
+    should:
+      - "Monitor production for 30 minutes after this release and alert on regressions"
+      - "Watch the deployed site after the dependency upgrade for new console errors and LCP changes"
+    near: "Set up the CI/CD pipeline"
+    first_step: "Pick a watch mode and thresholds, then monitor HTTP status, console errors, network failures and performance vs baseline"
+- id: affaan-m-ai-regression-testing
+  name: ai-regression-testing
+  source: affaan-m/everything-claude-code
+  path: skills/ai-regression-testing/SKILL.md
+  cat: test
+  what: "Catch repeat AI coding bugs with sandbox API tests and a bug-check flow."
+  license: MIT
+  eval:
+    should:
+      - "AI keeps reintroducing the same bug in our API routes, set up regression tests"
+      - "Write sandbox mode API tests with Vitest so we can test without a database"
+    near: "Fix this production bug"
+    first_step: "Write regression tests at the place a bug was found, using sandbox-mode API tests"
+- id: affaan-m-search-first
+  name: search-first
+  source: affaan-m/everything-claude-code
+  path: skills/search-first/SKILL.md
+  cat: plan
+  what: "Research existing libraries and tools before writing custom code."
+  license: MIT
+  eval:
+    should:
+      - "Before building a custom rate limiter, check if a good library already exists"
+      - "I need to add CSV parsing, look for existing packages or MCP servers first"
+    near: "Write the rate limiter code now using the library I picked"
+    first_step: "Run the Step 0 tool availability preflight, then search npm, PyPI, MCP servers and GitHub for existing solutions"
+- id: affaan-m-gateguard
+  name: gateguard
+  source: affaan-m/everything-claude-code
+  path: skills/gateguard/SKILL.md
+  cat: meta
+  what: "Block the first edit until the agent shows facts about importers and schemas."
+  license: MIT
+  eval:
+    should:
+      - "Make Claude investigate importers and data schemas before it edits any file"
+      - "Add a hook that stops guessing edits and forces concrete evidence"
+    near: "Review code style"
+    first_step: "Deny the first Edit, Write or Bash attempt until the agent presents concrete facts, then allow the retry"
+- id: affaan-m-conventional-commit-review
+  name: conventional-commit-review
+  source: affaan-m/everything-claude-code
+  path: skills/conventional-commit-review/SKILL.md
+  cat: git
+  what: "Review staged changes and write a Conventional Commits message."
+  license: MIT
+  eval:
+    should:
+      - "Write a commit message for my staged changes"
+      - "Check my commit message follows Conventional Commits with the right type and scope"
+    near: "Squash my last five commits"
+    first_step: "Run git diff --staged (or git diff if nothing is staged) and draft the message from it"
+- id: affaan-m-hexagonal-architecture
+  name: hexagonal-architecture
+  source: affaan-m/everything-claude-code
+  path: skills/hexagonal-architecture/SKILL.md
+  cat: plan
+  what: "Design ports and adapters: domain core, use cases, testable boundaries."
+  license: MIT
+  eval:
+    should:
+      - "Refactor our order service to hexagonal architecture with ports and adapters"
+      - "Design a new service with a clean domain core and adapters at the edge"
+    near: "Add a database index"
+    first_step: "Pick one vertical slice and model a use case boundary with input and output DTOs"
+- id: affaan-m-mcp-server-patterns
+  name: mcp-server-patterns
+  source: affaan-m/everything-claude-code
+  path: skills/mcp-server-patterns/SKILL.md
+  cat: data
+  what: "Build MCP servers with the TypeScript SDK: tools, resources, Zod, transports."
+  license: MIT
+  eval:
+    should:
+      - "Build an MCP server in TypeScript that exposes two tools with Zod validation"
+      - "My MCP server needs to run over stdio and Streamable HTTP, how?"
+    near: "Configure an existing MCP server in Claude settings"
+    first_step: "Install the SDK and set up the server, then register tools with registerTool and validate input with Zod"
+- id: affaan-m-safety-guard
+  name: safety-guard
+  source: affaan-m/everything-claude-code
+  path: skills/safety-guard/SKILL.md
+  cat: meta
+  what: "Warn before rm -rf, force push, DROP TABLE; lock edits to one folder."
+  license: MIT
+  eval:
+    should:
+      - "Turn on careful mode so you ask before any destructive command"
+      - "Freeze edits to the src/api directory while I debug"
+    near: "Back up my database before the migration"
+    first_step: "Choose a mode: Careful (intercept destructive commands), Freeze (lock one directory) or Guard (both)"
+- id: neolabhq-commit
+  name: commit
+  source: NeoLabHQ/context-engineering-kit
+  path: plugins/git/skills/commit/SKILL.md
+  cat: git
+  what: "Make clean conventional commits: run checks, split big diffs, write the message."
+  license: GPL-3.0
+  eval:
+    should:
+      - "Commit my changes with a good conventional commit message"
+      - "I changed unrelated things, split them into separate logical commits"
+    near: "Open a pull request"
+    first_step: "Check if the current branch is main or master and ask about creating a branch before committing"
+- id: neolabhq-create-pr
+  name: create-pr
+  source: NeoLabHQ/context-engineering-kit
+  path: plugins/git/skills/create-pr/SKILL.md
+  cat: git
+  what: "Open a GitHub PR with gh using the repo template and pre-flight checks."
+  license: GPL-3.0
+  eval:
+    should:
+      - "Create a pull request for this branch using our PR template"
+      - "Open a PR to main with a good description with gh"
+    near: "Review the PR comments someone left"
+    first_step: "Run git status to check for uncommitted changes, then push and create the PR with gh"
+- id: neolabhq-review-pr
+  name: review-pr
+  source: NeoLabHQ/context-engineering-kit
+  path: plugins/review/skills/review-pr/SKILL.md
+  cat: review
+  what: "Review an open GitHub PR and post inline comments on the diff."
+  license: GPL-3.0
+  eval:
+    should:
+      - "Review PR 1234 and leave inline comments on the problems you find"
+      - "Do a multi-agent review of this pull request and score issues by confidence"
+    near: "Review my uncommitted local changes"
+    first_step: "Phase 1: determine review scope using commands that return only line counts, not file content"
+- id: neolabhq-review-local-changes
+  name: review-local-changes
+  source: NeoLabHQ/context-engineering-kit
+  path: plugins/review/skills/review-local-changes/SKILL.md
+  cat: review
+  what: "Review uncommitted work before commit and suggest fixes."
+  license: GPL-3.0
+  eval:
+    should:
+      - "Review my uncommitted changes before I commit"
+      - "Check my working tree diff and untracked files for bugs and improvements"
+    near: "Review the open PR on GitHub"
+    first_step: "Phase 1: determine review scope from the git diff and untracked files using line-count commands"
+- id: neolabhq-root-cause-tracing
+  name: root-cause-tracing
+  source: NeoLabHQ/context-engineering-kit
+  path: plugins/kaizen/skills/root-cause-tracing/SKILL.md
+  cat: debug
+  what: "Trace a deep error backward up the call stack to the original trigger."
+  license: GPL-3.0
+  eval:
+    should:
+      - "The error shows up deep in git init, trace back to who passes the bad directory"
+      - "Tests create files in the wrong place, find which caller starts the bad value"
+    near: "Add logging to the app"
+    first_step: "Observe the symptom, find the immediate cause, then ask what called it and keep tracing up"
+- id: neolabhq-test-driven-development
+  name: test-driven-development
+  source: NeoLabHQ/context-engineering-kit
+  path: plugins/tdd/skills/test-driven-development/SKILL.md
+  cat: test
+  what: "Strict red-green-refactor: no code without a failing test first."
+  license: GPL-3.0
+  eval:
+    should:
+      - "Implement this new feature with TDD, I want to see each test fail first"
+      - "Fix this bug test-first and show me the red then green"
+    near: "Add tests to code I already wrote"
+    first_step: "RED: write one minimal failing test, run it and watch it fail before writing any implementation"
+- id: neolabhq-write-tests
+  name: write-tests
+  source: NeoLabHQ/context-engineering-kit
+  path: plugins/tdd/skills/write-tests/SKILL.md
+  cat: test
+  what: "Add missing tests for your local changes using review and developer agents."
+  license: GPL-3.0
+  eval:
+    should:
+      - "Write tests for the logic I just added in my uncommitted changes"
+      - "Increase test coverage for the files in my latest commit"
+    near: "Fix the failing tests"
+    first_step: "Read the TDD guidance, then analyze the changed files to find missing coverage"
+- id: neolabhq-fix-tests
+  name: fix-tests
+  source: NeoLabHQ/context-engineering-kit
+  path: plugins/tdd/skills/fix-tests/SKILL.md
+  cat: test
+  what: "Fix failing tests after refactors or business logic changes, one by one."
+  license: GPL-3.0
+  eval:
+    should:
+      - "We changed pricing logic and 30 tests now fail, fix them all"
+      - "After the refactor the test suite is red, update the tests systematically"
+    near: "Write new tests for the feature"
+    first_step: "Run the test suite to list the failing tests, then analyze why each one fails"
+- id: neolabhq-update-docs
+  name: update-docs
+  source: NeoLabHQ/context-engineering-kit
+  path: plugins/docs/skills/update-docs/SKILL.md
+  cat: docs
+  what: "Update docs, READMEs, JSDoc and API docs to match local code changes."
+  license: GPL-3.0
+  eval:
+    should:
+      - "Update the docs and README to match the code I just changed"
+      - "Refresh the API documentation and JSDoc for my local changes"
+    near: "Write a blog post about the release"
+    first_step: "Analyze the local code changes to plan which documentation needs updates"
+- id: neolabhq-resolve-fixed-pr-comments
+  name: resolve-fixed-pr-comments
+  source: NeoLabHQ/context-engineering-kit
+  path: plugins/git/skills/resolve-fixed-pr-comments/SKILL.md
+  cat: git
+  what: "Check which PR review comments are really fixed and resolve those threads."
+  license: GPL-3.0
+  eval:
+    should:
+      - "Resolve the review threads on my PR that I already fixed"
+      - "Go through unresolved comments on PR 77 and close only the ones addressed in the code"
+    near: "Reply to reviewer comments with my reasoning"
+    first_step: "Step 0: verify that the GitHub CLI is installed and authenticated, or fall back to the GitHub MCP"
+- id: neolabhq-create-skill
+  name: create-skill
+  source: NeoLabHQ/context-engineering-kit
+  path: plugins/customaize-agent/skills/create-skill/SKILL.md
+  cat: meta
+  what: "Guide to write a new SKILL.md using red-green-refactor and progressive disclosure."
+  license: GPL-3.0
+  eval:
+    should:
+      - "Help me create a new skill for our deployment process"
+      - "Update my existing skill so Claude uses it more reliably"
+    near: "Create a slash command"
+    first_step: "Decide the skill type (technique, pattern, reference) and write the SKILL.md with frontmatter and when-to-use"
+- id: muratcankoylan-context-compression
+  name: context-compression
+  source: muratcankoylan/Agent-Skills-for-Context-Engineering
+  path: skills/context-compression/SKILL.md
+  cat: meta
+  what: "Compress long agent sessions with structured summaries that keep file trails."
+  license: MIT
+  eval:
+    should:
+      - "My long agent session is hitting the context limit, write a summary that keeps decisions and files"
+      - "Design a compaction strategy for our coding agent with probes to test it"
+    near: "Debug why the agent is slow"
+    first_step: "Preserve the artifact trail first, then use anchored iterative summarization with mandatory sections"
+- id: muratcankoylan-context-optimization
+  name: context-optimization
+  source: muratcankoylan/Agent-Skills-for-Context-Engineering
+  path: skills/context-optimization/SKILL.md
+  cat: meta
+  what: "Cut token cost with budgets, observation masking, KV-cache layout, partitioning."
+  license: MIT
+  eval:
+    should:
+      - "Our agent burns too many tokens, apply observation masking and cache friendly prompt layout"
+      - "Reduce token cost of tool outputs and partition context across sub-agents"
+    near: "Summarize this session"
+    first_step: "Check what dominates the context and pick the first action from the optimization decision framework"
+- id: muratcankoylan-context-degradation
+  name: context-degradation
+  source: muratcankoylan/Agent-Skills-for-Context-Engineering
+  path: skills/context-degradation/SKILL.md
+  cat: debug
+  what: "Diagnose lost-in-middle, context poisoning, clash and confusion in agents."
+  license: MIT
+  eval:
+    should:
+      - "My agent gets worse after 100k tokens, diagnose what kind of degradation it is"
+      - "Our agent keeps repeating a wrong fact from earlier in the context, how do we recover?"
+    near: "Write a system prompt"
+    first_step: "Monitor context length against performance, then apply the Write, Select, Compress or Isolate strategy"
+- id: muratcankoylan-tool-design
+  name: tool-design
+  source: muratcankoylan/Agent-Skills-for-Context-Engineering
+  path: skills/tool-design/SKILL.md
+  cat: data
+  what: "Write agent tools: clear descriptions, schemas, error messages, naming."
+  license: MIT
+  eval:
+    should:
+      - "Review the tool descriptions and schemas of our agent, the model keeps picking the wrong tool"
+      - "Design a small consolidated set of tools for our MCP server with helpful error messages"
+    near: "Implement the tool handler logic"
+    first_step: "Identify the distinct workflows agents must accomplish, then group related actions into comprehensive tools"
+- id: muratcankoylan-evaluation
+  name: evaluation
+  source: muratcankoylan/Agent-Skills-for-Context-Engineering
+  path: skills/evaluation/SKILL.md
+  cat: data
+  what: "Build agent evals: rubrics, regression suites, quality gates, baselines."
+  license: MIT
+  eval:
+    should:
+      - "Set up an evaluation framework for our coding agent with a regression suite"
+      - "Create a multi-dimensional rubric and a quality gate for agent outputs"
+    near: "Write unit tests for the agent code"
+    first_step: "Define quality dimensions relevant to the use case before writing any evaluation code"
+- id: muratcankoylan-harness-engineering
+  name: harness-engineering
+  source: muratcankoylan/Agent-Skills-for-Context-Engineering
+  path: skills/harness-engineering/SKILL.md
+  cat: meta
+  what: "Design agent loops: locked surfaces, durable logs, rollback, human approval."
+  license: MIT
+  eval:
+    should:
+      - "Design a harness for an autonomous research loop with logs, rollback and approval gates"
+      - "Which files should the agent edit and which should be locked in our autonomous loop?"
+    near: "Write a prompt for a chatbot"
+    first_step: "Define the objective in one sentence and identify locked, editable, append-only and human-controlled surfaces"
+- id: muratcankoylan-multi-agent-patterns
+  name: multi-agent-patterns
+  source: muratcankoylan/Agent-Skills-for-Context-Engineering
+  path: skills/multi-agent-patterns/SKILL.md
+  cat: meta
+  what: "Pick supervisor, swarm or handoff designs and avoid multi-agent traps."
+  license: MIT
+  eval:
+    should:
+      - "Should this be one agent or several? Design a supervisor and workers with clean handoffs"
+      - "Our multi-agent system suffers supervisor bottlenecks, how to fix?"
+    near: "Run three subagents in parallel now"
+    first_step: "Design for context isolation as the main benefit and decide if multiple agents are justified"
+- id: muratcankoylan-project-development
+  name: project-development
+  source: muratcankoylan/Agent-Skills-for-Context-Engineering
+  path: skills/project-development/SKILL.md
+  cat: plan
+  what: "Plan LLM projects: task fit, pipeline stages, cost math, single vs multi agent."
+  license: MIT
+  eval:
+    should:
+      - "Is an LLM the right tool for this task? Plan the pipeline and estimate token cost"
+      - "Structure my batch LLM pipeline into acquire, prepare, process, parse and render stages"
+    near: "Call the Claude API with tools"
+    first_step: "Check task-model fit with a manual prototype before building any pipeline"
+- id: nextlevelbuilder-ui-ux-pro-max
+  name: ui-ux-pro-max
+  source: nextlevelbuilder/ui-ux-pro-max-skill
+  path: .claude/skills/ui-ux-pro-max/SKILL.md
+  cat: frontend
+  what: "UI/UX rules and a design system generator for web and mobile screens."
+  license: MIT
+  eval:
+    should:
+      - "Build the landing page UI for my fintech SaaS and pick style, colors and fonts"
+      - "Review my dashboard UI for accessibility, responsive layout and interaction problems"
+    near: "Debug a CSS bug"
+    first_step: "Step 1: extract product type, audience and context from the request, then generate a design system"
+- id: nextlevelbuilder-design-system
+  name: design-system
+  source: nextlevelbuilder/ui-ux-pro-max-skill
+  path: .claude/skills/design-system/SKILL.md
+  cat: frontend
+  what: "Three-layer design tokens, CSS variables and component specs."
+  license: MIT
+  eval:
+    should:
+      - "Set up design tokens with primitive, semantic and component layers and CSS variables"
+      - "Write component specs and spacing and typography scales for our design system"
+    near: "Style one button for me"
+    first_step: "Generate tokens with the script and use only token references, never raw hex, in components"
+- id: nextlevelbuilder-ui-styling
+  name: ui-styling
+  source: nextlevelbuilder/ui-ux-pro-max-skill
+  path: .claude/skills/ui-styling/SKILL.md
+  cat: frontend
+  what: "Build accessible UI with shadcn/ui, Radix, Tailwind and canvas designs."
+  license: MIT
+  eval:
+    should:
+      - "Build a settings page with shadcn/ui components and Tailwind with dark mode"
+      - "Add accessible form components and responsive layout using Tailwind"
+    near: "Set up a Tailwind v4 design token system"
+    first_step: "Install shadcn/ui with Tailwind, then compose complex UI from simple components"
+- id: leonxlnx-taste-skill
+  name: taste-skill
+  source: Leonxlnx/taste-skill
+  path: skills/taste-skill/SKILL.md
+  cat: frontend
+  what: "Art-direct landing pages and app screens so they do not look like AI slop."
+  license: MIT
+  eval:
+    should:
+      - "Build a landing page for my coffee brand that does not look like generic AI design"
+      - "Redesign my dashboard so it looks designed, with real type and palette choices"
+    near: "Fix the broken layout on mobile"
+    first_step: "Read the brief and the project, then write the argument and pick a dealt direction"
+- id: mrgoonie-systematic-debugging
+  name: systematic-debugging
+  source: mrgoonie/claudekit-skills
+  path: .claude/skills/debugging/systematic-debugging/SKILL.md
+  cat: debug
+  what: "Four phase debugging: find the root cause before any fix."
+  license: unknown
+  eval:
+    should:
+      - "Tests fail after my change, find the root cause before touching code"
+      - "This bug keeps coming back after patches, debug it properly"
+    near: "Add a new endpoint"
+    first_step: "Phase 1: read error messages carefully and reproduce before attempting any fix"
+- id: mrgoonie-chrome-devtools
+  name: chrome-devtools
+  source: mrgoonie/claudekit-skills
+  path: .claude/skills/chrome-devtools/SKILL.md
+  cat: frontend
+  what: "Drive Chrome with Puppeteer scripts for screenshots, network and perf checks."
+  license: unknown
+  eval:
+    should:
+      - "Take a screenshot of the page and capture network requests and console logs"
+      - "Analyze page performance and automate a form fill with a Puppeteer script"
+    near: "Write Jest unit tests"
+    first_step: "Check the working directory with pwd and verify output files exist after each script run"
+- id: mrgoonie-repomix
+  name: repomix
+  source: mrgoonie/claudekit-skills
+  path: .claude/skills/repomix/SKILL.md
+  cat: docs
+  what: "Pack a whole repo into one AI-ready file with include and exclude rules."
+  license: unknown
+  eval:
+    should:
+      - "Pack this repository into a single file I can paste into another AI for review"
+      - "Pack only the src folder, strip comments, and output XML"
+    near: "Summarize this single file"
+    first_step: "Check repomix is installed, then pack the repo with include and exclude patterns and review the output"
+- id: mrgoonie-devops
+  name: devops
+  source: mrgoonie/claudekit-skills
+  path: .claude/skills/devops/SKILL.md
+  cat: ops
+  what: "Deploy to Cloudflare, Docker, Google Cloud and Kubernetes with CI/CD."
+  license: unknown
+  eval:
+    should:
+      - "Deploy this API to Cloud Run with a Dockerfile and CI pipeline"
+      - "Set up a Cloudflare Worker with R2 and D1 for my backend"
+    near: "Review my pull request"
+    first_step: "Use the platform selection table to pick Cloudflare, Docker, Google Cloud or Kubernetes for the need"
+- id: mrgoonie-mermaidjs-v11
+  name: mermaidjs-v11
+  source: mrgoonie/claudekit-skills
+  path: .claude/skills/mermaidjs-v11/SKILL.md
+  cat: docs
+  what: "Draw flowcharts, sequence, ER and class diagrams in Mermaid v11."
+  license: unknown
+  eval:
+    should:
+      - "Draw a sequence diagram of our OAuth login flow in Mermaid"
+      - "Make an ER diagram of the orders database as Mermaid code"
+    near: "Create a PowerPoint deck"
+    first_step: "Pick the diagram type and write it as a diagram-type block with its content"
+- id: mrgoonie-code-review
+  name: code-review
+  source: mrgoonie/claudekit-skills
+  path: .claude/skills/code-review/SKILL.md
+  cat: review
+  what: "Handle review feedback with checks, request reviews, and verify before claiming done."
+  license: unknown
+  eval:
+    should:
+      - "I got unclear review feedback on my PR, evaluate it technically before changing code"
+      - "Request a code review for my finished task and verify before I say it is done"
+    near: "Review someone else's PR line by line"
+    first_step: "Follow READ, UNDERSTAND, VERIFY, EVALUATE, RESPOND, IMPLEMENT and skip performative agreement"
+- id: sawyerhood-dev-browser
+  name: dev-browser
+  source: SawyerHood/dev-browser
+  path: skills/dev-browser/SKILL.md
+  cat: test
+  what: "Control a real Chrome with short scripts and named pages to test web apps."
+  license: MIT
+  eval:
+    should:
+      - "Open our staging site, log in, fill the form and take a screenshot"
+      - "Extract the table data from this web page with a browser script"
+    near: "Write Playwright test files for CI"
+    first_step: "Run dev-browser --help for the full guide, then script with browser.getPage and take a page.snapshot"
+- id: jezweb-vitest
+  name: vitest
+  source: jezweb/claude-skills
+  path: plugins/dev-tools/skills/vitest/SKILL.md
+  cat: test
+  what: "Set up Vitest in any project: config, setup file, scripts, sample test."
+  license: MIT
+  eval:
+    should:
+      - "Add Vitest to my Vite React project with coverage and a sample test"
+      - "Migrate my Jest config to Vitest for our Hono API"
+    near: "Write the test cases for my utils"
+    first_step: "Detect the project type (Workers, React, Node, library) by reading its files, then install dependencies"
+- id: jezweb-github-release
+  name: github-release
+  source: jezweb/claude-skills
+  path: plugins/dev-tools/skills/github-release/SKILL.md
+  cat: git
+  what: "Clean a repo for release, scan secrets, tag a version and publish with gh."
+  license: MIT
+  eval:
+    should:
+      - "Open source this repo: scrub secrets and personal files then publish a GitHub release v1.0.0"
+      - "Create a version tag and release notes through gh"
+    near: "Write the changelog"
+    first_step: "Check prerequisites (gh authenticated, gitleaks installed), then scan for secrets as a blocker"
+- id: jezweb-project-docs
+  name: project-docs
+  source: jezweb/claude-skills
+  path: plugins/dev-tools/skills/project-docs/SKILL.md
+  cat: docs
+  what: "Write ARCHITECTURE, API endpoints and DB schema docs by reading the code."
+  license: MIT
+  eval:
+    should:
+      - "Generate ARCHITECTURE.md and API_ENDPOINTS.md from our codebase"
+      - "Document the database schema by reading the migration files"
+    near: "Write a marketing README"
+    first_step: "Detect the project type by scanning the root, then ask which docs to generate"
+- id: jezweb-responsiveness-check
+  name: responsiveness-check
+  source: jezweb/claude-skills
+  path: plugins/dev-tools/skills/responsiveness-check/SKILL.md
+  cat: frontend
+  what: "Resize through breakpoints, screenshot each width, find layout breaks."
+  license: MIT
+  eval:
+    should:
+      - "Check my site's responsiveness across breakpoints and tell me where the layout breaks"
+      - "Sweep widths from 320 to 1440 and find overflow and nav switches"
+    near: "Design a new responsive layout from scratch"
+    first_step: "Open the URL in a single browser session at 900px height and resize through the 8 breakpoints, screenshotting each"

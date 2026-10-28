@@ -1,0 +1,67 @@
+---
+layout: default
+title: Findings
+permalink: /findings/
+---
+{%- assign f = site.data.findings -%}
+{%- capture tool_row -%}{%- endcapture -%}
+<section class="prose findings">
+  <h1>What the data says</h1>
+  <p class="lede">{{ f.total }} tools, one checklist, live numbers from GitHub. Some of this will surprise you. Every line links to the proof.</p>
+
+  {%- if f.archived_not_hold.size > 0 %}
+  <h2>Archived on GitHub, but not in Hold <small>{{ f.archived_not_hold.size }}</small></h2>
+  <p>The repo is archived, so the ring may be wrong, or the project moved. Check before you adopt.</p>
+  <ul class="find-list">
+    {%- for t in f.archived_not_hold %}<li><a href="https://github.com/{{ t.repo }}" rel="noopener">{{ t.name }}</a> <span class="muted">{{ t.ring | capitalize }} · ★ {{ t.gh.stars }}{% if t.note %} · {{ t.note }}{% endif %}</span></li>{% endfor %}
+  </ul>
+  {%- endif %}
+
+  {%- if f.stale_not_hold.size > 0 %}
+  <h2>No release in 18 months, but not in Hold <small>{{ f.stale_not_hold.size }}</small></h2>
+  <p>Quiet does not mean dead, but by our own rule these should move. Pull requests welcome.</p>
+  <ul class="find-list">
+    {%- for t in f.stale_not_hold %}<li><a href="https://github.com/{{ t.repo }}/releases" rel="noopener">{{ t.name }}</a> <span class="muted">{{ t.ring | capitalize }} · {{ t.days | divided_by: 30 }} months quiet</span></li>{% endfor %}
+  </ul>
+  {%- endif %}
+
+  <h2>Avoid for now: tools in Hold <small>{{ f.hold.size }}</small></h2>
+  <p>Archived, deprecated or abandoned. Some of them you may still have in a lockfile.</p>
+  <ul class="find-list">
+    {%- for t in f.hold %}<li><a href="{{ t.evidence }}" rel="noopener">{{ t.name }}</a> <span class="muted">{{ t.fam_name }}{% if t.gh %} · ★ {{ t.gh.stars }}{% endif %}{% if t.note %} · {{ t.note }}{% endif %}</span></li>{% endfor %}
+  </ul>
+
+  <h2>Best of both: easy to use and made for big systems <small>{{ f.best_of_both.size }}</small></h2>
+  <ul class="find-list">
+    {%- for t in f.best_of_both %}<li><a href="{{ '/compass/' | append: t.fam | append: '/' | relative_url }}">{{ t.name }}</a> <span class="muted">easy {{ t.x }} · big {{ t.y }} · {{ t.ring | capitalize }}</span></li>{% endfor %}
+  </ul>
+
+  <h2>Easy wins: very easy, small job</h2>
+  <ul class="find-list">
+    {%- for t in f.easy_wins %}<li><a href="{{ '/compass/' | append: t.fam | append: '/' | relative_url }}">{{ t.name }}</a> <span class="muted">easy {{ t.x }} · {{ t.tagline }}</span></li>{% endfor %}
+  </ul>
+
+  <h2>Most starred on GitHub</h2>
+  <ol class="find-list">
+    {%- for t in f.most_starred %}<li><a href="https://github.com/{{ t.repo }}" rel="noopener">{{ t.name }}</a> <span class="muted">★ {{ t.gh.stars }} · {{ t.ring | capitalize }}</span></li>{% endfor %}
+  </ol>
+
+  <h2>New this year: in Assess <small>{{ f.fresh.size }}</small></h2>
+  <ul class="find-list">
+    {%- for t in f.fresh %}<li><a href="{{ t.url }}" rel="noopener">{{ t.name }}</a> <span class="muted">{{ t.tagline }}</span></li>{% endfor %}
+  </ul>
+
+  {%- if f.skills_tested > 0 %}
+  <h2>Agent skills a small model uses best</h2>
+  <p>Tested with Haiku on {{ f.skills_tested }} skills. See <a href="{{ '/skills/' | relative_url }}">Skills</a> for how.</p>
+  <ol class="find-list">
+    {%- for s in f.skills_best %}<li><a href="https://github.com/{{ s.source }}/blob/HEAD/{{ s.path }}" rel="noopener">{{ s.name }}</a> <span class="muted">{{ s.source }} · {{ s.result.score }}/100</span></li>{% endfor %}
+  </ol>
+  <h2>Agent skills a small model gets wrong most</h2>
+  <ul class="find-list">
+    {%- for s in f.skills_worst %}<li><a href="https://github.com/{{ s.source }}/blob/HEAD/{{ s.path }}" rel="noopener">{{ s.name }}</a> <span class="muted">{{ s.source }} · {{ s.result.score }}/100</span></li>{% endfor %}
+  </ul>
+  {%- endif %}
+
+  <p class="muted">GitHub numbers fetched {{ site.data.github.fetched | slice: 0, 10 }}. They refresh every week.</p>
+</section>

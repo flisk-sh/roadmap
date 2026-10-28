@@ -1,0 +1,38 @@
+# Categories for the Skills tab. Each is a sub-tab (/skills/<id>/) and a lane in the skill swarm.
+# Every skill's `cat` must be one of these ids.
+- id: plan
+  name: Plan and design
+  blurb: Turn an idea into a spec, a plan or an architecture before code.
+- id: code
+  name: Write code
+  blurb: Write, refactor and clean up code in a specific way.
+- id: test
+  name: Test
+  blurb: Write and run tests, TDD, test data, coverage.
+- id: debug
+  name: Debug
+  blurb: Find why something breaks and fix the root cause.
+- id: review
+  name: Review
+  blurb: Review code, plans and pull requests before they land.
+- id: git
+  name: Git and PRs
+  blurb: Branches, commits, worktrees, pull requests, merges, releases.
+- id: frontend
+  name: Frontend and design
+  blurb: UI, components, styling, accessibility, browser testing.
+- id: ops
+  name: Ops and infra
+  blurb: Deploy, containers, CI, cloud, monitoring, performance.
+- id: security
+  name: Security
+  blurb: Find and fix vulnerabilities, secrets, supply chain.
+- id: docs
+  name: Docs and writing
+  blurb: READMEs, docs, changelogs, specs, plain writing.
+- id: data
+  name: Data and AI
+  blurb: Databases, data work, building with LLMs and agents.
+- id: meta
+  name: Agent workflow
+  blurb: How the agent itself works, remembers, plans and writes new skills.

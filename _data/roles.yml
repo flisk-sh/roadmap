@@ -1,0 +1,555 @@
+# Roles: jobs in software, and the tools each one needs. Each group is a sub-tab (/roles/<group id>/).
+groups:
+  - id: build
+    name: Build products
+    blurb: People who write the product code, from first line to shipped feature.
+  - id: run
+    name: Run and ship
+    blurb: People who keep software building, deploying and alive.
+  - id: data-ai
+    name: Data and AI
+    blurb: People who move data, train models and build agents.
+  - id: quality
+    name: Quality and security
+    blurb: People who test, measure and break things before users do.
+  - id: field
+    name: Customer-facing
+    blurb: People who work with customers and developers outside the team.
+  - id: lead
+    name: Lead and steer
+    blurb: People who set direction, review work and keep projects healthy.
+
+roles:
+  # ---------------------------------------------------------------- build
+  - id: backend-engineer
+    name: Backend Engineer
+    group: build
+    what: Writes the APIs and services behind the app, and the database they use.
+    day:
+      - Builds and changes API endpoints
+      - Writes database migrations and queries
+      - Runs the service with its database and queue on a laptop
+    core: [docker-desktop, docker-compose, testcontainers, flyway, sqlalchemy]
+    daily: [compose-watch, wiremock, github-actions, sentry, direnv, prisma]
+    nice: [flisk, tilt, localstack, minio, pact]
+
+  - id: frontend-engineer
+    name: Frontend Engineer
+    group: build
+    what: Builds the screens people click on, and makes them fast and clean.
+    day:
+      - Builds pages and components
+      - Calls APIs, or fakes them when the API is not ready
+      - Fixes layout and speed problems in the browser
+    core: [vite, pnpm, nextjs, msw, nvm]
+    daily: [esbuild, turborepo, npm, github-actions, sentry, rollup]
+    nice: [astro, playwright-mcp, netlify-cli, vercel-cli]
+
+  - id: fullstack-engineer
+    name: Full-stack Engineer
+    group: build
+    what: Builds the screen, the API and the database for one feature, alone.
+    day:
+      - Ships a feature from database table to button
+      - Runs the web app, API and database together locally
+      - Deploys and checks it in production
+    core: [nextjs, pnpm, docker-compose, prisma, vite]
+    daily: [docker-desktop, drizzle, msw, github-actions, sentry, supabase-cli]
+    nice: [flisk, mailpit, ngrok, create-t3-app, vercel-cli]
+
+  - id: mobile-engineer
+    name: Mobile Engineer
+    group: build
+    what: Builds phone apps for iOS and Android, and wires them to a backend.
+    day:
+      - Builds screens and app logic
+      - Points the app at a local or test backend
+      - Tests on phones and fakes bad networks
+    core: [swiftpm, gradle, msw, mockoon, ngrok]
+    daily: [wiremock, firebase-emulators, github-actions, homebrew, sentry]
+    nice: [mailpit, toxiproxy, convex, cloudflare-tunnel]
+
+  - id: java-engineer
+    name: Java / JVM Engineer
+    group: build
+    what: Writes server code in Java or Kotlin, usually with Spring or Quarkus.
+    day:
+      - Builds services on Spring Boot or Quarkus
+      - Runs databases and brokers through Compose or Testcontainers
+      - Tunes builds and fixes slow startup
+    core: [spring-boot, maven, gradle, sdkman, testcontainers]
+    daily: [quarkus, docker-compose, flyway, liquibase, jib, github-actions]
+    nice: [micronaut, buildpacks, dive]
+
+  - id: python-engineer
+    name: Python Backend Engineer
+    group: build
+    what: Writes server code in Python, usually with FastAPI or Django.
+    day:
+      - Builds API endpoints and background jobs
+      - Manages packages and Python versions
+      - Writes tests that hit a real database
+    core: [uv, fastapi, django, sqlalchemy, alembic]
+    daily: [pyenv, docker-compose, testcontainers, moto, pydantic-ai, github-actions]
+    nice: [poetry, pixi, mailpit, just]
+
+  - id: dotnet-engineer
+    name: .NET Engineer
+    group: build
+    what: Writes server code in C#, often several services that talk to each other.
+    day:
+      - Builds APIs and workers in C#
+      - Runs the whole app host with its dependencies
+      - Writes database migrations with EF Core
+    core: [ef-core, nuget, aspire, docker-desktop, azurite]
+    daily: [docker-compose, testcontainers, azure-functions-core-tools, github-actions, bicep]
+    nice: [dapr, semantic-kernel, microsoft-agent-framework, tye]
+
+  - id: php-engineer
+    name: PHP / WordPress Developer
+    group: build
+    what: Builds sites and apps in PHP, Laravel or WordPress.
+    day:
+      - Builds features in Laravel or a WordPress theme
+      - Runs a local copy of the site with its database
+      - Moves changes between local and live
+    core: [laravel, laravel-sail, composer, ddev, local-wp]
+    daily: [lando, laravel-herd, docker-compose, mailpit, github-actions]
+    nice: [docksal, ngrok, nvm, vite]
+
+  - id: ruby-engineer
+    name: Ruby / Rails Engineer
+    group: build
+    what: Builds web apps with Rails, from model to page.
+    day:
+      - Builds features end to end in Rails
+      - Runs the app, jobs and database locally
+      - Keeps gems and Ruby versions in order
+    core: [rails, bundler, rbenv, docker-compose, foreman]
+    daily: [overmind, mailpit, github-actions, sentry, dependabot, testcontainers]
+    nice: [mise, ngrok, kompose]
+
+  - id: serverless-engineer
+    name: Serverless / Cloud App Engineer
+    group: build
+    what: Builds apps out of cloud functions and managed services, with no servers to run.
+    day:
+      - Writes functions and wires them to queues and storage
+      - Runs a fake cloud locally to test
+      - Deploys with a few commands
+    core: [sst, aws-sam, localstack, serverless-framework, wrangler]
+    daily: [aws-cdk, moto, miniflare, minio, github-actions, firebase-emulators]
+    nice: [architect, nitric, encore, netlify-cli, vercel-cli]
+
+  - id: student-junior
+    name: Student / Junior Developer
+    group: build
+    what: Learning to code and ship. Needs tools that just work and do not break setup.
+    day:
+      - Follows tutorials and builds small projects
+      - Fights with installs and versions
+      - Learns git and how to read errors
+    core: [homebrew, nvm, pip, docker-desktop, replit]
+    daily: [codespaces, cursor, github-copilot, vite, npm]
+    nice: [uv, claude-code, create-vite, stackblitz, ollama]
+
+  - id: indie-hacker
+    name: Indie Hacker / Solo Founder
+    group: build
+    what: One person building a whole product. Wants cheap, fast and few moving parts.
+    day:
+      - Builds everything from signup page to billing
+      - Uses hosted backends so there is less to run
+      - Ships fast and watches for errors
+    core: [nextjs, supabase-cli, pocketbase, vercel-cli, cursor]
+    daily: [claude-code, docker-compose, pnpm, sentry, ngrok, github-actions]
+    nice: [flisk, convex, wrangler, mailpit, ollama]
+
+  - id: founding-engineer
+    name: Founding Engineer
+    group: build
+    what: First engineer at a startup. Does a bit of everything, picks the stack.
+    day:
+      - Picks the stack and sets up the repo
+      - Ships features, fixes prod, sets up CI
+      - Talks to users and turns it into code
+    core: [docker-compose, github-actions, nextjs, terraform, sentry]
+    daily: [claude-code, pnpm, supabase-cli, vercel-cli, doppler, tilt]
+    nice: [flisk, opentofu, pulumi, grafana, localstack]
+
+  # ---------------------------------------------------------------- run
+  - id: platform-engineer
+    name: Platform Engineer
+    group: run
+    what: Builds the internal tools and paved roads other developers use to ship.
+    day:
+      - Builds templates and self-service tooling
+      - Runs the developer portal and CI base images
+      - Helps teams get a working local setup
+    core: [backstage, terraform, kubernetes, argo-cd, github-actions]
+    daily: [crossplane, helm, humanitec, port, opentelemetry, dev-containers]
+    nice: [flisk, tilt, kratix, coder, copier]
+
+  - id: sre
+    name: Site Reliability Engineer (SRE)
+    group: run
+    what: Keeps production up. Measures it, gets paged, and fixes the cause.
+    day:
+      - Reads dashboards and traces when something is slow
+      - Writes alerts and runbooks
+      - Reviews outages and removes the root cause
+    core: [prometheus, grafana, kubectl, opentelemetry, terraform]
+    daily: [loki, jaeger, k9s, stern, argo-cd, helm]
+    nice: [datadog, sentry, toxiproxy, kubectx, signoz]
+
+  - id: devops-engineer
+    name: DevOps Engineer
+    group: run
+    what: Connects code to production with pipelines, servers and automation.
+    day:
+      - Builds and fixes CI/CD pipelines
+      - Writes infra as code
+      - Helps developers deploy without drama
+    core: [github-actions, terraform, docker-engine, ansible, kubectl]
+    daily: [gitlab-ci, jenkins, helm, argo-cd, vault, grafana]
+    nice: [act, dagger, opentofu, trivy, flisk]
+
+  - id: infra-cloud-engineer
+    name: Infrastructure / Cloud Engineer
+    group: run
+    what: Builds and runs the networks, clusters and cloud accounts everything sits on.
+    day:
+      - Writes Terraform for accounts, networks and clusters
+      - Plans capacity and cost
+      - Patches and upgrades the base layer
+    core: [terraform, opentofu, aws-cdk, kubernetes, ansible]
+    daily: [terragrunt, pulumi, cloudformation, bicep, vault, kubectl]
+    nice: [crossplane, sops, localstack, k3s, nix]
+
+  - id: kubernetes-engineer
+    name: Kubernetes / Cluster Engineer
+    group: run
+    what: Runs the clusters apps live on, and helps teams deploy to them.
+    day:
+      - Upgrades and fixes clusters
+      - Writes Helm charts and overlays
+      - Debugs pods that will not start
+    core: [kubectl, helm, kustomize, k9s, argo-cd]
+    daily: [flux, helmfile, stern, kubectx, external-secrets, lens]
+    nice: [kind, vcluster, krew, kubefwd, telepresence]
+
+  - id: release-engineer
+    name: Release Engineer
+    group: run
+    what: Owns how code becomes a version people can install, safely and on time.
+    day:
+      - Cuts releases and writes changelogs
+      - Signs and publishes packages and images
+      - Fixes a release that went half wrong
+    core: [github-actions, changesets, cosign, buildkit]
+    daily: [syft, renovate, gitlab-ci, argo-cd, grype]
+    nice: [kargo, dagger, lerna, helm]
+
+  - id: devprod-engineer
+    name: Build / Developer Productivity Engineer
+    group: run
+    what: Makes builds, tests and local setup fast for every other developer.
+    day:
+      - Speeds up slow builds and CI
+      - Fixes flaky tooling and caches
+      - Makes new-hire setup take minutes
+    core: [bazel, nx, turborepo, buildkit, mise]
+    daily: [pants, earthly, dagger, nix, devenv, just]
+    nice: [flisk, depot, buck2, watchman, direnv]
+
+  - id: observability-engineer
+    name: Observability Engineer
+    group: run
+    what: Builds the logs, metrics and traces so teams can see what their code does.
+    day:
+      - Rolls out OpenTelemetry in services
+      - Builds dashboards and alerts
+      - Keeps telemetry cost under control
+    core: [opentelemetry, prometheus, grafana, loki, jaeger]
+    daily: [otel-lgtm, signoz, sentry, datadog, kubectl]
+    nice: [openllmetry, langfuse, stern, helm]
+
+  # ---------------------------------------------------------------- data-ai
+  - id: data-engineer
+    name: Data Engineer
+    group: data-ai
+    what: Builds the pipes that move and clean data so others can use it.
+    day:
+      - Builds jobs that load and reshape data
+      - Runs databases and storage locally to test
+      - Fixes pipelines that broke overnight
+    core: [uv, docker-compose, minio, sqlalchemy, atlas]
+    daily: [conda, pixi, testcontainers, localstack, temporal, terraform]
+    nice: [flyway, dbmate, moto, gcloud-emulators, dagger]
+
+  - id: ml-engineer
+    name: ML Engineer
+    group: data-ai
+    what: Trains models and turns them into something an app can call.
+    day:
+      - Prepares data and trains models
+      - Wraps a model in an API
+      - Checks it still works after changes
+    core: [uv, conda, docker-desktop, vllm, fastapi]
+    daily: [pixi, mlx-lm, ollama, llama-cpp, langfuse, docker-compose]
+    nice: [github-actions, nix, podman]
+
+  - id: mlops-engineer
+    name: MLOps Engineer
+    group: data-ai
+    what: Gets models into production and keeps them running, cheap and watched.
+    day:
+      - Builds pipelines to train, test and deploy models
+      - Runs model servers on a cluster
+      - Watches cost, speed and drift
+    core: [kubernetes, vllm, docker-engine, terraform, github-actions]
+    daily: [helm, argo-cd, prometheus, grafana, buildkit, temporal]
+    nice: [langfuse, opentelemetry, kubectl, k9s]
+
+  - id: ai-agent-engineer
+    name: AI / Agent Engineer
+    group: data-ai
+    what: Builds apps where an LLM calls tools and does multi-step work.
+    day:
+      - Wires an agent to tools, memory and APIs
+      - Runs several agent services together locally
+      - Traces runs to see why an agent went wrong
+    core: [langgraph, claude-agent-sdk, model-context-protocol, langfuse, ollama]
+    daily: [openai-agents-sdk, pydantic-ai, mcp-inspector, fastmcp, temporal, docker-compose]
+    nice: [flisk, mastra, e2b, promptfoo, docker-mcp-toolkit]
+
+  - id: prompt-eval-engineer
+    name: Prompt / Eval Engineer
+    group: data-ai
+    what: Writes the tests that tell if an LLM app got better or worse.
+    day:
+      - Writes test cases for prompts and agents
+      - Runs evals on each change and compares scores
+      - Reads traces to find where answers go wrong
+    core: [promptfoo, langfuse, braintrust, langsmith, arize-phoenix]
+    daily: [opik, dspy, helicone, openllmetry, ollama]
+    nice: [github-actions, claude-code, mcp-inspector, docker-compose]
+
+  - id: llm-inference-engineer
+    name: LLM Inference / Local Models Engineer
+    group: data-ai
+    what: Runs open models on own hardware, fast and cheap.
+    day:
+      - Serves models behind an API
+      - Picks model sizes and quantization
+      - Measures speed and memory
+    core: [vllm, llama-cpp, ollama, docker-model-runner, kubernetes]
+    daily: [lm-studio, mlx-lm, localai, prometheus, grafana]
+    nice: [jan, helm, docker-desktop, opentelemetry]
+
+  - id: mcp-tools-engineer
+    name: MCP / Agent Tooling Engineer
+    group: data-ai
+    what: Builds the tools and servers that let AI agents act on real systems.
+    day:
+      - Writes MCP servers around internal APIs
+      - Tests them with an inspector and real agents
+      - Handles auth and safe access
+    core: [model-context-protocol, fastmcp, mcp-inspector, claude-code, docker-mcp-toolkit]
+    daily: [playwright-mcp, smithery, mcp-registry, composio, e2b, skills-sh]
+    nice: [stagehand, flisk, uv, wrangler]
+
+  # ---------------------------------------------------------------- quality
+  - id: qa-automation-engineer
+    name: QA / Test Automation Engineer
+    group: quality
+    what: Writes automated tests that click through the app and check it works.
+    day:
+      - Writes end-to-end and API tests
+      - Spins up the app with test data
+      - Chases flaky tests
+    core: [playwright-mcp, testcontainers, wiremock, docker-compose, github-actions]
+    daily: [msw, mockoon, mailpit, pact, act, stagehand]
+    nice: [flisk, microcks, toxiproxy, localstack]
+
+  - id: benchmark-engineer
+    name: Benchmark / Performance Engineer
+    group: quality
+    what: Writes and runs benchmarks to find what is slow and prove a fix worked.
+    day:
+      - Writes load and speed tests
+      - Runs them on clean, repeatable setups
+      - Reads traces and graphs to find the slow part
+    core: [docker-compose, prometheus, grafana, opentelemetry, jaeger]
+    daily: [toxiproxy, vllm, testcontainers, nix, hatch, github-actions]
+    nice: [wiremock, signoz, k9s, just]
+
+  - id: sdet-contract
+    name: Contract / Integration Test Engineer
+    group: quality
+    what: Makes sure services agree on how they talk, before they break each other.
+    day:
+      - Writes contract tests between services
+      - Mocks other teams' APIs from specs
+      - Checks changes will not break callers
+    core: [pact, microcks, wiremock, prism, testcontainers]
+    daily: [mockoon, msw, docker-compose, github-actions, toxiproxy]
+    nice: [flisk, localstack, tilt, moto]
+
+  - id: security-engineer
+    name: Security Engineer (AppSec)
+    group: quality
+    what: Finds and fixes security holes in code and dependencies.
+    day:
+      - Reviews code and designs for risks
+      - Runs scanners on code, images and packages
+      - Helps teams fix findings and rotate secrets
+    core: [trivy, gitleaks, snyk, vault, dependabot]
+    daily: [grype, syft, cosign, sops, renovate, github-actions]
+    nice: [openbao, infisical, external-secrets, toxiproxy]
+
+  - id: devsecops-engineer
+    name: DevSecOps Engineer
+    group: quality
+    what: Builds security checks into pipelines so bad code never ships.
+    day:
+      - Adds scanners and signing to CI
+      - Manages secrets and access
+      - Tracks what is inside every release
+    core: [github-actions, trivy, cosign, vault, terraform]
+    daily: [syft, grype, gitleaks, snyk, renovate, kubectl]
+    nice: [openbao, external-secrets, argo-cd, sops, kustomize]
+
+  - id: chaos-reliability-tester
+    name: Resilience / Chaos Test Engineer
+    group: quality
+    what: Breaks things on purpose to see if the system copes.
+    day:
+      - Adds slow and failing networks to tests
+      - Kills services and checks recovery
+      - Writes down what failed and how to fix it
+    core: [toxiproxy, docker-compose, kubernetes, kubectl, prometheus]
+    daily: [testcontainers, grafana, k9s, kind, stern]
+    nice: [opentelemetry, localstack, tilt, jaeger]
+
+  # ---------------------------------------------------------------- field
+  - id: forward-deployed-engineer
+    name: Forward Deployed Engineer
+    group: field
+    what: Sits with a customer and ships working software inside their setup, fast.
+    day:
+      - Gets a customer's stack running locally
+      - Builds the demo or integration
+      - Fixes what breaks in their environment
+    core: [docker-desktop, docker-compose, ngrok, claude-code, kubectl]
+    daily: [cursor, mockoon, wiremock, terraform, vault, helm]
+    nice: [flisk, tilt, ollama, localstack, tailscale-funnel]
+
+  - id: solutions-engineer
+    name: Solutions Engineer
+    group: field
+    what: Shows the product to buyers, builds proof-of-concept demos, answers hard questions.
+    day:
+      - Runs live demos and tailors them
+      - Builds quick proof-of-concept apps
+      - Answers technical questions from buyers
+    core: [docker-desktop, docker-compose, ngrok, mockoon, vercel-cli]
+    daily: [claude-code, cursor, codespaces, wiremock, supabase-cli]
+    nice: [flisk, cloudflare-tunnel, replit, stackblitz]
+
+  - id: developer-advocate
+    name: Developer Advocate / DevRel
+    group: field
+    what: Teaches developers to use the product with talks, demos, samples and docs.
+    day:
+      - Builds sample apps and tutorials
+      - Gives talks and records demos
+      - Takes developer feedback back to the team
+    core: [codespaces, docker-desktop, vite, stackblitz, claude-code]
+    daily: [dev-containers, replit, cursor, ngrok, github-actions, create-vite]
+    nice: [flisk, codesandbox, cookiecutter, copier, ollama]
+
+  - id: support-engineer
+    name: Support Engineer
+    group: field
+    what: Helps customers fix technical problems and finds bugs in the product.
+    day:
+      - Reproduces a customer's bug
+      - Reads logs and traces
+      - Writes the bug report for engineers
+    core: [docker-desktop, docker-compose, sentry, kubectl, stern]
+    daily: [wiremock, ngrok, grafana, loki, k9s, devbox]
+    nice: [flisk, mailpit, codespaces, jaeger]
+
+  - id: integration-engineer
+    name: Integration Engineer
+    group: field
+    what: Connects the product to a customer's other systems through APIs and webhooks.
+    day:
+      - Maps data between systems
+      - Tests webhooks from a laptop
+      - Mocks partner APIs that are not ready
+    core: [ngrok, wiremock, mockoon, prism, docker-compose]
+    daily: [microcks, msw, localtunnel, cloudflare-tunnel, mailpit, temporal]
+    nice: [flisk, inngest, composio, pact]
+
+  # ---------------------------------------------------------------- lead
+  - id: tech-lead
+    name: Tech Lead
+    group: lead
+    what: Leads a team's code, reviews work and keeps the local setup and CI healthy.
+    day:
+      - Reviews pull requests and sets standards
+      - Splits work and unblocks others
+      - Keeps new-hire setup and CI working
+    core: [github-actions, docker-compose, claude-code, renovate, sentry]
+    daily: [turborepo, nx, changesets, dev-containers, mise, backstage]
+    nice: [flisk, tilt, dependabot, grafana, just]
+
+  - id: staff-engineer
+    name: Staff Engineer
+    group: lead
+    what: Solves the hard cross-team problems and sets technical direction.
+    day:
+      - Writes design docs and decides trade-offs
+      - Picks tools that many teams will share
+      - Digs into the worst bugs and slowdowns
+    core: [kubernetes, terraform, opentelemetry, github-actions, bazel]
+    daily: [backstage, dapr, temporal, nx, docker-compose, grafana]
+    nice: [flisk, tilt, crossplane, nix, claude-code]
+
+  - id: software-architect
+    name: Software Architect
+    group: lead
+    what: Draws how systems fit together and picks the building blocks.
+    day:
+      - Designs services, data flow and boundaries
+      - Compares frameworks and cloud services
+      - Checks the design against real constraints
+    core: [kubernetes, terraform, opentelemetry, dapr, temporal]
+    daily: [backstage, nx, spring-boot, nestjs, docker-compose, pact]
+    nice: [flisk, aspire, encore, microcks, restate]
+
+  - id: engineering-manager
+    name: Engineering Manager
+    group: lead
+    what: Manages people and delivery. Watches team health, not code.
+    day:
+      - Runs 1:1s, planning and hiring
+      - Tracks delivery and removes blockers
+      - Reads dashboards to spot risk early
+    core: [github-actions, backstage, grafana, sentry, renovate]
+    daily: [port, cortex, opslevel, datadog, dependabot]
+    nice: [claude-code, github-copilot, cursor, codespaces]
+
+  - id: oss-maintainer
+    name: Open-source Maintainer
+    group: lead
+    what: Keeps a public project alive. Reviews contributions, cuts releases, fights spam.
+    day:
+      - Reviews pull requests from strangers
+      - Cuts releases and writes changelogs
+      - Makes it easy for new people to contribute
+    core: [github-actions, changesets, renovate, dev-containers, codespaces]
+    daily: [dependabot, act, cosign, just, gitleaks, claude-code]
+    nice: [flisk, copier, cookiecutter, nix, syft]

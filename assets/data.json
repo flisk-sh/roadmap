@@ -13,5 +13,11 @@ permalink: /assets/data.json
   "journeys": {{ site.data.journeys | jsonify }},
   "views": {{ site.data.meta.views | jsonify }},
   "cmd": {{ site.data.cmd | jsonify }},
+  "github": {{ site.data.github.tools | default: nil | jsonify }},
+  "github_fetched": {{ site.data.github.fetched | jsonify }},
+  "roles": {{ site.data.roles | default: nil | jsonify }},
+  "skill_categories": {{ site.data.skill_categories | jsonify }},
+  "skills": {{ site.data.skill_list | jsonify }},
+  "skill_evals": {{ site.data.skill_evals | default: nil | jsonify }},
   "logos": {{ logo_all | map: "name" | jsonify }}
 }

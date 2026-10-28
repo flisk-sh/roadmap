@@ -9,7 +9,7 @@ permalink: /about/
 {%- for f in site.data.families -%}{%- assign n = site.data.tools[f.id] | size -%}{%- assign tool_total = tool_total | plus: n -%}{%- endfor -%}
 <section class="prose">
   <h1>How it works</h1>
-  <p>{{ tool_total }} developer tools across {{ site.data.families | size }} families, drawn four ways. It is a wiki in a Git repo: anyone can open a pull request, and the history of every dot is public.</p>
+  <p>{{ tool_total }} developer tools across {{ site.data.families | size }} families, drawn seven ways. Stars, releases and archive notices come live from GitHub every week; see <a href="{{ '/findings/' | relative_url }}">Findings</a> for what the data says. It is a wiki in a Git repo: anyone can open a pull request, and the history of every dot is public.</p>
 
   <h2>The four views</h2>
   <ul>
@@ -17,6 +17,9 @@ permalink: /about/
     <li><strong>Adoption Radar.</strong> Rings from release and maturity signals: Adopt, Trial, Assess, Hold. Each tool links its evidence.</li>
     <li><strong>Lab.</strong> A periodic table of the same tools. The formula on each tile is its two Compass scores.</li>
     <li><strong>Journeys.</strong> Seven levels from your first lockfile to platform architect, walked by three tracks.</li>
+    <li><strong>Roles.</strong> {{ site.data.roles.roles | size }} jobs and the tools each one needs: must have, every day, good to know.</li>
+    <li><strong>Skills.</strong> {{ site.data.skill_list | size }} free AI agent skills from GitHub, each tested by a small model (Haiku): is it picked for the right request, and is it followed right?</li>
+    <li><strong>Ask.</strong> Type what you want to compare. The answer comes from this data, with no AI call; you can hand it to your own AI after.</li>
   </ul>
   <p>Want the commands, not the scores? <a href="{{ site.data.cmd.site }}" rel="noopener">cmd.flisk.sh</a> compares what you type for the same job, tool by tool. Tools that are on both sites link across.</p>
   <p>Every view has sub-tabs, and each sub-tab has its own address, so you can share exactly what you are looking at. Hover or focus a tool for details. Click up to 5 tools in any view to compare them side by side. Your picks are kept in the address, so you can share a comparison. Logos come from <a href="https://simpleicons.org" rel="noopener">Simple Icons</a> (CC0) and project GitHub organizations; they belong to their owners.</p>

@@ -54,7 +54,10 @@
         <img src="{{ '/assets/favicon.svg' | relative_url }}" alt="" width="20" height="20">
         <span>{{ site.title }}</span>
       </a>
+      {%- assign hook_total = 0 -%}{%- for fam in site.data.families -%}{%- assign hn = site.data.tools[fam.id] | size -%}{%- assign hook_total = hook_total | plus: hn -%}{%- endfor %}
+      <span class="hook">{{ hook_total }} dev tools · {{ site.data.roles.roles | size }} roles · {{ site.data.skill_list | size }} agent skills · scored by a checklist, not opinions</span>
       <nav class="nav" aria-label="Primary">
+        <a href="{{ '/findings/' | relative_url }}">Findings</a>
         <a class="nav-extra" href="{{ '/about/' | relative_url }}">How it works</a>
         <a class="nav-extra" href="{{ site.data.cmd.site }}" rel="noopener">Commands</a>
         <a href="{{ site.repo_url }}" rel="noopener">GitHub</a>

@@ -1,0 +1,195 @@
+{
+  "fetched": "2026-10-28T11:58:17Z",
+  "repos": {
+    "vercel-labs/agent-skills": {
+      "stars": 33141,
+      "archived": false,
+      "pushed": "2026-10-27T21:40:24Z"
+    },
+    "vercel-labs/agent-browser": {
+      "stars": 44746,
+      "archived": false,
+      "pushed": "2026-10-28T03:33:29Z"
+    },
+    "trailofbits/skills": {
+      "stars": 7859,
+      "archived": false,
+      "pushed": "2026-10-28T01:15:01Z"
+    },
+    "getsentry/skills": {
+      "stars": 1093,
+      "archived": false,
+      "pushed": "2026-10-26T12:26:36Z"
+    },
+    "hashicorp/agent-skills": {
+      "stars": 910,
+      "archived": false,
+      "pushed": "2026-10-05T01:21:52Z"
+    },
+    "cloudflare/skills": {
+      "stars": 3198,
+      "archived": false,
+      "pushed": "2026-10-28T10:55:22Z"
+    },
+    "supabase/agent-skills": {
+      "stars": 2943,
+      "archived": false,
+      "pushed": "2026-10-02T12:34:51Z"
+    },
+    "stripe/ai": {
+      "stars": 1979,
+      "archived": false,
+      "pushed": "2026-10-28T00:36:55Z"
+    },
+    "openai/skills": {
+      "stars": 28358,
+      "archived": false,
+      "pushed": "2026-09-08T20:35:26Z"
+    },
+    "neondatabase/agent-skills": {
+      "stars": 107,
+      "archived": false,
+      "pushed": "2026-10-27T19:06:34Z"
+    },
+    "expo/skills": {
+      "stars": 3353,
+      "archived": false,
+      "pushed": "2026-10-28T11:10:15Z"
+    },
+    "callstackincubator/agent-skills": {
+      "stars": 1685,
+      "archived": false,
+      "pushed": "2026-10-08T19:06:40Z"
+    },
+    "firebase/agent-skills": {
+      "stars": 491,
+      "archived": false,
+      "pushed": "2026-10-27T18:27:19Z"
+    },
+    "langchain-ai/langchain-skills": {
+      "stars": 1316,
+      "archived": false,
+      "pushed": "2026-10-25T15:24:42Z"
+    },
+    "prisma/skills": {
+      "stars": 76,
+      "archived": false,
+      "pushed": "2026-10-27T09:10:41Z"
+    },
+    "better-auth/skills": {
+      "stars": 227,
+      "archived": false,
+      "pushed": "2026-10-19T08:39:22Z"
+    },
+    "microsoft/azure-skills": {
+      "stars": 1601,
+      "archived": false,
+      "pushed": "2026-10-28T11:03:49Z"
+    },
+    "microsoft/skills": {
+      "stars": 3151,
+      "archived": false,
+      "pushed": "2026-10-28T11:04:01Z"
+    },
+    "google-gemini/gemini-skills": {
+      "stars": 4351,
+      "archived": false,
+      "pushed": "2026-10-13T17:41:39Z"
+    },
+    "google/agents-cli": {
+      "stars": 6198,
+      "archived": false,
+      "pushed": "2026-10-27T10:30:55Z"
+    },
+    "shadcn-ui/ui": {
+      "stars": 126788,
+      "archived": false,
+      "pushed": "2026-10-27T12:59:03Z"
+    },
+    "huggingface/skills": {
+      "stars": 11228,
+      "archived": false,
+      "pushed": "2026-10-23T09:08:05Z"
+    },
+    "wshobson/agents": {
+      "stars": 41906,
+      "archived": false,
+      "pushed": "2026-10-26T01:08:14Z"
+    },
+    "alirezarezvani/claude-skills": {
+      "stars": 28875,
+      "archived": false,
+      "pushed": "2026-10-27T09:44:05Z"
+    },
+    "Jeffallan/claude-skills": {
+      "stars": 12105,
+      "archived": false,
+      "pushed": "2026-10-28T08:35:54Z"
+    },
+    "affaan-m/everything-claude-code": {
+      "stars": 291333,
+      "archived": false,
+      "pushed": "2026-10-26T04:56:56Z"
+    },
+    "NeoLabHQ/context-engineering-kit": {
+      "stars": 1790,
+      "archived": false,
+      "pushed": "2026-08-26T21:08:01Z"
+    },
+    "muratcankoylan/Agent-Skills-for-Context-Engineering": {
+      "stars": 18235,
+      "archived": false,
+      "pushed": "2026-10-12T02:06:40Z"
+    },
+    "nextlevelbuilder/ui-ux-pro-max-skill": {
+      "stars": 141841,
+      "archived": false,
+      "pushed": "2026-10-26T10:07:28Z"
+    },
+    "Leonxlnx/taste-skill": {
+      "stars": 104001,
+      "archived": false,
+      "pushed": "2026-10-28T06:03:44Z"
+    },
+    "mrgoonie/claudekit-skills": {
+      "stars": 2230,
+      "archived": false,
+      "pushed": "2026-04-03T06:19:25Z"
+    },
+    "SawyerHood/dev-browser": {
+      "stars": 6704,
+      "archived": false,
+      "pushed": "2026-10-18T22:53:03Z"
+    },
+    "jezweb/claude-skills": {
+      "stars": 1084,
+      "archived": false,
+      "pushed": "2026-10-09T11:36:46Z"
+    },
+    "anthropics/skills": {
+      "stars": 184393,
+      "archived": false,
+      "pushed": "2026-10-09T18:45:52Z"
+    },
+    "obra/superpowers": {
+      "stars": 306924,
+      "archived": false,
+      "pushed": "2026-10-23T03:48:57Z"
+    },
+    "garrytan/gstack": {
+      "stars": 138012,
+      "archived": false,
+      "pushed": "2026-10-28T11:15:19Z"
+    },
+    "mattpocock/skills": {
+      "stars": 305291,
+      "archived": false,
+      "pushed": "2026-10-27T07:44:25Z"
+    },
+    "odykyi/gh-skills": {
+      "stars": 2,
+      "archived": false,
+      "pushed": "2026-10-27T17:12:17Z"
+    }
+  }
+}

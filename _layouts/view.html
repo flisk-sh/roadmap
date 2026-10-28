@@ -5,9 +5,12 @@ layout: default
 {%- assign families = site.data.families -%}
 {%- assign rubric = site.data.rubric -%}
 {%- assign journeys = site.data.journeys -%}
+{%- assign roles = site.data.roles.roles -%}
+{%- assign skills = site.data.skill_list -%}
 {%- assign view_id = cur_view.id -%}
+{%- assign kind = cur_view.subtabs -%}
 {%- assign sub = page.sub -%}
-{%- if view_id == "journeys" and sub == nil -%}{%- assign sub = journeys.tracks[0].id -%}{%- endif -%}
+{%- if kind == "tracks" and sub == nil -%}{%- assign sub = cur_subs[0].id -%}{%- endif -%}
 {%- assign tool_total = 0 -%}
 {%- for f in families -%}{%- assign n = site.data.tools[f.id] | size -%}{%- assign tool_total = tool_total | plus: n -%}{%- endfor -%}
 
@@ -16,41 +19,51 @@ layout: default
   <div class="topbar">
     <nav class="views" aria-label="Views">
       {%- for v in site.data.meta.views %}
-      <a class="view-tab" data-view="{{ v.id }}" href="{{ '/' | append: v.id | append: '/' | relative_url }}"{% if v.id == view_id %} aria-current="page"{% endif %}>
+      <a class="view-tab view-tab-{{ v.id }}" data-view="{{ v.id }}" href="{{ '/' | append: v.id | append: '/' | relative_url }}"{% if v.id == view_id %} aria-current="page"{% endif %}>
         <span class="view-icon view-icon-{{ v.id }}" aria-hidden="true"></span>{{ v.name }}
       </a>
       {%- endfor %}
     </nav>
+    {%- unless view_id == "ask" %}
     <div class="toolbar js-only" hidden>
-      <input id="q" type="search" placeholder="Find a tool…" aria-label="Find a tool" autocomplete="off" spellcheck="false">
+      <input id="q" type="search" placeholder="Find a {% if view_id == 'roles' %}role or tool{% elsif view_id == 'skills' %}skill{% else %}tool{% endif %}…" aria-label="Find" autocomplete="off" spellcheck="false">
     </div>
+    {%- endunless %}
   </div>
 
   {%- comment -%}The active tab already names the view, so the heading is for screen readers and search engines.{%- endcomment %}
   <h1 class="sr-only" id="view-title">{{ cur_view.title }}</h1>
   <p class="sr-only" id="view-blurb">{{ cur_view.blurb }}</p>
 
+  {%- unless kind == "none" %}
   <nav class="subtabs" id="subtabs" aria-label="Sub-tabs">
-    {%- if cur_view.subtabs == "tracks" %}
-      {%- for t in journeys.tracks %}
-      <a class="subtab" data-sub="{{ t.id }}" href="{{ '/journeys/' | append: t.id | append: '/' | relative_url }}"{% if t.id == sub %} aria-current="page"{% endif %}>{{ t.name }}</a>
-      {%- endfor %}
-    {%- else %}
-      <a class="subtab" data-sub="" href="{{ '/' | append: view_id | append: '/' | relative_url }}"{% if sub == nil %} aria-current="page"{% endif %}><span class="sw sw-all" aria-hidden="true"></span>All</a>
-      {%- for f in families %}
-      {%- assign n = site.data.tools[f.id] | size %}
-      <a class="subtab" data-sub="{{ f.id }}" style="--c: {{ f.color }}" href="{{ '/' | append: view_id | append: '/' | append: f.id | append: '/' | relative_url }}"{% if f.id == sub %} aria-current="page"{% endif %}><span class="sw" aria-hidden="true"></span>{{ f.name }} <small>{{ n }}</small></a>
-      {%- endfor %}
-    {%- endif %}
-    <span class="view-count"><strong>{{ tool_total }}</strong> tools</span>
+    {%- unless kind == "tracks" %}
+    <a class="subtab" data-sub="" href="{{ '/' | append: view_id | append: '/' | relative_url }}"{% if sub == nil %} aria-current="page"{% endif %}><span class="sw sw-all" aria-hidden="true"></span>All</a>
+    {%- endunless %}
+    {%- for s in cur_subs %}
+    {%- case kind %}
+      {%- when "families" %}{% assign n = site.data.tools[s.id] | size %}
+      {%- when "roles" %}{% assign n = roles | where: "group", s.id | size %}
+      {%- when "skills" %}{% assign n = skills | where: "cat", s.id | size %}
+      {%- else %}{% assign n = nil %}
+    {%- endcase %}
+    <a class="subtab" data-sub="{{ s.id }}"{% if s.color %} style="--c: {{ s.color }}"{% endif %} href="{{ '/' | append: view_id | append: '/' | append: s.id | append: '/' | relative_url }}"{% if s.id == sub %} aria-current="page"{% endif %}>{% if s.color %}<span class="sw" aria-hidden="true"></span>{% endif %}{{ s.name }}{% if n %} <small>{{ n }}</small>{% endif %}</a>
+    {%- endfor %}
+    <span class="view-count">
+      {%- if view_id == "roles" %}<strong>{{ roles | size }}</strong> roles
+      {%- elsif view_id == "skills" %}<strong>{{ skills | size }}</strong> skills
+      {%- else %}<strong>{{ tool_total }}</strong> tools{% endif -%}
+    </span>
   </nav>
+  {%- endunless %}
 
   <section class="stage-wrap" aria-label="{{ cur_view.title }}">
-    <div id="stage" class="stage stage-{{ view_id }}" role="img" aria-label="{{ cur_view.title }} chart. The same data is in the table below."></div>
+    <div id="stage" class="stage stage-{{ view_id }}" role="img" aria-label="{{ cur_view.title }}. The same data is in the table below."></div>
   </section>
 
   <section class="explain">
-    {%- if view_id == "compass" %}
+    {%- case view_id %}
+    {%- when "compass" %}
     <h2>How a dot gets its spot</h2>
     <p>Nobody puts dots by hand. Each check is 10 points. Tools with the same score sit in a little bunch.</p>
     <div class="explain-cols">
@@ -66,21 +79,72 @@ layout: default
       </div>
       {%- endfor %}
     </div>
-    {%- elsif view_id == "radar" %}
+    {%- when "radar" %}
     <h2>What the rings mean</h2>
     <ul class="rings">
       {%- for r in rubric.rings %}<li class="ring-{{ r.id }}"><strong>{{ r.label }}.</strong> {{ r.help }}</li>{% endfor %}
     </ul>
     <p>Dot shape shows the license: ● open source, ■ free or free tier, ◆ paid. Every tool links the release page or notice that puts it in its ring.</p>
-    {%- elsif view_id == "lab" %}
+    {%- when "lab" %}
     <h2>How to read a tile</h2>
     <p>The grid resizes to fill your window, so on a small window each tile shows less. Top left is the element number, top right the license (OS open source, Fr free, Fm free tier, Pd paid). The big letters are the symbol, the bar at the bottom is the ring. The formula in each tooltip is its two Compass scores: <code>E</code> easy to use and <code>B</code> made for big, real systems, out of 10.</p>
-    {%- else %}
+    {%- when "journeys" %}
     <h2>How to read a journey</h2>
     <p>Each station is a level. Learn the tools on the line first; branches are worth knowing. Flisk appears on a level only where it does the job today (<span class="fl-key fl-yes">does it</span>) or part of it (<span class="fl-key fl-partial">partly</span>). Where it does not yet, it is left off. The gaps are tracked in <a href="{{ journeys.flisk_issue }}" rel="noopener">the Flisk repo</a>.</p>
-    {%- endif %}
+    {%- when "roles" %}
+    <h2>How to read a role card</h2>
+    <p>Each card is one job. The colored strip shows which kinds of tools the job leans on. <strong>Must have</strong> is what you can't do the job without, <strong>Every day</strong> is what you touch daily, <strong>Good to know</strong> is worth learning next. Hover a tool to light it up on every card that uses it; click it to compare.</p>
+    {%- when "skills" %}
+    <h2>How a skill is tested</h2>
+    <p>A skill is a file that teaches an AI coding agent how to do one job. We test each one with a small, cheap model (Haiku), because if a small model gets it right, a big one will too.</p>
+    <ol class="criteria">
+      <li><strong>Picked right.</strong> Haiku sees the list of skills, like a real agent does, and gets 3 requests: 2 where this skill should be used and 1 that only sounds similar. It scores a point for each request it sends the right way.</li>
+      <li><strong>Followed right.</strong> Haiku reads the whole skill and a real request, then says its first step. A second Haiku call checks that step against the one the skill asks for.</li>
+    </ol>
+    <p>Score: 1 point per request picked right (3) plus 2 points for following right, out of 5, shown out of 100. Further right is better. Green is 80 and up, amber 50 to 79, red below 50. Bigger dot = more GitHub stars on the repo. Haiku only sees skills from the same repo when it picks, as if you had installed that one collection. The test questions were written from each skill's own text by a stronger model, so a skill is never graded on something it does not claim to do.{% if site.data.skill_evals.model %} Last run: {{ site.data.skill_evals.model }}, {{ site.data.skill_evals.ran | slice: 0, 10 }}.{% endif %}</p>
+    {%- when "ask" %}
+    <h2>How Ask works</h2>
+    <p>Ask never calls an AI. It finds the tools you name in this site's data and shows them side by side, the same checklist as the Compass. Name one tool to see its closest alternatives. Name a kind of tool, like "package manager" or "agent framework", to see the best of that kind. Then, if you want an opinion, hand the question and the data to your own AI.</p>
+    {%- endcase %}
   </section>
 
+  {%- if view_id == "roles" %}
+  <details class="all-list">
+    <summary>The same roles as a table</summary>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Role</th><th scope="col">What they do</th><th scope="col">Must have</th><th scope="col">Every day</th><th scope="col">Good to know</th></tr></thead>
+        <tbody>
+          {%- for r in roles %}
+          <tr data-sub="{{ r.group }}"{% if sub and sub != r.group %} hidden{% endif %}>
+            <th scope="row">{{ r.name }}</th><td>{{ r.what }}</td><td>{{ r.core | join: ", " }}</td><td>{{ r.daily | join: ", " }}</td><td>{{ r.nice | join: ", " }}</td>
+          </tr>
+          {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </details>
+  {%- elsif view_id == "skills" %}
+  <details class="all-list">
+    <summary>The same skills as a table</summary>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Skill</th><th scope="col">From</th><th scope="col">What it does</th><th scope="col">Score</th><th scope="col">Picked right</th><th scope="col">Followed right</th></tr></thead>
+        <tbody>
+          {%- for s in skills %}
+          <tr data-sub="{{ s.cat }}"{% if sub and sub != s.cat %} hidden{% endif %}>
+            <th scope="row"><a href="https://github.com/{{ s.source }}/blob/HEAD/{{ s.path }}" rel="noopener">{{ s.name }}</a></th>
+            <td>{{ s.source }}</td><td>{{ s.what }}</td>
+            <td>{% if s.result %}{{ s.result.score }}{% else %}not tested yet{% endif %}</td>
+            <td>{% if s.result %}{{ s.result.picked }}/{{ s.result.picked_of }}{% endif %}</td>
+            <td>{% if s.result %}{{ s.result.followed }}/{{ s.result.followed_of }}{% endif %}</td>
+          </tr>
+          {%- endfor %}
+        </tbody>
+      </table>
+    </div>
+  </details>
+  {%- elsif view_id != "ask" %}
   <details class="all-list">
     <summary>The same tools as a table</summary>
     <div class="table-wrap">
@@ -89,9 +153,9 @@ layout: default
         <tbody>
           {%- for f in families %}
           {%- assign row_hidden = false %}
-          {%- if view_id != "journeys" and sub and sub != f.id %}{% assign row_hidden = true %}{% endif %}
+          {%- if kind == "families" and sub and sub != f.id %}{% assign row_hidden = true %}{% endif %}
           {%- for t in site.data.tools[f.id] %}
-          <tr data-fam="{{ f.id }}"{% if row_hidden %} hidden{% endif %}>
+          <tr data-sub="{{ f.id }}"{% if row_hidden %} hidden{% endif %}>
             <th scope="row"><a href="{{ t.url }}" rel="noopener">{{ t.name }}</a> <span class="muted">{{ t.tagline }}</span></th>
             <td>{{ f.name }}</td>
             <td>{{ t.cat }}</td>
@@ -106,6 +170,7 @@ layout: default
       </table>
     </div>
   </details>
+  {%- endif %}
 
   <div id="tray" class="tray" aria-label="Tools to compare" hidden></div>
   <div id="cmp" class="cmp" hidden></div>

@@ -174,6 +174,33 @@
     return repo + "/issues/new?labels=data&title=" + encodeURIComponent("Data: " + t.name + " (" + t.id + ")");
   }
 
+  // Live numbers from GitHub (scripts/fetch-github.rb), next to the hand-written data.
+  function fmtStars(n) {
+    return n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, "") + "k" : String(n);
+  }
+  function ago(iso) {
+    if (!iso) return "";
+    var days = Math.floor((Date.now() - Date.parse(iso)) / 86400000);
+    if (days < 1) return "today";
+    if (days < 14) return days + " day" + (days === 1 ? "" : "s") + " ago";
+    if (days < 60) return Math.round(days / 7) + " weeks ago";
+    if (days < 730) return Math.round(days / 30) + " months ago";
+    return Math.round(days / 365) + " years ago";
+  }
+  function gh(t) {
+    return (D.github && D.github[t.id]) || null;
+  }
+  function ghLine(t) {
+    var g = gh(t);
+    if (!g) return "";
+    var bits = ["★ " + fmtStars(g.stars)];
+    if (g.release) bits.push("last release " + ago(g.release) + (g.version ? " (" + esc(g.version) + ")" : ""));
+    else if (g.pushed) bits.push("last commit " + ago(g.pushed));
+    var warn = g.archived && t.ring !== "hold"
+      ? '<p class="tt-warn">GitHub says this repo is archived, but it is not in Hold. <a href="' + esc(reportUrl(t)) + '" target="_blank" rel="noopener">Report it</a>.</p>'
+      : "";
+    return '<p class="tt-gh">' + bits.join(" · ") + "</p>" + warn;
+  }
   function toolTip(t) {
     var f = FAM[t.fam];
     var r = ringOf(t.ring);
@@ -189,6 +216,7 @@
       bar("Easy to use", t.x, critChips(t.dx, D.rubric.dx)) +
       bar("Big real systems", t.y, critChips(t.parity, D.rubric.parity)) +
       (t.note ? '<p class="tt-note">' + esc(t.note) + "</p>" : "") +
+      ghLine(t) +
       '<p class="tt-meta">#' + t.n + " · " + esc(D.rubric.licenses[t.license] || t.license) + (t.repo ? " · " + esc(t.repo) : "") + "</p>" +
       pickLine(t) +
       links([["Site", t.url], ["Evidence", t.evidence], ["Commands", cmdUrl([t.id])], ["Edit", editUrl(t)], ["Report", reportUrl(t)]])
@@ -224,6 +252,8 @@
     if (kind === "level") return levelTip(levelById(node.getAttribute("data-level")));
     if (kind === "flisk") return fliskTip(levelById(node.getAttribute("data-level")));
     if (kind === "text") return '<p class="tt-tag">' + esc(node.getAttribute("data-text")) + "</p>";
+    if (kind === "skill") return skillTip(SKILL_BY_ID[node.getAttribute("data-skill")]);
+    if (kind === "role") return roleTip(ROLE_BY_ID[node.getAttribute("data-role")]);
     return "";
   }
 
@@ -742,6 +772,400 @@
     el("p", { text: "End of the line: you can design the paths other people walk." }, end);
   }
 
+  // ---------- Roles: one loadout card per job ----------
+
+  var ROLE_BY_ID = {};
+  var SKILL_BY_ID = {};
+  var SKILL_COLORS = ["#a78bfa", "#60a5fa", "#34d399", "#f87171", "#fbbf24", "#f472b6", "#22d3ee", "#fb923c", "#f43f5e", "#a3e635", "#2dd4bf", "#c084fc"];
+
+  function prepExtra() {
+    ((D.roles && D.roles.roles) || []).forEach(function (r) { ROLE_BY_ID[r.id] = r; });
+    (D.skill_categories || []).forEach(function (c, i) { c.color = SKILL_COLORS[i % SKILL_COLORS.length]; });
+    (D.skills || []).forEach(function (sk) { SKILL_BY_ID[sk.id] = sk; });
+  }
+
+  function roleTools(r) {
+    return [].concat(r.core || [], r.daily || [], r.nice || []);
+  }
+  function roleMatches(r) {
+    if (!state.q) return true;
+    var q = state.q.toLowerCase();
+    if ((r.name + " " + r.what).toLowerCase().indexOf(q) !== -1) return true;
+    return roleTools(r).some(function (id) { var t = BY_ID[id]; return t && matches(t); });
+  }
+  function roleTip(r) {
+    var g = (D.roles.groups || []).filter(function (x) { return x.id === r.group; })[0];
+    return '<div class="tt-head"><div><strong>' + esc(r.name) + "</strong><span>" + esc(g ? g.name : "") + "</span></div></div>" +
+      '<p class="tt-tag">' + esc(r.what) + "</p>" +
+      '<p class="tt-sub">A normal day:</p><ul class="tt-day">' + (r.day || []).map(function (d) { return "<li>" + esc(d) + "</li>"; }).join("") + "</ul>";
+  }
+
+  function renderRoles() {
+    var roles = ((D.roles && D.roles.roles) || []).filter(function (r) { return !state.sub || r.group === state.sub; });
+    var grid = el("div", { class: "roles" }, stage);
+    roles.forEach(function (r, i) {
+      var card = el("article", { class: "role" + (roleMatches(r) ? "" : " is-dim"), style: "--d:" + Math.min(i * 30, 600) + "ms" }, grid);
+      var head = el("header", { class: "role-head", "data-tip": "role", "data-role": r.id, tabindex: 0 }, card);
+      el("h3", { text: r.name }, head);
+      el("p", { text: r.what }, head);
+
+      // The strip: which families this job leans on, weighted 3 / 2 / 1 for must have / daily / nice.
+      var weight = {};
+      [["core", 3], ["daily", 2], ["nice", 1]].forEach(function (k) {
+        (r[k[0]] || []).forEach(function (id) { var t = BY_ID[id]; if (t) weight[t.fam] = (weight[t.fam] || 0) + k[1]; });
+      });
+      var total = Object.keys(weight).reduce(function (a, k) { return a + weight[k]; }, 0) || 1;
+      var strip = el("div", { class: "role-strip", "aria-hidden": "true" }, card);
+      D.families.forEach(function (f) {
+        if (!weight[f.id]) return;
+        el("span", { style: "--c:" + f.color + ";flex:" + weight[f.id], "data-tip": "text", "data-text": f.name + ": " + Math.round((weight[f.id] / total) * 100) + "% of this job's tools" }, strip);
+      });
+
+      [["core", "Must have"], ["daily", "Every day"], ["nice", "Good to know"]].forEach(function (k) {
+        var ids = r[k[0]] || [];
+        if (!ids.length) return;
+        var row = el("div", { class: "slot slot-" + k[0] }, card);
+        el("span", { class: "slot-label", text: k[1] }, row);
+        var list = el("div", { class: "slot-items" }, row);
+        ids.forEach(function (id) {
+          var t = BY_ID[id];
+          if (!t) return;
+          var tok = el("span", { class: "tok" + (matches(t) ? "" : " is-dim"), "data-id": t.id, "data-tip": "tool", tabindex: 0, style: "--c:" + FAM[t.fam].color }, list);
+          if (LOGO[t.id]) tok.innerHTML = logoSpan(t.id); else el("b", { text: t.sym }, tok);
+          el("span", { text: t.name }, tok);
+        });
+      });
+    });
+    if (!roles.length) el("p", { class: "stage-error", text: "No roles yet." }, grid);
+  }
+
+  // ---------- Skills: a swarm, one lane per category, placed by the Haiku score ----------
+
+  function skillMatches(sk) {
+    if (!state.q) return true;
+    var q = state.q.toLowerCase();
+    return (sk.name + " " + sk.source + " " + sk.what).toLowerCase().indexOf(q) !== -1;
+  }
+  function skillScore(sk) {
+    return sk.result ? sk.result.score : null;
+  }
+  function skillUrl(sk) {
+    return "https://github.com/" + sk.source + "/blob/HEAD/" + sk.path;
+  }
+  function scoreClass(v) {
+    return v == null ? "sc-none" : v >= 80 ? "sc-good" : v >= 50 ? "sc-mid" : "sc-bad";
+  }
+  function skillTip(sk) {
+    if (!sk) return "";
+    var cat = (D.skill_categories || []).filter(function (c) { return c.id === sk.cat; })[0];
+    var r = sk.result;
+    var stars = sk.repo_info && sk.repo_info.stars;
+    var out = '<div class="tt-head" style="--c:' + esc(cat ? cat.color : "var(--accent)") + '"><div><strong>' + esc(sk.name) + "</strong><span>" + esc(sk.source) + (stars ? " · ★ " + fmtStars(stars) : "") + "</span></div>" +
+      '<span class="tt-ring ' + scoreClass(skillScore(sk)) + '">' + (r ? r.score + "/100" : "not tested") + "</span></div>" +
+      '<p class="tt-tag">' + esc(sk.what) + "</p>";
+    if (r) {
+      out += '<p class="tt-sub">Picked right: ' + r.picked + "/" + r.picked_of + "</p><ul class=\"tt-tests\">" +
+        (r.routes || []).map(function (x) {
+          return '<li class="' + (x.ok ? "ok" : "bad") + '">' + (x.ok ? "✓" : "✗") + " " + esc(x.prompt) +
+            ' <span class="muted">' + (x.expect === "this" ? "should use it" : "should not") + (x.ok ? "" : ", Haiku picked " + esc(x.got || "none")) + "</span></li>";
+        }).join("") + "</ul>" +
+        '<p class="tt-sub">Followed right: ' + r.followed + "/" + r.followed_of + "</p>" +
+        (r.follow ? '<ul class="tt-tests"><li class="' + (r.follow.ok ? "ok" : "bad") + '">' + (r.follow.ok ? "✓" : "✗") + " Haiku: " + esc(r.follow.answer) + '</li><li class="muted">Skill says: ' + esc(sk.eval && sk.eval.first_step) + "</li></ul>" : "");
+    } else {
+      out += '<p class="tt-note">Not tested yet. The next eval run will score it.</p>';
+    }
+    out += links([["SKILL.md", skillUrl(sk)], ["Repo", "https://github.com/" + sk.source]]);
+    return out;
+  }
+
+  function renderSkills() {
+    var cats = (D.skill_categories || []).filter(function (c) { return !state.sub || c.id === state.sub; });
+    var all = (D.skills || []).filter(function (sk) { return !state.sub || sk.cat === state.sub; });
+    var focus = !!state.sub;
+    var W = 1000, left = focus ? 20 : 150, right = 30, top = 34;
+    var laneH = focus ? Math.max(260, Math.min(520, all.length * 9)) : 58;
+    var H = top + cats.length * laneH + 34;
+    var sx = function (v) { return left + 60 + (v / 100) * (W - left - right - 60); };
+    var untestedX = left + 18;
+    var svg = sv("svg", { viewBox: "0 0 " + W + " " + H, class: "swarm" + (focus ? " swarm-focus" : "") }, stage);
+
+    for (var g = 0; g <= 100; g += 20) {
+      sv("line", { x1: sx(g), y1: top - 6, x2: sx(g), y2: H - 26, class: "grid" + (g % 50 ? "" : " grid-strong") }, svg);
+      sv("text", { x: sx(g), y: H - 10, class: "tick", "text-anchor": "middle", text: g }, svg);
+    }
+    sv("text", { x: untestedX, y: H - 10, class: "tick", "text-anchor": "middle", text: "?" }, svg);
+    sv("text", { x: W - right, y: 18, class: "axis-name", "text-anchor": "end", text: "Haiku used it right more often →" }, svg);
+    sv("text", { x: untestedX, y: 18, class: "axis-name", "text-anchor": "middle", text: "not tested" }, svg);
+
+    var placed = [];
+    cats.forEach(function (c, li) {
+      var y0 = top + li * laneH, mid = y0 + laneH / 2;
+      sv("rect", { x: 0, y: y0, width: W, height: laneH, class: "lane" + (li % 2 ? " lane-alt" : "") }, svg);
+      if (!focus) {
+        var lab = sv("text", { x: 10, y: mid + 4, class: "lane-label", style: "--c:" + c.color }, svg);
+        lab.textContent = c.name;
+        var cnt = all.filter(function (sk) { return sk.cat === c.id; }).length;
+        sv("text", { x: left - 6, y: mid + 4, class: "tick", "text-anchor": "end", text: cnt }, svg);
+      }
+      // Beeswarm: sort by score, then drop each dot at the nearest free height in the lane.
+      var mine = all.filter(function (sk) { return sk.cat === c.id; }).map(function (sk) {
+        var v = skillScore(sk), stars = (sk.repo_info && sk.repo_info.stars) || 0;
+        return { sk: sk, x: v == null ? untestedX : sx(v), r: Math.min(focus ? 11 : 7, (focus ? 4 : 2.6) + Math.log10(stars + 1) * (focus ? 1.4 : 0.9)) };
+      }).sort(function (a, b) { return a.x - b.x; });
+      var done = [];
+      mine.forEach(function (p) {
+        for (var k = 0; k < 400; k++) {
+          var off = Math.ceil(k / 2) * 3 * (k % 2 ? 1 : -1);
+          var y = mid + off;
+          if (Math.abs(off) > laneH / 2 - p.r - 2) { y = mid + (Math.random() - 0.5) * (laneH - 2 * p.r - 4); }
+          var hit = done.some(function (q) { var dx = q.x - p.x, dy = q.y - y; return dx * dx + dy * dy < (q.r + p.r + 1) * (q.r + p.r + 1); });
+          if (!hit || Math.abs(off) > laneH / 2 - p.r - 2) { p.y = y; break; }
+        }
+        if (p.y == null) p.y = mid;
+        done.push(p);
+        placed.push(p);
+      });
+    });
+
+    var dots = sv("g", { class: "dots" }, svg);
+    placed.forEach(function (p, i) {
+      var sk = p.sk, on = skillMatches(sk);
+      var cat = (D.skill_categories || []).filter(function (c) { return c.id === sk.cat; })[0];
+      var gEl = sv("g", {
+        class: "dot sdot " + scoreClass(skillScore(sk)) + (on ? "" : " is-dim"),
+        "data-tip": "skill", "data-skill": sk.id, "data-id": "skill:" + sk.id, tabindex: on ? 0 : -1,
+        "aria-label": sk.name + ", score " + (skillScore(sk) == null ? "not tested" : skillScore(sk)),
+        style: "--c:" + (cat ? cat.color : "var(--accent)") + ";--d:" + Math.min(i * 2, 600) + "ms"
+      }, dots);
+      gEl.style.transform = "translate(" + p.x + "px," + p.y + "px)";
+      sv("circle", { r: p.r + 5, class: "hit" }, gEl);
+      sv("circle", { r: p.r, class: "core" }, gEl);
+    });
+    if (focus || state.q) {
+      var labeler2 = labeler();
+      placed.forEach(function (p) {
+        if (!skillMatches(p.sk)) return;
+        var spot = labeler2(p.x, p.y, p.sk.name, 11);
+        if (spot) sv("text", { x: spot.x, y: spot.y, class: "dot-label", text: p.sk.name }, svg);
+      });
+    }
+    if (!all.length) el("p", { class: "stage-error", text: "No skills here yet." }, stage);
+  }
+
+  // ---------- Ask: type a question, get a comparison from the data ----------
+
+  var ASK_EXAMPLES = [
+    "compare yarn vs npm vs bun",
+    "tilt vs skaffold vs garden",
+    "langgraph or mastra or crewai?",
+    "best package manager",
+    "docker desktop vs orbstack vs colima",
+    "terraform vs opentofu vs pulumi",
+    "agent framework for a small team",
+    "flisk vs tilt vs docker compose",
+    "best tool to run many services locally"
+  ];
+  var ALIAS = {
+    k8s: "kubernetes", compose: "docker-compose", gha: "github-actions", tf: "terraform", tofu: "opentofu",
+    claude: "claude-code", copilot: "github-copilot", node: "npm", "docker desktop": "docker-desktop",
+    "gh actions": "github-actions", "github actions": "github-actions", argo: "argo-cd", argocd: "argo-cd",
+    "vs code": "dev-containers", devcontainer: "dev-containers", devcontainers: "dev-containers", gemini: "gemini-cli"
+  };
+  var STOP = /^(compare|comparison|vs|versus|or|and|with|which|what|is|are|the|a|an|for|to|of|me|my|i|we|should|use|better|best|good|tool|tools|than|between|team|small|big|local|locally|please|show|run|many|services|\?)$/;
+
+  function norm(x) {
+    return String(x || "").toLowerCase().replace(/\.js\b/g, "js").replace(/[^a-z0-9+]+/g, " ").trim();
+  }
+  var NAME_INDEX = null;
+  function nameIndex() {
+    if (NAME_INDEX) return NAME_INDEX;
+    NAME_INDEX = {};
+    TOOLS.forEach(function (t) {
+      [t.name, t.id, t.id.replace(/-/g, " "), t.name.replace(/\(.*?\)/g, "")].forEach(function (k) {
+        var n = norm(k);
+        if (n && !NAME_INDEX[n]) NAME_INDEX[n] = t.id;
+      });
+    });
+    Object.keys(ALIAS).forEach(function (k) { if (BY_ID[ALIAS[k]]) NAME_INDEX[norm(k)] = ALIAS[k]; });
+    return NAME_INDEX;
+  }
+  // Longest match first: "docker compose watch" beats "docker compose" beats "docker".
+  function findTools(text) {
+    var words = norm(text).split(" ").filter(Boolean), idx = nameIndex(), found = [];
+    for (var i = 0; i < words.length;) {
+      var hit = null, len = 0;
+      for (var n = Math.min(4, words.length - i); n >= 1; n--) {
+        var key = words.slice(i, i + n).join(" ");
+        if (idx[key] && !(n === 1 && STOP.test(key))) { hit = idx[key]; len = n; break; }
+      }
+      if (hit) { if (found.indexOf(hit) === -1) found.push(hit); i += len; } else i++;
+    }
+    return found;
+  }
+  // "package manager", "agent framework": match a category (singular or plural).
+  function findCategory(text) {
+    var q = " " + norm(text) + " ", best = null;
+    D.families.forEach(function (f) {
+      f.cats.forEach(function (c) {
+        var n = norm(c), sing = n.replace(/s\b/g, "");
+        if (q.indexOf(" " + n + " ") !== -1 || q.indexOf(" " + sing + " ") !== -1 || q.indexOf(" " + sing) !== -1) {
+          if (!best || n.length > best.n.length) best = { fam: f, cat: c, n: n };
+        }
+      });
+    });
+    if (!best && /many services|multi.?service|microservice/.test(q)) best = { fam: FAM["inner-loop"], cat: "Live-update loops" };
+    return best;
+  }
+  function rank(t) {
+    var ring = { adopt: 30, trial: 15, assess: 5, hold: -40 }[t.ring] || 0;
+    return t.x + t.y + ring;
+  }
+
+  function verdicts(tools) {
+    function top(key, label, fmt) {
+      var best = tools.slice().sort(function (a, b) { return key(b) - key(a); })[0];
+      var tie = tools.filter(function (t) { return key(t) === key(best); }).length > 1;
+      return "<li><span>" + label + "</span><b>" + (tie ? "tie" : esc(best.name)) + "</b> <span class=\"muted\">" + (tie ? "" : fmt(best)) + "</span></li>";
+    }
+    var ringOrder = { adopt: 3, trial: 2, assess: 1, hold: 0 };
+    var out = [
+      top(function (t) { return t.x; }, "Easiest to use", function (t) { return t.x + "/100"; }),
+      top(function (t) { return t.y; }, "Made for the biggest systems", function (t) { return t.y + "/100"; }),
+      top(function (t) { return ringOrder[t.ring] || 0; }, "Safest to adopt", function (t) { return ringOf(t.ring).label; })
+    ];
+    if (tools.every(gh)) out.push(top(function (t) { return gh(t).stars; }, "Most GitHub stars", function (t) { return "★ " + fmtStars(gh(t).stars); }));
+    var held = tools.filter(function (t) { return t.ring === "hold"; });
+    if (held.length) out.push('<li class="warn"><span>Careful</span><b>' + held.map(function (t) { return esc(t.name); }).join(", ") + "</b> <span class=\"muted\">in Hold: avoid for now</span></li>");
+    return '<ul class="ask-verdicts">' + out.join("") + "</ul>";
+  }
+
+  function aiPrompt(question, tools) {
+    var lines = tools.map(function (t) {
+      var dx = D.rubric.dx.criteria.filter(function (c) { return t.dx.indexOf(c.id) !== -1; }).map(function (c) { return c.label; });
+      var pa = D.rubric.parity.criteria.filter(function (c) { return t.parity.indexOf(c.id) !== -1; }).map(function (c) { return c.label; });
+      return "- " + t.name + ": " + t.tagline + ". Ring: " + ringOf(t.ring).label + ". Easy to use " + t.x + "/100 (" + dx.join(", ") + "). Made for big, real systems " + t.y + "/100 (" + pa.join(", ") + ")." + (t.note ? " Caveat: " + t.note : "");
+    });
+    return question + "\n\nData from roadmap.flisk.si (community-edited, checklist scores):\n" + lines.join("\n") +
+      "\n\nAs a tech lead, which should my team pick, and why? Ask me about our team size, stack and constraints if it changes the answer.";
+  }
+  function aiRow(prompt) {
+    return '<div class="ask-ai"><span>Want an opinion? Ask your AI:</span>' +
+      '<a class="btn" target="_blank" rel="noopener" href="https://chatgpt.com/?q=' + encodeURIComponent(prompt) + '">ChatGPT</a>' +
+      '<a class="btn" target="_blank" rel="noopener" href="https://claude.ai/new?q=' + encodeURIComponent(prompt) + '">Claude</a>' +
+      '<button type="button" class="btn" data-copy="' + esc(prompt) + '">Copy prompt</button></div>';
+  }
+
+  function answer(question) {
+    var box = document.getElementById("ask-out");
+    if (!box) return;
+    question = String(question || "").trim();
+    if (!question) { box.innerHTML = ""; return; }
+    var ids = findTools(question);
+    var html = "";
+    var cmdLink = function (list) {
+      var u = cmdUrl(list);
+      return u ? '<a class="btn" target="_blank" rel="noopener" href="' + esc(u) + '">Compare their commands ↗</a>' : "";
+    };
+    var compassLink = function (list) {
+      return '<a class="btn" href="' + base + "/compass/?compare=" + list.map(encodeURIComponent).join(",") + '">See them on the Compass</a>';
+    };
+    if (ids.length >= 2) {
+      var picked = ids.slice(0, 5), tools = picked.map(function (id) { return BY_ID[id]; });
+      html += '<h2 class="ask-title">' + tools.map(function (t) { return esc(t.name); }).join(" <span>vs</span> ") + "</h2>";
+      if (ids.length > 5) html += '<p class="muted">Showing the first 5 tools you named.</p>';
+      html += verdicts(tools);
+      html += '<div class="ask-actions">' + compassLink(picked) + cmdLink(picked) + "</div>";
+      html += '<div class="cmp-scroll ask-table">' + panelTable(tools) + "</div>";
+      html += aiRow(aiPrompt(question, tools));
+    } else if (ids.length === 1) {
+      var t = BY_ID[ids[0]];
+      var alts = TOOLS.filter(function (x) { return x.cat === t.cat && x.id !== t.id; }).sort(function (a, b) { return rank(b) - rank(a); }).slice(0, 4);
+      var set = [t].concat(alts);
+      html += '<h2 class="ask-title">' + esc(t.name) + " <span>and its closest alternatives</span></h2>";
+      html += '<p class="muted">Same category: ' + esc(t.cat) + ". Name two or more tools to compare only those.</p>";
+      html += verdicts(set);
+      html += '<div class="ask-actions">' + compassLink(set.map(function (x) { return x.id; })) + cmdLink(set.map(function (x) { return x.id; })) + "</div>";
+      html += '<div class="cmp-scroll ask-table">' + panelTable(set) + "</div>";
+      html += aiRow(aiPrompt(question, set));
+    } else {
+      var hit = findCategory(question);
+      if (hit) {
+        var best = TOOLS.filter(function (x) { return x.cat === hit.cat; }).sort(function (a, b) { return rank(b) - rank(a); }).slice(0, 5);
+        html += '<h2 class="ask-title">Top ' + esc(hit.cat.toLowerCase()) + "</h2>";
+        html += '<p class="muted">Ranked by easy to use + made for big systems, plus a bonus for Adopt. Tools in Hold sink.</p>';
+        html += verdicts(best);
+        html += '<div class="ask-actions">' + compassLink(best.map(function (x) { return x.id; })) + "</div>";
+        html += '<div class="cmp-scroll ask-table">' + panelTable(best) + "</div>";
+        html += aiRow(aiPrompt(question, best));
+      } else {
+        html += '<p class="ask-none">No tools found in that. Name them, like <b>yarn vs npm</b>, or a kind of tool, like <b>agent framework</b>.</p>';
+      }
+    }
+    box.innerHTML = html;
+    box.querySelectorAll(".cmp-rm").forEach(function (b) { b.remove(); });
+  }
+
+  function typewriter(input, phrases) {
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (still) { input.placeholder = phrases[0]; return; }
+    var i = 0, n = 0, deleting = false, timer = null;
+    function idle() { return document.activeElement !== input && !input.value; }
+    function tick() {
+      if (!document.body.contains(input)) return;
+      if (!idle()) { timer = null; input.placeholder = phrases[i % phrases.length]; return; }
+      var word = phrases[i % phrases.length];
+      n += deleting ? -1 : 1;
+      input.placeholder = word.slice(0, n) + (deleting || n < word.length ? "|" : "");
+      var wait = deleting ? 28 : 55 + Math.random() * 55;
+      if (!deleting && n >= word.length) { deleting = true; wait = 1600; input.placeholder = word; }
+      else if (deleting && n <= 0) { deleting = false; i++; wait = 350; }
+      timer = setTimeout(tick, wait);
+    }
+    input.addEventListener("focus", function () { clearTimeout(timer); timer = null; input.placeholder = phrases[i % phrases.length]; });
+    input.addEventListener("blur", function () { if (!timer && !input.value) { n = 0; deleting = false; timer = setTimeout(tick, 600); } });
+    timer = setTimeout(tick, 500);
+  }
+
+  function askFromUrl() {
+    var q = "";
+    try { q = new URLSearchParams(location.search).get("q") || ""; } catch (e) {}
+    var input = document.getElementById("ask-q");
+    if (input) input.value = q;
+    answer(q);
+  }
+
+  function renderAsk() {
+    var wrap = el("div", { class: "ask" }, stage);
+    var form = el("form", { class: "ask-form", role: "search" }, wrap);
+    el("span", { class: "ask-spark", "aria-hidden": "true", text: "✦" }, form);
+    var input = el("input", { id: "ask-q", type: "search", autocomplete: "off", spellcheck: "false", "aria-label": "Ask: what do you want to compare?" }, form);
+    el("button", { type: "submit", class: "ask-go", text: "Compare" }, form);
+    var chips = el("div", { class: "ask-chips" }, wrap);
+    ASK_EXAMPLES.slice(0, 6).forEach(function (ex) { el("button", { type: "button", class: "ask-chip", "data-ask": ex, text: ex }, chips); });
+    el("div", { id: "ask-out", class: "ask-out", "aria-live": "polite" }, wrap);
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      history.replaceState(history.state, "", location.pathname + (input.value.trim() ? "?q=" + encodeURIComponent(input.value.trim()) : ""));
+      answer(input.value);
+    });
+    chips.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-ask]");
+      if (!b) return;
+      input.value = b.getAttribute("data-ask");
+      form.requestSubmit ? form.requestSubmit() : form.dispatchEvent(new Event("submit"));
+    });
+    wrap.addEventListener("click", function (e) {
+      var c = e.target.closest("[data-copy]");
+      if (!c) return;
+      var text = c.getAttribute("data-copy");
+      var done = function () { c.textContent = "Copied"; setTimeout(function () { c.textContent = "Copy prompt"; }, 1500); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function () { window.prompt("Copy this prompt", text); });
+      else window.prompt("Copy this prompt", text);
+    });
+    typewriter(input, ASK_EXAMPLES);
+    askFromUrl();
+  }
+
   // ---------- compare: click up to 5 tools, then see them side by side ----------
 
   var MAX_CMP = 5;
@@ -885,6 +1309,10 @@
     row("What it is", tools.map(function (t) { return cell(esc(t.tagline)); }), false);
     row("License", tools.map(function (t) { return cell(esc(D.rubric.licenses[t.license] || t.license)); }),
       allSame(tools.map(function (t) { return t.license; })));
+    if (tools.some(gh)) {
+      row("GitHub stars", tools.map(function (t) { var g = gh(t); return cell(g ? "★ " + fmtStars(g.stars) : '<span class="muted">no repo</span>'); }), false);
+      row("Last release", tools.map(function (t) { var g = gh(t); return cell(g && g.release ? ago(g.release) + (g.version ? " <span class=\"muted\">" + esc(g.version) + "</span>" : "") : '<span class="muted">none on GitHub</span>'); }), false);
+    }
     row("Ring", tools.map(function (t) {
       return cell('<span class="tt-ring ring-' + esc(t.ring) + '" title="' + esc(ringOf(t.ring).help || "") + '">' + esc(ringOf(t.ring).label) + "</span>");
     }), allSame(tools.map(function (t) { return t.ring; })));
@@ -983,6 +1411,9 @@
     if (state.view === "compass") renderCompass();
     else if (state.view === "radar") renderRadar();
     else if (state.view === "lab") renderLab();
+    else if (state.view === "roles") renderRoles();
+    else if (state.view === "skills") renderSkills();
+    else if (state.view === "ask") renderAsk();
     else renderJourneys();
     void stage.offsetWidth;
     stage.classList.add("is-in");
@@ -994,10 +1425,19 @@
   function viewInfo() {
     return D.views.filter(function (v) { return v.id === state.view; })[0];
   }
+  // Where a view's sub-tabs come from; matches subtab_list in _plugins/view_pages.rb.
+  function subList(v) {
+    switch (v.subtabs) {
+      case "families": return D.families;
+      case "tracks": return D.journeys.tracks;
+      case "roles": return (D.roles && D.roles.groups) || [];
+      case "skills": return D.skill_categories || [];
+      default: return [];
+    }
+  }
   function subName() {
     if (!state.sub) return "";
-    var list = viewInfo().subtabs === "tracks" ? D.journeys.tracks : D.families;
-    var s = list.filter(function (x) { return x.id === state.sub; })[0];
+    var s = subList(viewInfo()).filter(function (x) { return x.id === state.sub; })[0];
     return s ? s.name : "";
   }
 
@@ -1007,9 +1447,10 @@
       else a.removeAttribute("aria-current");
     });
     var v = viewInfo(), name = subName();
-    document.title = v.title + (name && v.subtabs !== "tracks" ? ": " + name : name ? ": " + name : "") + " | DevEx Roadmap";
-    document.querySelectorAll(".all-list tbody tr[data-fam]").forEach(function (tr) {
-      tr.hidden = !!state.sub && v.subtabs !== "tracks" && tr.getAttribute("data-fam") !== state.sub;
+    document.title = v.title + (name ? ": " + name : "") + " | DevEx Roadmap";
+    var filters = v.subtabs === "families" || v.subtabs === "roles" || v.subtabs === "skills";
+    document.querySelectorAll(".all-list tbody tr[data-sub]").forEach(function (tr) {
+      tr.hidden = filters && !!state.sub && tr.getAttribute("data-sub") !== state.sub;
     });
   }
 
@@ -1023,7 +1464,8 @@
     return p.length ? "?" + p.join("&") : "";
   }
 
-  document.getElementById("subtabs").addEventListener("click", function (e) {
+  var subtabsEl = document.getElementById("subtabs");
+  if (subtabsEl) subtabsEl.addEventListener("click", function (e) {
     var a = e.target.closest("a.subtab");
     if (!a || !D || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
     e.preventDefault();
@@ -1050,6 +1492,7 @@
       return;
     }
     state.sub = parts[1] || (viewInfo().subtabs === "tracks" ? D.journeys.tracks[0].id : "");
+    if (state.view === "ask") askFromUrl();
     syncChrome();
     render();
   });
@@ -1080,6 +1523,7 @@
     .then(function (r) { return r.json(); })
     .then(function (d) {
       prep(d);
+      prepExtra();
       // Drop ids from a shared link that no longer exist, and any repeats.
       state.cmp = state.cmp.filter(function (id, i, a) { return BY_ID[id] && a.indexOf(id) === i; });
       syncChrome();

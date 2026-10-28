@@ -1,0 +1,1520 @@
+# Skills catalog, batch b: vendor and official repos (Vercel, Trail of Bits, Sentry, HashiCorp, Cloudflare, ...).
+# Every entry was written after reading the skill's own SKILL.md.
+
+# ---------- vercel-labs/agent-skills ----------
+- id: vercel-react-best-practices
+  name: vercel-react-best-practices
+  source: vercel-labs/agent-skills
+  path: skills/react-best-practices/SKILL.md
+  cat: frontend
+  what: 70 rules from Vercel to make React and Next.js apps fast. Fixes waterfalls and big bundles.
+  license: MIT
+  eval:
+    should:
+      - "My Next.js dashboard loads slow and the bundle is huge. Can you go through the components and fix what hurts speed?"
+      - "Review this page component, I think we fetch data one after another instead of in parallel."
+    near: "Our Express API has slow SQL queries. Help me tune the indexes."
+    first_step: Read the rule categories by priority, starting with eliminating async waterfalls and bundle size.
+
+- id: vercel-composition-patterns
+  name: vercel-composition-patterns
+  source: vercel-labs/agent-skills
+  path: skills/composition-patterns/SKILL.md
+  cat: frontend
+  what: Fix React components that have too many boolean props. Use compound components and context instead.
+  license: MIT
+  eval:
+    should:
+      - "My Button component has 12 boolean props now and nobody can read it. How do I restructure it?"
+      - "I'm building a reusable Modal for our component library, make the API flexible with sub-components."
+    near: "Make this React page load faster by lazy loading the heavy imports."
+    first_step: Check the component for boolean prop proliferation, then pick a pattern like compound components or lifted state.
+
+- id: vercel-react-view-transitions
+  name: vercel-react-view-transitions
+  source: vercel-labs/agent-skills
+  path: skills/react-view-transitions/SKILL.md
+  cat: frontend
+  what: Add smooth page and element animations with the React View Transition API.
+  license: MIT
+  eval:
+    should:
+      - "Add a nice animation when the user clicks a card and goes to the detail page in our Next.js app."
+      - "I want list items to animate when they reorder after sorting. Use the native browser transition stuff."
+    near: "Add a spinner while the form is submitting."
+    first_step: Go through the patterns in priority order (shared element, Suspense reveal, list identity) and add every one that fits.
+
+- id: vercel-deploy-to-vercel
+  name: deploy-to-vercel
+  source: vercel-labs/agent-skills
+  path: skills/deploy-to-vercel/SKILL.md
+  cat: ops
+  what: Deploy any project to Vercel as a preview, and get it linked for git-push deploys.
+  license: unknown
+  eval:
+    should:
+      - "Deploy this app and give me the link."
+      - "Push this live on Vercel so I can show my client."
+    near: "Deploy this container to our Kubernetes cluster."
+    first_step: Run four checks - git remote, .vercel/project.json link, vercel whoami, and vercel teams list.
+
+- id: vercel-vercel-cli-with-tokens
+  name: vercel-cli-with-tokens
+  source: vercel-labs/agent-skills
+  path: skills/vercel-cli-with-tokens/SKILL.md
+  cat: ops
+  what: Use the Vercel CLI with an access token instead of interactive login. Good for agents and CI.
+  license: unknown
+  eval:
+    should:
+      - "Set my env vars on Vercel from the terminal, I only have a token, I can't do vercel login here."
+      - "Deploy this project with the Vercel CLI inside the sandbox using my VERCEL_TOKEN."
+    near: "Walk me through creating a Vercel account in the browser."
+    first_step: Find the Vercel token - check VERCEL_TOKEN in the environment first, then .env, then ask the user.
+
+- id: vercel-vercel-optimize
+  name: vercel-optimize
+  source: vercel-labs/agent-skills
+  path: skills/vercel-optimize/SKILL.md
+  cat: ops
+  what: Cut Vercel cost and speed problems. Starts from real metrics, then looks only at code that metrics flag.
+  license: unknown
+  eval:
+    should:
+      - "Our Vercel bill jumped this month. Find which routes cost the most and how to fix them."
+      - "Audit my deployed Next.js project for performance using the Vercel usage data."
+    near: "Make my local dev server start faster."
+    first_step: Collect Vercel metrics, usage and project config into signals.json before reading any source file.
+
+- id: vercel-web-design-guidelines
+  name: web-design-guidelines
+  source: vercel-labs/agent-skills
+  path: skills/web-design-guidelines/SKILL.md
+  cat: frontend
+  what: Check UI code against Vercel's Web Interface Guidelines. Reports file:line findings.
+  license: unknown
+  eval:
+    should:
+      - "Review my UI code for accessibility problems and UX mistakes."
+      - "Audit src/components against web best practices before we ship."
+    near: "Design a new landing page for me from scratch."
+    first_step: Fetch the latest guidelines from the vercel-labs/web-interface-guidelines command.md URL before reviewing.
+
+# ---------- vercel-labs/agent-browser ----------
+- id: vercel-agent-browser
+  name: agent-browser
+  source: vercel-labs/agent-browser
+  path: skills/agent-browser/SKILL.md
+  cat: frontend
+  what: Drive a real Chrome from the CLI to click, fill forms, snapshot pages and test web apps.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Open localhost:3000, log in with the test user and tell me if the checkout form works."
+      - "Take a screenshot of our staging homepage and pull the pricing table text."
+    near: "Write Jest unit tests for the pricing function."
+    first_step: Load the real workflow from the CLI with agent-browser skills get core before running any command.
+
+- id: vercel-dogfood
+  name: dogfood
+  source: vercel-labs/agent-browser
+  path: skill-data/dogfood/SKILL.md
+  cat: test
+  what: Explore a web app like a user, find bugs and UX issues, and write a report with repro evidence.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Dogfood localhost:3000 and tell me what's broken."
+      - "Do a bug hunt on our new billing page and give me a report with screenshots."
+    near: "Write a Playwright test for the login page."
+    first_step: Set up the session, output directory and report file from the target URL, then start exploring.
+
+# ---------- trailofbits/skills ----------
+- id: trailofbits-semgrep-rule-creator
+  name: semgrep-rule-creator
+  source: trailofbits/skills
+  path: plugins/semgrep-rule-creator/skills/semgrep-rule-creator/SKILL.md
+  cat: security
+  what: Write Semgrep rules that catch a bug pattern across your code, with tests for hits and misses.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "We keep calling eval on user input. Write a Semgrep rule to catch it everywhere."
+      - "Make a taint-mode Semgrep rule that follows request params into our raw SQL calls."
+    near: "Run the standard Semgrep rulesets on this repo and show me the findings."
+    first_step: Write the rule plus a test file, then run semgrep --test to verify it before calling it done.
+
+- id: trailofbits-differential-review
+  name: differential-review
+  source: trailofbits/skills
+  path: plugins/differential-review/skills/differential-review/SKILL.md
+  cat: security
+  what: Security review of a PR or diff. Uses git history and caller count, and writes a markdown report.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "Do a security review of this PR before I merge. It touches the auth middleware."
+      - "Check what these last three commits could break. Look at blast radius and test coverage."
+    near: "Give me a style review of this PR, naming and formatting only."
+    first_step: Classify the change by risk, not size, and build baseline context from git history before reading the diff.
+
+- id: trailofbits-variant-analysis
+  name: variant-analysis
+  source: trailofbits/skills
+  path: plugins/variant-analysis/skills/variant-analysis/SKILL.md
+  cat: security
+  what: After finding one bug, hunt for every other place the same root cause hides in the codebase.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "We just fixed an IDOR in the invoices endpoint. Where else do we have the same mistake?"
+      - "Found an unchecked buffer length in parse_header. Search the repo for siblings of this bug."
+    near: "Audit this repo for vulnerabilities from scratch."
+    first_step: Extract the root cause (why the code is wrong) and list the directions a variant could hide in.
+
+- id: trailofbits-supply-chain-risk-auditor
+  name: supply-chain-risk-auditor
+  source: trailofbits/skills
+  path: plugins/supply-chain-risk-auditor/skills/supply-chain-risk-auditor/SKILL.md
+  cat: security
+  what: Audit dependencies for advisories, dead upstreams, single maintainers and install scripts.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "Which of our npm dependencies are risky? Abandoned, one maintainer, or running postinstall scripts?"
+      - "Do a supply chain audit of this Go and Python project before we go to production."
+    near: "Bump all our dependencies to the latest versions."
+    first_step: Run the deterministic collector script on the manifests and lockfile instead of estimating figures by hand.
+
+- id: trailofbits-property-based-testing
+  name: property-based-testing
+  source: trailofbits/skills
+  path: plugins/property-based-testing/skills/property-based-testing/SKILL.md
+  cat: test
+  what: Write property-based tests (Hypothesis, fast-check, proptest) that check rules over all inputs.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "Write Hypothesis tests for my encode/decode functions, not just a few examples."
+      - "My sort function passes its unit tests but I don't trust it. Add property tests."
+    near: "Add example-based unit tests for the login handler."
+    first_step: Check if the code has an algebraic shape (roundtrip, inverse, invariant, oracle) before writing any property.
+
+- id: trailofbits-mutation-testing
+  name: mutation-testing
+  source: trailofbits/skills
+  path: plugins/mutation-testing/skills/mutation-testing/SKILL.md
+  cat: test
+  what: Set up mewt or muton mutation runs and study surviving mutants to find test gaps and bugs.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "Set up a mewt campaign for my Rust crate and tell me what the surviving mutants mean."
+      - "Our coverage is 95% but I think tests are weak. Run mutation testing and find the gaps."
+    near: "Raise our line coverage from 70% to 90%."
+    first_step: Route to the right mutation workflow (configure, analyze results, or find bugs) and load its references.
+
+- id: trailofbits-codeql
+  name: codeql
+  source: trailofbits/skills
+  path: plugins/static-analysis/skills/codeql/SKILL.md
+  cat: security
+  what: Scan a repo with CodeQL data-flow and taint analysis, with checks that the database is good.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "Run a CodeQL scan on this repo and show me the real vulnerabilities."
+      - "Build a CodeQL database for our Java service and add models for our custom DB wrapper."
+    near: "Quickly grep this file for hardcoded passwords."
+    first_step: Build the CodeQL database, then run check_db_quality.py to confirm extraction worked before analyzing.
+
+- id: trailofbits-semgrep
+  name: semgrep
+  source: trailofbits/skills
+  path: plugins/static-analysis/skills/semgrep/SKILL.md
+  cat: security
+  what: Run a Semgrep scan with auto-picked rulesets, an approval gate and merged SARIF output.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "Scan this codebase for vulnerabilities with Semgrep."
+      - "Run a security audit with static analysis on the monorepo, important findings only."
+    near: "Write a custom Semgrep rule for our internal logging helper."
+    first_step: Detect languages, pick rulesets, and present the exact scan plan for user approval before running anything.
+
+- id: trailofbits-sarif-parsing
+  name: sarif-parsing
+  source: trailofbits/skills
+  path: plugins/static-analysis/skills/sarif-parsing/SKILL.md
+  cat: security
+  what: Read, dedupe and summarize SARIF files from CodeQL, Semgrep and other scanners.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "I have results.sarif from three scanners. Merge it and remove duplicate alerts."
+      - "Read this SARIF file and give me the high severity findings grouped by file."
+    near: "Run CodeQL on the repo to produce new findings."
+    first_step: Resolve each result's severity (kind, result.level, rule default level, then warning) before any query.
+
+- id: trailofbits-agentic-actions-auditor
+  name: agentic-actions-auditor
+  source: trailofbits/skills
+  path: plugins/agentic-actions-auditor/skills/agentic-actions-auditor/SKILL.md
+  cat: security
+  what: Audit GitHub Actions workflows that run AI agents for prompt injection and unsafe inputs.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "We use Claude Code Action on issue comments. Could an outsider inject a prompt through it?"
+      - "Audit our .github/workflows that call Gemini CLI or Codex for security holes."
+    near: "Speed up our GitHub Actions build, it takes 20 minutes."
+    first_step: Discover the workflow files (local or remote) and identify the steps that invoke AI agent actions.
+
+- id: trailofbits-fp-check
+  name: fp-check
+  source: trailofbits/skills
+  path: plugins/fp-check/skills/fp-check/SKILL.md
+  cat: security
+  what: Check if a suspected security bug is real. Gives true or false positive with evidence.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "The scanner flagged this SQL injection. Is it a real bug or a false positive?"
+      - "Can you verify that this reported deserialization issue is actually exploitable?"
+    near: "Find all security bugs in this module."
+    first_step: Trace the data flow through every phase for each suspected bug before giving any verdict.
+
+- id: trailofbits-sharp-edges
+  name: sharp-edges
+  source: trailofbits/skills
+  path: plugins/sharp-edges/skills/sharp-edges/SKILL.md
+  cat: review
+  what: Spot error-prone APIs, risky config options and footgun designs that invite security mistakes.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "Review our SDK's public API. Is there anything a user could easily misuse and get hurt?"
+      - "Look at this config schema, which options are dangerous defaults?"
+    near: "Check this function for an off-by-one error."
+    first_step: Map security-relevant APIs and the places where developers choose algorithms, timeouts or modes.
+
+- id: trailofbits-review-walkthrough
+  name: review-walkthrough
+  source: trailofbits/skills
+  path: plugins/review-walkthrough/skills/review-walkthrough/SKILL.md
+  cat: review
+  what: Turn the current branch into an HTML walkthrough, split in logical steps with review findings.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "Make a walkthrough of my branch so a reviewer can follow the changes step by step."
+      - "Generate an interactive HTML review guide for this big diff."
+    near: "Write a PR description for this branch."
+    first_step: Generate a self-contained HTML walkthrough of the current branch, grouping the final diff in logical steps.
+
+- id: trailofbits-reproduce-bug
+  name: reproduce-bug
+  source: trailofbits/skills
+  path: plugins/patching-bugs/skills/reproduce-bug/SKILL.md
+  cat: debug
+  what: Reproduce a reported runtime or compiler bug on a local checkout and save raw evidence.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "This bug report says the parser crashes on nested input. Reproduce it on the baseline build first."
+      - "Before we patch, can you confirm the bug is real by running a PoC against the current build?"
+    near: "Find new bugs in this compiler."
+    first_step: Build the current baseline with the project's own command and run the planned inputs before any edit.
+
+- id: trailofbits-devcontainer-setup
+  name: devcontainer-setup
+  source: trailofbits/skills
+  path: plugins/devcontainer-setup/skills/devcontainer-setup/SKILL.md
+  cat: ops
+  what: Create a devcontainer with Claude Code and language tooling, for a safe sandboxed dev setup.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "Add devcontainer support to this repo so I can run Claude Code in a sandbox."
+      - "Set up an isolated dev environment for our Python and Node project."
+    near: "Write a production Dockerfile for deploying this service."
+    first_step: Do project reconnaissance and detect the languages before generating files in .devcontainer/.
+
+- id: trailofbits-modern-python
+  name: modern-python
+  source: trailofbits/skills
+  path: plugins/modern-python/skills/modern-python/SKILL.md
+  cat: code
+  what: Set up Python projects with uv, ruff and ty. Move off pip, Poetry, mypy and black.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "Start a new Python package with good tooling, linting and type checking."
+      - "Migrate this repo from Poetry and black to uv and ruff."
+    near: "Fix this failing pytest test."
+    first_step: Use uv add and uv sync for dependencies instead of editing pyproject.toml by hand.
+
+- id: trailofbits-gh-cli
+  name: gh-cli
+  source: trailofbits/skills
+  path: plugins/gh-cli/skills/gh-cli/SKILL.md
+  cat: git
+  what: Use the authenticated gh CLI for GitHub URLs, PRs and issues, not curl or web fetch.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "Read this private repo's PR #42 and its comments."
+      - "Look at the issue at github.com/acme/api/issues/310 and summarize it."
+    near: "Resolve the merge conflict in my local branch."
+    first_step: Prefer gh repo view, gh pr view, gh issue view or gh api over unauthenticated curl or WebFetch.
+
+- id: trailofbits-open-sourcing
+  name: open-sourcing
+  source: trailofbits/skills
+  path: plugins/open-sourcing/skills/open-sourcing/SKILL.md
+  cat: git
+  what: Get a repo ready to go public. Secrets audit, license, docs, packaging and release automation.
+  license: CC-BY-SA-4.0
+  eval:
+    should:
+      - "We want to make this private repo public. What do we need to fix first?"
+      - "Pick a license for this project and set up release automation for the first public version."
+    near: "Cut a new patch release of our already public library."
+    first_step: Run the secrets audit first, because its outcome decides whether to keep or recreate the repository.
+
+# ---------- getsentry/skills ----------
+- id: sentry-code-review
+  name: code-review
+  source: getsentry/skills
+  path: skills/code-review/SKILL.md
+  cat: review
+  what: Review pull requests the Sentry way. Checks security, performance, tests and design.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Review PR 1234 and tell me what to fix before it merges."
+      - "Look at my changes and give feedback on quality and design."
+    near: "Fix the comments reviewers left on my PR."
+    first_step: Work through the review checklist, starting with identifying problems in the changed code.
+
+- id: sentry-find-bugs
+  name: find-bugs
+  source: getsentry/skills
+  path: skills/find-bugs/SKILL.md
+  cat: review
+  what: Hunt bugs, security holes and quality issues in the changes on the current branch.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Find bugs in everything I changed on this branch."
+      - "Audit my branch diff for security problems before I open the PR."
+    near: "This test fails, help me find out why."
+    first_step: Get the full diff against the default branch and read every changed file before mapping the attack surface.
+
+- id: sentry-commit
+  name: commit
+  source: getsentry/skills
+  path: skills/commit/SKILL.md
+  cat: git
+  what: Write Sentry-style conventional commit messages with issue references.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Commit my changes with a proper message."
+      - "Draft a commit message for this diff, it fixes issue PROJ-123."
+    near: "Squash my last five commits into one."
+    first_step: Check the current branch with git branch --show-current before committing.
+
+- id: sentry-create-branch
+  name: create-branch
+  source: getsentry/skills
+  path: skills/create-branch/SKILL.md
+  cat: git
+  what: Make a git branch with Sentry naming rules from your description or current diff.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Make me a new branch for this work."
+      - "I'm on main with uncommitted edits, start a branch for them."
+    near: "Delete all my merged local branches."
+    first_step: Use the argument as the work description, or inspect git diff and git diff --cached to infer it.
+
+- id: sentry-iterate-pr
+  name: iterate-pr
+  source: getsentry/skills
+  path: skills/iterate-pr/SKILL.md
+  cat: git
+  what: Loop on a PR until CI is green and the important review comments are fixed.
+  license: Apache-2.0
+  eval:
+    should:
+      - "CI is red on my PR and a reviewer left comments. Keep going until it passes."
+      - "Get this PR to green checks, fix whatever feedback is high priority."
+    near: "Merge this PR now."
+    first_step: Run gh pr view with JSON fields to identify the PR, its branch, draft state and review decision.
+
+- id: sentry-pr-writer
+  name: pr-writer
+  source: getsentry/skills
+  path: skills/pr-writer/SKILL.md
+  cat: git
+  what: Write the PR title and body as a cover note for reviewers, not a changelog.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Open a PR for this branch and write a good description."
+      - "My PR body is a mess, rewrite it so reviewers understand why."
+    near: "Write release notes for version 2.0."
+    first_step: Inspect the change (branch diff and commits) before writing the PR title and body.
+
+- id: sentry-security-review
+  name: security-review
+  source: getsentry/skills
+  path: skills/security-review/SKILL.md
+  cat: security
+  what: Review code for OWASP-style holes like injection, XSS, auth and authorization flaws.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Do a security review of the new upload endpoint."
+      - "Check this code for XSS and injection issues."
+    near: "Set up Dependabot for this repository."
+    first_step: Detect what type of code is under review and load the matching reference files.
+
+- id: sentry-gha-security-review
+  name: gha-security-review
+  source: getsentry/skills
+  path: skills/gha-security-review/SKILL.md
+  cat: security
+  what: Review GitHub Actions workflows for exploit paths like injection and token theft.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Audit our .github/workflows for security problems."
+      - "Is our pull_request_target workflow safe from fork PRs?"
+    near: "Add a caching step to speed up the CI workflow."
+    first_step: For each finding, build the five-part exploit chain - entry point, payload, execution, impact, PoC sketch.
+
+- id: sentry-django-access-review
+  name: django-access-review
+  source: getsentry/skills
+  path: skills/django-access-review/SKILL.md
+  cat: security
+  what: Review Django views and DRF viewsets for broken access control and IDOR.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Check if any of our DRF viewsets let one user read another user's data."
+      - "Review these Django views for IDOR and missing permission checks."
+    near: "Add login and signup to my Django app."
+    first_step: Understand how authorization works in this specific codebase before tracing data flows.
+
+- id: sentry-django-perf-review
+  name: django-perf-review
+  source: getsentry/skills
+  path: skills/django-perf-review/SKILL.md
+  cat: review
+  what: Review Django code for N+1 queries and other slow ORM patterns.
+  license: Apache-2.0
+  eval:
+    should:
+      - "This Django list endpoint is slow, find the N+1 queries."
+      - "Review my queryset code for performance problems."
+    near: "Write a Django migration to add a column."
+    first_step: Research first - trace data flow, check existing optimizations and data volume before reporting anything.
+
+- id: sentry-code-simplifier
+  name: code-simplifier
+  source: getsentry/skills
+  path: skills/code-simplifier/SKILL.md
+  cat: code
+  what: Clean up recently changed code for clarity and consistency without changing what it does.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Simplify the code I just wrote, it's hard to read."
+      - "Clean up the functions in this diff but keep behavior identical."
+    near: "Rewrite this module in a different framework."
+    first_step: Identify the recently modified code sections, then analyze them for clearer, more consistent shapes.
+
+- id: sentry-agents-md
+  name: agents-md
+  source: getsentry/skills
+  path: skills/agents-md/SKILL.md
+  cat: docs
+  what: Write and keep short AGENTS.md and CLAUDE.md files that tell coding agents how your repo works.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Create an AGENTS.md for this repo."
+      - "Our CLAUDE.md is out of date and bloated, trim and refresh it."
+    near: "Write a README for new users of this library."
+    first_step: Inspect package manager, commands, docs and current code conventions before writing anything.
+
+- id: sentry-doc-coauthoring
+  name: doc-coauthoring
+  source: getsentry/skills
+  path: skills/doc-coauthoring/SKILL.md
+  cat: docs
+  what: Walk through writing a spec, proposal or decision doc in stages with the user.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Help me write a technical spec for the new queue system."
+      - "I need to draft a decision doc on moving to Postgres, guide me through it."
+    near: "Proofread this paragraph for typos."
+    first_step: Offer the workflow and start with the Context Gathering stage.
+
+- id: sentry-document-api-endpoint
+  name: document-api-endpoint
+  source: getsentry/skills
+  path: skills/document-api-endpoint/SKILL.md
+  cat: docs
+  what: Document and type a Sentry API endpoint with schema decorators and response types.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Add OpenAPI docs to this Sentry endpoint, the schema doesn't match the response."
+      - "Fix the extend_schema decorators and response TypedDict for this endpoint."
+    near: "Write a user guide for the Sentry dashboard."
+    first_step: Add class-level extend_schema with the closest existing OPENAPI_TAGS entry, then method-level schema.
+
+# ---------- hashicorp/agent-skills ----------
+- id: hashicorp-terraform-test
+  name: terraform-test
+  source: hashicorp/agent-skills
+  path: plugins/terraform/skills/terraform-test/SKILL.md
+  cat: test
+  what: Write and run Terraform tests (.tftest.hcl) with run blocks, assertions and mock providers.
+  license: MPL-2.0
+  eval:
+    should:
+      - "Add tests for my VPC module that check the outputs without touching AWS."
+      - "Write a tftest file with expect_failures to prove my variable validation works."
+    near: "Run terraform plan and tell me what will change."
+    first_step: Name files *_unit_test.tftest.hcl for plan mode and default to command = plan.
+
+- id: hashicorp-terraform-style-guide
+  name: terraform-style-guide
+  source: hashicorp/agent-skills
+  path: plugins/terraform/skills/terraform-style-guide/SKILL.md
+  cat: code
+  what: Write or review Terraform HCL following HashiCorp's own style rules.
+  license: MPL-2.0
+  eval:
+    should:
+      - "Write Terraform for an S3 bucket with logging, follow best practices."
+      - "Review my main.tf for style and file layout problems."
+    near: "Explain what a Terraform workspace is."
+    first_step: Start with provider config and version constraints, then data sources, then resources in dependency order.
+
+- id: hashicorp-refactor-module
+  name: refactor-module
+  source: hashicorp/agent-skills
+  path: plugins/terraform/skills/refactor-module/SKILL.md
+  cat: code
+  what: Break one huge Terraform config into clean reusable modules.
+  license: MPL-2.0
+  eval:
+    should:
+      - "Our main.tf is 2000 lines. Split it into reusable modules."
+      - "Turn this copy-pasted networking Terraform into a proper module with variables and outputs."
+    near: "Upgrade the AWS provider to the latest major version."
+    first_step: Analyze the existing Terraform code, then refactor it step by step into modules with defined inputs and outputs.
+
+- id: hashicorp-terraform-stacks
+  name: terraform-stacks
+  source: hashicorp/agent-skills
+  path: plugins/terraform/skills/terraform-stacks/SKILL.md
+  cat: ops
+  what: Write and check Terraform Stacks files (.tfcomponent.hcl, .tfdeploy.hcl) for multi-env deploys.
+  license: MPL-2.0
+  eval:
+    should:
+      - "Create a Terraform Stack that deploys the same components to dev and prod."
+      - "My .tfdeploy.hcl won't validate, fix it."
+    near: "Create a plain Terraform module for an RDS instance."
+    first_step: Define providers with for_each and aliases in the block header, then wire up components and deployments.
+
+- id: hashicorp-run-acceptance-tests
+  name: run-acceptance-tests
+  source: hashicorp/agent-skills
+  path: plugins/terraform/skills/run-acceptance-tests/SKILL.md
+  cat: test
+  what: Run acceptance tests for a Terraform provider and debug missing env vars and failures.
+  license: MPL-2.0
+  eval:
+    should:
+      - "Run TestAccAwsInstance_basic and tell me why it fails."
+      - "The provider acceptance test says an env var is missing, help me run it."
+    near: "Run the unit tests for the provider."
+    first_step: Run go test -run=<TestAcc...> -timeout 60m with TF_ACC=1 and default to non-verbose output.
+
+- id: hashicorp-provider-test-patterns
+  name: provider-test-patterns
+  source: hashicorp/agent-skills
+  path: plugins/terraform/skills/provider-test-patterns/SKILL.md
+  cat: test
+  what: Write Terraform provider acceptance tests with terraform-plugin-testing and state checks.
+  license: MPL-2.0
+  eval:
+    should:
+      - "Write acceptance tests for my new resource using the Plugin Framework."
+      - "How do I add a plan check and a custom StateCheck to this provider test?"
+    near: "Write the Go code for a new provider resource."
+    first_step: Structure the test as a TestCase with TestSteps and use ConfigStateChecks for state assertions.
+
+- id: hashicorp-terraform-policy
+  name: terraform-policy
+  source: hashicorp/agent-skills
+  path: plugins/terraform/skills/terraform-policy/SKILL.md
+  cat: security
+  what: Write, test and convert Terraform Policy files (.policy.hcl), including Sentinel to tfpolicy.
+  license: MPL-2.0
+  eval:
+    should:
+      - "Write a policy that blocks public S3 buckets."
+      - "Convert my Sentinel policy to a tfpolicy file with tests."
+    near: "Write an IAM policy JSON for read-only S3 access."
+    first_step: Pick the author or test reference and write the new .policy.hcl from the requirement.
+
+- id: hashicorp-terraform-search-import
+  name: terraform-search-import
+  source: hashicorp/agent-skills
+  path: plugins/terraform/skills/terraform-search-import/SKILL.md
+  cat: ops
+  what: Find existing cloud resources with Terraform Search and bulk import them into Terraform.
+  license: MPL-2.0
+  eval:
+    should:
+      - "We have 40 S3 buckets made by hand. Bring them under Terraform."
+      - "Discover all unmanaged EC2 instances in the account and import them."
+    near: "Destroy all resources in this Terraform state."
+    first_step: Identify the target resource type, check provider support with scripts/list_resources.sh, then pick the workflow.
+
+- id: hashicorp-aws-ami-builder
+  name: aws-ami-builder
+  source: hashicorp/agent-skills
+  path: plugins/packer/skills/aws-ami-builder/SKILL.md
+  cat: ops
+  what: Build custom AWS AMIs with Packer's amazon-ebs builder.
+  license: MPL-2.0
+  eval:
+    should:
+      - "Make a Packer template that builds an Ubuntu AMI with Docker preinstalled."
+      - "Bake our app into a custom AMI for the autoscaling group."
+    near: "Build a Docker image for the app."
+    first_step: Set up AWS credentials (env vars, credentials file, or instance profile) and then write the amazon-ebs template.
+
+# ---------- cloudflare/skills ----------
+- id: cloudflare-cloudflare
+  name: cloudflare
+  source: cloudflare/skills
+  path: skills/cloudflare/SKILL.md
+  cat: ops
+  what: Pick the right Cloudflare products for an app, API, agent or storage need, then build with them.
+  license: Apache-2.0
+  eval:
+    should:
+      - "I need file storage and a queue for my API. What should I use on Cloudflare?"
+      - "Build a small AI agent app on Cloudflare, I'm not sure which products fit."
+    near: "Move my app from Cloudflare to AWS."
+    first_step: Start from the user's goal, recommend relevant Cloudflare products, then load their docs. Use the cf CLI by default.
+
+- id: cloudflare-wrangler
+  name: wrangler
+  source: cloudflare/skills
+  path: skills/wrangler/SKILL.md
+  cat: ops
+  what: Run and fix Wrangler CLI commands for dev, deploy and resources in projects with a wrangler config.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Wrangler deploy fails with a binding error, fix it."
+      - "Start local dev for this Worker and create the KV namespace it needs."
+    near: "Set up DNS records for my domain in Cloudflare."
+    first_step: Inspect the project for wrangler.jsonc, json or toml and use the project's own Wrangler version.
+
+- id: cloudflare-workers-best-practices
+  name: workers-best-practices
+  source: cloudflare/skills
+  path: skills/workers-best-practices/SKILL.md
+  cat: code
+  what: Write and review Cloudflare Workers code for production, using fresh docs instead of memory.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Review my Worker before I ship it to prod."
+      - "Write a Worker that proxies requests and caches responses the right way."
+    near: "Write an AWS Lambda function in Python."
+    first_step: Retrieve the relevant Cloudflare docs rather than relying on pre-training, and read the matching reference sections.
+
+- id: cloudflare-workers-profiling
+  name: workers-profiling
+  source: cloudflare/skills
+  path: skills/workers-profiling/SKILL.md
+  cat: debug
+  what: Profile CPU and memory of deployed Workers and Durable Objects to find what to optimize.
+  license: Apache-2.0
+  eval:
+    should:
+      - "My Worker burns a lot of CPU time on some requests. Profile it and find why."
+      - "A Durable Object keeps growing in memory, capture a heap profile."
+    near: "Add logging to my Worker."
+    first_step: Identify the symptom and affected workload, and confirm account, Worker, environment and deployed version.
+
+- id: cloudflare-web-perf
+  name: web-perf
+  source: cloudflare/skills
+  path: skills/web-perf/SKILL.md
+  cat: frontend
+  what: Audit a site's loading speed, Core Web Vitals and Lighthouse score, then fix the causes.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Our LCP is bad on the product page, find out why."
+      - "Run a performance audit on staging and tell me what to optimize."
+    near: "Optimize my database queries."
+    first_step: Phase 1 - navigate to the page and record a performance trace.
+
+- id: cloudflare-durable-objects
+  name: durable-objects
+  source: cloudflare/skills
+  path: skills/durable-objects/SKILL.md
+  cat: code
+  what: Build, debug or review Cloudflare Durable Objects for state and coordination.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Build a chat room with Durable Objects, one per room."
+      - "My Durable Object alarms get overwritten, what am I doing wrong?"
+    near: "Store user profiles in Workers KV."
+    first_step: Model around coordination atoms (one DO per room or user) and use SQLite storage via new_sqlite_classes.
+
+# ---------- supabase/agent-skills ----------
+- id: supabase-supabase
+  name: supabase
+  source: supabase/agent-skills
+  path: skills/supabase/SKILL.md
+  cat: data
+  what: Do any Supabase task (DB, Auth, Edge Functions, Storage, Realtime) with docs checked first.
+  license: MIT
+  eval:
+    should:
+      - "Add Supabase auth with SSR to my Next.js app."
+      - "Write an Edge Function that reads from a table with row level security on."
+    near: "Set up a Firebase project for push notifications."
+    first_step: Fetch the Supabase changelog and scan for breaking-change tags before implementing.
+
+- id: supabase-supabase-postgres-best-practices
+  name: supabase-postgres-best-practices
+  source: supabase/agent-skills
+  path: skills/supabase-postgres-best-practices/SKILL.md
+  cat: data
+  what: Postgres rules for schema, indexes, queries and RLS, loaded before you touch the database.
+  license: MIT
+  eval:
+    should:
+      - "Design the tables for a multi-tenant SaaS in Postgres."
+      - "This query is slow on a 10M row table. Fix the indexes."
+    near: "Set up a MongoDB replica set."
+    first_step: Load the guide before creating or altering tables, and apply the rule categories by impact.
+
+# ---------- stripe/ai ----------
+- id: stripe-stripe-best-practices
+  name: stripe-best-practices
+  source: stripe/ai
+  path: skills/stripe-best-practices/SKILL.md
+  cat: code
+  what: Make good Stripe integration choices. API picks, sandboxes, Connect setup, latest SDK versions.
+  license: MIT
+  eval:
+    should:
+      - "Add subscription payments to my app with Stripe."
+      - "Should I use Checkout Sessions or PaymentIntents for this one-time purchase?"
+    near: "Fix the PayPal button on our checkout page."
+    first_step: Use the latest Stripe API version and SDK, and use separate sandboxes for new integration development.
+
+- id: stripe-upgrade-stripe
+  name: upgrade-stripe
+  source: stripe/ai
+  path: skills/upgrade-stripe/SKILL.md
+  cat: code
+  what: Upgrade Stripe API version, webhooks and SDKs step by step.
+  license: MIT
+  eval:
+    should:
+      - "We are on a 3 year old Stripe API version. Upgrade us safely."
+      - "Bump stripe-node and check what breaks in our webhook handlers."
+    near: "Add a new webhook for refunds."
+    first_step: Identify the current API version in code, then review the changelog for relevant changes.
+
+- id: stripe-stripe-projects
+  name: stripe-projects
+  source: stripe/ai
+  path: skills/stripe-projects/SKILL.md
+  cat: ops
+  what: Provision a database, auth, hosting or cache for a project through Stripe Projects.
+  license: MIT
+  eval:
+    should:
+      - "I need a Postgres and Redis for this app, set them up."
+      - "Give me hosting and a database for my side project without clicking around dashboards."
+    near: "Create a Stripe checkout link for a product."
+    first_step: Ensure the Stripe CLI and Projects plugin are installed (which stripe && stripe --version).
+
+# ---------- openai/skills ----------
+- id: openai-gh-fix-ci
+  name: gh-fix-ci
+  source: openai/skills
+  path: skills/.curated/gh-fix-ci/SKILL.md
+  cat: git
+  what: Read failing GitHub Actions checks on a PR, find the cause, and fix it after you approve.
+  license: Apache-2.0
+  eval:
+    should:
+      - "CI failed on my PR, find out why."
+      - "The GitHub Actions checks are red, figure it out and propose a fix."
+    near: "Write a new GitHub Actions workflow for releases."
+    first_step: Verify gh auth, then run scripts/inspect_pr_checks.py for the PR to gather failing check logs.
+
+- id: openai-gh-address-comments
+  name: gh-address-comments
+  source: openai/skills
+  path: skills/.curated/gh-address-comments/SKILL.md
+  cat: git
+  what: Find the open PR for your branch and work through its review comments with gh.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Go through the review comments on my PR and handle them."
+      - "What did reviewers ask for on the current branch's PR?"
+    near: "Write review comments on someone else's PR."
+    first_step: Check gh is authenticated, then inspect the comments needing attention on the current branch's PR.
+
+- id: openai-yeet
+  name: yeet
+  source: openai/skills
+  path: skills/.curated/yeet/SKILL.md
+  cat: git
+  what: Stage, commit, push and open a GitHub PR in one go. Only when you ask for it.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Yeet this: commit everything, push and open a PR."
+      - "Ship my changes up as a PR in one step."
+    near: "Show me a diff of my staged changes."
+    first_step: If on main or default branch create a branch, otherwise stay, then git status -sb and stage everything.
+
+- id: openai-security-best-practices
+  name: security-best-practices
+  source: openai/skills
+  path: skills/.curated/security-best-practices/SKILL.md
+  cat: security
+  what: Language and framework specific security review with fixes, when you ask for a secure-by-default pass.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Do a security best practices review of my FastAPI backend and React frontend."
+      - "Write this Go service secure by default, check it against known guidance."
+    near: "Pen test my production site."
+    first_step: Identify ALL languages and frameworks in scope, then read the matching reference files for each.
+
+- id: openai-security-threat-model
+  name: security-threat-model
+  source: openai/skills
+  path: skills/.curated/security-threat-model/SKILL.md
+  cat: security
+  what: Write a threat model for a repo. Trust boundaries, assets, attacker paths and mitigations.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Threat model this service for me."
+      - "List attack paths and mitigations for our payments module as a markdown doc."
+    near: "Scan the repo for CVEs in dependencies."
+    first_step: Collect the repo root, intended usage, exposure and auth expectations, then follow the prompt template contract.
+
+- id: openai-playwright
+  name: playwright
+  source: openai/skills
+  path: skills/.curated/playwright/SKILL.md
+  cat: test
+  what: Automate a real browser from the terminal with playwright-cli to click, snapshot and debug UI flows.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Open the signup page in a browser and see why the submit button does nothing."
+      - "Take screenshots of the checkout flow and extract the error text."
+    near: "Write a Playwright test suite file for our checkout."
+    first_step: Use the wrapper script, e.g. open the URL headed, then snapshot to get element refs.
+
+- id: openai-netlify-deploy
+  name: netlify-deploy
+  source: openai/skills
+  path: skills/.curated/netlify-deploy/SKILL.md
+  cat: ops
+  what: Deploy web projects to Netlify with the CLI, preview or production.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Deploy this site to Netlify."
+      - "Link the repo to a Netlify site and publish a preview."
+    near: "Deploy this to Heroku."
+    first_step: Check authentication with npx netlify status and guide login if needed.
+
+- id: openai-sentry
+  name: sentry
+  source: openai/skills
+  path: skills/.curated/sentry/SKILL.md
+  cat: debug
+  what: Read Sentry issues and recent production errors with the sentry CLI, read-only.
+  license: Apache-2.0
+  eval:
+    should:
+      - "What errors hit production in the last day? Check Sentry."
+      - "Pull the details of the top unresolved Sentry issue."
+    near: "Add Sentry to my Node app."
+    first_step: Make sure sentry is authenticated (sentry auth login or SENTRY_AUTH_TOKEN), then query with --json.
+
+- id: openai-cli-creator
+  name: cli-creator
+  source: openai/skills
+  path: skills/.curated/cli-creator/SKILL.md
+  cat: code
+  what: Build a composable CLI from API docs, OpenAPI, curl examples or a script.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Turn this OpenAPI spec into a command line tool I can run from any repo."
+      - "Wrap our internal admin API in a CLI with auth and JSON output."
+    near: "Write a shell alias for my git commands."
+    first_step: Choose auth from an env var, then user config, with flags only for one-off tests, and add a doctor --json command.
+
+# ---------- neondatabase/agent-skills ----------
+- id: neon-neon-postgres
+  name: neon-postgres
+  source: neondatabase/agent-skills
+  path: skills/neon-postgres/SKILL.md
+  cat: data
+  what: Work with Neon Postgres. Connections, migrations, branching, autoscaling and slow query checks.
+  license: Apache-2.0
+  eval:
+    should:
+      - "My Neon database is slow. Find which queries to fix."
+      - "Should I use the pooled or direct connection string for my serverless functions?"
+    near: "Set up Postgres with Docker Compose locally."
+    first_step: Reproduce the symptom and note its time window, then run the smallest relevant inspect checks.
+
+- id: neon-neon-postgres-branches
+  name: neon-postgres-branches
+  source: neondatabase/agent-skills
+  path: skills/neon-postgres-branches/SKILL.md
+  cat: data
+  what: Pick and create the right Neon branch for testing migrations or safe dev data.
+  license: Apache-2.0
+  eval:
+    should:
+      - "I want to test a risky migration against production-like data without touching prod."
+      - "Make a Neon branch for dev that has our schema but not the customer data."
+    near: "Create a git branch for this feature."
+    first_step: Choose a normal branch for realistic data or a schema-only branch for sensitive data, asking one question if unclear.
+
+- id: neon-neon-postgres-egress-optimizer
+  name: neon-postgres-egress-optimizer
+  source: neondatabase/agent-skills
+  path: skills/neon-postgres-egress-optimizer/SKILL.md
+  cat: data
+  what: Find and cut big Postgres network egress, the cause of high database bills.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Why is my Neon bill so high? Data transfer looks crazy."
+      - "Find the queries that return too much data and fix them in the code."
+    near: "Reduce my S3 storage cost."
+    first_step: Check that pg_stat_statements is available, then find which queries transfer the most data.
+
+# ---------- expo/skills ----------
+- id: expo-eas-update
+  name: eas-update
+  source: expo/skills
+  path: plugins/expo/skills/eas-update/SKILL.md
+  cat: ops
+  what: Set up and publish over-the-air updates with EAS Update and expo-updates.
+  license: MIT
+  eval:
+    should:
+      - "Set up OTA updates for my Expo app with preview and production channels."
+      - "I published an update but the build didn't pick it up. Why?"
+    near: "Submit my app to the App Store."
+    first_step: For a build that did not update, check the update configuration in order; do not change fallbackToCacheTimeout blindly.
+
+- id: expo-eas-workflows
+  name: eas-workflows
+  source: expo/skills
+  path: plugins/expo/skills/eas-workflows/SKILL.md
+  cat: ops
+  what: Write EAS workflow YAML for Expo CI/CD build and deploy pipelines.
+  license: MIT
+  eval:
+    should:
+      - "Create an EAS workflow that builds on every push to main and ships to TestFlight."
+      - "Edit .eas/workflows/ so the preview build runs only on PRs."
+    near: "Write a GitHub Actions workflow to run lint."
+    first_step: Read the reference documentation, then write or edit the workflow YAML under .eas/workflows/.
+
+- id: expo-expo-upgrade
+  name: expo-upgrade
+  source: expo/skills
+  path: plugins/expo/skills/expo-upgrade/SKILL.md
+  cat: code
+  what: Upgrade the Expo SDK version and fix dependency issues that follow.
+  license: MIT
+  eval:
+    should:
+      - "Upgrade my Expo app to the newest SDK."
+      - "After the SDK bump, half my packages fail. Fix the dependencies."
+    near: "Upgrade React Native without Expo."
+    first_step: Upgrade Expo and its dependencies with npx expo install expo@latest.
+
+- id: expo-expo-dev-client
+  name: expo-dev-client
+  source: expo/skills
+  path: plugins/expo/skills/expo-dev-client/SKILL.md
+  cat: ops
+  what: Build and share Expo development clients locally or through TestFlight for internal testing.
+  license: MIT
+  eval:
+    should:
+      - "I need a dev build with native modules to test on my iPhone."
+      - "Get a development client to my testers through TestFlight."
+    near: "Release the app to the App Store for public users."
+    first_step: Build the development client in the cloud, then have it auto-submit to App Store Connect.
+
+- id: expo-eas-observe
+  name: eas-observe
+  source: expo/skills
+  path: plugins/expo/skills/eas-observe/SKILL.md
+  cat: debug
+  what: Add expo-observe to track startup, navigation speed, JS errors and native crashes in production.
+  license: MIT
+  eval:
+    should:
+      - "Add performance and crash monitoring to my Expo app."
+      - "Wire up expo-observe with Expo Router and mark when the screen is interactive."
+    near: "Add Google Analytics events to my app."
+    first_step: Consult the canonical Expo docs for EAS Observe, then add the Observe root wrapper to the app.
+
+# ---------- callstackincubator/agent-skills ----------
+- id: callstack-react-native-best-practices
+  name: react-native-best-practices
+  source: callstackincubator/agent-skills
+  path: skills/react-native-best-practices/SKILL.md
+  cat: code
+  what: Fix React Native speed issues. FPS, startup, bundle size, memory leaks and re-renders.
+  license: MIT
+  eval:
+    should:
+      - "Scrolling this FlatList janks on Android. Make it smooth."
+      - "App startup takes 4 seconds, how do I cut it down?"
+    near: "Make the web version of our React app faster."
+    first_step: Measure baseline metrics first, then optimize, re-measure and validate the improvement.
+
+- id: callstack-github-actions
+  name: github-actions
+  source: callstackincubator/agent-skills
+  path: skills/github-actions/SKILL.md
+  cat: ops
+  what: GitHub Actions for React Native iOS simulator and Android emulator builds with downloadable artifacts.
+  license: MIT
+  eval:
+    should:
+      - "Set up CI that builds my React Native app for iOS simulator and Android and uploads the artifacts."
+      - "How do I download the build artifact from a GitHub Actions run with the gh CLI?"
+    near: "Set up EAS Build for my Expo app."
+    first_step: Add the iOS and Android composite actions, then wire them into .github/workflows/mobile-build.yml.
+
+- id: callstack-upgrading-react-native
+  name: upgrading-react-native
+  source: callstackincubator/agent-skills
+  path: skills/upgrading-react-native/SKILL.md
+  cat: code
+  what: Upgrade a React Native app using template diffs, native config changes and breaking-change fixes.
+  license: MIT
+  eval:
+    should:
+      - "Upgrade our React Native app from 0.74 to the latest."
+      - "The upgrade broke Pods and Gradle, walk me through the native changes."
+    near: "Upgrade Node.js to version 22."
+    first_step: Route to the right upgrade path, then fetch the canonical template diff via Upgrade Helper.
+
+- id: callstack-react-native-testing
+  name: react-native-testing
+  source: callstackincubator/agent-skills
+  path: plugins/vendored/.agents/skills/react-native-testing/SKILL.md
+  cat: test
+  what: Write and fix React Native component tests with React Native Testing Library v13 and v14.
+  license: MIT
+  eval:
+    should:
+      - "Write tests for my LoginScreen component."
+      - "This RNTL test is flaky because of waitFor, clean it up."
+    near: "Write end-to-end tests with Detox."
+    first_step: Query via screen with getByRole first, and use findBy for async elements instead of waitFor plus getBy.
+
+- id: callstack-writing-user-docs
+  name: writing-user-docs
+  source: callstackincubator/agent-skills
+  path: skills/writing-user-docs/SKILL.md
+  cat: docs
+  what: House style for user-facing docs. Voice, scope, structure and what to cut.
+  license: MIT
+  eval:
+    should:
+      - "Write a getting-started page for our CLI tool."
+      - "Edit this help center article, it's too wordy and explains internals nobody needs."
+    near: "Write JSDoc comments for these functions."
+    first_step: Cut anything the reader doesn't need to finish the task, and anything about internal workings.
+
+# ---------- firebase/agent-skills ----------
+- id: firebase-firebase-security-rules-auditor
+  name: firebase-security-rules-auditor
+  source: firebase/agent-skills
+  path: skills/firebase-security-rules-auditor/SKILL.md
+  cat: security
+  what: Audit Firestore and Storage rules for privilege escalation, update bypass and missing checks.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Check my firestore.rules for security holes."
+      - "Can a user make themselves admin through my current Firebase rules?"
+    near: "Write Firestore queries for the user feed."
+    first_step: Compare create and update rules for update bypass, and check whether authority fields come from user-supplied data.
+
+- id: firebase-firestore-rules-creation
+  name: firestore-rules-creation
+  source: firebase/agent-skills
+  path: skills/firestore-rules-creation/SKILL.md
+  cat: security
+  what: Design and harden production Cloud Firestore security rules from your codebase.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Write firestore.rules for my app so each user only sees their own data."
+      - "Tighten my Firestore rules, they're basically open."
+    near: "Migrate my Firestore data to a new collection layout."
+    first_step: Phase 1 - scan the entire codebase to identify the data models and access patterns.
+
+- id: firebase-firebase-crashlytics
+  name: firebase-crashlytics
+  source: firebase/agent-skills
+  path: skills/firebase-crashlytics/SKILL.md
+  cat: debug
+  what: Set up Crashlytics crash reporting and read crash data for Android and iOS apps.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Add Firebase Crashlytics to my Android app."
+      - "Pull the latest crashes for the iOS app and tell me the top one."
+    near: "Add Firebase Analytics events."
+    first_step: Check the prerequisites, then add the Crashlytics SDK and use the Firebase CLI MCP server to read crash data.
+
+- id: firebase-firebase-hosting-basics
+  name: firebase-hosting-basics
+  source: firebase/agent-skills
+  path: skills/firebase-hosting-basics/SKILL.md
+  cat: ops
+  what: Deploy static sites and SPAs to Firebase Hosting and set redirects, rewrites and headers.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Deploy my React build to Firebase Hosting with a custom domain."
+      - "Add a rewrite so all routes go to index.html in firebase.json."
+    near: "Deploy a Cloud Function to Firebase."
+    first_step: Configure hosting behavior in firebase.json (public directory, redirects, rewrites, headers).
+
+# ---------- langchain-ai/langchain-skills ----------
+- id: langchain-eval-engineering
+  name: eval-engineering
+  source: langchain-ai/langchain-skills
+  path: config/skills/eval-engineering/SKILL.md
+  cat: data
+  what: Build evals for an agent repo. Inspect traces, write task specs and audit Harbor tasks.
+  license: MIT
+  eval:
+    should:
+      - "Write evals for my support agent using the traces we have."
+      - "Design a benchmark task set for my coding agent and check the tasks are fair."
+    near: "Write unit tests for my agent's helper functions."
+    first_step: Confirm model, trial count, judge, timeout and max cost with the user, then audit the Harbor package.
+
+- id: langchain-langchain-fundamentals
+  name: langchain-fundamentals
+  source: langchain-ai/langchain-skills
+  path: config/skills/langchain-fundamentals/SKILL.md
+  cat: data
+  what: Build LangChain agents with create_agent, tools and middleware.
+  license: MIT
+  eval:
+    should:
+      - "Create a LangChain agent with a weather tool."
+      - "Add human approval and error handling to my LangChain agent with middleware."
+    near: "Build a stateful graph with custom nodes in LangGraph."
+    first_step: Create the agent with create_agent() and define tools with the @tool decorator or tool() function.
+
+- id: langchain-langgraph-human-in-the-loop
+  name: langgraph-human-in-the-loop
+  source: langchain-ai/langchain-skills
+  path: config/skills/langgraph-human-in-the-loop/SKILL.md
+  cat: data
+  what: Pause a LangGraph run for human approval with interrupt and resume, and handle errors.
+  license: MIT
+  eval:
+    should:
+      - "Make my graph stop and ask a human before sending the email."
+      - "Add an approval step to the workflow that resumes after review."
+    near: "Add long-term memory to my agent."
+    first_step: Compile the graph with a checkpointer and pass a thread_id on every invoke or stream call.
+
+# ---------- prisma/skills ----------
+- id: prisma-prisma-cli
+  name: prisma-cli
+  source: prisma/skills
+  path: prisma-cli/SKILL.md
+  cat: data
+  what: Prisma ORM 7 CLI reference for init, generate, migrate, db and studio commands.
+  license: MIT
+  eval:
+    should:
+      - "Create and apply a migration for my new Prisma model."
+      - "Which prisma command regenerates the client and pushes my schema to the dev DB?"
+    near: "Set up Prisma in a brand new project and fix my connection."
+    first_step: Use the project's version-matched Prisma CLI, never a floating prisma@latest.
+
+- id: prisma-prisma-client-api
+  name: prisma-client-api
+  source: prisma/skills
+  path: prisma-client-api/SKILL.md
+  cat: data
+  what: Prisma Client query reference. CRUD, filters, operators and relations.
+  license: MIT
+  eval:
+    should:
+      - "Write a Prisma query that finds users with at least one paid order, newest first."
+      - "How do I do a transaction and nested create with Prisma Client?"
+    near: "Write raw SQL for this report."
+    first_step: Look up the right model query, filter or client method in the reference before writing the query.
+
+- id: prisma-prisma-upgrade-v7
+  name: prisma-upgrade-v7
+  source: prisma/skills
+  path: prisma-upgrade-v7/SKILL.md
+  cat: code
+  what: Migrate from Prisma ORM 6 to 7 and fix every breaking change.
+  license: MIT
+  eval:
+    should:
+      - "Upgrade our app to Prisma 7."
+      - "After bumping Prisma I get errors about prisma.config.ts and driver adapters."
+    near: "Upgrade from Sequelize to Prisma."
+    first_step: Update packages to v7, choose the module format, then update tsconfig and the schema generator block.
+
+- id: prisma-prisma-orm-setup
+  name: prisma-orm-setup
+  source: prisma/skills
+  path: prisma-orm-setup/SKILL.md
+  cat: data
+  what: Set up Prisma ORM in an app or repair a broken database connection.
+  license: MIT
+  eval:
+    should:
+      - "Add Prisma to my Express app with Postgres."
+      - "Prisma can't connect to my database anymore, help me fix the setup."
+    near: "Add a new model to an already working Prisma schema."
+    first_step: Detect the starting point (existing ORM version and intended database) before choosing a setup path.
+
+# ---------- better-auth/skills ----------
+- id: better-auth-better-auth-best-practices
+  name: better-auth-best-practices
+  source: better-auth/skills
+  path: better-auth/best-practices/SKILL.md
+  cat: code
+  what: Set up Better Auth server and client, DB adapters, sessions and plugins in TypeScript apps.
+  license: unknown
+  eval:
+    should:
+      - "Add email and password login with Better Auth to my Next.js app."
+      - "Configure my auth.ts with the Drizzle adapter and Google OAuth."
+    near: "Set up Auth0 for my app."
+    first_step: Resolve the installed better-auth version from the lockfile, then use the matching docs (llms.txt index).
+
+- id: better-auth-better-auth-security-best-practices
+  name: better-auth-security-best-practices
+  source: better-auth/skills
+  path: security/SKILL.md
+  cat: security
+  what: Harden Better Auth. Rate limits, secrets, CSRF, trusted origins, cookies and audit logs.
+  license: unknown
+  eval:
+    should:
+      - "Harden my Better Auth setup before launch."
+      - "Set up rate limiting and CSRF protection for our auth endpoints."
+    near: "Add two-factor login to the app."
+    first_step: Make sure the secret is set via options.secret or BETTER_AUTH_SECRET and is strong (32+ chars, high entropy).
+
+# ---------- microsoft/azure-skills and microsoft/skills ----------
+- id: microsoft-azure-diagnostics
+  name: azure-diagnostics
+  source: microsoft/azure-skills
+  path: .github/plugins/azure-skills/skills/azure-diagnostics/SKILL.md
+  cat: debug
+  what: Debug Azure production issues with AppLens, Azure Monitor and resource health.
+  license: MIT
+  eval:
+    should:
+      - "Our App Service has high CPU since the last deploy. Find out why."
+      - "Here are the logs from our function app failing in prod, diagnose them without touching Azure."
+    near: "Deploy this app to Azure."
+    first_step: Use supplied evidence first, then check resource health before diving into logs.
+
+- id: microsoft-azure-deploy
+  name: azure-deploy
+  source: microsoft/azure-skills
+  path: .github/plugins/azure-skills/skills/azure-deploy/SKILL.md
+  cat: ops
+  what: Run azd, terraform or az deployments for an app that already has a validated plan.
+  license: MIT
+  eval:
+    should:
+      - "The deployment plan is validated, run azd up."
+      - "Deploy the prepared infrastructure to Azure now."
+    near: "Create a new Azure app from scratch with infrastructure files."
+    first_step: Confirm .azure/deployment-plan.md exists with status Validated and go through the pre-deploy checklist.
+
+- id: microsoft-appinsights-instrumentation
+  name: appinsights-instrumentation
+  source: microsoft/azure-skills
+  path: .github/plugins/azure-skills/skills/appinsights-instrumentation/SKILL.md
+  cat: ops
+  what: Guide for adding Azure Application Insights telemetry to a web app.
+  license: MIT
+  eval:
+    should:
+      - "How do I instrument my Node API with Application Insights?"
+      - "Show me telemetry patterns and SDK config for App Insights in a web app."
+    near: "Set up Grafana dashboards for our Kubernetes cluster."
+    first_step: Use the reference material for SDK setup; route to azure-prepare if the user wants to add components to the app.
+
+- id: microsoft-mcp-builder
+  name: mcp-builder
+  source: microsoft/skills
+  path: .github/skills/mcp-builder/SKILL.md
+  cat: data
+  what: Build good MCP servers that let LLMs use an external API through well-made tools.
+  license: MIT
+  eval:
+    should:
+      - "Build an MCP server that wraps our internal ticketing API."
+      - "Make an MCP server in TypeScript for the GitHub-like service we use."
+    near: "Connect an existing MCP server to Claude Desktop."
+    first_step: Phase 1 - deep research and planning of the target API and the tools to expose.
+
+- id: microsoft-github-issue-creator
+  name: github-issue-creator
+  source: microsoft/skills
+  path: .github/skills/github-issue-creator/SKILL.md
+  cat: git
+  what: Turn raw notes, error logs or screenshots into a clean GitHub issue.
+  license: MIT
+  eval:
+    should:
+      - "Make a GitHub issue out of this stack trace and my rough notes."
+      - "Write up this bug as an issue with repro steps."
+    near: "Triage and label all open issues."
+    first_step: Convert the pasted info into a markdown issue with repro steps, expected and actual behavior.
+
+# ---------- google ----------
+- id: google-gemini-api-dev
+  name: gemini-api-dev
+  source: google-gemini/gemini-skills
+  path: skills/gemini-api-dev/SKILL.md
+  cat: data
+  what: Write code that calls the Gemini API. Text, chat, multimodal, streaming and more, with current rules.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Add a Gemini chat endpoint with streaming to my Python backend."
+      - "Call Gemini to describe an uploaded image."
+    near: "Call the OpenAI chat completions API."
+    first_step: Apply the critical rules at the top first, since they override outdated training data on SDKs and models.
+
+- id: google-agents-cli-eval
+  name: google-agents-cli-eval
+  source: google/agents-cli
+  path: skills/google-agents-cli-eval/SKILL.md
+  cat: data
+  what: Run and analyze evals for an ADK agent with agents-cli. Datasets, failures and comparisons.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Evaluate my ADK agent and tell me why cases failed."
+      - "Add an eval dataset and compare scores between two versions of the agent."
+    near: "Deploy my ADK agent to Cloud Run."
+    first_step: Run agents-cli eval run (generate plus grade) and iterate on the results.
+
+- id: google-agents-cli-deploy
+  name: google-agents-cli-deploy
+  source: google/agents-cli
+  path: skills/google-agents-cli-deploy/SKILL.md
+  cat: ops
+  what: Deploy an ADK agent to Agent Runtime, Cloud Run or GKE, with CI/CD and secrets.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Deploy my ADK agent to Cloud Run with a CI/CD pipeline."
+      - "My agent deployment fails, troubleshoot it."
+    near: "Write the agent's prompt and tools."
+    first_step: Paste eval scores and test results, ask the human 'Ready to deploy to dev?', and wait for explicit approval.
+
+# ---------- shadcn/ui ----------
+- id: shadcn-shadcn
+  name: shadcn
+  source: shadcn-ui/ui
+  path: skills/shadcn/SKILL.md
+  cat: frontend
+  what: Add, search, fix and compose shadcn/ui components with project-aware rules.
+  license: MIT
+  eval:
+    should:
+      - "Add a data table with sorting to my app using shadcn."
+      - "My shadcn dialog is styled wrong, fix it using the right variants."
+    near: "Build a design system from scratch with plain CSS."
+    first_step: Use existing components first - run npx shadcn@latest search to check registries before writing custom UI.
+
+# ---------- huggingface/skills ----------
+- id: huggingface-hf-cli
+  name: hf-cli
+  source: huggingface/skills
+  path: skills/hf-cli/SKILL.md
+  cat: data
+  what: Use the hf CLI to download, upload and manage models, datasets, Spaces and jobs on the Hub.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Download this model from the Hugging Face Hub and clear my old cache."
+      - "Upload my trained checkpoint folder to a new model repo."
+    near: "Fine-tune a model on my dataset."
+    first_step: Use hf --help to find the command, and run auth commands under hf auth, e.g. hf auth whoami.
+
+- id: huggingface-huggingface-trackio
+  name: huggingface-trackio
+  source: huggingface/skills
+  path: skills/huggingface-trackio/SKILL.md
+  cat: data
+  what: Track ML training runs with Trackio. Log metrics, fire alerts and read results from the CLI.
+  license: Apache-2.0
+  eval:
+    should:
+      - "Add experiment tracking to my training script and alert me if loss goes NaN."
+      - "Check the latest metrics from my running training job."
+    near: "Plot a chart of last month's sales."
+    first_step: Set up training with trackio.alert() calls for diagnostic conditions, then launch it in the background.

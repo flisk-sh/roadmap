@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  # Weekly, so stars, releases and archive notices stay fresh without a commit.
+  schedule:
+    - cron: "23 5 * * 1"
 
 permissions:
   contents: read
@@ -22,8 +25,12 @@ jobs:
         with:
           ruby-version: "3.3"
           bundler-cache: true
-      - name: Check the command data
+      - name: Check the data
         run: ruby scripts/check-data.rb
+      - name: Fetch live GitHub signals
+        run: ruby scripts/fetch-github.rb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build site
         run: bundle exec jekyll build
         env:

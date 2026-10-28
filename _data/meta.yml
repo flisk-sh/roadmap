@@ -3,7 +3,9 @@
 # publisher_url   Link for the publisher.
 # seeded          When and how the first dataset was written, so readers know what to double-check.
 # views           The four top-level tabs, in order. The first one is also the home page.
-#                 subtabs: families (one per _data/families.yml entry, plus "All") or tracks (journeys.yml).
+#                 subtabs: where the sub-tabs come from. families (_data/families.yml), tracks (journeys.yml),
+#                 roles (the groups in roles.yml), skills (skill_categories.yml) or none.
+#                 Every kind except tracks also gets an "All" sub-tab.
 publisher: Flisk
 publisher_url: https://flisk.sh
 seeded: "October 2026, with AI-assisted research"
@@ -28,3 +30,18 @@ views:
     title: Journeys
     blurb: Seven levels from your first lockfile to platform architect. Pick a track.
     subtabs: tracks
+  - id: roles
+    name: Roles
+    title: Roles
+    blurb: "Pick a job. See the tools that job really uses: must have, every day, good to know."
+    subtabs: roles
+  - id: skills
+    name: Skills
+    title: Agent Skills
+    blurb: "Free AI agent skills from GitHub, tested by a small, cheap model (Haiku). Further right means Haiku used it right more often."
+    subtabs: skills
+  - id: ask
+    name: Ask
+    title: Ask
+    blurb: "Type what you want to compare, like yarn vs npm vs bun. You get the answer from this site's data, no AI needed."
+    subtabs: none

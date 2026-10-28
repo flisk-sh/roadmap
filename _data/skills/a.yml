@@ -1,0 +1,1729 @@
+# Skills catalog, part A: anthropics/skills, obra/superpowers, garrytan/gstack, mattpocock/skills, odykyi/gh-skills.
+# Allowed `cat` ids come from _data/skill_categories.yml.
+
+# ---------------------------------------------------------------- anthropics/skills
+- id: anthropics-claude-api
+  name: claude-api
+  source: anthropics/skills
+  path: skills/claude-api/SKILL.md
+  cat: data
+  what: "Gives the agent up-to-date facts to build apps on the Claude API: models, streaming, tools, caching."
+  license: Apache-2.0
+  eval:
+    should:
+      - "add streaming responses from Claude to my Node chat endpoint"
+      - "my app calls an old claude model id, move it to the newest one and keep prompt caching working"
+    near: "explain how transformers work in general"
+    first_step: "Detect the project language, then read the matching language docs before writing any API code."
+
+- id: anthropics-doc-coauthoring
+  name: doc-coauthoring
+  source: anthropics/skills
+  path: skills/doc-coauthoring/SKILL.md
+  cat: docs
+  what: "Write a spec, RFC or design doc in three steps: gather context, shape it, test it on a fresh reader."
+  license: unknown
+  eval:
+    should:
+      - "help me write a design doc for moving our jobs to a queue"
+      - "draft an RFC for the new auth flow, I have scattered notes"
+    near: "fix the typo in the README"
+    first_step: "Offer the structured workflow, then start Stage 1 by asking for the doc type, audience and desired impact."
+
+- id: anthropics-frontend-design
+  name: frontend-design
+  source: anthropics/skills
+  path: skills/frontend-design/SKILL.md
+  cat: frontend
+  what: "Build UI with a clear look of its own: pick a direction, type and palette, avoid template defaults."
+  license: Apache-2.0
+  eval:
+    should:
+      - "build a landing page for my CLI tool, it should not look like every other AI site"
+      - "restyle this dashboard component, it looks generic"
+    near: "fix the null pointer in the header component"
+    first_step: "Name the product, audience and main job of the design before choosing any visual direction."
+
+- id: anthropics-mcp-builder
+  name: mcp-builder
+  source: anthropics/skills
+  path: skills/mcp-builder/SKILL.md
+  cat: data
+  what: "Build a good MCP server (Python or TypeScript) so an LLM can use an outside API through well-made tools."
+  license: Apache-2.0
+  eval:
+    should:
+      - "wrap our internal tickets API as an MCP server in TypeScript"
+      - "I need an MCP server so Claude can query our Postgres read replica"
+    near: "what is MCP and why do people like it"
+    first_step: "Research and plan first: study the MCP protocol docs and the target API before writing server code."
+
+- id: anthropics-skill-creator
+  name: skill-creator
+  source: anthropics/skills
+  path: skills/skill-creator/SKILL.md
+  cat: meta
+  what: "Make a new skill, test it with sample prompts, and tune its description so it fires at the right time."
+  license: Apache-2.0
+  eval:
+    should:
+      - "turn my release checklist into a skill and check that it triggers"
+      - "my skill never fires, help me improve its description with evals"
+    near: "write a bash script that renames files"
+    first_step: "Decide what the skill should do and roughly how, then draft it and write a few test prompts."
+
+- id: anthropics-web-artifacts-builder
+  name: web-artifacts-builder
+  source: anthropics/skills
+  path: skills/web-artifacts-builder/SKILL.md
+  cat: frontend
+  what: "Build a bigger React + Tailwind + shadcn artifact and bundle it into one HTML file."
+  license: Apache-2.0
+  eval:
+    should:
+      - "make a multi-page artifact with routing and shadcn components for tracking my expenses"
+      - "build a React artifact with state management, then bundle it as a single html file"
+    near: "write one simple html page with a button"
+    first_step: "Run scripts/init-artifact.sh to initialise the frontend project."
+
+- id: anthropics-webapp-testing
+  name: webapp-testing
+  source: anthropics/skills
+  path: skills/webapp-testing/SKILL.md
+  cat: test
+  what: "Drive a local web app with Playwright scripts: check flows, take screenshots, read browser logs."
+  license: Apache-2.0
+  eval:
+    should:
+      - "start my dev server and check that the login form actually submits"
+      - "take screenshots of the settings page and tell me if the console shows errors"
+    near: "write jest unit tests for this pure function"
+    first_step: "Run the helper script with --help first, then use it to manage the server and run Playwright."
+
+# ---------------------------------------------------------------- obra/superpowers
+- id: superpowers-brainstorming
+  name: brainstorming
+  source: obra/superpowers
+  path: skills/brainstorming/SKILL.md
+  cat: plan
+  what: "Find out what you really want before building: ask, compare approaches, write and approve a design doc."
+  license: MIT
+  eval:
+    should:
+      - "I want to add team accounts to the app, where do we start"
+      - "let's build a webhook retry system"
+    near: "rename this variable to userId"
+    first_step: "Ask yourself what you know about what they want and why, before replying; read referenced context first."
+
+- id: superpowers-diagnosing-superpowers
+  name: diagnosing-superpowers
+  source: obra/superpowers
+  path: skills/diagnosing-superpowers/SKILL.md
+  cat: meta
+  what: "Read the session transcripts to show why an agent session went wrong, with file and line proof."
+  license: MIT
+  eval:
+    should:
+      - "that last session took forever and redid work, find out why from the logs"
+      - "a skill did not fire in yesterday's session, build a bug report for the maintainers"
+    near: "why is my React app re-rendering too much"
+    first_step: "Ask one question at a time until you can write a problem statement naming the session and the observable."
+
+- id: superpowers-dispatching-parallel-agents
+  name: dispatching-parallel-agents
+  source: obra/superpowers
+  path: skills/dispatching-parallel-agents/SKILL.md
+  cat: meta
+  what: "Give each independent problem to its own sub-agent and run them side by side."
+  license: MIT
+  eval:
+    should:
+      - "five test files fail for different reasons, can you chase them all at once"
+      - "three modules are broken independently, split the investigation"
+    near: "one failing test caused by a shared config change"
+    first_step: "Group the failures by problem domain and check that the domains are independent."
+
+- id: superpowers-executing-plans
+  name: executing-plans
+  source: obra/superpowers
+  path: skills/executing-plans/SKILL.md
+  cat: code
+  what: "Carry out a written plan yourself, task by task, with test proof and a ledger, then one final review."
+  license: MIT
+  eval:
+    should:
+      - "here is the plan in docs/plans, run it inline, no subagents"
+      - "implement this 8-step plan in this session and keep a record of decisions"
+    near: "write me an implementation plan"
+    first_step: "Take the first task, read its brief, and work its steps in order using TDD and recording a ledger."
+
+- id: superpowers-finishing-a-development-branch
+  name: finishing-a-development-branch
+  source: obra/superpowers
+  path: skills/finishing-a-development-branch/SKILL.md
+  cat: git
+  what: "When work is done and green, pick merge, PR or discard, then clean up the branch and worktree."
+  license: MIT
+  eval:
+    should:
+      - "feature is done and tests pass, what do I do with this branch"
+      - "wrap up this worktree branch, I want to open a PR or merge it"
+    near: "create a new branch for the next ticket"
+    first_step: "Run the project's full test suite and stop if anything fails before showing any options."
+
+- id: superpowers-receiving-code-review
+  name: receiving-code-review
+  source: obra/superpowers
+  path: skills/receiving-code-review/SKILL.md
+  cat: review
+  what: "Handle review comments with checks, not blind yes: understand, verify, then fix or push back."
+  license: MIT
+  eval:
+    should:
+      - "the reviewer left 7 comments on my PR, work through them"
+      - "this review feedback looks wrong to me, check it against the code before changing anything"
+    near: "review my pull request for bugs"
+    first_step: "Read all the feedback without reacting, restate each requirement, and verify it against the codebase."
+
+- id: superpowers-requesting-code-review
+  name: requesting-code-review
+  source: obra/superpowers
+  path: skills/requesting-code-review/SKILL.md
+  cat: review
+  what: "Hand your finished work to a fresh reviewer sub-agent with the right context before it merges."
+  license: MIT
+  eval:
+    should:
+      - "I just finished the payments feature, get it reviewed before merge"
+      - "review this task's changes with a fresh pair of eyes"
+    near: "how should I respond to this reviewer comment"
+    first_step: "Get the base and head git SHAs, then dispatch a code reviewer sub-agent with the filled template."
+
+- id: superpowers-subagent-driven-development
+  name: subagent-driven-development
+  source: obra/superpowers
+  path: skills/subagent-driven-development/SKILL.md
+  cat: code
+  what: "Run a plan with a fresh sub-agent per task, a review after each, and a broad review at the end."
+  license: MIT
+  eval:
+    should:
+      - "execute this implementation plan with subagents, one per task"
+      - "I have a plan with mostly independent tasks, drive it to done with reviews"
+    near: "run this plan yourself without subagents"
+    first_step: "Read the plan, then dispatch a fresh implementer sub-agent for the first task."
+
+- id: superpowers-systematic-debugging
+  name: systematic-debugging
+  source: obra/superpowers
+  path: skills/systematic-debugging/SKILL.md
+  cat: debug
+  what: "Find the root cause before any fix, in four phases: investigate, compare, hypothesise, then fix."
+  license: MIT
+  eval:
+    should:
+      - "checkout randomly returns 500 in prod, figure out why"
+      - "the CI test is flaky and my last two fixes did nothing"
+    near: "add a new endpoint for exporting users"
+    first_step: "Read the error messages and stack traces carefully and reproduce the bug before proposing any fix."
+
+- id: superpowers-test-driven-development
+  name: test-driven-development
+  source: obra/superpowers
+  path: skills/test-driven-development/SKILL.md
+  cat: test
+  what: "Write the failing test first, watch it fail, write the least code to pass, then clean up."
+  license: MIT
+  eval:
+    should:
+      - "add a discount calculation to checkout, I want tests to drive it"
+      - "fix this bug but write a test that proves it first"
+    near: "explain what unit tests are"
+    first_step: "Write one failing test for the behaviour and run it to watch it fail before any production code."
+
+- id: superpowers-using-git-worktrees
+  name: using-git-worktrees
+  source: obra/superpowers
+  path: skills/using-git-worktrees/SKILL.md
+  cat: git
+  what: "Work in an isolated git worktree so your current branch stays untouched."
+  license: MIT
+  eval:
+    should:
+      - "start the new feature in its own worktree so I keep my current work"
+      - "I need an isolated workspace before we run this plan"
+    near: "squash my last three commits"
+    first_step: "Check if you are already in a linked worktree by comparing git-dir and git-common-dir."
+
+- id: superpowers-using-superpowers
+  name: using-superpowers
+  source: obra/superpowers
+  path: skills/using-superpowers/SKILL.md
+  cat: meta
+  what: "Session starter: check for a fitting skill and use it before answering or acting."
+  license: MIT
+  eval:
+    should:
+      - "start a new session, make sure the right skills get used for my tasks"
+      - "I am about to ask for a bugfix, load whatever process skills apply first"
+    near: "list the files in this folder"
+    first_step: "Invoke any relevant or requested skill before any response, including clarifying questions."
+
+- id: superpowers-verification-before-completion
+  name: verification-before-completion
+  source: obra/superpowers
+  path: skills/verification-before-completion/SKILL.md
+  cat: test
+  what: "No saying done until you ran the check and read the output: tests, lint, build."
+  license: MIT
+  eval:
+    should:
+      - "you say the bug is fixed, prove it before I commit"
+      - "make sure the build and linter actually pass before you open the PR"
+    near: "set up a CI pipeline for this repo"
+    first_step: "Identify the command that proves the claim, run it fresh in full, and read the output and exit code."
+
+- id: superpowers-writing-plans
+  name: writing-plans
+  source: obra/superpowers
+  path: skills/writing-plans/SKILL.md
+  cat: plan
+  what: "Turn a spec into a step-by-step plan with exact files, tests and commands for a new engineer."
+  license: MIT
+  eval:
+    should:
+      - "I have the spec for the notifications service, write the implementation plan"
+      - "break this migration into bite-sized tasks someone can follow without context"
+    near: "implement the plan we wrote yesterday"
+    first_step: "Map out which files will be created or modified and what each one is responsible for."
+
+- id: superpowers-writing-skills
+  name: writing-skills
+  source: obra/superpowers
+  path: skills/writing-skills/SKILL.md
+  cat: meta
+  what: "Make or edit a skill like TDD: test the agent without it first, write it, then close loopholes."
+  license: MIT
+  eval:
+    should:
+      - "write a skill for our deploy runbook and verify agents follow it"
+      - "this skill keeps getting ignored, tighten it up and test it"
+    near: "write documentation for my REST API"
+    first_step: "Run a baseline pressure scenario with a sub-agent before writing the skill and note how it fails."
+
+# ---------------------------------------------------------------- garrytan/gstack
+- id: gstack-autoplan
+  name: autoplan
+  source: garrytan/gstack
+  path: autoplan/SKILL.md
+  cat: plan
+  what: "Run the CEO, design, eng and DX plan reviews in a row, auto-deciding with 6 rules and one final gate."
+  license: MIT
+  eval:
+    should:
+      - "run the whole review pipeline on this plan and only ask me about taste calls"
+      - "autoplan the new onboarding flow end to end"
+    near: "give me a quick opinion on this one function"
+    first_step: "Run the Phase 0.5 preflight, then read the CEO phase section and start the CEO review."
+
+- id: gstack-benchmark
+  name: benchmark
+  source: garrytan/gstack
+  path: benchmark/SKILL.md
+  cat: ops
+  what: "Measure page speed in a real browser, save a baseline, and flag slowdowns after changes."
+  license: MIT
+  eval:
+    should:
+      - "capture a performance baseline for localhost:3000 before I refactor"
+      - "did my PR make the dashboard page slower?"
+    near: "benchmark gpt vs claude on my prompts"
+    first_step: "Read performance.getEntries() from the live page in the browser to capture baseline numbers."
+
+- id: gstack-benchmark-models
+  name: benchmark-models
+  source: garrytan/gstack
+  path: benchmark-models/SKILL.md
+  cat: data
+  what: "Compare how different AI models do on the same skill or prompt, with a guided run."
+  license: MIT
+  eval:
+    should:
+      - "which model handles my /review skill best, benchmark a few of them"
+      - "compare claude and another provider on this prompt and show cost and quality"
+    near: "measure my site's Core Web Vitals"
+    first_step: "Locate the gstack-model-benchmark binary and stop with an error if it is missing."
+
+- id: gstack-browse
+  name: browse
+  source: garrytan/gstack
+  path: browse/SKILL.md
+  cat: frontend
+  what: "Let the agent drive a real browser: open pages, click flows, take screenshots, read console errors."
+  license: MIT
+  eval:
+    should:
+      - "open our staging site, click through signup and screenshot each step"
+      - "check the console for errors on the pricing page"
+    near: "write a fetch call to our API in TypeScript"
+    first_step: "Run the browser setup check to see if Aside is available, else use the headless fallback."
+
+- id: gstack-canary
+  name: canary
+  source: garrytan/gstack
+  path: canary/SKILL.md
+  cat: ops
+  what: "Watch production after a deploy: screenshots, console errors and baseline compare for several minutes."
+  license: MIT
+  eval:
+    should:
+      - "I just deployed, keep an eye on the live site for ten minutes"
+      - "monitor the dashboard and settings pages after this release"
+    near: "set up a monitoring alert in Datadog"
+    first_step: "Take baseline or current screenshots of the given pages in the browser and check console errors."
+
+- id: gstack-captain
+  name: captain
+  source: garrytan/gstack
+  path: captain/SKILL.md
+  cat: meta
+  what: "Run a crew of coding agents from one controller; workers report READY, only the controller merges."
+  license: MIT
+  eval:
+    should:
+      - "I have 12 agents working on branches, coordinate the merges safely"
+      - "act as the controller for my crew and keep the base branch green"
+    near: "merge this one PR"
+    first_step: "Read the crew operating model: lanes never merge and a READY block is the only merge trigger."
+
+- id: gstack-careful
+  name: careful
+  source: garrytan/gstack
+  path: careful/SKILL.md
+  cat: security
+  what: "Warn before risky shell commands like rm -rf, DROP TABLE and force-push, so you can stop them."
+  license: MIT
+  eval:
+    should:
+      - "be careful, I am working in prod, warn me before anything destructive"
+      - "turn on safety mode before we clean up these tables"
+    near: "explain what rm -rf does"
+    first_step: "Activate safety mode so every Bash command is checked for destructive patterns before it runs."
+
+- id: gstack-codex
+  name: codex
+  source: garrytan/gstack
+  path: codex/SKILL.md
+  cat: review
+  what: "Ask the OpenAI Codex CLI for an independent second opinion on your code or plan."
+  license: MIT
+  eval:
+    should:
+      - "get a second opinion from codex on this diff"
+      - "have another AI challenge my plan before I commit to it"
+    near: "install the openai python package"
+    first_step: "Wrap the Codex CLI and pick one of its three modes, then run it on the target."
+
+- id: gstack-context-restore
+  name: context-restore
+  source: garrytan/gstack
+  path: context-restore/SKILL.md
+  cat: meta
+  what: "Load your last saved working context so you can pick up where you stopped, even on another branch."
+  license: MIT
+  eval:
+    should:
+      - "restore where I left off yesterday on this feature"
+      - "pick up the saved context from my other workspace"
+    near: "save my progress for later"
+    first_step: "Find the most recent saved context on the current branch, else the newest across all branches, and show it."
+
+- id: gstack-context-save
+  name: context-save
+  source: garrytan/gstack
+  path: context-save/SKILL.md
+  cat: meta
+  what: "Save what you are doing, decisions made and what is left, so a later session can resume."
+  license: MIT
+  eval:
+    should:
+      - "save my context, I have to stop for the day"
+      - "checkpoint this work so I can resume from another workspace"
+    near: "commit my changes"
+    first_step: "Parse the input to pick the mode, then capture current work, decisions and remaining tasks without editing code."
+
+- id: gstack-cso
+  name: cso
+  source: garrytan/gstack
+  path: cso/SKILL.md
+  cat: security
+  what: "Security audit in chief-security-officer mode: attack surface, OWASP, supply chain, with evidence."
+  license: MIT
+  eval:
+    should:
+      - "audit this repo for security holes before launch"
+      - "check our dependencies and CI for supply chain risk"
+    near: "add a login page"
+    first_step: "Resolve scope flags, then model the app: actors, assets, entrypoints and security invariants."
+
+- id: gstack-deslop-shared-libs
+  name: deslop-shared-libs
+  source: garrytan/gstack
+  path: deslop-shared-libs/SKILL.md
+  cat: code
+  what: "Scan recent work for copied code worth moving into a shared library; read-only, up to three picks."
+  license: MIT
+  eval:
+    should:
+      - "look at the last two weeks of changes and find code we keep duplicating"
+      - "is there anything worth extracting into a shared package?"
+    near: "refactor this function to be shorter"
+    first_step: "Record the current UTC time and default to the previous 14 days to set the reviewed source."
+
+- id: gstack-design-consultation
+  name: design-consultation
+  source: garrytan/gstack
+  path: design-consultation/SKILL.md
+  cat: frontend
+  what: "Talk through your product and build a full design system: type, colour, layout, motion, DESIGN.md."
+  license: MIT
+  eval:
+    should:
+      - "we have no design system, help us create one for our dev tool"
+      - "propose fonts, colours and spacing for my SaaS dashboard"
+    near: "make this button blue"
+    first_step: "Check whether a DESIGN.md already exists and ask to update, start fresh or cancel."
+
+- id: gstack-design-html
+  name: design-html
+  source: garrytan/gstack
+  path: design-html/SKILL.md
+  cat: frontend
+  what: "Turn an approved design into real HTML/CSS where text reflows and sizes itself correctly."
+  license: MIT
+  eval:
+    should:
+      - "turn the approved mockup into production HTML and CSS"
+      - "build the chat UI so bubbles shrink-wrap and text reflows on resize"
+    near: "convert this HTML file to PDF"
+    first_step: "Read the section index and the section that matches the situation before building."
+
+- id: gstack-design-motion
+  name: design-motion
+  source: garrytan/gstack
+  path: design-motion/SKILL.md
+  cat: frontend
+  what: "Animate a finished design into a seamless looping MP4 and GIF to show it working."
+  license: MIT
+  eval:
+    should:
+      - "make a looping demo GIF of my approved landing page design"
+      - "animate the dashboard design into a short MP4 for the launch post"
+    near: "add a hover transition to this button"
+    first_step: "Read the section index, then start from the exact approved frame and its empty state."
+
+- id: gstack-design-review
+  name: design-review
+  source: garrytan/gstack
+  path: design-review/SKILL.md
+  cat: frontend
+  what: "Review a live site like a designer: spacing, hierarchy, AI-slop looks, then fix and verify."
+  license: MIT
+  eval:
+    should:
+      - "audit the look of localhost:3000 and fix the spacing and hierarchy problems"
+      - "my homepage feels off, find the visual inconsistencies"
+    near: "review the plan for the new design system"
+    first_step: "Parse the request for target URL, scope and depth, auto-detecting the URL if none is given."
+
+- id: gstack-design-shotgun
+  name: design-shotgun
+  source: garrytan/gstack
+  path: design-shotgun/SKILL.md
+  cat: frontend
+  what: "Generate several design variants, show them side by side, collect feedback and iterate."
+  license: MIT
+  eval:
+    should:
+      - "give me five different looks for the pricing page to compare"
+      - "explore visual directions for the app header and let me pick"
+    near: "implement the design we chose"
+    first_step: "Generate multiple AI design variants and open them side by side in the browser comparison board."
+
+- id: gstack-devex-review
+  name: devex-review
+  source: garrytan/gstack
+  path: devex-review/SKILL.md
+  cat: review
+  what: "Test the real developer experience of a live product: docs, quickstart and CLI, with timings."
+  license: MIT
+  eval:
+    should:
+      - "dogfood our getting-started flow and tell me where a new dev gets stuck"
+      - "measure how long it takes to run hello world from our docs"
+    near: "review the plan for our new SDK"
+    first_step: "Drive the browser through the docs and getting-started flow, one script per flow, and screenshot what devs see."
+
+- id: gstack-diagram
+  name: diagram
+  source: garrytan/gstack
+  path: diagram/SKILL.md
+  cat: docs
+  what: "Turn a text description into a diagram: mermaid source, editable Excalidraw file, SVG and PNG."
+  license: MIT
+  eval:
+    should:
+      - "draw our auth flow as a diagram I can edit in excalidraw"
+      - "make an architecture diagram for the README from this description"
+    near: "write the README intro paragraph"
+    first_step: "Produce the mermaid source, then render the triplet: .mmd, .excalidraw, and SVG plus PNG."
+
+- id: gstack-document-generate
+  name: document-generate
+  source: garrytan/gstack
+  path: document-generate/SKILL.md
+  cat: docs
+  what: "Write missing docs from scratch for a feature, module or project, using the Diataxis four-part layout."
+  license: MIT
+  eval:
+    should:
+      - "this module has no docs, write them"
+      - "document the whole payments package: tutorial, how-to, reference, explanation"
+    near: "update the version number in the docs"
+    first_step: "Research the code thoroughly before writing any documentation."
+
+- id: gstack-document-release
+  name: document-release
+  source: garrytan/gstack
+  path: document-release/SKILL.md
+  cat: docs
+  what: "After you commit, before merge, check that docs still match the code and fix them."
+  license: MIT
+  eval:
+    should:
+      - "code is committed, make sure the README and docs match what changed"
+      - "audit our docs for this release and update the stale parts"
+    near: "write docs for a brand new module"
+    first_step: "Run the standalone audit after commit, making factual doc updates directly and asking about risky ones."
+
+- id: gstack-eval-plan
+  name: eval-plan
+  source: garrytan/gstack
+  path: eval-plan/SKILL.md
+  cat: data
+  what: "Plan a paid AI eval: write bars and stop rules, dry-run free, run a 3-item priced pilot first."
+  license: MIT
+  eval:
+    should:
+      - "how much will it cost to eval these two models on 500 rows? pilot it first"
+      - "preregister the eval before we spend money on it"
+    near: "write unit tests for my parser"
+    first_step: "Write the preregistration: bars, arms, decoys and stop rules, before any priced call."
+
+- id: gstack-freeze
+  name: freeze
+  source: garrytan/gstack
+  path: freeze/SKILL.md
+  cat: meta
+  what: "Block edits outside one folder for the session, so the agent cannot touch other code."
+  license: MIT
+  eval:
+    should:
+      - "only let edits happen inside src/billing for this session"
+      - "lock the editing scope to the cli folder"
+    near: "list the files in src/billing"
+    first_step: "Ask which directory to lock, then block Edit, Write and NotebookEdit outside it."
+
+- id: gstack-guard
+  name: guard
+  source: garrytan/gstack
+  path: guard/SKILL.md
+  cat: security
+  what: "Full safety mode: warn on destructive commands and lock edits to one directory, in one go."
+  license: MIT
+  eval:
+    should:
+      - "turn on full safety, I am debugging prod and only touch the api folder"
+      - "guard this session: no destructive commands, edits only in services/auth"
+    near: "undo the lock I set earlier"
+    first_step: "Activate both the careful warnings and the freeze directory restriction."
+
+- id: gstack-health
+  name: health
+  source: garrytan/gstack
+  path: health/SKILL.md
+  cat: review
+  what: "Score code quality from types, lint, tests, dead code and scripts, and track the trend."
+  license: MIT
+  eval:
+    should:
+      - "give me a code health dashboard for this repo"
+      - "is our code quality getting better or worse over time?"
+    near: "fix all the lint errors"
+    first_step: "Run every available quality tool, score the results, and build the dashboard without fixing anything."
+
+- id: gstack-investigate
+  name: investigate
+  source: garrytan/gstack
+  path: investigate/SKILL.md
+  cat: debug
+  what: "Find the root cause of a bug first, then fix it: symptoms, code trace, recent changes, reproduce."
+  license: MIT
+  eval:
+    should:
+      - "users report the export job hangs, find the root cause"
+      - "this started failing after Tuesday's merge, investigate"
+    near: "add a retry option to the export job"
+    first_step: "Collect symptoms: read the errors, stack traces and repro steps, asking one question at a time if needed."
+
+- id: gstack-ios-clean
+  name: ios-clean
+  source: garrytan/gstack
+  path: ios-clean/SKILL.md
+  cat: code
+  what: "Remove the DebugBridge package and its #if DEBUG code from an iOS app."
+  license: MIT
+  eval:
+    should:
+      - "strip the debug bridge out of my iOS app before release"
+      - "I copied the DebugBridge files by hand, clean them all up"
+    near: "remove an unused SwiftUI view"
+    first_step: "Find the DebugBridge SPM package and every #if DEBUG wiring in the app before removing them."
+
+- id: gstack-ios-design-review
+  name: ios-design-review
+  source: garrytan/gstack
+  path: ios-design-review/SKILL.md
+  cat: frontend
+  what: "Design audit of an iOS app on a real device, scored 0-10 on hierarchy, spacing and accessibility."
+  license: MIT
+  eval:
+    should:
+      - "review how my app looks on my iPhone and score it"
+      - "find spacing and accessibility problems in the live iOS build"
+    near: "review my web app design"
+    first_step: "Use the running ios-qa daemon, or start one the same way /ios-qa does, then audit read-only."
+
+- id: gstack-ios-fix
+  name: ios-fix
+  source: garrytan/gstack
+  path: ios-fix/SKILL.md
+  cat: debug
+  what: "Fix iOS bugs on a real device, but only after a state snapshot reproduces the bug as a test fixture."
+  license: MIT
+  eval:
+    should:
+      - "the profile screen shows wrong data on my phone, fix it"
+      - "reproduce this iOS crash and fix it with a regression fixture"
+    near: "fix a bug in my Android app"
+    first_step: "Capture a GET /state/snapshot that reproduces the bug before editing any Swift source."
+
+- id: gstack-ios-qa
+  name: ios-qa
+  source: garrytan/gstack
+  path: ios-qa/SKILL.md
+  cat: test
+  what: "QA a SwiftUI app live on a USB iPhone: find, fix and verify bugs through a debug bridge."
+  license: MIT
+  eval:
+    should:
+      - "test my SwiftUI app on my plugged-in iPhone and fix what breaks"
+      - "run a live QA loop on the real device, no simulator"
+    near: "write XCTest unit tests for my view model"
+    first_step: "Read the Swift source, generate typed state accessors, and deploy the debug bridge to the device."
+
+- id: gstack-ios-sync
+  name: ios-sync
+  source: garrytan/gstack
+  path: ios-sync/SKILL.md
+  cat: code
+  what: "Regenerate the iOS debug bridge after you add observable state or upgrade gstack."
+  license: MIT
+  eval:
+    should:
+      - "I added new @Observable classes, update the debug bridge accessors"
+      - "refresh the iOS bridge to the latest gstack templates"
+    near: "install the debug bridge for the first time"
+    first_step: "Run the installed gstack-ios-qa-regen launcher to regenerate the artifacts in place."
+
+- id: gstack-land-and-deploy
+  name: land-and-deploy
+  source: garrytan/gstack
+  path: land-and-deploy/SKILL.md
+  cat: ops
+  what: "Take the PR from /ship, merge it with your OK, watch the deploy and verify production."
+  license: MIT
+  eval:
+    should:
+      - "merge my PR and make sure the deploy goes green in production"
+      - "land this branch and verify https://app.example.com after deploy"
+    near: "open a PR for my branch"
+    first_step: "Auto-detect the PR from the current branch and check it is ready to merge."
+
+- id: gstack-landing-report
+  name: landing-report
+  source: garrytan/gstack
+  path: landing-report/SKILL.md
+  cat: git
+  what: "Read-only dashboard of the ship queue: which branches are waiting and what to land next."
+  license: MIT
+  eval:
+    should:
+      - "what is in the ship queue right now?"
+      - "show me the landing queue and tell me what to land next"
+    near: "ship my branch"
+    first_step: "Detect the git platform and base branch, then read the current version and fetch the base."
+
+- id: gstack-learn
+  name: learn
+  source: garrytan/gstack
+  path: learn/SKILL.md
+  cat: meta
+  what: "Show, search or record what the agent learned about this project, without changing code."
+  license: MIT
+  eval:
+    should:
+      - "what have we learned about this repo so far?"
+      - "search the project learnings for anything about the flaky auth test"
+    near: "teach me how Kubernetes works"
+    first_step: "Run gstack-learnings-search with a limit of 20 and group the results by type."
+
+- id: gstack-modernize
+  name: modernize
+  source: garrytan/gstack
+  path: modernize/SKILL.md
+  cat: git
+  what: "Take an old PR and decide MODERNIZE, REWORK or CLOSE; rebase and prove intent survived."
+  license: MIT
+  eval:
+    should:
+      - "PR 412 is six months old, can it still land or should we close it?"
+      - "rebase this stale PR onto main without losing its intent"
+    near: "resolve a merge conflict in my fresh branch"
+    first_step: "Read the PR as a claim with gh pr view: author, base, head, head SHA and mergeability."
+
+- id: gstack-office-hours
+  name: office-hours
+  source: garrytan/gstack
+  path: office-hours/SKILL.md
+  cat: plan
+  what: "Founder-style questioning to pin down the real problem and write a design doc, no code yet."
+  license: MIT
+  eval:
+    should:
+      - "I have an idea for a dev tool, pressure-test it before I build"
+      - "help me figure out what to build first for my side project"
+    near: "scaffold a Next.js project"
+    first_step: "Load the project's brain context before asking any clarifying questions."
+
+- id: gstack-open-gstack-browser
+  name: open-gstack-browser
+  source: garrytan/gstack
+  path: open-gstack-browser/SKILL.md
+  cat: frontend
+  what: "Open an AI-driven Chromium window with a sidebar, where you can watch each agent action live."
+  license: MIT
+  eval:
+    should:
+      - "open the gstack browser so I can watch what you do"
+      - "launch the controlled browser with the sidebar for this QA run"
+    near: "open my project in VS Code"
+    first_step: "Run the setup check to locate the browse binary before any browse command."
+
+- id: gstack-openclaw-investigate
+  name: gstack-openclaw-investigate
+  source: garrytan/gstack
+  path: openclaw/skills/gstack-openclaw-investigate/SKILL.md
+  cat: debug
+  what: "Root-cause debugging for the OpenClaw agent: no fix before you know why it broke."
+  license: MIT
+  eval:
+    should:
+      - "my service stopped working after the update, here is the stack trace"
+      - "find the root cause of this error before changing code"
+    near: "build a new feature for my service"
+    first_step: "Collect symptoms from the errors and stack traces, asking one question at a time if context is thin."
+
+- id: gstack-plan-ceo-review
+  name: plan-ceo-review
+  source: garrytan/gstack
+  path: plan-ceo-review/SKILL.md
+  cat: plan
+  what: "Review a plan like a founder: expand, hold or cut scope, and test edge cases and failure paths."
+  license: MIT
+  eval:
+    should:
+      - "challenge the scope of this plan, are we building the right thing?"
+      - "review my plan for the billing rewrite like a CEO would"
+    near: "check the plan's database schema"
+    first_step: "Pick a scope posture: expansion, selective expansion, hold scope or reduction, then review."
+
+- id: gstack-plan-design-review
+  name: plan-design-review
+  source: garrytan/gstack
+  path: plan-design-review/SKILL.md
+  cat: plan
+  what: "Review a plan's UI and design choices before building, interactively, with scores."
+  license: MIT
+  eval:
+    should:
+      - "review the design side of this feature plan before we start"
+      - "does this plan cover empty states, loading and mobile layouts?"
+    near: "audit the live site's visuals"
+    first_step: "Select the plan to review and rate its design dimensions before suggesting changes."
+
+- id: gstack-plan-devex-review
+  name: plan-devex-review
+  source: garrytan/gstack
+  path: plan-devex-review/SKILL.md
+  cat: plan
+  what: "Review a plan for developer experience: SDK, CLI help, getting started, onboarding."
+  license: MIT
+  eval:
+    should:
+      - "review our new CLI plan for developer experience"
+      - "will developers have a smooth first five minutes with this SDK design?"
+    near: "test the live docs site"
+    first_step: "Review and improve the plan's DX decisions through investigation, without changing code."
+
+- id: gstack-plan-eng-review
+  name: plan-eng-review
+  source: garrytan/gstack
+  path: plan-eng-review/SKILL.md
+  cat: plan
+  what: "Review a plan like an eng manager: scope, architecture, tests, edge cases, with a test diagram."
+  license: MIT
+  eval:
+    should:
+      - "review this implementation plan for architecture and test gaps"
+      - "poke holes in my plan for the queue migration before I start"
+    near: "review this finished diff"
+    first_step: "Run the preamble, load brain context, then start the Scope Challenge on the selected plan."
+
+- id: gstack-plan-tune
+  name: plan-tune
+  source: garrytan/gstack
+  path: plan-tune/SKILL.md
+  cat: meta
+  what: "See and tune how often gstack asks you questions, and view your inferred developer profile."
+  license: MIT
+  eval:
+    should:
+      - "stop asking me so many questions in gstack, tune that down"
+      - "show my developer profile and question preferences"
+    near: "plan my sprint"
+    first_step: "Interpret the plain-English request and show the profile or question preferences without needing subcommands."
+
+- id: gstack-qa
+  name: qa
+  source: garrytan/gstack
+  path: qa/SKILL.md
+  cat: test
+  what: "Test the app (browser, API, CLI, jobs, webhooks), fix the bugs found, and verify the fixes."
+  license: MIT
+  eval:
+    should:
+      - "QA my app at localhost:3000 and fix whatever you find"
+      - "test the webhook handler end to end and repair any bugs"
+    near: "only report bugs, do not fix them"
+    first_step: "Read sections/scope.md to set up the target surfaces and isolation before probing."
+
+- id: gstack-qa-only
+  name: qa-only
+  source: garrytan/gstack
+  path: qa-only/SKILL.md
+  cat: test
+  what: "Same QA, report only: reproducible bugs with evidence, and no code or test changes."
+  license: MIT
+  eval:
+    should:
+      - "test the checkout flow and give me a bug report, do not touch the code"
+      - "explore the API and list reproducible problems with evidence"
+    near: "test it and fix the bugs"
+    first_step: "Explore the selected surfaces and record reproducible behaviour with evidence, fixing nothing."
+
+- id: gstack-retro
+  name: retro
+  source: garrytan/gstack
+  path: retro/SKILL.md
+  cat: meta
+  what: "Weekly engineering retro from commit history: work patterns, quality and per-person notes."
+  license: MIT
+  eval:
+    should:
+      - "run a retro for the last two weeks of commits"
+      - "what did the team ship this week and where can we improve?"
+    near: "summarise this one PR"
+    first_step: "Parse the time window argument (default last 7 days), then analyse commit history and work patterns."
+
+- id: gstack-review
+  name: review
+  source: garrytan/gstack
+  path: review/SKILL.md
+  cat: review
+  what: "Pre-merge review of your branch diff for structural bugs that tests miss."
+  license: MIT
+  eval:
+    should:
+      - "review my branch before I merge it"
+      - "look at this diff for race conditions and scope drift"
+    near: "reply to the reviewer's comments"
+    first_step: "Check the branch is not the base, fetch the base, and diff against the merge-base."
+
+- id: gstack-scrape
+  name: scrape
+  source: garrytan/gstack
+  path: scrape/SKILL.md
+  cat: data
+  what: "Pull data from a web page through your signed-in browser and return it as one JSON document."
+  license: MIT
+  eval:
+    should:
+      - "grab the table of invoices from this page as JSON"
+      - "scrape the titles and prices from this listing while logged in"
+    near: "submit the form on that page"
+    first_step: "Check the intent is read-only and refuse if it needs writes, then read the page in the browser."
+
+- id: gstack-setup-browser-cookies
+  name: setup-browser-cookies
+  source: garrytan/gstack
+  path: setup-browser-cookies/SKILL.md
+  cat: test
+  what: "Import your real browser cookies into the headless browser so it can test pages behind login."
+  license: MIT
+  eval:
+    should:
+      - "the headless browser needs my logged-in session to test the admin area"
+      - "copy my Chrome cookies into the QA browser"
+    near: "clear my browser cookies"
+    first_step: "Check whether Aside is ready; if so end here, else ask the user for source browser and profile."
+
+- id: gstack-setup-deploy
+  name: setup-deploy
+  source: garrytan/gstack
+  path: setup-deploy/SKILL.md
+  cat: ops
+  what: "Detect your deploy platform, prod URL and health checks, and save them to CLAUDE.md for /land-and-deploy."
+  license: MIT
+  eval:
+    should:
+      - "set up deploy config so land-and-deploy knows about our Fly app"
+      - "detect how we deploy and record the production URL and health check"
+    near: "deploy the app now"
+    first_step: "Check for existing deployment configuration in CLAUDE.md before detecting anything."
+
+- id: gstack-setup-gbrain
+  name: setup-gbrain
+  source: garrytan/gstack
+  path: setup-gbrain/SKILL.md
+  cat: meta
+  what: "Install gbrain, a persistent knowledge base, and wire it to your coding agent as CLI and MCP."
+  license: MIT
+  eval:
+    should:
+      - "give my coding agent a long-term memory with gbrain"
+      - "set up gbrain with a local PGLite brain and register the MCP server"
+    near: "set up a Postgres database for my app"
+    first_step: "Install the gbrain CLI, then initialise a local PGLite or Supabase brain."
+
+- id: gstack-ship
+  name: ship
+  source: garrytan/gstack
+  path: ship/SKILL.md
+  cat: git
+  what: "One flow: merge base, run tests, review diff, bump version, update changelog, commit, push, open PR."
+  license: MIT
+  eval:
+    should:
+      - "ship this branch"
+      - "get my work into a PR with the changelog and version bumped"
+    near: "just commit my staged changes"
+    first_step: "Detect the git platform and base branch, then pre-flight: abort if you are on the base branch."
+
+- id: gstack-skillify
+  name: skillify
+  source: garrytan/gstack
+  path: skillify/SKILL.md
+  cat: meta
+  what: "Turn the last successful scrape into a saved browser skill that reruns in about 200ms."
+  license: MIT
+  eval:
+    should:
+      - "that scrape worked, save it as a permanent skill"
+      - "codify what we just did on that page so it runs fast next time"
+    near: "write a new skill from scratch"
+    first_step: "Confirm the last scrape ran through the headless browser, since Aside runs cannot be codified."
+
+- id: gstack-spec
+  name: spec
+  source: garrytan/gstack
+  path: spec/SKILL.md
+  cat: plan
+  what: "Interrogate a vague request in five phases until it becomes a precise, backlog-ready spec issue."
+  license: MIT
+  eval:
+    should:
+      - "turn my idea for rate limiting into a spec an agent can implement"
+      - "we need better search, write it up as a ticket nobody has to ask questions about"
+    near: "implement the spec"
+    first_step: "Phase 1: understand the why, asking the user round by round before touching scope or tech."
+
+- id: gstack-sync-gbrain
+  name: sync-gbrain
+  source: garrytan/gstack
+  path: sync-gbrain/SKILL.md
+  cat: meta
+  what: "Refresh gbrain with this repo's code and update CLAUDE.md so the agent searches the brain."
+  license: MIT
+  eval:
+    should:
+      - "re-index this repo into gbrain"
+      - "update the brain with my latest code and refresh the agent search hints"
+    near: "install gbrain from scratch"
+    first_step: "Sync the repo code into gbrain using its native code surfaces, then refresh the CLAUDE.md guidance."
+
+- id: gstack-test-audit
+  name: test-audit
+  source: garrytan/gstack
+  path: test-audit/SKILL.md
+  cat: test
+  what: "Find low-value or duplicate tests across the repo, prove it, and retire them in approved batches."
+  license: MIT
+  eval:
+    should:
+      - "our test suite is slow and bloated, which tests can we drop?"
+      - "find duplicate or useless tests in this repo"
+    near: "add tests for the new endpoint"
+    first_step: "Scan the repo (or given paths) for tests that cost more than they protect, up to 10 candidates."
+
+- id: gstack-ubicloud
+  name: ubicloud
+  source: garrytan/gstack
+  path: ubicloud/SKILL.md
+  cat: ops
+  what: "Run a heavy test suite, build or eval on a short-lived 16-vCPU cloud VM with a timer and cleanup."
+  license: MIT
+  eval:
+    should:
+      - "the full suite takes an hour locally, run it on a big cloud VM"
+      - "spin up a temporary VM for this build and tear it down after"
+    near: "set up a permanent staging server"
+    first_step: "Preflight the project: list VMs this machine created and check the shared quota usage."
+
+- id: gstack-unfreeze
+  name: unfreeze
+  source: garrytan/gstack
+  path: unfreeze/SKILL.md
+  cat: meta
+  what: "Remove the /freeze edit lock so the agent can edit all directories again."
+  license: MIT
+  eval:
+    should:
+      - "I'm done with the billing work, unlock editing everywhere"
+      - "clear the freeze boundary"
+    near: "restrict edits to one folder"
+    first_step: "Clear the freeze boundary set by /freeze."
+
+- id: gstack-write-skill
+  name: write-skill
+  source: garrytan/gstack
+  path: write-skill/SKILL.md
+  cat: meta
+  what: "Write or trim a skill without bloat: edit ladder, size checks and drift checks."
+  license: MIT
+  eval:
+    should:
+      - "this skill file is huge, slim it down without losing behaviour"
+      - "write a new skill for our deploy process and keep it lean"
+    near: "write a README for the repo"
+    first_step: "Run gstack-skill-bill on the skill name to see its kind and size per level."
+
+# ---------------------------------------------------------------- mattpocock/skills
+- id: mattpocock-ask-matt
+  name: ask-matt
+  source: mattpocock/skills
+  path: skills/engineering/ask-matt/SKILL.md
+  cat: meta
+  what: "Router: tells you which skill or flow to use, from idea to ship, for your situation."
+  license: MIT
+  eval:
+    should:
+      - "which of these skills should I use to take a rough idea to shipped code?"
+      - "I have a big feature, what flow fits?"
+    near: "run the tdd skill"
+    first_step: "Read the SKILL.md of any skill before recommending it or a step to skip."
+
+- id: mattpocock-code-review
+  name: code-review
+  source: mattpocock/skills
+  path: skills/engineering/code-review/SKILL.md
+  cat: review
+  what: "Review changes since a commit two ways at once: coding standards and does it match the spec."
+  license: MIT
+  eval:
+    should:
+      - "review everything since main against our standards and the issue"
+      - "check the last 5 commits match the spec for ticket 88"
+    near: "write the code for this ticket"
+    first_step: "Pin the fixed point and check that git rev-parse resolves and the diff is not empty."
+
+- id: mattpocock-codebase-design
+  name: codebase-design
+  source: mattpocock/skills
+  path: skills/engineering/codebase-design/SKILL.md
+  cat: plan
+  what: "Shared words and rules for deep modules: small interface, lots of behaviour, clean seams."
+  license: MIT
+  eval:
+    should:
+      - "where should the seam go for this payment module so it is easy to test?"
+      - "design the interface of this module so it hides more of its insides"
+    near: "rename these files"
+    first_step: "Use the glossary terms exactly: module, interface, depth, seam, adapter."
+
+- id: mattpocock-diagnosing-bugs
+  name: diagnosing-bugs
+  source: mattpocock/skills
+  path: skills/engineering/diagnosing-bugs/SKILL.md
+  cat: debug
+  what: "Debug hard bugs and slowdowns by building a tight pass/fail feedback loop first."
+  license: MIT
+  eval:
+    should:
+      - "debug this: the report endpoint is intermittently slow"
+      - "something is throwing in the worker and I can't reproduce it reliably"
+    near: "add logging to a working function"
+    first_step: "Build a tight pass/fail feedback loop that goes red on this exact bug."
+
+- id: mattpocock-domain-modeling
+  name: domain-modeling
+  source: mattpocock/skills
+  path: skills/engineering/domain-modeling/SKILL.md
+  cat: docs
+  what: "Build and sharpen the project's domain language: write GLOSSARY.md and decision records (ADRs)."
+  license: MIT
+  eval:
+    should:
+      - "we call the same thing three names, set up a glossary for the project"
+      - "record this architecture decision as an ADR"
+    near: "design a database table"
+    first_step: "Find the project's GLOSSARY.md and docs/adr, then challenge terms and edge cases as you design."
+
+- id: mattpocock-grill-with-docs
+  name: grill-with-docs
+  source: mattpocock/skills
+  path: skills/engineering/grill-with-docs/SKILL.md
+  cat: plan
+  what: "Get grilled on your plan, while the agent writes the glossary and ADRs as you go."
+  license: MIT
+  eval:
+    should:
+      - "grill me on this feature idea and keep the docs updated as we decide"
+      - "stress-test my design and capture decisions in ADRs"
+    near: "just implement the feature"
+    first_step: "Call the Skill tool twice, for grilling and domain-modeling."
+
+- id: mattpocock-implement-spec
+  name: implement-spec
+  source: mattpocock/skills
+  path: skills/engineering/implement-spec/SKILL.md
+  cat: code
+  what: "Implement a whole spec and its tickets on one integration branch, with sub-agents on the ready tickets."
+  license: MIT
+  eval:
+    should:
+      - "build the whole spec for the import feature from its tickets"
+      - "work the ticket graph in parallel and land it on one integration branch"
+    near: "implement just ticket 12"
+    first_step: "Read the spec and tickets to understand the task graph and its blocking relationships."
+
+- id: mattpocock-implement
+  name: implement
+  source: mattpocock/skills
+  path: skills/engineering/implement/SKILL.md
+  cat: code
+  what: "Build one ticket or spec with TDD, typecheck often, then run code review and commit."
+  license: MIT
+  eval:
+    should:
+      - "implement ticket 34 from the tracker"
+      - "build what the spec describes, test-first, then review it"
+    near: "write the spec for this feature"
+    first_step: "Fetch the referenced ticket from the issue tracker and state its title before starting."
+
+- id: mattpocock-improve-codebase-architecture
+  name: improve-codebase-architecture
+  source: mattpocock/skills
+  path: skills/engineering/improve-codebase-architecture/SKILL.md
+  cat: code
+  what: "Find shallow modules worth deepening, show them in an HTML report, then talk through the one you pick."
+  license: MIT
+  eval:
+    should:
+      - "scan the codebase for refactors that make it easier to test and navigate"
+      - "which modules are tangled enough to be worth consolidating?"
+    near: "fix a typo in a comment"
+    first_step: "Explore the commit history to find hot spots, or take the direction the user named."
+
+- id: mattpocock-pr
+  name: pr
+  source: mattpocock/skills
+  path: skills/engineering/pr/SKILL.md
+  cat: git
+  what: "Template for a PR body: summary diagram, before/after evidence, how risky the merge is."
+  license: MIT
+  eval:
+    should:
+      - "write the PR description for this change"
+      - "draft a PR body with before and after evidence and merge risk"
+    near: "review this pull request"
+    first_step: "Fill the template: Summary, Evidence (before and after), then Merge Danger with door and blast radius."
+
+- id: mattpocock-prototype
+  name: prototype
+  source: mattpocock/skills
+  path: skills/engineering/prototype/SKILL.md
+  cat: plan
+  what: "Make throwaway code that answers a design question: a state-logic page or several UI variants."
+  license: MIT
+  eval:
+    should:
+      - "I'm not sure this state machine feels right, prototype it so I can click around"
+      - "show me three radically different layouts for this settings page"
+    near: "build the production version"
+    first_step: "Pick the branch: logic or state model, or UI look, from the prompt and the surrounding code."
+
+- id: mattpocock-research
+  name: research
+  source: mattpocock/skills
+  path: skills/engineering/research/SKILL.md
+  cat: docs
+  what: "Send a background agent to read primary sources and save the findings, with citations, as Markdown."
+  license: MIT
+  eval:
+    should:
+      - "research how Stripe webhooks handle retries and write it up in the repo"
+      - "have an agent read the official docs on this API while I keep coding"
+    near: "summarise this paragraph"
+    first_step: "Spin up a background agent to investigate the question against primary sources."
+
+- id: mattpocock-retro
+  name: retro
+  source: mattpocock/skills
+  path: skills/engineering/retro/SKILL.md
+  cat: meta
+  what: "Review a coding session and suggest fixes to the agent's setup: navigation, checks, standards, AGENTS.md."
+  license: MIT
+  eval:
+    should:
+      - "that session went badly, what in our repo setup should change for next time?"
+      - "run a retrospective on the last agent session"
+    near: "plan next sprint"
+    first_step: "Call the Skill tool with writing-for-agents, then read the session's primary sources."
+
+- id: mattpocock-setup-matt-pocock-skills
+  name: setup-matt-pocock-skills
+  source: mattpocock/skills
+  path: skills/engineering/setup-matt-pocock-skills/SKILL.md
+  cat: meta
+  what: "One-time repo setup for these skills: issue tracker, triage labels, where glossary and ADRs live."
+  license: MIT
+  eval:
+    should:
+      - "configure this repo for the engineering skills before I use them"
+      - "set up the issue tracker and triage labels for the agent skills"
+    near: "set up GitHub Actions"
+    first_step: "Explore the repo to see its current issue tracker, labels and docs, and don't assume."
+
+- id: mattpocock-tdd
+  name: tdd
+  source: mattpocock/skills
+  path: skills/engineering/tdd/SKILL.md
+  cat: test
+  what: "Red-green TDD with tests at agreed seams that check behaviour through public interfaces."
+  license: MIT
+  eval:
+    should:
+      - "build the cart total feature test-first with red-green-refactor"
+      - "fix this bug and cover it with an integration test"
+    near: "what is mocking in tests"
+    first_step: "Write down the seams under test and confirm them with the user before writing any test."
+
+- id: mattpocock-to-spec
+  name: to-spec
+  source: mattpocock/skills
+  path: skills/engineering/to-spec/SKILL.md
+  cat: plan
+  what: "Turn the current chat into a spec and publish it to the issue tracker, no more interview."
+  license: MIT
+  eval:
+    should:
+      - "we've talked it through, turn this into a spec issue"
+      - "write up what we decided as a spec and file it"
+    near: "interview me about the idea"
+    first_step: "Explore the repo, then sketch the seams you will test and confirm them with the user."
+
+- id: mattpocock-to-tickets
+  name: to-tickets
+  source: mattpocock/skills
+  path: skills/engineering/to-tickets/SKILL.md
+  cat: plan
+  what: "Split a plan or spec into thin vertical tickets, each saying which tickets block it."
+  license: MIT
+  eval:
+    should:
+      - "break the spec into tickets with dependencies"
+      - "turn this plan into tracer-bullet issues on GitHub"
+    near: "implement the first ticket"
+    first_step: "Gather context from the conversation or fetch the spec or issue the user referenced."
+
+- id: mattpocock-triage
+  name: triage
+  source: mattpocock/skills
+  path: skills/engineering/triage/SKILL.md
+  cat: plan
+  what: "Move issues and outside PRs through triage states, check them, and write briefs agents can follow."
+  license: MIT
+  eval:
+    should:
+      - "triage the new issues in the tracker and prep the good ones for an agent"
+      - "what needs my attention in the issue queue?"
+    near: "fix issue 57"
+    first_step: "Show what needs attention, or triage the specific issue; prefix every comment with the AI disclaimer."
+
+- id: mattpocock-wayfinder
+  name: wayfinder
+  source: mattpocock/skills
+  path: skills/engineering/wayfinder/SKILL.md
+  cat: plan
+  what: "Plan a job too big for one session as a map of decision tickets, settled one by one."
+  license: MIT
+  eval:
+    should:
+      - "we need to migrate the whole monolith, help me chart a path through the decisions"
+      - "this project is too big for one chat, set up a decision map in issues"
+    near: "write a small bugfix plan"
+    first_step: "Name the destination first, then create the map issue labelled wayfinder:map."
+
+- id: mattpocock-wizard
+  name: wizard
+  source: mattpocock/skills
+  path: skills/engineering/wizard/SKILL.md
+  cat: ops
+  what: "Make a bash wizard that walks a human through manual steps: cloud setup, secrets, a cutover."
+  license: MIT
+  eval:
+    should:
+      - "make a script that guides me through setting up the CI secrets and the dashboard steps"
+      - "build a step-by-step wizard for this infra cutover that only I can do"
+    near: "automate this deploy in a CI job"
+    first_step: "Scope the procedure: read .env, README, compose and workflow files to list every manual step and value."
+
+- id: mattpocock-git-guardrails-claude-code
+  name: git-guardrails-claude-code
+  source: mattpocock/skills
+  path: skills/misc/git-guardrails-claude-code/SKILL.md
+  cat: git
+  what: "Add a Claude Code hook that blocks git push, reset --hard, clean -f, branch -D and similar."
+  license: MIT
+  eval:
+    should:
+      - "stop the agent from ever pushing or force-resetting in this repo"
+      - "add a safety hook that blocks dangerous git commands"
+    near: "undo my last commit"
+    first_step: "Set up a PreToolUse hook that intercepts and blocks the dangerous git commands."
+
+- id: mattpocock-migrate-to-shoehorn
+  name: migrate-to-shoehorn
+  source: mattpocock/skills
+  path: skills/misc/migrate-to-shoehorn/SKILL.md
+  cat: test
+  what: "Swap `as` type casts in tests for @total-typescript/shoehorn so partial test data stays type-safe."
+  license: MIT
+  eval:
+    should:
+      - "our tests are full of 'as unknown as' casts, clean that up with shoehorn"
+      - "I want partial mock objects in tests without losing type safety"
+    near: "remove `any` from production code"
+    first_step: "Install @total-typescript/shoehorn, then replace `as` assertions in test files only."
+
+- id: mattpocock-setup-pre-commit
+  name: setup-pre-commit
+  source: mattpocock/skills
+  path: skills/misc/setup-pre-commit/SKILL.md
+  cat: code
+  what: "Set up Husky pre-commit with lint-staged Prettier, typecheck and tests."
+  license: MIT
+  eval:
+    should:
+      - "add pre-commit hooks that format, typecheck and run tests"
+      - "set up husky and lint-staged for this repo"
+    near: "add a GitHub Actions lint job"
+    first_step: "Detect the package manager from the lockfile: npm, pnpm, yarn or bun."
+
+- id: mattpocock-setup-ts-deep-modules
+  name: setup-ts-deep-modules
+  source: mattpocock/skills
+  path: skills/in-progress/setup-ts-deep-modules/SKILL.md
+  cat: code
+  what: "Wire dependency-cruiser into a TypeScript repo so each package hides its insides behind entry points."
+  license: MIT
+  eval:
+    should:
+      - "enforce that other packages can only import from each package's index file"
+      - "set up dependency-cruiser so our modules stay deep"
+    near: "add path aliases to tsconfig"
+    first_step: "Call the Skill tool with codebase-design for the vocabulary, then inspect the package layout."
+
+- id: mattpocock-grill-me
+  name: grill-me
+  source: mattpocock/skills
+  path: skills/productivity/grill-me/SKILL.md
+  cat: plan
+  what: "Get interviewed hard about your plan or design until everything is clear."
+  license: MIT
+  eval:
+    should:
+      - "grill me on this architecture before I commit to it"
+      - "stress-test my plan for the migration"
+    near: "approve my plan"
+    first_step: "Call the Skill tool with grilling."
+
+- id: mattpocock-grilling
+  name: grilling
+  source: mattpocock/skills
+  path: skills/productivity/grilling/SKILL.md
+  cat: plan
+  what: "Question the user round by round down a decision tree, with a suggested answer for each question."
+  license: MIT
+  eval:
+    should:
+      - "interrogate me about this design until the open questions are gone"
+      - "walk me through every decision in this plan, one round at a time"
+    near: "summarise the plan in one paragraph"
+    first_step: "Map the design tree and ask the first round of questions whose prerequisites are settled."
+
+- id: mattpocock-handoff
+  name: handoff
+  source: mattpocock/skills
+  path: skills/productivity/handoff/SKILL.md
+  cat: meta
+  what: "Compact this chat into a handoff doc another agent can pick up, with secrets removed."
+  license: MIT
+  eval:
+    should:
+      - "write a handoff so a fresh session can continue this work"
+      - "my context is full, summarise where we are for the next agent"
+    near: "summarise this article"
+    first_step: "Write the handoff to the OS temp directory with a suggested-skills section, redacting secrets."
+
+- id: mattpocock-writing-for-agents
+  name: writing-for-agents
+  source: mattpocock/skills
+  path: skills/productivity/writing-for-agents/SKILL.md
+  cat: docs
+  what: "Style guide for docs agents read: skills, AGENTS.md and CLAUDE.md, with context pointers."
+  license: MIT
+  eval:
+    should:
+      - "our AGENTS.md is bloated, rewrite it so agents actually follow it"
+      - "write a CLAUDE.md that points to docs only when needed"
+    near: "write release notes for users"
+    first_step: "Apply context pointers: state what the material is and list the branches that should trigger reading it."
+
+# ---------------------------------------------------------------- odykyi/gh-skills
+- id: gh-skills-gh-pr-review-buttons
+  name: gh-pr-review-buttons
+  source: odykyi/gh-skills
+  path: skills/gh-pr-review-buttons/SKILL.md
+  cat: review
+  what: "Add 'Review this PR in' Grok, Claude and Codex buttons to PR descriptions through a GitHub Action."
+  license: MIT
+  eval:
+    should:
+      - "add AI review buttons to the PRs in my repo"
+      - "how do the review-in-Claude buttons on our PRs work?"
+    near: "review this PR for bugs"
+    first_step: "Confirm gh auth is OK and the working tree is clean before creating the branch."
+
+- id: gh-skills-gh-prioritizer
+  name: gh-prioritizer
+  source: odykyi/gh-skills
+  path: skills/gh-prioritizer/SKILL.md
+  cat: git
+  what: "Set priorities on PRs and issues in a GitHub Project from labels, size and impact."
+  license: MIT
+  eval:
+    should:
+      - "set priorities on all open PRs in our project board"
+      - "run a priority audit and rank the PRs by impact"
+    near: "label this PR as bug"
+    first_step: "Read PR or issue labels, size and branch name, then apply the highest matching priority rule."
+
+- id: gh-skills-gh-project-orchestrator
+  name: gh-project-orchestrator
+  source: odykyi/gh-skills
+  path: skills/gh-project-orchestrator/SKILL.md
+  cat: git
+  what: "Create and manage GitHub Projects (V2) and link issues and PRs to track a big integration."
+  license: MIT
+  eval:
+    should:
+      - "create a project board for the Stripe integration and link the issues"
+      - "add these PRs to the project and show status"
+    near: "create one issue"
+    first_step: "Resolve the owner, repo and project IDs, then create or find the project."
+
+- id: gh-skills-pr-commenter
+  name: pr-commenter
+  source: odykyi/gh-skills
+  path: skills/pr-commenter/SKILL.md
+  cat: git
+  what: "Post line comments, general comments and thread replies on PRs, and resolve threads."
+  license: MIT
+  eval:
+    should:
+      - "leave a line comment on auth.ts line 42 of PR 88"
+      - "reply to the open threads on my PR and resolve the fixed ones"
+    near: "review the whole PR"
+    first_step: "List existing review comments with their IDs through gh api before posting."
+
+- id: gh-skills-pr-feedback-handler
+  name: pr-feedback-handler
+  source: odykyi/gh-skills
+  path: skills/pr-feedback-handler/SKILL.md
+  cat: review
+  what: "Go through PR review comments and either fix each one or reply with the reason you won't."
+  license: MIT
+  eval:
+    should:
+      - "my PR got comments, handle them: fix what's right and explain the rest"
+      - "address the review feedback on this branch"
+    near: "write a review for someone else's PR"
+    first_step: "Fetch all PR comments and reviews with gh pr view, then classify each as fix or reply."
+
+- id: gh-skills-pr-initiative-driver
+  name: pr-initiative-driver
+  source: odykyi/gh-skills
+  path: skills/pr-initiative-driver/SKILL.md
+  cat: meta
+  what: "Loop over sub-sessions and PRs: decide, nudge each, merge only ready PRs, verify done claims."
+  license: MIT
+  eval:
+    should:
+      - "keep driving this initiative until the open issues are at zero"
+      - "check every sub-agent, merge what is truly ready, and close finished ones"
+    near: "merge this one PR"
+    first_step: "Check every sub-session or sub-agent and list the state of each issue and PR."
+
+- id: gh-skills-pr-labeler
+  name: pr-labeler
+  source: odykyi/gh-skills
+  path: skills/pr-labeler/SKILL.md
+  cat: git
+  what: "Auto-label PRs from the branch name, changed files and diff size; check label hygiene in bulk."
+  license: MIT
+  eval:
+    should:
+      - "label all my open PRs by size and area"
+      - "run a label hygiene check on the repo's PRs"
+    near: "close stale issues"
+    first_step: "Detect the branch name, then compute the size and area labels from the diff and files."
+
+- id: gh-skills-pr-manager
+  name: pr-manager
+  source: odykyi/gh-skills
+  path: skills/pr-manager/SKILL.md
+  cat: git
+  what: "Run 20+ PRs in parallel with strict done rules, using opener, reviewer, feedback and merger helpers."
+  license: MIT
+  eval:
+    should:
+      - "I have 25 open PRs, drive them all to merge"
+      - "triage and process the whole PR backlog in parallel"
+    near: "open one PR"
+    first_step: "Verify the linked issues first, then list and monitor all open PRs."
+
+- id: gh-skills-pr-merger
+  name: pr-merger
+  source: odykyi/gh-skills
+  path: skills/pr-merger/SKILL.md
+  cat: git
+  what: "Merge approved PRs safely: verify CI, handle conflicts, clean up worktree and branch."
+  license: MIT
+  eval:
+    should:
+      - "PR 301 is approved, merge it and clean up"
+      - "land all the approved PRs in a batch"
+    near: "review PR 301"
+    first_step: "Verify PR state: approval, CI checks and a linked issue; stop if any check fails."
+
+- id: gh-skills-pr-opener
+  name: pr-opener
+  source: odykyi/gh-skills
+  path: skills/pr-opener/SKILL.md
+  cat: git
+  what: "Open a PR that has a linked issue, a clear description and what to verify."
+  license: MIT
+  eval:
+    should:
+      - "push my branch and open a PR"
+      - "submit this finished work as a pull request with the issue linked"
+    near: "merge the PR"
+    first_step: "Check for a linked issue from the branch name or by searching GitHub issues; create one if none."
+
+- id: gh-skills-pr-queue-digest
+  name: pr-queue-digest
+  source: odykyi/gh-skills
+  path: skills/pr-queue-digest/SKILL.md
+  cat: git
+  what: "Read-only one-screen digest of open PRs: blocked, waiting on review, green and ready, no issue."
+  license: MIT
+  eval:
+    should:
+      - "what is in the PR queue and what needs me today?"
+      - "give me a standup summary of open pull requests"
+    near: "merge the green PRs"
+    first_step: "Confirm the repository with gh repo view and stop if it fails."
+
+- id: gh-skills-pr-reviewer
+  name: pr-reviewer
+  source: odykyi/gh-skills
+  path: skills/pr-reviewer/SKILL.md
+  cat: review
+  what: "Review a PR for quality, security and performance, and post structured findings through gh."
+  license: MIT
+  eval:
+    should:
+      - "review PR 120 and post your findings"
+      - "do a quality and security pass on this pull request before merge"
+    near: "address the comments on my PR"
+    first_step: "Get PR metadata, changed files and patch data from gh pr view."
+
+- id: gh-skills-pr-workflow-orchestrator
+  name: pr-workflow-orchestrator
+  source: odykyi/gh-skills
+  path: skills/pr-workflow-orchestrator/SKILL.md
+  cat: git
+  what: "Take one task end to end: worktree, PR, handle feedback, merge; never leave a PR unattended."
+  license: MIT
+  eval:
+    should:
+      - "ship this task end to end, from worktree to merged PR"
+      - "take over PR 77 and keep it moving until it lands"
+    near: "just make a worktree"
+    first_step: "Create the worktree for the task, then hand off to the opener, feedback handler and merger."
+
+- id: gh-skills-pr-worktree
+  name: pr-worktree
+  source: odykyi/gh-skills
+  path: skills/pr-worktree/SKILL.md
+  cat: git
+  what: "Use git worktrees only (never checkout) to give each PR its own folder and clean it up after."
+  license: MIT
+  eval:
+    should:
+      - "start work on issue 432 in an isolated worktree"
+      - "I need to hotfix prod without disturbing my current branch"
+    near: "switch branches with git checkout"
+    first_step: "Parse the issue number and type to build the branch name and worktree path, then git worktree add."

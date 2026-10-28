@@ -1,14 +1,17 @@
-{%- comment -%}Sets cur_view, cur_sub and cur_sub_name for the page being built.{%- endcomment -%}
+{%- comment -%}Sets cur_view, cur_subs (the list the sub-tabs come from) and cur_sub_name for the page being built.{%- endcomment -%}
 {%- assign cur_view = nil -%}
 {%- assign cur_sub_name = nil -%}
+{%- assign cur_subs = "" | split: "" -%}
 {%- if page.view -%}
   {%- assign cur_view = site.data.meta.views | where: "id", page.view | first -%}
+  {%- case cur_view.subtabs -%}
+    {%- when "families" -%}{%- assign cur_subs = site.data.families -%}
+    {%- when "tracks" -%}{%- assign cur_subs = site.data.journeys.tracks -%}
+    {%- when "roles" -%}{%- assign cur_subs = site.data.roles.groups -%}
+    {%- when "skills" -%}{%- assign cur_subs = site.data.skill_categories -%}
+  {%- endcase -%}
   {%- if page.sub -%}
-    {%- if cur_view.subtabs == "tracks" -%}
-      {%- assign cur_sub_obj = site.data.journeys.tracks | where: "id", page.sub | first -%}
-    {%- else -%}
-      {%- assign cur_sub_obj = site.data.families | where: "id", page.sub | first -%}
-    {%- endif -%}
+    {%- assign cur_sub_obj = cur_subs | where: "id", page.sub | first -%}
     {%- assign cur_sub_name = cur_sub_obj.name -%}
   {%- endif -%}
 {%- endif -%}
