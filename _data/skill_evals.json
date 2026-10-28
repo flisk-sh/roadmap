@@ -1,8 +1,8 @@
 {
   "model": "claude-haiku-4-5-20251001",
   "ran": "2026-10-28T12:12:59Z",
-  "calls": 881,
-  "cost_usd": 11.33,
+  "calls": 918,
+  "cost_usd": 11.72,
   "skills": {
     "anthropics-claude-api": {
       "score": 100,
@@ -12481,17 +12481,17 @@
       }
     },
     "flisk-cli-agent-ops": {
-      "score": 100,
-      "picked": 3,
+      "score": 80,
+      "picked": 2,
       "picked_of": 3,
       "followed": 1,
       "followed_of": 1,
       "routes": [
         {
-          "prompt": "I'm adding a new worker service to this repo with Claude Code, how should it go about it?",
-          "expect": "this",
+          "prompt": "write the Dockerfile for my service by hand",
+          "expect": "not",
           "got": "flisk-cli-agent-ops",
-          "ok": true
+          "ok": false
         },
         {
           "prompt": "which flisk commands should an agent use to check status and logs of the stack?",
@@ -12500,24 +12500,30 @@
           "ok": true
         },
         {
-          "prompt": "write the Dockerfile for my service by hand",
-          "expect": "not",
-          "got": "none",
+          "prompt": "I'm adding a new worker service to this repo with Claude Code, how should it go about it?",
+          "expect": "this",
+          "got": "flisk-cli-agent-ops",
           "ok": true
         }
       ],
       "follow": {
-        "answer": "Use the Flisk CLI to scaffold the worker service: `flisk resource <name> --type worker --yes` (where `<name>` is your chosen worker name).",
+        "answer": "Run `flisk resource <name> --type worker` to scaffold the worker service instead of hand-writing a Dockerfile or Docker Compose file.",
         "ok": true
       }
     },
     "flisk-cli-build": {
-      "score": 40,
-      "picked": 2,
+      "score": 60,
+      "picked": 3,
       "picked_of": 3,
       "followed": 0,
       "followed_of": 1,
       "routes": [
+        {
+          "prompt": "deploy my finished app to AWS",
+          "expect": "not",
+          "got": "none",
+          "ok": true
+        },
         {
           "prompt": "make an API and a website for tracking my reading list, run it locally",
           "expect": "this",
@@ -12527,21 +12533,15 @@
         {
           "prompt": "build me a small online shop I can run on my laptop",
           "expect": "this",
-          "got": "flisk-cli-recipe-shop",
-          "ok": false
-        },
-        {
-          "prompt": "deploy my finished app to AWS",
-          "expect": "not",
-          "got": "none",
+          "got": "flisk-cli-build",
           "ok": true
         }
       ],
       "follow": {
-        "answer": "I run `flisk doctor` to verify your machine has Docker, Tilt, and other requirements to build this shop.",
+        "answer": "I'll run `flisk doctor` to check if your machine is ready to build and run the app.",
         "ok": false,
         "appealed": true,
-        "why": "The skill requires deciding the path (no-Docker or Docker+Tilt) first; an online shop with products and orders needs Postgres, so Docker+Tilt comes before flisk doctor."
+        "why": "The skill requires deciding the path (Docker vs. no-Docker) before running flisk doctor, but the agent jumped straight to flisk doctor."
       }
     },
     "flisk-cli-e2e-author": {
@@ -12552,15 +12552,15 @@
       "followed_of": 1,
       "routes": [
         {
-          "prompt": "add a unit test for a CLI flag parser",
-          "expect": "not",
-          "got": "none",
-          "ok": true
-        },
-        {
           "prompt": "write an e2e suite for the new restart command that talks to a running stack",
           "expect": "this",
           "got": "flisk-cli-e2e-author",
+          "ok": true
+        },
+        {
+          "prompt": "add a unit test for a CLI flag parser",
+          "expect": "not",
+          "got": "none",
           "ok": true
         },
         {
@@ -12571,44 +12571,44 @@
         }
       ],
       "follow": {
-        "answer": "Yes, an e2e test is **required** because you added a new resource type; my first concrete action is to identify which resource type you added so I can scaffold the required suite at `tests/e2e/resource-types/<type>/`.",
+        "answer": "I'll read `cli/src/utils/constants.ts` to identify the resource type you added and confirm that a test suite is required under `tests/e2e/resource-types/<type>/`.",
         "ok": true
       }
     },
     "flisk-cli-recipe-ai-agent": {
-      "score": 100,
-      "picked": 3,
+      "score": 60,
+      "picked": 1,
       "picked_of": 3,
       "followed": 1,
       "followed_of": 1,
       "routes": [
         {
-          "prompt": "I need a chatbot service plus an MCP server that reads and writes notes",
-          "expect": "this",
-          "got": "flisk-cli-recipe-ai-agent",
-          "ok": true
-        },
-        {
           "prompt": "build me a blog with an admin API",
           "expect": "not",
-          "got": "flisk-cli-recipe-blog",
+          "got": "flisk-cli-build",
           "ok": true
         },
         {
           "prompt": "build me an AI assistant with tools and a database, running locally",
           "expect": "this",
-          "got": "flisk-cli-recipe-ai-agent",
-          "ok": true
+          "got": "flisk-cli-build",
+          "ok": false
+        },
+        {
+          "prompt": "I need a chatbot service plus an MCP server that reads and writes notes",
+          "expect": "this",
+          "got": "flisk-cli-build",
+          "ok": false
         }
       ],
       "follow": {
-        "answer": "I'll run `flisk doctor` to verify that your system has Docker, Tilt, and the Flisk CLI ready to build the agent stack.",
+        "answer": "I run `flisk doctor` to check that your machine has the required tools (Flisk CLI, Docker, and Tilt) for building the AI agent stack.",
         "ok": true
       }
     },
     "flisk-cli-recipe-blog": {
-      "score": 100,
-      "picked": 3,
+      "score": 60,
+      "picked": 1,
       "picked_of": 3,
       "followed": 1,
       "followed_of": 1,
@@ -12616,120 +12616,122 @@
         {
           "prompt": "I want a little news site with an editor login, locally",
           "expect": "this",
-          "got": "flisk-cli-recipe-blog",
-          "ok": true
-        },
-        {
-          "prompt": "build me a shop with products and orders",
-          "expect": "not",
-          "got": "flisk-cli-recipe-shop",
-          "ok": true
+          "got": "flisk-cli-build",
+          "ok": false
         },
         {
           "prompt": "build me a blog where I can add posts through an admin API",
           "expect": "this",
-          "got": "flisk-cli-recipe-blog",
+          "got": "flisk-cli-build",
+          "ok": false
+        },
+        {
+          "prompt": "build me a shop with products and orders",
+          "expect": "not",
+          "got": "flisk-cli-build",
           "ok": true
         }
       ],
       "follow": {
-        "answer": "I will run `flisk doctor` to verify the machine can run Flisk before starting the blog project setup.",
+        "answer": "I'll run `flisk doctor` to verify your machine has Docker, Tilt, and other requirements needed to build the blog.",
         "ok": true
       }
     },
     "flisk-cli-recipe-saas": {
-      "score": 100,
-      "picked": 3,
+      "score": 20,
+      "picked": 1,
       "picked_of": 3,
-      "followed": 1,
+      "followed": 0,
       "followed_of": 1,
       "routes": [
         {
+          "prompt": "build me a SaaS with sign-up, login and subscription plans",
+          "expect": "this",
+          "got": "flisk-cli-build",
+          "ok": false
+        },
+        {
           "prompt": "I need a members area with billing, run it on my machine",
           "expect": "this",
-          "got": "flisk-cli-recipe-saas",
-          "ok": true
+          "got": "flisk-cli-build",
+          "ok": false
         },
         {
           "prompt": "start from the ready-made SaaS starter template",
           "expect": "not",
-          "got": "flisk-cli-recipe-starters",
-          "ok": true
-        },
-        {
-          "prompt": "build me a SaaS with sign-up, login and subscription plans",
-          "expect": "this",
-          "got": "flisk-cli-recipe-saas",
+          "got": "flisk-cli-build",
           "ok": true
         }
       ],
       "follow": {
-        "answer": "I'll verify your machine has the necessary tools (Docker, Tilt, Flisk CLI) by running `flisk doctor`.",
-        "ok": true
+        "answer": "I will create a Claude Docs document to track the SaaS project setup and progress.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill starts with `flisk doctor`, not creating a docs document; docs should only be created when the user explicitly asks for one."
       }
     },
     "flisk-cli-recipe-shop": {
-      "score": 100,
-      "picked": 3,
+      "score": 60,
+      "picked": 1,
       "picked_of": 3,
       "followed": 1,
       "followed_of": 1,
       "routes": [
         {
-          "prompt": "set up a store with a catalogue page and an order button, locally",
-          "expect": "this",
-          "got": "flisk-cli-recipe-shop",
+          "prompt": "use the ecommerce starter template",
+          "expect": "not",
+          "got": "flisk-cli-build",
           "ok": true
         },
         {
-          "prompt": "use the ecommerce starter template",
-          "expect": "not",
-          "got": "flisk-cli-recipe-starters",
-          "ok": true
+          "prompt": "set up a store with a catalogue page and an order button, locally",
+          "expect": "this",
+          "got": "flisk-cli-build",
+          "ok": false
         },
         {
           "prompt": "build me a small online shop with a product list and orders",
           "expect": "this",
-          "got": "flisk-cli-recipe-shop",
-          "ok": true
+          "got": "flisk-cli-build",
+          "ok": false
         }
       ],
       "follow": {
-        "answer": "I will run `flisk doctor` to verify your machine can run the Flisk stack.",
+        "answer": "I'll run `flisk doctor` to verify your machine can run the Flisk stack.",
         "ok": true
       }
     },
     "flisk-cli-recipe-starters": {
-      "score": 100,
-      "picked": 3,
+      "score": 60,
+      "picked": 1,
       "picked_of": 3,
       "followed": 1,
       "followed_of": 1,
       "routes": [
         {
-          "prompt": "start me from a working SaaS app with billing and checkout, then I'll change it",
-          "expect": "this",
-          "got": "flisk-cli-recipe-starters",
+          "prompt": "build a tiny blog from nothing",
+          "expect": "not",
+          "got": "flisk-cli-build",
           "ok": true
         },
         {
           "prompt": "I need a restaurant reservation system, is there a starter?",
           "expect": "this",
-          "got": "flisk-cli-recipe-starters",
-          "ok": true
+          "got": "flisk-cli-build",
+          "ok": false
         },
         {
-          "prompt": "build a tiny blog from nothing",
-          "expect": "not",
-          "got": "flisk-cli-recipe-blog",
-          "ok": true
+          "prompt": "start me from a working SaaS app with billing and checkout, then I'll change it",
+          "expect": "this",
+          "got": "flisk-cli-build",
+          "ok": false
         }
       ],
       "follow": {
-        "answer": "I will run `flisk doctor` to verify your machine is ready to clone and run the restaurant starter template.",
+        "answer": "I'll check your machine is ready to run the Flisk stack with `flisk doctor`.",
         "ok": true,
         "appealed": true,
-        "why": "The skill's Steps section lists `flisk doctor` as the first command after matching the request to the `restaurant` template."
+        "why": "The skill's Steps section explicitly begins with 'flisk doctor', which matches the agent's first announced action."
       }
     },
     "flisk-cli-release": {
@@ -12746,40 +12748,40 @@
           "ok": true
         },
         {
-          "prompt": "publish my own unrelated npm package",
-          "expect": "not",
-          "got": "none",
-          "ok": true
-        },
-        {
           "prompt": "release the next flisk version",
           "expect": "this",
           "got": "flisk-cli-release",
           "ok": true
+        },
+        {
+          "prompt": "publish my own unrelated npm package",
+          "expect": "not",
+          "got": "none",
+          "ok": true
         }
       ],
       "follow": {
-        "answer": "I'll check the state of recent release runs, GitHub releases, and npm versions using `gh` and `curl` to identify any blocking issues before proceeding.",
+        "answer": "I'll check the current state of release runs and published versions using the GitHub CLI and npm to see if there are any incomplete releases or failures before proceeding.",
         "ok": true
       }
     },
     "flisk-cli-resource": {
-      "score": 100,
+      "score": 60,
       "picked": 3,
       "picked_of": 3,
-      "followed": 1,
+      "followed": 0,
       "followed_of": 1,
       "routes": [
-        {
-          "prompt": "create an MCP tools server called tools-mcp in the ai stack",
-          "expect": "this",
-          "got": "flisk-cli-resource",
-          "ok": true
-        },
         {
           "prompt": "show me which services are healthy",
           "expect": "not",
           "got": "flisk-cli-status",
+          "ok": true
+        },
+        {
+          "prompt": "create an MCP tools server called tools-mcp in the ai stack",
+          "expect": "this",
+          "got": "flisk-cli-resource",
           "ok": true
         },
         {
@@ -12790,10 +12792,10 @@
         }
       ],
       "follow": {
-        "answer": "What name would you like for the background worker resource (in kebab-case)?",
-        "ok": true,
+        "answer": "I will first list the existing resources in your shop stack to understand the naming conventions before creating the worker.",
+        "ok": false,
         "appealed": true,
-        "why": "The user already specified the type (worker) in their request, so the agent correctly moved past step 1 and asked for the name required in step 2."
+        "why": "The skill's workflow prescribes choosing the type first (already done—'worker'), then creating it directly; listing resources is not a prescribed first step."
       }
     },
     "flisk-cli-status": {
@@ -12823,7 +12825,7 @@
         }
       ],
       "follow": {
-        "answer": "I'll call the flisk status function to check what services are running and their health status.",
+        "answer": "I'll check the status of the Flisk stack by running `flisk status --json` from the project root.",
         "ok": true
       }
     },
@@ -12835,12 +12837,6 @@
       "followed_of": 1,
       "routes": [
         {
-          "prompt": "start my shop stack",
-          "expect": "this",
-          "got": "flisk-cli-up",
-          "ok": true
-        },
-        {
           "prompt": "I changed a service.json, bring the services back up and tell me the URLs",
           "expect": "this",
           "got": "flisk-cli-up",
@@ -12849,12 +12845,18 @@
         {
           "prompt": "stop everything and clean up the networks",
           "expect": "not",
-          "got": "none",
+          "got": "flisk-cli-agent-ops",
+          "ok": true
+        },
+        {
+          "prompt": "start my shop stack",
+          "expect": "this",
+          "got": "flisk-cli-up",
           "ok": true
         }
       ],
       "follow": {
-        "answer": "I'll run `flisk doctor` to verify your machine is ready to start the stack.",
+        "answer": "I will run `flisk doctor` to verify the machine is ready to start the Flisk stack.",
         "ok": true
       }
     }
