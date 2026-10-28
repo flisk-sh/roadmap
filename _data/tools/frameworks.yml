@@ -343,6 +343,20 @@
   parity: []
   note: Still versioned 0.x, though long-standing and widely used.
 
+- id: expo
+  name: Expo
+  sym: Ex
+  cat: App frameworks
+  tagline: React Native framework and dev server for iOS and Android
+  url: https://expo.dev
+  repo: expo/expo
+  license: oss
+  ring: adopt
+  evidence: https://github.com/expo/expo/releases
+  dx: [one-command, zero-config, fast-feedback, clear-errors, ui, docs, cross-platform, agent-ready]
+  parity: [prod-artifacts, config-secrets]
+  note: Expo Go on a physical iPhone needs an Expo account sign-in, so "No account needed" is not scored.
+
 # --- Serverless frameworks ---
 - id: sst
   name: SST
