@@ -1497,9 +1497,9 @@
     html += '<div class="pf-actions">' +
       '<button type="button" class="ask-go" data-pf="copy">Copy my page link</button>' +
       (PAGES_LIVE
-        ? '<div class="pf-publish"><button type="button" class="btn" data-pf="publish">' + (ME_PUB ? "Update my page on pages.flisk.si" : "Publish to pages.flisk.si") + '</button>' +
+        ? '<div class="pf-publish"><button type="button" class="btn" data-pf="publish">' + (ME_PUB ? "Update my CV on pages.flisk.si" : "Publish my CV to pages.flisk.si") + '</button>' +
           '<p class="pf-url" id="pf-url"></p>' +
-          '<p class="pf-note">No account needed. Your page is public; it goes live in about 2 minutes.</p></div>'
+          '<p class="pf-note">No account needed. Your CV is public; it goes live in about 2 minutes.</p></div>'
         : '<button type="button" class="btn" disabled title="Publishing to pages.flisk.si is almost ready">Publish to pages.flisk.si: coming soon</button>') +
       '<button type="button" class="btn" data-pf="download">Download as a web page</button>' +
       '<button type="button" class="btn" data-pf="clear">Start over</button></div><p class="pf-msg" id="pf-msg" role="status"></p>';
@@ -1530,38 +1530,26 @@
       "</main></body></html>";
   }
 
-  // The pages.flisk.si version: Markdown, rendered like a GitHub README (publish.flisk.si takes up to 40 KB).
-  function cvMarkdown() {
-    var fit = roleFit(), top = fit[0], shape = familyShape();
-    var max = Math.max(1, Math.max.apply(null, shape.map(function (x) { return x.sum; })));
-    var md = "# " + (ME_NAME || "A developer") + "\n\n**" + top.r.name + "** · " + top.pct + "% match\n\n" + top.r.what + "\n\n";
-    md += "Also fits: " + fit.slice(1, 4).map(function (x) { return x.r.name + " (" + x.pct + "%)"; }).join(", ") + "\n\n";
-    md += "## Skill shape\n\n| Family | | Tools known |\n| --- | --- | --- |\n" + shape.map(function (x) {
-      var n = Math.round((x.sum / max) * 10);
-      return "| " + x.f.name + " | `" + "█".repeat(n) + "░".repeat(10 - n) + "` | " + x.known + " |";
-    }).join("\n") + "\n";
-    [[3, "Expert"], [2, "Use often"], [1, "Have used"]].forEach(function (lv) {
-      var list = Object.keys(ME).filter(function (id) { return ME[id] === lv[0]; }).map(function (id) { return BY_ID[id].name; }).sort();
-      if (list.length) md += "\n## " + lv[1] + "\n\n" + list.join(" · ") + "\n";
-    });
-    md += "\n---\n\nRatings are self-reported. Made with [roadmap.flisk.si](" + shareUrl() + "), where every tool is scored by a public checklist.\n";
-    return md;
+  // What pages.flisk.si gets: only the ratings and the name. It builds the developer CV page itself from them and
+  // this site's data.json, in this site's look (flisk-sh/pages services/app/web/src/cv.ts).
+  function cvRequest() {
+    return ME_NAME ? { me: meString(), name: ME_NAME } : { me: meString() };
   }
   function showPagesUrl() {
     var u = document.getElementById("pf-url");
     if (!u) return;
     u.innerHTML = ME_PUB
-      ? 'Your page: <a href="' + esc(ME_PUB.url) + '" target="_blank" rel="noopener">' + esc(ME_PUB.url) + '</a><br><a href="' + esc(ME_PUB.manage) + '" target="_blank" rel="noopener">Delete it</a> · keep this link: it holds the key'
+      ? 'Your CV: <a href="' + esc(ME_PUB.url) + '" target="_blank" rel="noopener">' + esc(ME_PUB.url) + '</a><br><a href="' + esc(ME_PUB.manage) + '" target="_blank" rel="noopener">Delete it</a> · keep this link: it holds the key'
       : "";
   }
-  function publishPage(md) {
+  function publishPage(cv) {
     var update = !!ME_PUB;
     var headers = { "content-type": "application/json" };
     if (update) headers.authorization = "Bearer " + ME_PUB.token;
     return fetch(PUBLISH_API + "/v1/spaces" + (update ? "/" + ME_PUB.id : ""), {
       method: update ? "PUT" : "POST",
       headers: headers,
-      body: JSON.stringify(update ? { markdown: md } : { markdown: md, source: "roadmap.flisk.si" })
+      body: JSON.stringify(update ? { cv: cv } : { cv: cv, source: "roadmap.flisk.si" })
     }).then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (body) {
         if (!r.ok) throw new Error(body.error || "publish failed (" + r.status + ")");
@@ -1602,11 +1590,11 @@
       if (b.disabled) return;
       b.disabled = true;
       pfMsg("Publishing…");
-      publishPage(cvMarkdown()).then(function (updated) {
+      publishPage(cvRequest()).then(function (updated) {
         b.disabled = false;
-        b.textContent = "Update my page on pages.flisk.si";
+        b.textContent = "Update my CV on pages.flisk.si";
         showPagesUrl();
-        pfMsg((updated ? "Updated. The new version" : "Published. Your page") + " is live in about 2 minutes.");
+        pfMsg((updated ? "Updated. The new version" : "Published. Your CV") + " is live in about 2 minutes.");
       }, function (err) {
         b.disabled = false;
         pfMsg("Could not publish: " + err.message);
