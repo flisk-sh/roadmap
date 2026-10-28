@@ -42,7 +42,7 @@ roles:
       - Calls APIs, or fakes them when the API is not ready
       - Fixes layout and speed problems in the browser
     core: [vite, pnpm, nextjs, msw, nvm]
-    daily: [esbuild, turborepo, npm, github-actions, sentry, rollup]
+    daily: [esbuild, turborepo, npm, vitest, github-actions, sentry, rollup]
     nice: [astro, playwright-mcp, netlify-cli, vercel-cli]
 
   - id: fullstack-engineer
@@ -54,7 +54,7 @@ roles:
       - Runs the web app, API and database together locally
       - Deploys and checks it in production
     core: [nextjs, pnpm, docker-compose, prisma, vite]
-    daily: [docker-desktop, drizzle, msw, github-actions, sentry, supabase-cli]
+    daily: [docker-desktop, drizzle, msw, vitest, github-actions, sentry, supabase-cli]
     nice: [flisk, mailpit, ngrok, create-t3-app, vercel-cli]
 
   - id: mobile-engineer
@@ -66,7 +66,7 @@ roles:
       - Points the app at a local or test backend
       - Tests on phones and fakes bad networks
     core: [swiftpm, gradle, msw, mockoon, ngrok]
-    daily: [wiremock, firebase-emulators, github-actions, homebrew, sentry]
+    daily: [expo, wiremock, firebase-emulators, github-actions, homebrew, sentry]
     nice: [mailpit, toxiproxy, convex, cloudflare-tunnel]
 
   - id: java-engineer

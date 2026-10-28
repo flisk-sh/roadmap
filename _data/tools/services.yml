@@ -384,6 +384,20 @@
   parity: [team-scale]
   note: Sharing contracts across teams needs a Pact Broker or the paid PactFlow.
 
+- id: vitest
+  name: Vitest
+  sym: Vs
+  cat: Test dependencies
+  tagline: Vite-native test runner with watch mode and a live UI
+  url: https://vitest.dev
+  repo: vitest-dev/vitest
+  license: oss
+  ring: adopt
+  evidence: https://github.com/vitest-dev/vitest/releases
+  dx: [one-command, zero-config, fast-feedback, ui, docs, cross-platform, offline, agent-ready]
+  parity: []
+  note: The live UI is a separate @vitest/ui install; config comes from your Vite config by default.
+
 # --- ORMs and migrations ---
 - id: prisma
   name: Prisma
