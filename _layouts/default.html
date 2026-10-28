@@ -20,7 +20,11 @@
   <meta property="og:title" content="{{ page_title | escape }}">
   <meta property="og:description" content="{{ page_desc | escape }}">
   <meta property="og:url" content="{{ page.url | absolute_url }}">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="{{ '/assets/og.png' | absolute_url }}">
+  <meta property="og:image:width" content="800">
+  <meta property="og:image:height" content="420">
+  <meta property="og:image:alt" content="The DevEx Roadmap: 372 developer tools on an adoption radar">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="color-scheme" content="dark light">
   <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
   <link rel="canonical" href="{{ page.url | absolute_url }}">
