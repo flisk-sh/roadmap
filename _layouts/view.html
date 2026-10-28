@@ -102,6 +102,10 @@ layout: default
       <li><strong>Followed right.</strong> Haiku reads the whole skill and a real request, then says its first step. A second Haiku call checks that step against the one the skill asks for.</li>
     </ol>
     <p>Score: 1 point per request picked right (3) plus 2 points for following right, out of 5, shown out of 100. Further right is better. Green is 80 and up, amber 50 to 79, red below 50. Pick a kind of skill to see them as a leaderboard, best first. Haiku only sees skills from the same repo when it picks, as if you had installed that one collection. The test questions were written from each skill's own text by a stronger model, so a skill is never graded on something it does not claim to do.{% if site.data.skill_evals.model %} Last run: {{ site.data.skill_evals.model }}, {{ site.data.skill_evals.ran | slice: 0, 10 }}.{% endif %}</p>
+    {%- when "portfolio" %}
+    <h2>How your portfolio works</h2>
+    <p>Rate only what you have really used: <b>1</b> used it, <b>2</b> use it often, <b>3</b> expert. Your best-fit role comes from the {{ site.data.roles.roles | size }} job loadouts on the <a href="{{ '/roles/' | relative_url }}">Roles</a> tab: a must-have tool counts 3, an every-day tool 2, a good-to-know tool 1, each times your level. Your skill shape adds up your ratings per family of tools.</p>
+    <p>Nothing is sent anywhere. Your ratings live in your browser and in your page link, so the link <em>is</em> your page. Download it as a single web page to host it yourself.</p>
     {%- when "ask" %}
     <h2>How Ask works</h2>
     <p>Ask never calls an AI. It finds the tools you name in this site's data and shows them side by side, the same checklist as the Compass. Name one tool to see its closest alternatives. Name a kind of tool, like "package manager" or "agent framework", to see the best of that kind. Then, if you want an opinion, hand the question and the data to your own AI.</p>
@@ -144,7 +148,7 @@ layout: default
       </table>
     </div>
   </details>
-  {%- elsif view_id != "ask" %}
+  {%- elsif view_id != "ask" and view_id != "portfolio" %}
   <details class="all-list">
     <summary>The same tools as a table</summary>
     <div class="table-wrap">

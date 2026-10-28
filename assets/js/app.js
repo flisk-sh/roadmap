@@ -1312,6 +1312,277 @@
     askFromUrl();
   }
 
+  // ---------- Portfolio: rate the tools you know, get a role and a shareable page ----------
+
+  var LEVELS = ["Don't know", "Used it", "Use it often", "Expert"];
+  var ME = {};          // tool id -> 1..3 (0 is not stored)
+  var ME_NAME = "";
+  // pages.flisk.si publishes through a pull request to flisk-sh/pages: the button opens GitHub's
+  // prefilled "new file" page for spaces/<login>/<slug>/index.md, and a bot publishes it at
+  // https://pages.flisk.si/@<login>/<slug>/. Flip PAGES_LIVE once that repo and its workflow are live.
+  var PAGES_LIVE = false;
+  var PAGES_REPO = "flisk-sh/pages";
+  var ME_LOGIN = "", ME_SLUG = "portfolio";
+
+  function loadMe() {
+    var p;
+    try { p = new URLSearchParams(location.search); } catch (e) { p = null; }
+    ME = {};
+    var fromUrl = p && p.get("me");
+    var raw = fromUrl;
+    if (!raw) { try { raw = localStorage.getItem("roadmap-me") || ""; } catch (e) { raw = ""; } }
+    String(raw || "").split(",").forEach(function (pair) {
+      var m = /^([a-z0-9-]+?)([1-3])$/.exec(pair.trim());
+      if (m && BY_ID[m[1]]) ME[m[1]] = +m[2];
+    });
+    ME_NAME = (p && p.get("name")) || (function () { try { return localStorage.getItem("roadmap-me-name") || ""; } catch (e) { return ""; } })();
+    try { ME_LOGIN = localStorage.getItem("roadmap-me-login") || ""; ME_SLUG = localStorage.getItem("roadmap-me-slug") || "portfolio"; } catch (e) {}
+  }
+  function meString() {
+    return Object.keys(ME).sort().map(function (id) { return id + ME[id]; }).join(",");
+  }
+  function saveMe() {
+    try {
+      localStorage.setItem("roadmap-me", meString()); localStorage.setItem("roadmap-me-name", ME_NAME);
+      localStorage.setItem("roadmap-me-login", ME_LOGIN); localStorage.setItem("roadmap-me-slug", ME_SLUG);
+    } catch (e) {}
+    var qs = [];
+    if (ME_NAME) qs.push("name=" + encodeURIComponent(ME_NAME));
+    if (meString()) qs.push("me=" + meString());
+    history.replaceState(history.state, "", location.pathname + (qs.length ? "?" + qs.join("&") : ""));
+  }
+  function shareUrl() {
+    var qs = [];
+    if (ME_NAME) qs.push("name=" + encodeURIComponent(ME_NAME));
+    qs.push("me=" + meString());
+    return location.origin + base + "/portfolio/?" + qs.join("&");
+  }
+
+  // How well your ratings fit each role: must have counts 3, every day 2, good to know 1,
+  // each scaled by your level out of 3.
+  function roleFit() {
+    return ((D.roles && D.roles.roles) || []).map(function (r) {
+      var got = 0, max = 0, gaps = [];
+      [["core", 3], ["daily", 2], ["nice", 1]].forEach(function (k) {
+        (r[k[0]] || []).forEach(function (id) {
+          if (!BY_ID[id]) return;
+          max += k[1] * 3;
+          got += k[1] * (ME[id] || 0);
+          if (k[0] === "core" && !ME[id]) gaps.push(id);
+        });
+      });
+      return { r: r, pct: max ? Math.round((got / max) * 100) : 0, gaps: gaps };
+    }).sort(function (a, b) { return b.pct - a.pct; });
+  }
+  function familyShape() {
+    return D.families.map(function (f) {
+      var tools = TOOLS.filter(function (t) { return t.fam === f.id; });
+      var sum = tools.reduce(function (a, t) { return a + (ME[t.id] || 0); }, 0);
+      var known = tools.filter(function (t) { return ME[t.id]; }).length;
+      return { f: f, sum: sum, known: known };
+    });
+  }
+
+  // A spider chart of the 8 families; the shape is the point, so it is scaled to your strongest one.
+  function spiderSvg(shape, size) {
+    var c = size / 2, R = size / 2 - 34, n = shape.length;
+    var max = Math.max(3, Math.max.apply(null, shape.map(function (s) { return s.sum; })));
+    var pt = function (i, v) { var a = -Math.PI / 2 + (i / n) * Math.PI * 2; return [c + Math.cos(a) * R * v, c + Math.sin(a) * R * v]; };
+    var out = '<svg viewBox="0 0 ' + size + " " + size + '" class="spider" role="img" aria-label="Skill shape across tool families">';
+    [0.25, 0.5, 0.75, 1].forEach(function (k) {
+      out += '<polygon class="spider-ring" points="' + shape.map(function (s, i) { return pt(i, k).join(","); }).join(" ") + '"/>';
+    });
+    shape.forEach(function (s, i) {
+      var e = pt(i, 1), l = pt(i, 1.16);
+      out += '<line class="spider-axis" x1="' + c + '" y1="' + c + '" x2="' + e[0] + '" y2="' + e[1] + '"/>';
+      out += '<text class="spider-label" x="' + l[0] + '" y="' + (l[1] + 4) + '" text-anchor="middle" style="fill:' + esc(s.f.color) + '">' + esc(s.f.name.split(" ")[0]) + "</text>";
+    });
+    out += '<polygon class="spider-shape" points="' + shape.map(function (s, i) { return pt(i, s.sum / max).join(","); }).join(" ") + '"/>';
+    shape.forEach(function (s, i) {
+      var p = pt(i, s.sum / max);
+      if (s.sum) out += '<circle class="spider-dot" cx="' + p[0] + '" cy="' + p[1] + '" r="4" style="fill:' + esc(s.f.color) + '"/>';
+    });
+    return out + "</svg>";
+  }
+
+  function renderPortfolio() {
+    loadMe();
+    var wrap = el("div", { class: "pf" }, stage);
+    var left = el("section", { class: "pf-rate" }, wrap);
+    var head = el("div", { class: "pf-rate-head" }, left);
+    el("p", { class: "pf-help", text: "Click a tool to rate it: 1 used it, 2 use it often, 3 expert. Click again to go up; after 3 it resets. Or focus a tile and press 0 to 3." }, head);
+    var legend = el("div", { class: "pf-legend" }, head);
+    LEVELS.forEach(function (l, i) { var s = el("span", { class: "pf-lv lv" + i }, legend); el("b", { text: i }, s); el("span", { text: l }, s); });
+    var grid = el("div", { class: "pf-grid" }, left);
+    var list = (state.sub ? TOOLS.filter(function (t) { return t.fam === state.sub; }) : TOOLS).slice()
+      .sort(function (a, b) { return (gh(b) ? gh(b).stars : 0) - (gh(a) ? gh(a).stars : 0); });
+    list.forEach(function (t) {
+      var lv = ME[t.id] || 0;
+      var tile = el("button", {
+        type: "button", class: "pf-tile lv" + lv + (matches(t) ? "" : " is-dim"),
+        "data-id": t.id, "data-tip": "tool", "data-rate": t.id, style: "--c:" + FAM[t.fam].color,
+        "aria-label": t.name + ": " + LEVELS[lv]
+      }, grid);
+      if (LOGO[t.id]) tile.insertAdjacentHTML("beforeend", logoSpan(t.id)); else el("b", { text: t.sym }, tile);
+      el("span", { class: "pf-name", text: t.name }, tile);
+      var pips = el("span", { class: "pf-pips", "aria-hidden": "true" }, tile);
+      for (var i = 1; i <= 3; i++) el("i", { class: i <= lv ? "on" : "" }, pips);
+    });
+    el("aside", { class: "pf-card", id: "pf-card" }, wrap);
+    drawCard();
+
+    grid.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-rate]");
+      if (!b) return;
+      setLevel(b.getAttribute("data-rate"), ((ME[b.getAttribute("data-rate")] || 0) + 1) % 4);
+    });
+    grid.addEventListener("keydown", function (e) {
+      var b = e.target.closest("[data-rate]");
+      if (!b || !/^[0-3]$/.test(e.key)) return;
+      e.preventDefault();
+      setLevel(b.getAttribute("data-rate"), +e.key);
+    });
+  }
+
+  function setLevel(id, lv) {
+    if (lv) ME[id] = lv; else delete ME[id];
+    var b = stage.querySelector('[data-rate="' + id + '"]');
+    if (b) {
+      b.className = b.className.replace(/\blv\d\b/, "lv" + lv);
+      b.setAttribute("aria-label", BY_ID[id].name + ": " + LEVELS[lv]);
+      b.querySelectorAll(".pf-pips i").forEach(function (p, i) { p.className = i < lv ? "on" : ""; });
+    }
+    saveMe();
+    drawCard();
+  }
+
+  function drawCard() {
+    var card = document.getElementById("pf-card");
+    if (!card) return;
+    var rated = Object.keys(ME).length;
+    var html = '<label class="pf-namebox">Your name <input id="pf-name" type="text" maxlength="60" autocomplete="name" placeholder="Shown on your page" value="' + esc(ME_NAME) + '"></label>';
+    if (!rated) {
+      html += '<div class="pf-empty"><h3>Your developer profile</h3><p>Rate the tools you know on the left. Your best-fit role, your skill shape and a page you can share appear here as you go.</p>' +
+        '<button type="button" class="btn" data-pf="example">Show me an example</button></div>';
+      card.innerHTML = html;
+      return;
+    }
+    var fit = roleFit(), top = fit[0], shape = familyShape();
+    var experts = Object.keys(ME).filter(function (id) { return ME[id] === 3; }).map(function (id) { return BY_ID[id]; });
+    html += '<h3 class="pf-role-label">Best fit</h3>';
+    html += '<p class="pf-role"><b>' + esc(top.r.name) + "</b> <span>" + top.pct + "% match</span></p>";
+    html += '<p class="pf-role-what">' + esc(top.r.what) + "</p>";
+    html += '<ol class="pf-roles">' + fit.slice(1, 4).map(function (x) { return "<li>" + esc(x.r.name) + " <span>" + x.pct + "%</span></li>"; }).join("") + "</ol>";
+    if (top.gaps.length) {
+      html += '<p class="pf-sub">Must-haves to learn for ' + esc(top.r.name) + ":</p><div class=\"pf-gaps\">" +
+        top.gaps.map(function (id) { return '<span class="tok" data-id="' + esc(id) + '" data-tip="tool" tabindex="0" style="--c:' + esc(FAM[BY_ID[id].fam].color) + '">' + (LOGO[id] ? logoSpan(id) : "<b>" + esc(BY_ID[id].sym) + "</b>") + "<span>" + esc(BY_ID[id].name) + "</span></span>"; }).join("") + "</div>";
+    }
+    html += '<h3 class="pf-sub">Your skill shape</h3>' + spiderSvg(shape, 280);
+    if (experts.length) html += '<p class="pf-sub">Expert in</p><p class="pf-experts">' + experts.map(function (t) { return esc(t.name); }).join(" · ") + "</p>";
+    html += '<p class="pf-count">' + rated + " tools rated</p>";
+    html += '<div class="pf-actions">' +
+      '<button type="button" class="ask-go" data-pf="copy">Copy my page link</button>' +
+      (PAGES_LIVE
+        ? '<div class="pf-publish"><label>GitHub login <input id="pf-login" type="text" maxlength="39" autocomplete="username" spellcheck="false" placeholder="octocat" value="' + esc(ME_LOGIN) + '"></label>' +
+          '<label>Page name <input id="pf-slug" type="text" maxlength="63" spellcheck="false" value="' + esc(ME_SLUG) + '"></label>' +
+          '<p class="pf-url" id="pf-url"></p><button type="button" class="btn" data-pf="publish">Publish to pages.flisk.si</button>' +
+          '<p class="pf-note">Opens GitHub with your page ready. Click "Propose new file", then "Create pull request". It goes live in about 2 minutes.</p></div>'
+        : '<button type="button" class="btn" disabled title="Publishing to pages.flisk.si is almost ready">Publish to pages.flisk.si: coming soon</button>') +
+      '<button type="button" class="btn" data-pf="download">Download as a web page</button>' +
+      '<button type="button" class="btn" data-pf="clear">Start over</button></div><p class="pf-msg" id="pf-msg" role="status"></p>';
+    card.innerHTML = html;
+    showPagesUrl();
+  }
+
+  // The page people share: self-contained HTML, no scripts, so it works anywhere.
+  function cvHtml() {
+    var fit = roleFit(), top = fit[0], shape = familyShape();
+    var byLv = function (lv) { return Object.keys(ME).filter(function (id) { return ME[id] === lv; }).map(function (id) { return BY_ID[id]; }).sort(function (a, b) { return a.name < b.name ? -1 : 1; }); };
+    var row = function (title, list) {
+      return list.length ? "<h2>" + title + "</h2><ul>" + list.map(function (t) { return '<li style="--c:' + esc(FAM[t.fam].color) + '">' + esc(t.name) + " <small>" + esc(FAM[t.fam].name) + "</small></li>"; }).join("") + "</ul>" : "";
+    };
+    var name = ME_NAME || "A developer";
+    return "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" +
+      "<title>" + esc(name) + " · " + esc(top.r.name) + "</title><meta name=\"description\" content=\"" + esc(name + ": " + top.r.name + ". Tools rated on roadmap.flisk.si.") + "\">" +
+      "<style>body{margin:0;font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;background:#0b0b10;color:#ececf1}main{max-width:46rem;margin:0 auto;padding:2.5rem 1.2rem}" +
+      "h1{font-size:2.2rem;margin:0;letter-spacing:-.03em}.role{font-size:1.2rem;color:#6ee7a0;margin:.2rem 0 .3rem}.what{color:#b7b7c2;margin:0 0 1.2rem}" +
+      "h2{font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:#8a8a96;margin:1.6rem 0 .5rem}ul{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:.35rem}" +
+      "li{border:1px solid color-mix(in srgb,var(--c) 55%,transparent);background:color-mix(in srgb,var(--c) 14%,transparent);border-radius:8px;padding:.2rem .6rem}li small{color:#8a8a96}" +
+      ".spider{width:100%;max-width:320px;display:block;margin:.5rem 0}.spider-ring{fill:none;stroke:rgba(255,255,255,.1)}.spider-axis{stroke:rgba(255,255,255,.08)}.spider-label{font-size:11px;font-weight:700}" +
+      ".spider-shape{fill:rgba(34,197,94,.22);stroke:#22c55e;stroke-width:2}footer{margin-top:2.5rem;color:#8a8a96;font-size:.8rem}a{color:#6ee7a0}</style></head><body><main>" +
+      "<h1>" + esc(name) + "</h1><p class=\"role\">" + esc(top.r.name) + " · " + top.pct + "% match</p><p class=\"what\">" + esc(top.r.what) + "</p>" +
+      "<h2>Skill shape</h2>" + spiderSvg(shape, 300) +
+      row("Expert", byLv(3)) + row("Use often", byLv(2)) + row("Have used", byLv(1)) +
+      "<footer>Ratings are self-reported. Made with <a href=\"" + esc(shareUrl()) + "\">roadmap.flisk.si</a>, where every tool is scored by a public checklist.</footer>" +
+      "</main></body></html>";
+  }
+
+  // The pages.flisk.si version: Markdown, rendered like a GitHub README, kept under ~6 KB for the URL.
+  function cvMarkdown() {
+    var fit = roleFit(), top = fit[0], shape = familyShape();
+    var max = Math.max(1, Math.max.apply(null, shape.map(function (x) { return x.sum; })));
+    var md = "# " + (ME_NAME || "A developer") + "\n\n**" + top.r.name + "** · " + top.pct + "% match\n\n" + top.r.what + "\n\n";
+    md += "Also fits: " + fit.slice(1, 4).map(function (x) { return x.r.name + " (" + x.pct + "%)"; }).join(", ") + "\n\n";
+    md += "## Skill shape\n\n| Family | | Tools known |\n| --- | --- | --- |\n" + shape.map(function (x) {
+      var n = Math.round((x.sum / max) * 10);
+      return "| " + x.f.name + " | `" + "█".repeat(n) + "░".repeat(10 - n) + "` | " + x.known + " |";
+    }).join("\n") + "\n";
+    [[3, "Expert"], [2, "Use often"], [1, "Have used"]].forEach(function (lv) {
+      var list = Object.keys(ME).filter(function (id) { return ME[id] === lv[0]; }).map(function (id) { return BY_ID[id].name; }).sort();
+      if (list.length) md += "\n## " + lv[1] + "\n\n" + list.join(" · ") + "\n";
+    });
+    md += "\n---\n\nRatings are self-reported. Made with [roadmap.flisk.si](" + shareUrl() + "), where every tool is scored by a public checklist.\n";
+    return md;
+  }
+  function cleanLogin(x) { return String(x || "").trim().replace(/^@/, "").toLowerCase(); }
+  function validLogin(x) { return /^[a-z0-9](?:[a-z0-9]|-(?=[a-z0-9])){0,38}$/.test(x); }
+  function validSlug(x) { return /^[a-z0-9][a-z0-9-]{0,62}$/.test(x); }
+  function showPagesUrl() {
+    var u = document.getElementById("pf-url");
+    if (!u) return;
+    u.textContent = validLogin(ME_LOGIN) && validSlug(ME_SLUG) ? "Your page: https://pages.flisk.si/@" + ME_LOGIN + "/" + ME_SLUG + "/" : "Type your GitHub login to see your page address.";
+  }
+
+  function pfMsg(t) { var m = document.getElementById("pf-msg"); if (m) m.textContent = t; }
+
+  stage.addEventListener("input", function (e) {
+    if (e.target.id === "pf-name") ME_NAME = e.target.value.trim().slice(0, 60);
+    else if (e.target.id === "pf-login") ME_LOGIN = cleanLogin(e.target.value);
+    else if (e.target.id === "pf-slug") ME_SLUG = String(e.target.value).trim().toLowerCase();
+    else return;
+    saveMe();
+    showPagesUrl();
+  });
+  stage.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-pf]");
+    if (!b || state.view !== "portfolio") return;
+    var act = b.getAttribute("data-pf");
+    if (act === "example") {
+      ["docker-desktop3", "docker-compose3", "kubectl2", "helm2", "terraform2", "github-actions3", "prometheus2", "grafana2", "k9s3", "argo-cd1", "tilt1", "vault1", "opentelemetry1", "pnpm2"]
+        .forEach(function (p) { var m = /^(.+?)([1-3])$/.exec(p); if (BY_ID[m[1]]) ME[m[1]] = +m[2]; });
+      saveMe(); render();
+    } else if (act === "copy") {
+      var url = shareUrl();
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(function () { pfMsg("Link copied. Anyone who opens it sees your profile."); }, function () { window.prompt("Copy this link", url); });
+      else window.prompt("Copy this link", url);
+    } else if (act === "download") {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([cvHtml()], { type: "text/html" }));
+      a.download = (ME_NAME || "my-dev-profile").toLowerCase().replace(/[^a-z0-9]+/g, "-") + ".html";
+      document.body.appendChild(a); a.click(); a.remove();
+      pfMsg("Saved as a single web page. Put it anywhere: it needs nothing else.");
+    } else if (act === "publish" && PAGES_LIVE) {
+      if (!validLogin(ME_LOGIN)) { pfMsg("Type your GitHub login first. It must be the account that opens the pull request."); return; }
+      if (!validSlug(ME_SLUG)) { pfMsg("Page name: lowercase letters, digits and dashes, starting with a letter or digit."); return; }
+      var md = cvMarkdown();
+      if (md.length > 6000) { pfMsg("Your page is too long to send through GitHub's link. Rate fewer tools at level 1, or download it instead."); return; }
+      window.open("https://github.com/" + PAGES_REPO + "/new/main?filename=" + encodeURIComponent("spaces/" + ME_LOGIN + "/" + ME_SLUG + "/index.md") + "&value=" + encodeURIComponent(md), "_blank", "noopener");
+      pfMsg("GitHub is open in a new tab. Propose the file, create the pull request, and your page goes live at pages.flisk.si/@" + ME_LOGIN + "/" + ME_SLUG + "/ in about 2 minutes.");
+    } else if (act === "clear") {
+      ME = {}; saveMe(); render();
+    }
+  });
+
   // ---------- compare: click up to 5 tools, then see them side by side ----------
 
   var MAX_CMP = 5;
@@ -1421,10 +1692,12 @@
   tray.addEventListener("pointerleave", clearHot);
 
   stage.addEventListener("click", function (e) {
+    if (state.view === "portfolio") return;
     var n = target(e);
     if (n && n.getAttribute("data-tip") === "tool") toggleTool(n.getAttribute("data-id"));
   });
   stage.addEventListener("keydown", function (e) {
+    if (state.view === "portfolio") return;
     if (e.key !== "Enter" && e.key !== " ") return;
     var n = e.target.closest && e.target.closest('[data-tip="tool"]');
     if (!n || !stage.contains(n)) return;
@@ -1560,6 +1833,7 @@
     else if (state.view === "roles") renderRoles();
     else if (state.view === "skills") renderSkills();
     else if (state.view === "ask") renderAsk();
+    else if (state.view === "portfolio") renderPortfolio();
     else renderJourneys();
     void stage.offsetWidth;
     stage.classList.add("is-in");

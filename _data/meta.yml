@@ -40,6 +40,11 @@ views:
     title: Agent Skills
     blurb: "Free AI agent skills from GitHub, tested by a small, cheap model (Haiku). Further right means Haiku used it right more often."
     subtabs: skills
+  - id: portfolio
+    name: Portfolio
+    title: Your developer portfolio
+    blurb: "Rate the tools you know from 0 to 3. Get your best-fit role, your skill shape and a page you can share."
+    subtabs: families
   - id: ask
     name: Ask
     title: Ask
