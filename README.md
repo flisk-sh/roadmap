@@ -4,7 +4,7 @@
 
 | View | What it shows | Sub-tabs |
 | --- | --- | --- |
-| **[Compass](https://roadmap.flisk.si/compass/)** | Developer ergonomics (west → east) against scope, meaning how much of your system it can run (south → north) | One per family |
+| **[Compass](https://roadmap.flisk.si/compass/)** | Easy to use (left → right) against how much of your app it can run on your laptop (bottom → top) | One per family |
 | **[Adoption Radar](https://roadmap.flisk.si/radar/)** | Adopt, Trial, Assess or Hold, from release and maturity signals | One per family; a family splits into its categories |
 | **[Lab](https://roadmap.flisk.si/lab/)** | Every tool as an element in a periodic table | One per family |
 | **[Journeys](https://roadmap.flisk.si/journeys/)** | Seven levels from Package Wrangler to Platform Architect, as a metro line | Backend, AI & agents, Platform |

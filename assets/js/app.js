@@ -186,8 +186,8 @@
       '<span class="tt-ring ring-' + esc(t.ring) + '" title="' + esc(r.help || "") + '">' + esc(r.label) + "</span>" +
       "</div>" +
       '<p class="tt-tag">' + esc(t.tagline) + "</p>" +
-      bar("Ergonomics", t.x, critChips(t.dx, D.rubric.dx)) +
-      bar("Scope", t.y, critChips(t.parity, D.rubric.parity)) +
+      bar("Easy to use", t.x, critChips(t.dx, D.rubric.dx)) +
+      bar("Runs a lot", t.y, critChips(t.parity, D.rubric.parity)) +
       (t.note ? '<p class="tt-note">' + esc(t.note) + "</p>" : "") +
       '<p class="tt-meta">#' + t.n + " · " + esc(D.rubric.licenses[t.license] || t.license) + (t.repo ? " · " + esc(t.repo) : "") + "</p>" +
       pickLine(t) +
@@ -343,10 +343,10 @@
     // The four zones, named like the screenshots people share.
     // Each corner gets a plain name, with the two axis words under it as a smaller line.
     var zones = [
-      ["nw", 0, 50, "Powerful but hard", "Hard to adopt · whole system"],
-      ["ne", 50, 50, "Best of both", "Smooth to use · whole system"],
-      ["sw", 0, 0, "Rough and basic", "Hard to adopt · one service"],
-      ["se", 50, 0, "Easy wins", "Smooth to use · one service"]
+      ["nw", 0, 50, "Powerful but hard", "Hard to use, runs a lot"],
+      ["ne", 50, 50, "Best of both", "Easy to use, runs a lot"],
+      ["sw", 0, 0, "Rough and basic", "Hard to use, runs one thing"],
+      ["se", 50, 0, "Easy wins", "Easy to use, runs one thing"]
     ];
     zones.forEach(function (z) {
       var east = z[1] === 50, north = z[2] === 50;
@@ -394,9 +394,9 @@
       sv("tspan", { class: "cardinal-letter", text: c[0] + " " }, t);
       sv("tspan", { text: c[4] }, t);
     });
-    sv("text", { x: W - 12, y: cy + 24, "text-anchor": "end", class: "axis-name", text: dx.title + " →" }, svg);
-    sv("text", { x: 12, y: cy + 24, "text-anchor": "start", class: "axis-name", text: "← friction" }, svg);
-    sv("text", { x: cx + 10, y: m.t + 14, "text-anchor": "start", class: "axis-name", text: "↑ " + pa.short }, svg);
+    sv("text", { x: W - 12, y: cy + 24, "text-anchor": "end", class: "axis-name", text: "Easier →" }, svg);
+    sv("text", { x: 12, y: cy + 24, "text-anchor": "start", class: "axis-name", text: "← Harder" }, svg);
+    sv("text", { x: cx + 10, y: m.t + 14, "text-anchor": "start", class: "axis-name", text: "↑ Runs more" }, svg);
 
     // Dots. Tools with the same score sit on a small sunflower spiral around the point,
     // laid out over every tool so a dot never moves when you switch sub-tabs.
@@ -426,7 +426,7 @@
           "data-id": t.id,
           "data-tip": "tool",
           tabindex: on ? 0 : -1,
-          "aria-label": t.name + ", ergonomics " + t.x + ", scope " + t.y,
+          "aria-label": t.name + ", easy to use " + t.x + ", runs a lot " + t.y,
           style: "--c:" + f.color + ";--d:" + Math.round(hash(t.id) * 500) + "ms"
         }, dots);
         gEl.style.transform = firstPaint ? "translate(" + cx + "px," + cy + "px) scale(0.2)" : "translate(" + p[0] + "px," + p[1] + "px)";
@@ -641,7 +641,7 @@
       el("span", { class: "t-sym" + (t.sym.length > 2 ? " t-sym-3" : ""), text: t.sym }, tile);
       if (LOGO[t.id]) el("span", { class: logoClass(t.id) + " t-logo", style: "--logo:url(" + logoUrl(t.id) + ")" }, tile);
       el("span", { class: "t-name", text: t.name }, tile);
-      el("span", { class: "t-formula", text: "Dx" + t.x / 10 + "·Sc" + t.y / 10 }, tile);
+      el("span", { class: "t-formula", text: "E" + t.x / 10 + "·R" + t.y / 10 }, tile);
     });
     fitLab();
   }
@@ -889,7 +889,7 @@
       return cell('<span class="tt-ring ring-' + esc(t.ring) + '" title="' + esc(ringOf(t.ring).help || "") + '">' + esc(ringOf(t.ring).label) + "</span>");
     }), allSame(tools.map(function (t) { return t.ring; })));
 
-    [["dx", "Developer ergonomics", "x"], ["parity", "Scope", "y"]].forEach(function (ax) {
+    [["dx", "Easy to use?", "x"], ["parity", "Runs a lot?", "y"]].forEach(function (ax) {
       var key = ax[0], rub = D.rubric[key];
       section(ax[1] + " <small>" + esc(rub.low) + " → " + esc(rub.high) + "</small>");
       row("Score", tools.map(function (t) {

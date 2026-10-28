@@ -1,97 +1,98 @@
 # How a tool's Compass position and Radar ring are decided. Nobody places a dot by hand:
 # a tool's X is 10 points per `dx` criterion it meets, its Y is 10 points per `parity` criterion
-# (shown to people as "scope": how much of your system the tool can run).
+# (shown to people as "Runs a lot?": how much of your app it can run on your laptop).
 # To move a dot, open a PR that adds or removes a criterion id on the tool, with a source.
 
 dx:
-  title: Developer ergonomics
-  short: Ergonomics
-  low: Friction-heavy
-  high: Smooth and fast
+  title: Easy to use?
+  short: Easy to use
+  low: Hard to use
+  high: Easy to use
+  explain: Is it easy to start and use every day? Each check is 10 points. More checks, more to the right.
   criteria:
     - id: one-command
       label: One command starts it
       help: A single command brings up the whole thing it manages.
     - id: zero-config
-      label: Works with little config
+      label: Little setup
       help: Useful out of the box, or with a short generated config.
     - id: fast-feedback
-      label: Fast feedback on change
+      label: See changes fast
       help: Live reload, file sync or incremental rebuilds in seconds.
     - id: clear-errors
-      label: Clear errors and diagnostics
+      label: Clear errors
       help: Says what broke and how to fix it, or ships a doctor-style check.
     - id: ui
-      label: Built-in UI
+      label: Has a screen to look at
       help: A web dashboard, TUI or desktop app, not only raw logs.
     - id: docs
-      label: Quickstart in minutes
+      label: Working in 10 minutes
       help: Official docs get a newcomer to a working result in about ten minutes.
     - id: cross-platform
-      label: macOS, Linux and Windows
+      label: Mac, Linux and Windows
       help: Supported on all three, natively or through WSL.
     - id: offline
-      label: Local, no account
+      label: No account needed
       help: Runs on your machine without signing up or a network round trip.
     - id: light
-      label: Light and quick to start
+      label: Light and fast
       help: Starts in seconds and does not need a large VM or many GB of RAM.
     - id: agent-ready
-      label: Agent-ready
+      label: AI can drive it
       help: An MCP server, a JSON output mode or an API an AI agent can drive.
 
-# The data key stays `parity`; everything people read says "scope".
+# The data key stays `parity`; people read it as "Runs a lot?".
 parity:
-  title: Scope, how much it can run
-  short: Scope
-  low: One service
-  high: Your whole system
-  explain: How much of your system the tool can run for you. A low score runs one service or one job. A high score runs many services together, with real containers, databases and networking.
+  title: Runs a lot?
+  short: Runs a lot
+  low: Runs one thing
+  high: Runs your whole app
+  explain: Can it run just one thing, or your whole app (many services, databases, network) on your laptop? Each check is 10 points. More checks, higher up.
   criteria:
     - id: containers
-      label: Real containers
+      label: Runs containers
       help: Runs or builds OCI containers.
     - id: multi-service
-      label: Many services at once
+      label: Runs many services
       help: Brings up and coordinates several services together.
     - id: networking
-      label: Realistic networking between services
+      label: Services talk to each other
       help: Service-to-service networking, DNS or ingress like production.
     - id: state
-      label: Real stateful dependencies
+      label: Real databases and queues
       help: Databases, queues or volumes, not only in-memory fakes.
     - id: prod-artifacts
-      label: Same artifacts as production
+      label: Same images as production
       help: Uses the images, bundles or lockfiles that production uses.
     - id: k8s
-      label: Kubernetes semantics
+      label: Speaks Kubernetes
       help: Manifests, pods, Helm charts or a real Kubernetes API.
     - id: cloud-apis
-      label: Cloud APIs
+      label: Fakes or reaches the cloud
       help: Emulates or reaches real cloud provider APIs.
     - id: config-secrets
-      label: Realistic config and secrets
+      label: Real config and secrets
       help: Environment, config and secrets handled the way production handles them.
     - id: observability
-      label: Logs, metrics and traces
+      label: Logs, metrics, traces
       help: Exposes telemetry the way production does.
     - id: team-scale
-      label: Scales to big teams
+      label: Works for big teams
       help: Built for many services and many developers sharing a setup.
 
 rings:
   - id: adopt
     label: Adopt
-    help: Stable (1.0 or later, or long-standing), a release in the last 6 months, widely used.
+    help: Use it. Stable, updated in the last 6 months, lots of people use it.
   - id: trial
     label: Trial
-    help: Pre-1.0 and actively released, stable but quiet (last release 6 to 18 months ago), or not widely used yet.
+    help: Try it. Still young (before 1.0), or quiet for 6 to 18 months, or few users yet.
   - id: assess
     label: Assess
-    help: New or experimental, first release less than a year ago.
+    help: Watch it. Brand new, less than a year old.
   - id: hold
     label: Hold
-    help: Archived, deprecated, or no release in 18 months or more.
+    help: Avoid for now. Dead, deprecated, or no update in 18 months.
 
 licenses:
   oss: Open source

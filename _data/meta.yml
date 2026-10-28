@@ -11,12 +11,12 @@ views:
   - id: compass
     name: Compass
     title: The DevEx Compass
-    blurb: Ergonomics runs west to east, how much of your system it can run (scope) south to north. A public checklist places every dot.
+    blurb: Left is hard to use, right is easy. Bottom runs one thing, top runs your whole app. A checklist puts every dot, not a person.
     subtabs: families
   - id: radar
     name: Adoption Radar
     title: Adoption Radar
-    blurb: Adopt, Trial, Assess or Hold, decided by release and maturity signals, with a link to the evidence.
+    blurb: Adopt means use it. Trial means try it. Assess means watch it. Hold means avoid for now. Each tool links the proof.
     subtabs: families
   - id: lab
     name: Lab

@@ -51,14 +51,14 @@ layout: default
 
   <section class="explain">
     {%- if view_id == "compass" %}
-    <h2>How a dot is placed</h2>
-    <p>No dot is placed by hand. Each tool earns 10 points per criterion it meets, with a source. Ties sit in a small cluster around the same point.</p>
+    <h2>How a dot gets its spot</h2>
+    <p>Nobody puts dots by hand. Each check is 10 points. Tools with the same score sit in a little bunch.</p>
     <div class="explain-cols">
       {%- assign axes = "dx,parity" | split: "," %}
       {%- for ax in axes %}
       {%- assign a = rubric[ax] %}
       <div>
-        <h3>{{ a.title }} <small>{% if ax == "dx" %}west → east{% else %}south → north{% endif %}</small></h3>
+        <h3>{{ a.title }} <small>{% if ax == "dx" %}left → right{% else %}bottom → top{% endif %}</small></h3>
         {%- if a.explain %}<p>{{ a.explain }}</p>{% endif %}
         <ol class="criteria">
           {%- for c in a.criteria %}<li><strong>{{ c.label }}.</strong> {{ c.help }}</li>{% endfor %}
@@ -67,14 +67,14 @@ layout: default
       {%- endfor %}
     </div>
     {%- elsif view_id == "radar" %}
-    <h2>How a ring is decided</h2>
+    <h2>What the rings mean</h2>
     <ul class="rings">
       {%- for r in rubric.rings %}<li class="ring-{{ r.id }}"><strong>{{ r.label }}.</strong> {{ r.help }}</li>{% endfor %}
     </ul>
     <p>Dot shape shows the license: ● open source, ■ free or free tier, ◆ paid. Every tool links the release page or notice that puts it in its ring.</p>
     {%- elsif view_id == "lab" %}
     <h2>How to read a tile</h2>
-    <p>The grid resizes to fill your window, so on a small window each tile shows less. Top left is the element number, top right the license (OS open source, Fr free, Fm free tier, Pd paid). The big letters are the symbol, the bar at the bottom is the ring. The formula in each tooltip is its two Compass scores: <code>Dx</code> ergonomics and <code>Sc</code> scope, in tens.</p>
+    <p>The grid resizes to fill your window, so on a small window each tile shows less. Top left is the element number, top right the license (OS open source, Fr free, Fm free tier, Pd paid). The big letters are the symbol, the bar at the bottom is the ring. The formula in each tooltip is its two Compass scores: <code>E</code> easy to use and <code>R</code> runs a lot, out of 10.</p>
     {%- else %}
     <h2>How to read a journey</h2>
     <p>Each station is a level. Learn the tools on the line first; branches are worth knowing. Flisk appears on a level only where it does the job today (<span class="fl-key fl-yes">does it</span>) or part of it (<span class="fl-key fl-partial">partly</span>). Where it does not yet, it is left off. The gaps are tracked in <a href="{{ journeys.flisk_issue }}" rel="noopener">the Flisk repo</a>.</p>
@@ -85,7 +85,7 @@ layout: default
     <summary>The same tools as a table</summary>
     <div class="table-wrap">
       <table>
-        <thead><tr><th scope="col">Tool</th><th scope="col">Family</th><th scope="col">Category</th><th scope="col">Ring</th><th scope="col">License</th><th scope="col">Ergonomics</th><th scope="col">Scope</th></tr></thead>
+        <thead><tr><th scope="col">Tool</th><th scope="col">Family</th><th scope="col">Category</th><th scope="col">Ring</th><th scope="col">License</th><th scope="col">Easy to use</th><th scope="col">Runs a lot</th></tr></thead>
         <tbody>
           {%- for f in families %}
           {%- assign row_hidden = false %}
