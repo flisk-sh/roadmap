@@ -187,7 +187,7 @@
       "</div>" +
       '<p class="tt-tag">' + esc(t.tagline) + "</p>" +
       bar("Ergonomics", t.x, critChips(t.dx, D.rubric.dx)) +
-      bar("Production-like", t.y, critChips(t.parity, D.rubric.parity)) +
+      bar("Scope", t.y, critChips(t.parity, D.rubric.parity)) +
       (t.note ? '<p class="tt-note">' + esc(t.note) + "</p>" : "") +
       '<p class="tt-meta">#' + t.n + " · " + esc(D.rubric.licenses[t.license] || t.license) + (t.repo ? " · " + esc(t.repo) : "") + "</p>" +
       pickLine(t) +
@@ -343,10 +343,10 @@
     // The four zones, named like the screenshots people share.
     // Each corner gets a plain name, with the two axis words under it as a smaller line.
     var zones = [
-      ["nw", 0, 50, "Powerful but hard", "Hard to adopt · production-like"],
-      ["ne", 50, 50, "Best of both", "Smooth to use · production-like"],
-      ["sw", 0, 0, "Rough and basic", "Hard to adopt · simple setup"],
-      ["se", 50, 0, "Easy wins", "Smooth to use · simple setup"]
+      ["nw", 0, 50, "Powerful but hard", "Hard to adopt · whole system"],
+      ["ne", 50, 50, "Best of both", "Smooth to use · whole system"],
+      ["sw", 0, 0, "Rough and basic", "Hard to adopt · one service"],
+      ["se", 50, 0, "Easy wins", "Smooth to use · one service"]
     ];
     zones.forEach(function (z) {
       var east = z[1] === 50, north = z[2] === 50;
@@ -426,7 +426,7 @@
           "data-id": t.id,
           "data-tip": "tool",
           tabindex: on ? 0 : -1,
-          "aria-label": t.name + ", ergonomics " + t.x + ", production-like " + t.y,
+          "aria-label": t.name + ", ergonomics " + t.x + ", scope " + t.y,
           style: "--c:" + f.color + ";--d:" + Math.round(hash(t.id) * 500) + "ms"
         }, dots);
         gEl.style.transform = firstPaint ? "translate(" + cx + "px," + cy + "px) scale(0.2)" : "translate(" + p[0] + "px," + p[1] + "px)";
@@ -641,7 +641,7 @@
       el("span", { class: "t-sym" + (t.sym.length > 2 ? " t-sym-3" : ""), text: t.sym }, tile);
       if (LOGO[t.id]) el("span", { class: logoClass(t.id) + " t-logo", style: "--logo:url(" + logoUrl(t.id) + ")" }, tile);
       el("span", { class: "t-name", text: t.name }, tile);
-      el("span", { class: "t-formula", text: "Dx" + t.x / 10 + "·Pr" + t.y / 10 }, tile);
+      el("span", { class: "t-formula", text: "Dx" + t.x / 10 + "·Sc" + t.y / 10 }, tile);
     });
     fitLab();
   }
@@ -889,7 +889,7 @@
       return cell('<span class="tt-ring ring-' + esc(t.ring) + '" title="' + esc(ringOf(t.ring).help || "") + '">' + esc(ringOf(t.ring).label) + "</span>");
     }), allSame(tools.map(function (t) { return t.ring; })));
 
-    [["dx", "Developer ergonomics", "x"], ["parity", "Production-like", "y"]].forEach(function (ax) {
+    [["dx", "Developer ergonomics", "x"], ["parity", "Scope", "y"]].forEach(function (ax) {
       var key = ax[0], rub = D.rubric[key];
       section(ax[1] + " <small>" + esc(rub.low) + " → " + esc(rub.high) + "</small>");
       row("Score", tools.map(function (t) {

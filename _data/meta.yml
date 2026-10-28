@@ -11,7 +11,7 @@ views:
   - id: compass
     name: Compass
     title: The DevEx Compass
-    blurb: Ergonomics runs west to east, how production-like it is south to north. A public checklist places every dot.
+    blurb: Ergonomics runs west to east, how much of your system it can run (scope) south to north. A public checklist places every dot.
     subtabs: families
   - id: radar
     name: Adoption Radar
