@@ -11,23 +11,24 @@ layout: default
 {%- assign tool_total = 0 -%}
 {%- for f in families -%}{%- assign n = site.data.tools[f.id] | size -%}{%- assign tool_total = tool_total | plus: n -%}{%- endfor -%}
 
-<div id="app" data-view="{{ view_id }}" data-sub="{{ sub }}" data-base="{{ '' | relative_url }}" data-repo="{{ site.repo_url }}">
+<div id="app" data-view="{{ view_id }}" data-sub="{{ sub }}" data-base="{{ '' | relative_url }}" data-repo="{{ site.repo_url }}" data-v="{{ site.time | date: '%s' }}">
 
-  <nav class="views" aria-label="Views">
-    {%- for v in site.data.meta.views %}
-    <a class="view-tab" data-view="{{ v.id }}" href="{{ '/' | append: v.id | append: '/' | relative_url }}"{% if v.id == view_id %} aria-current="page"{% endif %}>
-      <span class="view-icon view-icon-{{ v.id }}" aria-hidden="true"></span>{{ v.name }}
-    </a>
-    {%- endfor %}
-  </nav>
-
-  <header class="view-head">
-    <div>
-      <h1 id="view-title">{{ cur_view.title }}</h1>
-      <p id="view-blurb">{{ cur_view.blurb }}</p>
+  <div class="topbar">
+    <nav class="views" aria-label="Views">
+      {%- for v in site.data.meta.views %}
+      <a class="view-tab" data-view="{{ v.id }}" href="{{ '/' | append: v.id | append: '/' | relative_url }}"{% if v.id == view_id %} aria-current="page"{% endif %}>
+        <span class="view-icon view-icon-{{ v.id }}" aria-hidden="true"></span>{{ v.name }}
+      </a>
+      {%- endfor %}
+    </nav>
+    <div class="toolbar js-only" hidden>
+      <input id="q" type="search" placeholder="Find a tool…" aria-label="Find a tool" autocomplete="off" spellcheck="false">
     </div>
-    <p class="view-count"><strong>{{ tool_total }}</strong> tools, <strong>{{ families | size }}</strong> families</p>
-  </header>
+  </div>
+
+  {%- comment -%}The active tab already names the view, so the heading is for screen readers and search engines.{%- endcomment %}
+  <h1 class="sr-only" id="view-title">{{ cur_view.title }}</h1>
+  <p class="sr-only" id="view-blurb">{{ cur_view.blurb }}</p>
 
   <nav class="subtabs" id="subtabs" aria-label="Sub-tabs">
     {%- if cur_view.subtabs == "tracks" %}
@@ -41,12 +42,8 @@ layout: default
       <a class="subtab" data-sub="{{ f.id }}" style="--c: {{ f.color }}" href="{{ '/' | append: view_id | append: '/' | append: f.id | append: '/' | relative_url }}"{% if f.id == sub %} aria-current="page"{% endif %}><span class="sw" aria-hidden="true"></span>{{ f.name }} <small>{{ n }}</small></a>
       {%- endfor %}
     {%- endif %}
+    <span class="view-count"><strong>{{ tool_total }}</strong> tools</span>
   </nav>
-
-  <div class="toolbar js-only" hidden>
-    <input id="q" type="search" placeholder="Find a tool: tilt, mcp, postgres..." aria-label="Find a tool" autocomplete="off" spellcheck="false">
-    <p class="hint" id="hint">Hover or focus anything for details. Nothing on the chart is a link, so explore freely.</p>
-  </div>
 
   <section class="stage-wrap" aria-label="{{ cur_view.title }}">
     <div id="stage" class="stage stage-{{ view_id }}" role="img" aria-label="{{ cur_view.title }} chart. The same data is in the table below."></div>
@@ -109,5 +106,7 @@ layout: default
     </div>
   </details>
 
+  <div id="tray" class="tray" aria-label="Tools to compare" hidden></div>
+  <div id="cmp" class="cmp" hidden></div>
   <div id="tip" class="tip" role="tooltip" hidden></div>
 </div>

@@ -29,7 +29,8 @@ module Roadmap
 
       views.each_with_index do |view, index|
         site.pages << ViewPage.new(site, "", view, nil) if index.zero?
-        subs = view["subtabs"] == "tracks" ? tracks.map { |t| t["id"] } : [nil] + families.map { |f| f["id"] }
+        # Every view has a page of its own at /<view>/; Journeys shows its first track there.
+        subs = [nil] + (view["subtabs"] == "tracks" ? tracks : families).map { |s| s["id"] }
         subs.each do |sub|
           dir = sub ? "#{view['id']}/#{sub}" : view["id"]
           site.pages << ViewPage.new(site, dir, view, sub)

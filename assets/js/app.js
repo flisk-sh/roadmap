@@ -19,7 +19,7 @@
   var TOOLS = [];
   var BY_ID = {};
   var FAM = {};
-  var state = { view: app.dataset.view, sub: app.dataset.sub || "", q: "" };
+  var state = { view: app.dataset.view, sub: app.dataset.sub || "", q: "", cmp: [] };
   var firstPaint = true;
 
   // ---------- small helpers ----------
@@ -76,8 +76,26 @@
 
   // ---------- data ----------
 
+  // Logos live in assets/logos/<tool id>.svg or .png. An SVG is drawn as a CSS mask, so it takes
+  // the text color and works on both themes; a PNG (the project's GitHub org avatar) is drawn as is.
+  // A tool without a file keeps its symbol.
+  var LOGO = {};
+  function logoUrl(id) {
+    return base + "/assets/logos/" + encodeURIComponent(id) + "." + LOGO[id];
+  }
+  function logoClass(id) {
+    return "logo" + (LOGO[id] === "png" ? " logo-img" : "");
+  }
+  function logoSpan(id) {
+    return LOGO[id] ? '<span class="' + logoClass(id) + '" style="--logo:url(' + logoUrl(id) + ')"></span>' : "";
+  }
+
   function prep(d) {
     D = d;
+    (d.logos || []).forEach(function (file) {
+      var m = /^(.+)\.(svg|png)$/.exec(file);
+      if (m) LOGO[m[1]] = m[2];
+    });
     var n = 0;
     d.families.forEach(function (f, i) {
       f.index = i;
@@ -111,6 +129,7 @@
 
   var hideTimer = null;
   var activeId = null;
+  var lastNode = null;
 
   function critChips(ids, list) {
     return list.criteria
@@ -146,7 +165,9 @@
     var r = ringOf(t.ring);
     return (
       '<div class="tt-head" style="--c:' + esc(f.color) + '">' +
-      '<span class="tt-sym">' + esc(t.sym) + "</span>" +
+      (LOGO[t.id]
+        ? '<span class="tt-sym tt-has-logo" title="' + esc(t.sym) + '">' + logoSpan(t.id) + "</span>"
+        : '<span class="tt-sym">' + esc(t.sym) + "</span>") +
       "<div><strong>" + esc(t.name) + "</strong><span>" + esc(f.name) + " · " + esc(t.cat) + "</span></div>" +
       '<span class="tt-ring ring-' + esc(t.ring) + '" title="' + esc(r.help || "") + '">' + esc(r.label) + "</span>" +
       "</div>" +
@@ -155,6 +176,7 @@
       bar("Parity", t.y, critChips(t.parity, D.rubric.parity)) +
       (t.note ? '<p class="tt-note">' + esc(t.note) + "</p>" : "") +
       '<p class="tt-meta">#' + t.n + " · " + esc(D.rubric.licenses[t.license] || t.license) + (t.repo ? " · " + esc(t.repo) : "") + "</p>" +
+      pickLine(t) +
       links([["Site", t.url], ["Evidence", t.evidence], ["Edit", editUrl(t)], ["Report", reportUrl(t)]])
     );
   }
@@ -221,6 +243,7 @@
     } else {
       node.classList.add("is-hot");
     }
+    lastNode = node;
     tip.innerHTML = html;
     tip.hidden = false;
     place(node);
@@ -304,11 +327,12 @@
     sv("stop", { offset: "100%", "stop-color": "var(--accent)", "stop-opacity": "0" }, glow);
 
     // The four zones, named like the screenshots people share.
+    // Each corner gets a plain name, with the two axis words under it as a smaller line.
     var zones = [
-      ["nw", 0, 50, "Hard to adopt", "Deep parity"],
-      ["ne", 50, 50, "Smooth DX", "Deep parity"],
-      ["sw", 0, 0, "Hard to adopt", "Quick start"],
-      ["se", 50, 0, "Smooth DX", "Quick start"]
+      ["nw", 0, 50, "Powerful but hard", "Hard to adopt · deep parity"],
+      ["ne", 50, 50, "Best of both", "Smooth to use · deep parity"],
+      ["sw", 0, 0, "Rough and basic", "Hard to adopt · quick start"],
+      ["se", 50, 0, "Easy wins", "Smooth to use · quick start"]
     ];
     zones.forEach(function (z) {
       var east = z[1] === 50, north = z[2] === 50;
@@ -319,11 +343,10 @@
       }, svg);
       // Labels sit outside the frame, so they never cover a dot.
       var tx = east ? m.l + iw : m.l;
-      var ty = north ? m.t - 8 : m.t + ih + 34;
-      sv("text", {
-        x: tx, y: ty, class: "zone-label zone-label-" + z[0], "text-anchor": east ? "end" : "start",
-        text: z[3].toUpperCase() + " / " + z[4].toUpperCase()
-      }, svg);
+      var ty = north ? m.t - 24 : m.t + ih + 36;
+      var lab = sv("text", { x: tx, y: ty, class: "zone-label zone-label-" + z[0], "text-anchor": east ? "end" : "start" }, svg);
+      sv("tspan", { x: tx, class: "zone-title", text: z[3] }, lab);
+      sv("tspan", { x: tx, dy: 15, class: "zone-sub", text: z[4] }, lab);
     });
 
     for (var g = 0; g <= 100; g += 10) {
@@ -565,14 +588,15 @@
         .slice()
         .sort(function (a, b) { return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1; })
         .forEach(function (t) {
-          el("li", {
+          var chip = el("li", {
             class: "chip" + (matches(t) ? "" : " is-dim"),
             "data-id": t.id,
             "data-tip": "tool",
             tabindex: 0,
-            style: "--c:" + FAM[t.fam].color,
-            text: t.name
+            style: "--c:" + FAM[t.fam].color
           }, ul);
+          if (LOGO[t.id]) chip.innerHTML = logoSpan(t.id);
+          chip.appendChild(document.createTextNode(t.name));
         });
     });
   }
@@ -591,7 +615,7 @@
       var grid = el("div", { class: "lab-grid" }, block);
       tools.forEach(function (t, i) {
         var tile = el("div", {
-          class: "tile ring-" + t.ring + (matches(t) ? "" : " is-dim"),
+          class: "tile ring-" + t.ring + (matches(t) ? "" : " is-dim") + (LOGO[t.id] ? " has-logo" : ""),
           "data-id": t.id,
           "data-tip": "tool",
           tabindex: on ? 0 : -1,
@@ -601,6 +625,7 @@
         el("span", { class: "t-n", text: t.n }, tile);
         el("span", { class: "t-lic", text: LIC_SHORT[t.license] || "" }, tile);
         el("span", { class: "t-sym" + (t.sym.length > 2 ? " t-sym-3" : ""), text: t.sym }, tile);
+        if (LOGO[t.id]) el("span", { class: logoClass(t.id) + " t-logo", style: "--logo:url(" + logoUrl(t.id) + ")" }, tile);
         el("span", { class: "t-name", text: t.name }, tile);
         el("span", { class: "t-formula", text: "Dx" + t.x / 10 + "·Pa" + t.y / 10 }, tile);
       });
@@ -619,7 +644,8 @@
       tabindex: 0,
       style: "--fc:" + FAM[t.fam].color
     }, parent);
-    el("b", { text: t.sym }, p);
+    var badge = el("b", LOGO[t.id] ? null : { text: t.sym }, p);
+    if (LOGO[t.id]) badge.innerHTML = logoSpan(t.id);
     el("span", { text: t.name }, p);
     return p;
   }
@@ -675,18 +701,245 @@
     el("p", { text: "End of the line: you can design the paths other people walk." }, end);
   }
 
+  // ---------- compare: click up to 5 tools, then see them side by side ----------
+
+  var MAX_CMP = 5;
+  var tray = document.getElementById("tray");
+  var panel = document.getElementById("cmp");
+  var flashTimer;
+
+  function isPicked(id) {
+    return state.cmp.indexOf(id) !== -1;
+  }
+  function pickLine(t) {
+    var text = isPicked(t.id)
+      ? "✓ In your comparison. Click to remove."
+      : state.cmp.length >= MAX_CMP
+        ? "Comparison is full (" + MAX_CMP + "). Remove one first."
+        : "Click to compare (" + state.cmp.length + "/" + MAX_CMP + ")";
+    return '<p class="tt-pick' + (isPicked(t.id) ? " on" : "") + '">' + text + "</p>";
+  }
+  function syncUrl() {
+    history.replaceState(history.state, "", location.pathname + query());
+  }
+
+  function toggleTool(id) {
+    var i = state.cmp.indexOf(id);
+    if (i !== -1) state.cmp.splice(i, 1);
+    else if (state.cmp.length >= MAX_CMP) {
+      flashTray("You can compare up to " + MAX_CMP + " tools. Remove one first.");
+      return;
+    } else state.cmp.push(id);
+    syncUrl();
+    markPicked();
+    renderTray();
+    if (!tip.hidden && lastNode && lastNode.getAttribute("data-tip") === "tool") tip.innerHTML = tipHtml(lastNode);
+  }
+
+  // Picked tools get a ring everywhere, and a number on the Compass and Radar that matches the tray.
+  function markPicked() {
+    stage.querySelectorAll("[data-id]").forEach(function (n) {
+      n.classList.toggle("is-picked", isPicked(n.getAttribute("data-id")));
+    });
+    stage.classList.toggle("has-picked", state.cmp.length > 0);
+    stage.querySelectorAll("g.dot").forEach(function (g) {
+      g.querySelectorAll(".pick-ring, .pick-num").forEach(function (n) { n.remove(); });
+      var i = state.cmp.indexOf(g.getAttribute("data-id"));
+      if (i === -1) return;
+      sv("circle", { r: 12, class: "pick-ring" }, g);
+      sv("text", { y: -17, "text-anchor": "middle", class: "pick-num", text: i + 1 }, g);
+    });
+  }
+
+  function flashTray(msg) {
+    var m = tray.querySelector(".tray-msg");
+    if (!m) return;
+    m.textContent = msg;
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(function () { m.textContent = ""; }, 2600);
+  }
+
+  function renderTray() {
+    document.body.classList.toggle("has-tray", state.cmp.length > 0);
+    tray.hidden = !state.cmp.length;
+    tray.innerHTML = "";
+    if (!state.cmp.length) return;
+    el("span", { class: "tray-label", text: "Compare " + state.cmp.length + "/" + MAX_CMP }, tray);
+    var list = el("ul", { class: "tray-list" }, tray);
+    state.cmp.forEach(function (id, i) {
+      var t = BY_ID[id];
+      var li = el("li", { class: "tray-chip", "data-hot": id, style: "--c:" + FAM[t.fam].color }, list);
+      el("b", { text: i + 1 }, li);
+      if (LOGO[id]) li.insertAdjacentHTML("beforeend", logoSpan(id));
+      el("span", { text: t.name }, li);
+      el("button", { type: "button", class: "tray-x", "data-remove": id, "aria-label": "Remove " + t.name, text: "×" }, li);
+    });
+    var acts = el("div", { class: "tray-actions" }, tray);
+    var go = el("button", { type: "button", class: "tray-go", "data-act": "open", text: "Compare" }, acts);
+    if (state.cmp.length < 2) { go.disabled = true; go.title = "Pick at least two tools"; }
+    el("button", { type: "button", "data-act": "copy", text: "Copy link" }, acts);
+    el("button", { type: "button", "data-act": "clear", text: "Clear" }, acts);
+    el("p", { class: "tray-msg", role: "status" }, tray);
+  }
+
+  function copyLink(btn) {
+    var url = location.origin + location.pathname + query();
+    var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy link"; }, 1600); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { window.prompt("Copy this link", url); });
+    else window.prompt("Copy this link", url);
+  }
+
+  tray.addEventListener("click", function (e) {
+    var rm = e.target.closest("[data-remove]");
+    if (rm) { toggleTool(rm.getAttribute("data-remove")); return; }
+    var act = e.target.closest("[data-act]");
+    if (!act || act.disabled) return;
+    var what = act.getAttribute("data-act");
+    if (what === "open") openPanel();
+    else if (what === "copy") copyLink(act);
+    else if (what === "clear") { state.cmp = []; syncUrl(); markPicked(); renderTray(); }
+  });
+  // Hovering a tray chip lights up that tool on the chart.
+  tray.addEventListener("pointerover", function (e) {
+    var c = e.target.closest("[data-hot]");
+    clearHot();
+    if (!c) return;
+    stage.classList.add("has-hot");
+    stage.querySelectorAll('[data-id="' + c.getAttribute("data-hot") + '"]').forEach(function (n) { n.classList.add("is-hot"); });
+  });
+  tray.addEventListener("pointerleave", clearHot);
+
+  stage.addEventListener("click", function (e) {
+    var n = target(e);
+    if (n && n.getAttribute("data-tip") === "tool") toggleTool(n.getAttribute("data-id"));
+  });
+  stage.addEventListener("keydown", function (e) {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    var n = e.target.closest && e.target.closest('[data-tip="tool"]');
+    if (!n || !stage.contains(n)) return;
+    e.preventDefault();
+    toggleTool(n.getAttribute("data-id"));
+  });
+
+  // The side-by-side table: one column per tool, one row per rubric criterion.
+  function cell(html, cls) {
+    return "<td" + (cls ? ' class="' + cls + '"' : "") + ">" + html + "</td>";
+  }
+  function mark(yes) {
+    return yes ? '<span class="yes" aria-label="Yes">✓</span>' : '<span class="no" aria-label="No">–</span>';
+  }
+
+  function panelTable(tools) {
+    var rows = [];
+    function row(label, cells, same, cls) {
+      rows.push('<tr class="' + (cls || "") + (same ? " same" : "") + '"><th scope="row">' + label + "</th>" + cells.join("") + "</tr>");
+    }
+    function allSame(vals) {
+      return vals.every(function (v) { return v === vals[0]; });
+    }
+    function section(title) {
+      rows.push('<tr class="sec"><th colspan="' + (tools.length + 1) + '">' + title + "</th></tr>");
+    }
+
+    row("What it is", tools.map(function (t) { return cell(esc(t.tagline)); }), false);
+    row("License", tools.map(function (t) { return cell(esc(D.rubric.licenses[t.license] || t.license)); }),
+      allSame(tools.map(function (t) { return t.license; })));
+    row("Ring", tools.map(function (t) {
+      return cell('<span class="tt-ring ring-' + esc(t.ring) + '" title="' + esc(ringOf(t.ring).help || "") + '">' + esc(ringOf(t.ring).label) + "</span>");
+    }), allSame(tools.map(function (t) { return t.ring; })));
+
+    [["dx", "Developer ergonomics", "x"], ["parity", "Production parity", "y"]].forEach(function (ax) {
+      var key = ax[0], rub = D.rubric[key];
+      section(ax[1] + " <small>" + esc(rub.low) + " → " + esc(rub.high) + "</small>");
+      row("Score", tools.map(function (t) {
+        var v = t[ax[2]];
+        return cell('<span class="cmp-score"><b>' + v + '</b><i style="--v:' + v + '%"></i></span>');
+      }), allSame(tools.map(function (t) { return t[ax[2]]; })), "score");
+      rub.criteria.forEach(function (c) {
+        var vals = tools.map(function (t) { return t[key].indexOf(c.id) !== -1; });
+        row('<span title="' + esc(c.help) + '">' + esc(c.label) + "</span>", vals.map(function (v) { return cell(mark(v), v ? "has" : ""); }), allSame(vals));
+      });
+    });
+
+    section("Good to know");
+    row("Caveat", tools.map(function (t) { return cell(t.note ? esc(t.note) : '<span class="muted">None noted</span>'); }), false);
+    row("Links", tools.map(function (t) {
+      var out = [];
+      if (safeUrl(t.url)) out.push('<a href="' + esc(t.url) + '" target="_blank" rel="noopener">Site ↗</a>');
+      if (safeUrl(t.evidence)) out.push('<a href="' + esc(t.evidence) + '" target="_blank" rel="noopener">Evidence ↗</a>');
+      return cell(out.join(" "));
+    }), false);
+
+    var head = "<tr><th scope=\"col\" class=\"corner\"></th>" + tools.map(function (t, i) {
+      var f = FAM[t.fam];
+      return '<th scope="col" style="--c:' + esc(f.color) + '"><span class="cmp-n">' + (i + 1) + "</span>" +
+        (LOGO[t.id] ? logoSpan(t.id) : '<span class="cmp-sym">' + esc(t.sym) + "</span>") +
+        "<strong>" + esc(t.name) + "</strong><span class=\"cmp-fam\">" + esc(f.name) + " · " + esc(t.cat) + "</span>" +
+        '<button type="button" class="cmp-rm" data-remove="' + esc(t.id) + '" aria-label="Remove ' + esc(t.name) + '">×</button></th>';
+    }).join("") + "</tr>";
+
+    return "<table><thead>" + head + "</thead><tbody>" + rows.join("") + "</tbody></table>";
+  }
+
+  function openPanel() {
+    if (state.cmp.length < 2) return;
+    hideNow();
+    var tools = state.cmp.map(function (id) { return BY_ID[id]; });
+    panel.innerHTML =
+      '<div class="cmp-box" role="dialog" aria-modal="true" aria-label="Compare tools">' +
+      '<div class="cmp-top"><h2>Compare ' + tools.length + " tools</h2>" +
+      '<label class="cmp-diff"><input type="checkbox" id="cmp-diff"> Only differences</label>' +
+      '<button type="button" class="cmp-close" data-close aria-label="Close comparison">Close</button></div>' +
+      '<div class="cmp-scroll" id="cmp-table">' + panelTable(tools) + "</div>" +
+      '<p class="cmp-foot">Scores are 10 points per checklist item. See <a href="' + base + '/about/">how it works</a>.</p></div>';
+    panel.hidden = false;
+    document.body.classList.add("cmp-open");
+    panel.querySelector(".cmp-close").focus();
+  }
+  function closePanel() {
+    panel.hidden = true;
+    panel.innerHTML = "";
+    document.body.classList.remove("cmp-open");
+  }
+  panel.addEventListener("click", function (e) {
+    if (e.target === panel || e.target.closest("[data-close]")) { closePanel(); return; }
+    var rm = e.target.closest("[data-remove]");
+    if (rm) {
+      toggleTool(rm.getAttribute("data-remove"));
+      if (state.cmp.length < 2) closePanel(); else openPanel();
+    }
+  });
+  panel.addEventListener("change", function (e) {
+    if (e.target.id === "cmp-diff") panel.querySelector("#cmp-table").classList.toggle("only-diff", e.target.checked);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !panel.hidden) closePanel();
+  });
+
   // ---------- render and routing ----------
+
+  // The radar is as tall as the room left under the header, so the whole circle is on screen.
+  function fitRadar() {
+    var wrap = stage.parentNode;
+    var top = wrap.getBoundingClientRect().top + window.scrollY;
+    var room = window.innerHeight - top - 76; // leaves room for the compare tray
+    stage.style.setProperty("--radar-max", Math.max(340, Math.round(room)) + "px");
+  }
+  window.addEventListener("resize", function () { if (state.view === "radar") fitRadar(); });
 
   function render() {
     hideNow();
     stage.innerHTML = "";
     stage.classList.remove("is-in");
+    if (state.view === "radar") fitRadar();
     if (state.view === "compass") renderCompass();
     else if (state.view === "radar") renderRadar();
     else if (state.view === "lab") renderLab();
     else renderJourneys();
     void stage.offsetWidth;
     stage.classList.add("is-in");
+    markPicked();
+    renderTray();
     firstPaint = false;
   }
 
@@ -716,7 +969,10 @@
     return base + "/" + state.view + "/" + (sub ? sub + "/" : "");
   }
   function query() {
-    return state.q ? "?q=" + encodeURIComponent(state.q) : "";
+    var p = [];
+    if (state.q) p.push("q=" + encodeURIComponent(state.q));
+    if (state.cmp.length) p.push("compare=" + state.cmp.map(encodeURIComponent).join(","));
+    return p.length ? "?" + p.join("&") : "";
   }
 
   document.getElementById("subtabs").addEventListener("click", function (e) {
@@ -734,7 +990,8 @@
   // Keep the search when you jump between views.
   document.querySelectorAll(".views .view-tab").forEach(function (a) {
     a.addEventListener("click", function () {
-      if (state.q) a.href = a.href.split("?")[0] + query();
+      var qs = query();
+      if (qs) a.href = a.href.split("?")[0] + qs;
     });
   });
 
@@ -764,14 +1021,19 @@
   var tb = document.querySelector(".toolbar");
   if (tb) tb.hidden = false;
   try {
-    state.q = new URLSearchParams(location.search).get("q") || "";
+    var params = new URLSearchParams(location.search);
+    state.q = params.get("q") || "";
+    state.cmp = (params.get("compare") || "").split(",").filter(Boolean).slice(0, 5);
     if (qInput) qInput.value = state.q;
   } catch (e) {}
 
-  fetch(base + "/assets/data.json")
+  // The build time in the URL keeps a deploy from being paired with the previous deploy's data.
+  fetch(base + "/assets/data.json?v=" + encodeURIComponent(app.dataset.v || ""))
     .then(function (r) { return r.json(); })
     .then(function (d) {
       prep(d);
+      // Drop ids from a shared link that no longer exist, and any repeats.
+      state.cmp = state.cmp.filter(function (id, i, a) { return BY_ID[id] && a.indexOf(id) === i; });
       syncChrome();
       render();
     })

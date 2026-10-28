@@ -9,7 +9,7 @@
 | **[Lab](https://roadmap.flisk.si/lab/)** | Every tool as an element in a periodic table | One per family |
 | **[Journeys](https://roadmap.flisk.si/journeys/)** | Seven levels from Package Wrangler to Platform Architect, as a metro line | Backend, AI & agents, Platform |
 
-Every sub-tab has its own URL, so a link opens exactly the view you shared. Charts show a tooltip on hover or focus; nothing on a chart navigates.
+Every sub-tab has its own URL, so a link opens exactly the view you shared. Hover or focus a tool for details. Click up to 5 tools, in any view, to compare them side by side; the picks stay in the URL, so a comparison can be shared.
 
 ## Honest by construction
 

@@ -30,6 +30,10 @@ Add it to the family file it fits best. It has to be worth considering for local
 
 The criteria and ring rules are in `_data/rubric.yml`. Read them literally: a criterion is met or it is not.
 
+## Add a logo
+
+Drop `<tool id>.svg` (a single-color mark, for example from [Simple Icons](https://simpleicons.org)) or a small `<tool id>.png` into `assets/logos/`. It shows up on its own. See [LOGOS.md](LOGOS.md) for the rules. A tool without a logo shows its symbol.
+
 ## Check before you push
 
 ```bash

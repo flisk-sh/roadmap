@@ -2,10 +2,15 @@
 layout: null
 permalink: /assets/data.json
 ---
+{%- assign logo_files = site.static_files | where_exp: "f", "f.path contains '/assets/logos/'" -%}
+{%- assign logo_svg = logo_files | where: "extname", ".svg" -%}
+{%- assign logo_png = logo_files | where: "extname", ".png" -%}
+{%- assign logo_all = logo_svg | concat: logo_png -%}
 {
   "families": {{ site.data.families | jsonify }},
   "rubric": {{ site.data.rubric | jsonify }},
   "tools": {{ site.data.tools | jsonify }},
   "journeys": {{ site.data.journeys | jsonify }},
-  "views": {{ site.data.meta.views | jsonify }}
+  "views": {{ site.data.meta.views | jsonify }},
+  "logos": {{ logo_all | map: "name" | jsonify }}
 }

@@ -58,6 +58,12 @@ families.each do |fam|
   end
 end
 
+# A logo file must belong to a tool, so a renamed tool does not leave an orphan behind.
+Dir[File.join(ROOT, "assets/logos/*.{svg,png}")].each do |f|
+  id = File.basename(f).sub(/\.(svg|png)\z/, "")
+  errors << "assets/logos/#{File.basename(f)}: no tool with id #{id}" unless ids[id]
+end
+
 level_ids = journeys["levels"].map { |l| l["id"] }
 journeys["levels"].each do |l|
   st = l.dig("flisk", "status")
