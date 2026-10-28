@@ -1344,7 +1344,12 @@
   function meString() {
     return Object.keys(ME).sort().map(function (id) { return id + ME[id]; }).join(",");
   }
+  var saveTimer = null;
   function saveMe() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveMeNow, 250);
+  }
+  function saveMeNow() {
     try {
       localStorage.setItem("roadmap-me", meString()); localStorage.setItem("roadmap-me-name", ME_NAME);
       localStorage.setItem("roadmap-me-login", ME_LOGIN); localStorage.setItem("roadmap-me-slug", ME_SLUG);
@@ -1355,6 +1360,7 @@
     history.replaceState(history.state, "", location.pathname + (qs.length ? "?" + qs.join("&") : ""));
   }
   function shareUrl() {
+    if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; saveMeNow(); }
     var qs = [];
     if (ME_NAME) qs.push("name=" + encodeURIComponent(ME_NAME));
     qs.push("me=" + meString());
@@ -1408,8 +1414,11 @@
     return out + "</svg>";
   }
 
+  var meLoaded = false;
   function renderPortfolio() {
-    loadMe();
+    // Read the link (or this browser's saved ratings) once; after that the ratings in memory are the truth,
+    // so a re-render never brings back ratings from a URL the delayed save has not rewritten yet.
+    if (!meLoaded) { loadMe(); meLoaded = true; }
     var wrap = el("div", { class: "pf" }, stage);
     var left = el("section", { class: "pf-rate" }, wrap);
     var head = el("div", { class: "pf-rate-head" }, left);
@@ -1573,6 +1582,7 @@
       a.href = URL.createObjectURL(new Blob([cvHtml()], { type: "text/html" }));
       a.download = (ME_NAME || "my-dev-profile").toLowerCase().replace(/[^a-z0-9]+/g, "-") + ".html";
       document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
       pfMsg("Saved as a single web page. Put it anywhere: it needs nothing else.");
     } else if (act === "publish" && PAGES_LIVE) {
       if (!validLogin(ME_LOGIN)) { pfMsg("Type your GitHub login first. It must be the account that opens the pull request."); return; }

@@ -71,7 +71,6 @@ body {
     radial-gradient(60rem 30rem at 85% -10%, var(--bg-glow), transparent 70%),
     radial-gradient(40rem 24rem at -10% 20%, rgba(14, 165, 233, 0.05), transparent 70%),
     var(--bg);
-  background-attachment: fixed;
   color: var(--text);
   font-family: var(--font-body);
   font-size: 0.9375rem;
@@ -921,3 +920,7 @@ body.cmp-open { overflow: hidden; }
 
 /* Lane backgrounds, grid lines and labels sit on top of the dots in the SVG; let the pointer through to the dots. */
 .swarm .lane, .swarm .grid, .swarm .lane-label, .swarm .tick, .swarm .axis-name, .swarm .swarm-wait, .compass .zone, .radar .sector, .radar .ring-band { pointer-events: none; }
+
+/* Paint only the tiles that are on screen: the grid holds 372 of them, each with a masked logo. */
+.pf-tile { content-visibility: auto; contain-intrinsic-size: auto 4.4rem; }
+.lab .tile, .tok, .skill-chip { contain: layout paint; }
