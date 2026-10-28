@@ -15,6 +15,10 @@ repo_url: "https://github.com/flisk-sh/roadmap"
 
 markdown: kramdown
 
+# Jekyll skips dot-folders; publish /.well-known/security.txt.
+include:
+  - .well-known
+
 exclude:
   - Gemfile
   - Gemfile.lock
