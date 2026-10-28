@@ -1,6 +1,6 @@
 # How a tool's Compass position and Radar ring are decided. Nobody places a dot by hand:
 # a tool's X is 10 points per `dx` criterion it meets, its Y is 10 points per `parity` criterion
-# (shown to people as "Starts whole app?": how much of your app it starts on your laptop).
+# (shown to people as "Made for big, real systems?").
 # To move a dot, open a PR that adds or removes a criterion id on the tool, with a source.
 
 dx:
@@ -41,25 +41,26 @@ dx:
       label: AI can drive it
       help: An MCP server, a JSON output mode or an API an AI agent can drive.
 
-# The data key stays `parity`; people read it as "Starts whole app?".
+# The data key stays `parity`; people read it as "Made for big, real systems?".
+# It is NOT "what it starts": a hosted tool like Datadog starts nothing locally but still scores here.
 parity:
-  title: Starts your whole app on your laptop?
-  short: Starts whole app
-  low: Starts 1 piece
-  high: Starts whole app
-  explain: "Your app is many pieces: website, API, database, queue. How many does this tool start on your laptop? Only 1 piece: bottom. All pieces, talking to each other: top. Each check is 10 points."
+  title: Made for big, real systems?
+  short: Big real systems
+  low: Small and simple
+  high: Big and real
+  explain: "Small and simple: one service, nothing around it. Big and real: many services, real databases, containers, Kubernetes, the cloud, logs, big teams. Each check is 10 points. More checks: higher up."
   criteria:
     - id: containers
-      label: Starts containers
-      help: Runs or builds OCI containers.
+      label: Works with containers
+      help: Runs, builds or watches containers.
     - id: multi-service
-      label: Starts many pieces
-      help: Brings up and coordinates several services together.
+      label: Handles many services
+      help: Brings up, connects or watches several services together.
     - id: networking
-      label: Pieces talk to each other
+      label: Services talk to each other
       help: Service-to-service networking, DNS or ingress like production.
     - id: state
-      label: Starts real database
+      label: Real databases and queues
       help: Databases, queues or volumes, not only in-memory fakes.
     - id: prod-artifacts
       label: Same images as live servers
@@ -68,7 +69,7 @@ parity:
       label: Speaks Kubernetes
       help: Manifests, pods, Helm charts or a real Kubernetes API.
     - id: cloud-apis
-      label: Fakes or reaches the cloud
+      label: Works with the cloud
       help: Emulates or reaches real cloud provider APIs.
     - id: config-secrets
       label: Real config and secrets

@@ -187,7 +187,7 @@
       "</div>" +
       '<p class="tt-tag">' + esc(t.tagline) + "</p>" +
       bar("Easy to use", t.x, critChips(t.dx, D.rubric.dx)) +
-      bar("Starts whole app", t.y, critChips(t.parity, D.rubric.parity)) +
+      bar("Big real systems", t.y, critChips(t.parity, D.rubric.parity)) +
       (t.note ? '<p class="tt-note">' + esc(t.note) + "</p>" : "") +
       '<p class="tt-meta">#' + t.n + " · " + esc(D.rubric.licenses[t.license] || t.license) + (t.repo ? " · " + esc(t.repo) : "") + "</p>" +
       pickLine(t) +
@@ -343,10 +343,10 @@
     // The four zones, named like the screenshots people share.
     // Each corner gets a plain name, with the two axis words under it as a smaller line.
     var zones = [
-      ["nw", 0, 50, "Powerful but hard", "Hard to use, starts whole app"],
-      ["ne", 50, 50, "Best of both", "Easy to use, starts whole app"],
-      ["sw", 0, 0, "Rough and basic", "Hard to use, starts 1 piece"],
-      ["se", 50, 0, "Easy wins", "Easy to use, starts 1 piece"]
+      ["nw", 0, 50, "Powerful but hard", "Hard to use, big real systems"],
+      ["ne", 50, 50, "Best of both", "Easy to use, big real systems"],
+      ["sw", 0, 0, "Rough and basic", "Hard to use, small and simple"],
+      ["se", 50, 0, "Easy wins", "Easy to use, small and simple"]
     ];
     zones.forEach(function (z) {
       var east = z[1] === 50, north = z[2] === 50;
@@ -396,7 +396,7 @@
     });
     sv("text", { x: W - 12, y: cy + 24, "text-anchor": "end", class: "axis-name", text: "Easier →" }, svg);
     sv("text", { x: 12, y: cy + 24, "text-anchor": "start", class: "axis-name", text: "← Harder" }, svg);
-    sv("text", { x: cx + 10, y: m.t + 14, "text-anchor": "start", class: "axis-name", text: "↑ Starts more of your app" }, svg);
+    sv("text", { x: cx + 10, y: m.t + 14, "text-anchor": "start", class: "axis-name", text: "↑ Bigger, more real" }, svg);
 
     // Dots. Tools with the same score sit on a small sunflower spiral around the point,
     // laid out over every tool so a dot never moves when you switch sub-tabs.
@@ -426,7 +426,7 @@
           "data-id": t.id,
           "data-tip": "tool",
           tabindex: on ? 0 : -1,
-          "aria-label": t.name + ", easy to use " + t.x + ", starts whole app " + t.y,
+          "aria-label": t.name + ", easy to use " + t.x + ", big real systems " + t.y,
           style: "--c:" + f.color + ";--d:" + Math.round(hash(t.id) * 500) + "ms"
         }, dots);
         gEl.style.transform = firstPaint ? "translate(" + cx + "px," + cy + "px) scale(0.2)" : "translate(" + p[0] + "px," + p[1] + "px)";
@@ -641,7 +641,7 @@
       el("span", { class: "t-sym" + (t.sym.length > 2 ? " t-sym-3" : ""), text: t.sym }, tile);
       if (LOGO[t.id]) el("span", { class: logoClass(t.id) + " t-logo", style: "--logo:url(" + logoUrl(t.id) + ")" }, tile);
       el("span", { class: "t-name", text: t.name }, tile);
-      el("span", { class: "t-formula", text: "E" + t.x / 10 + "·A" + t.y / 10 }, tile);
+      el("span", { class: "t-formula", text: "E" + t.x / 10 + "·B" + t.y / 10 }, tile);
     });
     fitLab();
   }
@@ -889,7 +889,7 @@
       return cell('<span class="tt-ring ring-' + esc(t.ring) + '" title="' + esc(ringOf(t.ring).help || "") + '">' + esc(ringOf(t.ring).label) + "</span>");
     }), allSame(tools.map(function (t) { return t.ring; })));
 
-    [["dx", "Easy to use?", "x"], ["parity", "Starts your whole app on your laptop?", "y"]].forEach(function (ax) {
+    [["dx", "Easy to use?", "x"], ["parity", "Made for big, real systems?", "y"]].forEach(function (ax) {
       var key = ax[0], rub = D.rubric[key];
       section(ax[1] + " <small>" + esc(rub.low) + " → " + esc(rub.high) + "</small>");
       row("Score", tools.map(function (t) {

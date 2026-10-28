@@ -5,7 +5,7 @@ This map is a wiki in a Git repo. Fixes are welcome from anyone, including the m
 ## Fix a tool
 
 1. Find the tool in `_data/tools/<family>.yml` (the tooltip's **Edit** link opens the right file).
-2. Change what is wrong. To move a dot on the Compass, add or remove criterion ids in `dx` (easy to use?) or `parity` (starts your whole app on your laptop?). To change its ring, change `ring` and `evidence`.
+2. Change what is wrong. To move a dot on the Compass, add or remove criterion ids in `dx` (easy to use?) or `parity` (made for big, real systems?). To change its ring, change `ring` and `evidence`.
 3. Say why in the pull request, with a link: docs, a release page, a changelog.
 
 ## Add a tool
