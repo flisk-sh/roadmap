@@ -1,6 +1,6 @@
 # DevEx Roadmap
 
-**[roadmap.flisk.si](https://roadmap.flisk.si)**: a community-edited map of 372 developer tools, 44 roles and 409 agent skills, drawn eight ways. Live GitHub numbers, a public checklist, and a [Findings](https://roadmap.flisk.si/findings/) page of what the data says.
+**[roadmap.flisk.si](https://roadmap.flisk.si)**: a community-edited map of 372 developer tools, 44 roles and 400 agent skills, drawn eight ways. Live GitHub numbers, a public checklist, and a [Findings](https://roadmap.flisk.si/findings/) page of what the data says.
 
 | View | What it shows | Sub-tabs |
 | --- | --- | --- |
@@ -9,7 +9,7 @@
 | **[Lab](https://roadmap.flisk.si/lab/)** | Every tool as an element in a periodic table | One per family |
 | **[Journeys](https://roadmap.flisk.si/journeys/)** | Seven levels from Package Wrangler to Platform Architect, as a metro line | Backend, AI & agents, Platform |
 | **[Roles](https://roadmap.flisk.si/roles/)** | 44 jobs (SRE, Platform, Forward Deployed, Benchmark Engineer…) and the tools each one needs: must have, every day, good to know | One per group of jobs |
-| **[Skills](https://roadmap.flisk.si/skills/)** | 409 free AI agent skills from GitHub, each tested by Haiku: does it get picked for the right request, and is it followed right | One per kind of skill |
+| **[Skills](https://roadmap.flisk.si/skills/)** | 400 free AI agent skills from GitHub, each tested by Haiku: does it get picked for the right request, and is it followed right | One per kind of skill |
 | **[Portfolio](https://roadmap.flisk.si/portfolio/)** | Rate the tools you know 0–3: get your best-fit role, your skill shape and a page to share (a link, a download, or pages.flisk.si) | One per family |
 | **[Ask](https://roadmap.flisk.si/ask/)** | Type `yarn vs npm vs bun` and get a side-by-side answer from the data, no AI call. Hand it to your own AI for an opinion | None |
 

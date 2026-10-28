@@ -1149,7 +1149,10 @@
     var total = function (t) { return t.x + t.y; };
     var byTotal = tools.slice().sort(function (a, b) { return total(b) - total(a); });
     var lead = total(byTotal[0]) - total(byTotal[1] || byTotal[0]);
-    html += '<p class="ask-overall">' + (tools.length < 2 ? "" : lead === 0
+    var cats = tools.map(function (t) { return t.cat; }).filter(function (c, i, a) { return a.indexOf(c) === i; });
+    // Tools that do different jobs: a summed score would crown a "winner" that does not replace the other.
+    if (cats.length > 1) html += '<p class="ask-overall ask-mixed">These do different jobs (' + cats.map(function (c) { return esc(c.toLowerCase()); }).join(", ") + "), so one does not replace the other. Use the score to see what each is built for, not who wins.</p>";
+    else html += '<p class="ask-overall">' + (tools.length < 2 ? "" : lead === 0
       ? "On the checklist, <b>" + esc(byTotal[0].name) + "</b> and <b>" + esc(byTotal[1].name) + "</b> are level at " + total(byTotal[0]) + " of 200. Decide on the lines below."
       : "On the checklist, <b>" + esc(byTotal[0].name) + "</b> leads with " + total(byTotal[0]) + " of 200, " + lead + " ahead of " + esc(byTotal[1].name) +
         (lead <= 10 ? ": a close call, so the lines below matter more than the score." : lead <= 30 ? ": a clear but not huge lead." : ": a big lead.")) + "</p>";

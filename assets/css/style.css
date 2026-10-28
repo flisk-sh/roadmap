@@ -917,3 +917,7 @@ body.cmp-open { overflow: hidden; }
 .pf-publish input { font: inherit; font-size: 0.85rem; color: var(--text); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 7px; padding: 0.3rem 0.5rem; }
 .pf-url { margin: 0; font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-text); overflow-wrap: anywhere; }
 .pf-note { margin: 0; font-size: 0.7rem; color: var(--faint); }
+.ask-mixed { color: var(--assess); }
+
+/* Lane backgrounds, grid lines and labels sit on top of the dots in the SVG; let the pointer through to the dots. */
+.swarm .lane, .swarm .grid, .swarm .lane-label, .swarm .tick, .swarm .axis-name, .swarm .swarm-wait, .compass .zone, .radar .sector, .radar .ring-band { pointer-events: none; }
