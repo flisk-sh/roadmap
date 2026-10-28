@@ -735,6 +735,34 @@
   parity: []
   note: macOS only; uses your own Claude or Codex subscription for the agents it runs.
 
+- id: t3-code
+  name: T3 Code
+  sym: Tcd
+  cat: Coding agents
+  tagline: Open-source control plane for many coding agents
+  url: https://t3.codes
+  repo: pingdotgg/t3code
+  license: oss
+  ring: assess
+  evidence: https://github.com/pingdotgg/t3code/releases
+  dx: [one-command, zero-config, ui, cross-platform, offline]
+  parity: []
+  note: First shipped Feb 2026, still 0.x nightlies. Runs Claude Code, Codex, fx and others; is not an agent itself.
+
+- id: fx
+  name: fx
+  sym: Fh
+  cat: Coding agents
+  tagline: Tiny open-source coding agent harness in Zig, from Vercel
+  url: https://fx.sh
+  repo: vercel-labs/fx
+  license: oss
+  ring: assess
+  evidence: https://github.com/vercel-labs/fx/releases
+  dx: [one-command, docs, offline, light, agent-ready]
+  parity: []
+  note: First shipped Aug 2026, still v0.0.x. Bring a model provider or a local model; built into T3 Code since Oct 2026.
+
 # --- Local models ---
 - id: ollama
   name: Ollama
