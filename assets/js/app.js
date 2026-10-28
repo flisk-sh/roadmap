@@ -1320,12 +1320,12 @@
   var LEVELS = ["Don't know", "Used it", "Use it often", "Expert"];
   var ME = {};          // tool id -> 1..3 (0 is not stored)
   var ME_NAME = "";
-  // pages.flisk.si publishes through a pull request to flisk-sh/pages: the button opens GitHub's
-  // prefilled "new file" page for spaces/<login>/<slug>/index.md, and a bot publishes it at
-  // https://pages.flisk.si/@<login>/<slug>/. Flip PAGES_LIVE once that repo and its workflow are live.
+  // One click publishes to pages.flisk.si with no account: publish.flisk.si answers with a random id
+  // (the page is https://pages.flisk.si/@anon/<id>/) and a key that updates or deletes it. Both stay in
+  // this browser, so publishing again updates the same page. Set PAGES_LIVE to false to hide the button.
   var PAGES_LIVE = true;
-  var PAGES_REPO = "flisk-sh/pages";
-  var ME_LOGIN = "", ME_SLUG = "portfolio";
+  var PUBLISH_API = "https://publish.flisk.si";
+  var ME_PUB = null;    // {id, url, token, manage} from the last publish in this browser
 
   function loadMe() {
     var p;
@@ -1339,7 +1339,10 @@
       if (m && BY_ID[m[1]]) ME[m[1]] = +m[2];
     });
     ME_NAME = (p && p.get("name")) || (function () { try { return localStorage.getItem("roadmap-me-name") || ""; } catch (e) { return ""; } })();
-    try { ME_LOGIN = localStorage.getItem("roadmap-me-login") || ""; ME_SLUG = localStorage.getItem("roadmap-me-slug") || "portfolio"; } catch (e) {}
+    try {
+      var pub = JSON.parse(localStorage.getItem("roadmap-me-pub") || "null");
+      ME_PUB = pub && /^[a-z0-9]{10}$/.test(pub.id) && /^[a-f0-9]{48}$/.test(pub.token) ? pub : null;
+    } catch (e) { ME_PUB = null; }
   }
   function meString() {
     return Object.keys(ME).sort().map(function (id) { return id + ME[id]; }).join(",");
@@ -1352,7 +1355,6 @@
   function saveMeNow() {
     try {
       localStorage.setItem("roadmap-me", meString()); localStorage.setItem("roadmap-me-name", ME_NAME);
-      localStorage.setItem("roadmap-me-login", ME_LOGIN); localStorage.setItem("roadmap-me-slug", ME_SLUG);
     } catch (e) {}
     var qs = [];
     if (ME_NAME) qs.push("name=" + encodeURIComponent(ME_NAME));
@@ -1495,10 +1497,9 @@
     html += '<div class="pf-actions">' +
       '<button type="button" class="ask-go" data-pf="copy">Copy my page link</button>' +
       (PAGES_LIVE
-        ? '<div class="pf-publish"><label>GitHub login <input id="pf-login" type="text" maxlength="39" autocomplete="username" spellcheck="false" placeholder="octocat" value="' + esc(ME_LOGIN) + '"></label>' +
-          '<label>Page name <input id="pf-slug" type="text" maxlength="63" spellcheck="false" value="' + esc(ME_SLUG) + '"></label>' +
-          '<p class="pf-url" id="pf-url"></p><button type="button" class="btn" data-pf="publish">Publish to pages.flisk.si</button>' +
-          '<p class="pf-note">Opens GitHub with your page ready. Click "Propose new file", then "Create pull request". It goes live in about 2 minutes.</p></div>'
+        ? '<div class="pf-publish"><button type="button" class="btn" data-pf="publish">' + (ME_PUB ? "Update my page on pages.flisk.si" : "Publish to pages.flisk.si") + '</button>' +
+          '<p class="pf-url" id="pf-url"></p>' +
+          '<p class="pf-note">No account needed. Your page is public; it goes live in about 2 minutes.</p></div>'
         : '<button type="button" class="btn" disabled title="Publishing to pages.flisk.si is almost ready">Publish to pages.flisk.si: coming soon</button>') +
       '<button type="button" class="btn" data-pf="download">Download as a web page</button>' +
       '<button type="button" class="btn" data-pf="clear">Start over</button></div><p class="pf-msg" id="pf-msg" role="status"></p>';
@@ -1529,7 +1530,7 @@
       "</main></body></html>";
   }
 
-  // The pages.flisk.si version: Markdown, rendered like a GitHub README, kept under ~6 KB for the URL.
+  // The pages.flisk.si version: Markdown, rendered like a GitHub README (publish.flisk.si takes up to 40 KB).
   function cvMarkdown() {
     var fit = roleFit(), top = fit[0], shape = familyShape();
     var max = Math.max(1, Math.max.apply(null, shape.map(function (x) { return x.sum; })));
@@ -1546,24 +1547,37 @@
     md += "\n---\n\nRatings are self-reported. Made with [roadmap.flisk.si](" + shareUrl() + "), where every tool is scored by a public checklist.\n";
     return md;
   }
-  function cleanLogin(x) { return String(x || "").trim().replace(/^@/, "").toLowerCase(); }
-  function validLogin(x) { return /^[a-z0-9](?:[a-z0-9]|-(?=[a-z0-9])){0,38}$/.test(x); }
-  function validSlug(x) { return /^[a-z0-9][a-z0-9-]{0,62}$/.test(x); }
   function showPagesUrl() {
     var u = document.getElementById("pf-url");
     if (!u) return;
-    u.textContent = validLogin(ME_LOGIN) && validSlug(ME_SLUG) ? "Your page: https://pages.flisk.si/@" + ME_LOGIN + "/" + ME_SLUG + "/" : "Type your GitHub login to see your page address.";
+    u.innerHTML = ME_PUB
+      ? 'Your page: <a href="' + esc(ME_PUB.url) + '" target="_blank" rel="noopener">' + esc(ME_PUB.url) + '</a><br><a href="' + esc(ME_PUB.manage) + '" target="_blank" rel="noopener">Delete it</a> · keep this link: it holds the key'
+      : "";
+  }
+  function publishPage(md) {
+    var update = !!ME_PUB;
+    var headers = { "content-type": "application/json" };
+    if (update) headers.authorization = "Bearer " + ME_PUB.token;
+    return fetch(PUBLISH_API + "/v1/spaces" + (update ? "/" + ME_PUB.id : ""), {
+      method: update ? "PUT" : "POST",
+      headers: headers,
+      body: JSON.stringify(update ? { markdown: md } : { markdown: md, source: "roadmap.flisk.si" })
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (body) {
+        if (!r.ok) throw new Error(body.error || "publish failed (" + r.status + ")");
+        if (!update) ME_PUB = { id: body.id, url: body.url, token: body.token, manage: body.manage };
+        try { localStorage.setItem("roadmap-me-pub", JSON.stringify(ME_PUB)); } catch (e) {}
+        return update;
+      });
+    });
   }
 
   function pfMsg(t) { var m = document.getElementById("pf-msg"); if (m) m.textContent = t; }
 
   stage.addEventListener("input", function (e) {
     if (e.target.id === "pf-name") ME_NAME = e.target.value.trim().slice(0, 60);
-    else if (e.target.id === "pf-login") ME_LOGIN = cleanLogin(e.target.value);
-    else if (e.target.id === "pf-slug") ME_SLUG = String(e.target.value).trim().toLowerCase();
     else return;
     saveMe();
-    showPagesUrl();
   });
   stage.addEventListener("click", function (e) {
     var b = e.target.closest("[data-pf]");
@@ -1585,12 +1599,18 @@
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
       pfMsg("Saved as a single web page. Put it anywhere: it needs nothing else.");
     } else if (act === "publish" && PAGES_LIVE) {
-      if (!validLogin(ME_LOGIN)) { pfMsg("Type your GitHub login first. It must be the account that opens the pull request."); return; }
-      if (!validSlug(ME_SLUG)) { pfMsg("Page name: lowercase letters, digits and dashes, starting with a letter or digit."); return; }
-      var md = cvMarkdown();
-      if (md.length > 6000) { pfMsg("Your page is too long to send through GitHub's link. Rate fewer tools at level 1, or download it instead."); return; }
-      window.open("https://github.com/" + PAGES_REPO + "/new/main?filename=" + encodeURIComponent("spaces/" + ME_LOGIN + "/" + ME_SLUG + "/index.md") + "&value=" + encodeURIComponent(md), "_blank", "noopener");
-      pfMsg("GitHub is open in a new tab. Propose the file, create the pull request, and your page goes live at pages.flisk.si/@" + ME_LOGIN + "/" + ME_SLUG + "/ in about 2 minutes.");
+      if (b.disabled) return;
+      b.disabled = true;
+      pfMsg("Publishing…");
+      publishPage(cvMarkdown()).then(function (updated) {
+        b.disabled = false;
+        b.textContent = "Update my page on pages.flisk.si";
+        showPagesUrl();
+        pfMsg((updated ? "Updated. The new version" : "Published. Your page") + " is live in about 2 minutes.");
+      }, function (err) {
+        b.disabled = false;
+        pfMsg("Could not publish: " + err.message);
+      });
     } else if (act === "clear") {
       ME = {}; saveMe(); render();
     }
