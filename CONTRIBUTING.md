@@ -15,7 +15,7 @@ Add it to the family file it fits best. It has to be worth considering for local
 ```yaml
 - id: tilt                 # kebab-case, unique across all files
   name: Tilt
-  sym: Tl                  # capital + lowercase letter, unique across all files
+  sym: Tl                  # capital + 1 or 2 lowercase letters (Tl, Cln), unique across all files
   cat: Live-update loops   # one of the family's cats in _data/families.yml
   tagline: Live-update loop for multi-service apps   # 60 characters or less
   url: https://tilt.dev

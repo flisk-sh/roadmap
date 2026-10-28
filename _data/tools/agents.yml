@@ -546,7 +546,7 @@
 
 - id: cline
   name: Cline
-  sym: C0
+  sym: Cln
   cat: Coding agents
   tagline: Open-source coding agent for VS Code and the terminal
   url: https://cline.bot
@@ -588,7 +588,7 @@
 
 - id: continue
   name: Continue
-  sym: C1
+  sym: Cnt
   cat: Coding agents
   tagline: Open-source IDE agent and CI checks with any model
   url: https://continue.dev
@@ -724,7 +724,7 @@
 
 - id: conductor
   name: Conductor
-  sym: C2
+  sym: Cdr
   cat: Coding agents
   tagline: Mac app to run parallel Claude Code and Codex agents
   url: https://www.conductor.build

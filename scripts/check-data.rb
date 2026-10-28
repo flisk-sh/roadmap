@@ -40,7 +40,7 @@ families.each do |fam|
     errors << "#{at}: id must be kebab-case" unless t["id"].to_s.match?(/\A[a-z0-9]+(-[a-z0-9]+)*\z/)
     errors << "#{at}: duplicate id (also in #{ids[t['id']]})" if ids[t["id"]]
     ids[t["id"]] = path
-    errors << "#{at}: sym must be a capital and a lowercase letter, like Fl" unless t["sym"].to_s.match?(/\A[A-Z][a-z0-9]\z/)
+    errors << "#{at}: sym must be a capital and one or two lowercase letters or digits, like Fl or Cln" unless t["sym"].to_s.match?(/\A[A-Z][a-z0-9]{1,2}\z/)
     errors << "#{at}: sym #{t['sym']} already used by #{syms[t['sym']]}" if syms[t["sym"]]
     syms[t["sym"]] = t["id"]
     errors << "#{at}: cat '#{t['cat']}' is not one of #{fam['cats'].join(', ')}" unless fam["cats"].include?(t["cat"])

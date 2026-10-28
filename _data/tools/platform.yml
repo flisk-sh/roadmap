@@ -128,7 +128,7 @@
 
 - id: cdktf
   name: CDK for Terraform
-  sym: C3
+  sym: Ckt
   cat: Infrastructure as code
   tagline: Terraform in general-purpose languages, now deprecated
   url: https://developer.hashicorp.com/terraform/cdktf
@@ -157,7 +157,7 @@
 
 - id: port
   name: Port
-  sym: P0
+  sym: Prt
   cat: Developer portals
   tagline: Hosted internal developer portal with a flexible data model
   url: https://www.port.io
@@ -171,7 +171,7 @@
 
 - id: cortex
   name: Cortex
-  sym: C4
+  sym: Ctx
   cat: Developer portals
   tagline: Hosted portal focused on service scorecards and ownership
   url: https://www.cortex.io
@@ -281,7 +281,7 @@
 
 - id: circleci
   name: CircleCI
-  sym: C5
+  sym: Cci
   cat: CI/CD
   tagline: Hosted CI/CD with Docker, machine and macOS executors
   url: https://circleci.com
@@ -490,7 +490,7 @@
 
 - id: datadog
   name: Datadog
-  sym: D0
+  sym: Ddg
   cat: Observability
   tagline: Hosted monitoring, APM and logs platform
   url: https://www.datadoghq.com
@@ -533,7 +533,7 @@
 
 - id: doppler
   name: Doppler
-  sym: D1
+  sym: Dpl
   cat: Secrets and supply chain
   tagline: Hosted secrets manager that injects env vars
   url: https://www.doppler.com
@@ -616,7 +616,7 @@
 
 - id: dependabot
   name: Dependabot
-  sym: D2
+  sym: Dbt
   cat: Secrets and supply chain
   tagline: GitHub's built-in dependency and security updates
   url: https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain
@@ -644,7 +644,7 @@
 
 - id: syft
   name: Syft
-  sym: S0
+  sym: Syf
   cat: Secrets and supply chain
   tagline: Generate SBOMs from images and filesystems, by Anchore
   url: https://github.com/anchore/syft
@@ -671,7 +671,7 @@
 
 - id: cosign
   name: Cosign
-  sym: C6
+  sym: Csg
   cat: Secrets and supply chain
   tagline: Sign and verify container images, part of Sigstore
   url: https://www.sigstore.dev
@@ -699,7 +699,7 @@
 
 - id: snyk
   name: Snyk
-  sym: S1
+  sym: Snk
   cat: Secrets and supply chain
   tagline: Hosted scanning for dependencies, code, containers and IaC
   url: https://snyk.io

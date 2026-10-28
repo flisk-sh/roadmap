@@ -600,7 +600,7 @@
         }, grid);
         el("span", { class: "t-n", text: t.n }, tile);
         el("span", { class: "t-lic", text: LIC_SHORT[t.license] || "" }, tile);
-        el("span", { class: "t-sym", text: t.sym }, tile);
+        el("span", { class: "t-sym" + (t.sym.length > 2 ? " t-sym-3" : ""), text: t.sym }, tile);
         el("span", { class: "t-name", text: t.name }, tile);
         el("span", { class: "t-formula", text: "Dx" + t.x / 10 + "·Pa" + t.y / 10 }, tile);
       });
