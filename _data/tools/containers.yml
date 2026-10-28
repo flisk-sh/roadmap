@@ -329,6 +329,7 @@
 
 - id: kubernetes
   name: Kubernetes
+  reference: true          # a reference point, not a local tool: left out of Ask's top-five lists
   sym: K8
   cat: Local Kubernetes
   tagline: Upstream container orchestration, as a reference point

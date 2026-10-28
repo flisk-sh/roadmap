@@ -835,3 +835,20 @@ body.cmp-open { overflow: hidden; }
 .skill-chip span { font-size: 0.68rem; color: var(--faint); font-family: var(--font-mono); }
 .skill-chip.is-hot, .skill-chip:focus-visible { border-color: var(--accent); }
 .skill-chip.is-dim { opacity: 0.3; }
+
+/* Ask: bottom line, switch view, legend */
+.ask-bottom { margin: 0.2rem 0 0.8rem; padding: 0.8rem 0.9rem; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); background: color-mix(in srgb, var(--accent) 6%, var(--surface)); }
+.ask-bottom h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-text); margin: 0 0 0.4rem; }
+.ask-fit { margin: 0 0 0.5rem; }
+.ask-picks { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.45rem; }
+.ask-picks li { font-size: 0.88rem; line-height: 1.45; }
+.ask-picks .tt-ring { vertical-align: 1px; margin: 0 0.2rem; }
+.ask-warn { color: var(--assess); font-weight: 500; }
+.ask-legend { margin: 0.6rem 0 0; font-size: 0.75rem; color: var(--faint); }
+.ask-switch { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 0.5rem; margin: 0 0 0.8rem; }
+.ask-switch > div { padding: 0.7rem 0.8rem; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--line); }
+.ask-switch h3 { font-size: 0.85rem; margin: 0 0 0.3rem; }
+.ask-switch .gain h3 { color: var(--adopt); } .ask-switch .lose h3 { color: var(--hold); }
+.ask-switch ul { margin: 0; padding-left: 1.1rem; font-size: 0.85rem; }
+/* The tool names stay on screen while you scroll the checks. */
+@media (min-width: 900px) { .ask-table { overflow: visible; } .ask-table thead th { top: 0; } }

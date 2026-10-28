@@ -11,7 +11,10 @@
 #                  right; for "near", right means it did not pick this skill.
 #   Followed right Haiku gets the whole SKILL.md and the first "should" request and says its
 #                  first action. A second, batched Haiku call checks that action against the
-#                  skill's own first step.
+#                  first step in the test. An answer that fails gets one appeal: Haiku reads the
+#                  skill itself and decides whether the action is what THIS skill says to do first.
+#                  The test's first step was written by another model and can miss things (a
+#                  required preamble command, say), so the skill text has the last word.
 #
 # Score: (picked + 2 x followed) out of 5, shown out of 100.
 # The test questions were written from each skill's text by a stronger model; Haiku only
@@ -21,6 +24,7 @@
 #   ruby scripts/eval-skills.rb --limit 5           smoke test on 5 skills, writes nothing
 #   ruby scripts/eval-skills.rb --only gstack-ship  one skill, merged into the results file
 #   ruby scripts/eval-skills.rb --jobs 8            parallel calls (default 6)
+#   ruby scripts/eval-skills.rb --regrade           only rerun the appeal on failed follows in the results file
 require "json"
 require "net/http"
 require "open3"
@@ -35,6 +39,7 @@ args = ARGV.dup
 opt = ->(name) { i = args.index(name); i ? args[i + 1] : nil }
 LIMIT = opt.("--limit")&.to_i
 ONLY = opt.("--only")
+REGRADE = args.include?("--regrade")
 JOBS = (opt.("--jobs") || 6).to_i
 CHUNK = 40
 
@@ -103,10 +108,61 @@ def pool(items, jobs)
   end.each(&:join)
 end
 
+# The appeal: the skill text decides, not the test's one-line summary of it.
+SYSTEM_APPEAL = "You check whether a coding agent followed a skill. Judge only by the skill text. Reply with JSON only."
+def appeal(skill, req, answer)
+  prompt = "<skill>\n#{skill['_md'].to_s[0, 9000]}\n</skill>\n\nUser request: #{req}\n" \
+           "Agent's first action: #{answer}\n" \
+           "A reviewer expected this first step: #{skill.dig('eval', 'first_step')}\n\n" \
+           "The reviewer may have missed something the skill requires first, such as a setup or preamble command. " \
+           "Is the agent's first action what THIS skill tells it to do first for this request? " \
+           "Reply as {\"ok\": true or false, \"why\": \"one short sentence\"}."
+  json_from(claude(SYSTEM_APPEAL, prompt)) || {}
+end
+
+def appeal_all(skills, results)
+  failed = skills.select { |s| s["_md"] && results[s["id"]]["follow"] && !results[s["id"]]["follow"]["ok"] && !results[s["id"]]["follow"]["answer"].to_s.empty? }
+  pool(failed, JOBS) do |s|
+    f = results[s["id"]]["follow"]
+    v = appeal(s, Array(s.dig("eval", "should")).first, f["answer"])
+    $lock.synchronize do
+      f["appealed"] = true
+      f["ok"] = v["ok"] == true
+      f["why"] = v["why"].to_s[0, 200] unless v["why"].to_s.empty?
+    end
+  end
+  failed.size
+end
+
+def score_of(r)
+  routes = r["routes"] || []
+  picked = routes.count { |x| x["ok"] }
+  followed = r.dig("follow", "ok") ? 1 : 0
+  { "score" => ((picked + 2 * followed) * 100.0 / (routes.size + 2)).round, "picked" => picked, "picked_of" => routes.size,
+    "followed" => followed, "followed_of" => 1 }
+end
+
 skills = Dir[File.join(ROOT, "_data/skills/*.yml")].sort.flat_map { |f| YAML.load_file(f) || [] }
 skills = skills.select { |s| s["id"] == ONLY } if ONLY
 skills = skills.first(LIMIT) if LIMIT
 abort "no skills to test" if skills.empty?
+
+if REGRADE
+  prev = JSON.parse(File.read(OUT))
+  results = prev["skills"]
+  todo = skills.select { |s| results[s["id"]] && !results[s["id"]].dig("follow", "ok") && !results[s["id"]].dig("follow", "appealed") }
+  pool(todo, 12) { |s| s["_md"] = fetch_skill(s["source"], s["path"]) }
+  n = appeal_all(todo, results)
+  results.each_value { |r| r.merge!(score_of(r)) }
+  prev["skills"] = results
+  prev["calls"] = prev["calls"].to_i + $calls
+  prev["cost_usd"] = (prev["cost_usd"].to_f + $cost).round(2)
+  prev["appealed"] = Time.now.utc.iso8601
+  File.write(OUT, JSON.pretty_generate(prev) + "\n")
+  won = todo.count { |s| results[s["id"]].dig("follow", "ok") }
+  printf("Appealed %d failed follows, %d upheld by the skill text; %d calls, $%.2f\n", n, won, $calls, $cost)
+  exit 0
+end
 puts "Testing #{skills.size} skills with #{MODEL}, #{JOBS} at a time"
 
 # 1. Read every SKILL.md from GitHub.
@@ -181,19 +237,12 @@ pool(graded.each_slice(15).to_a, JOBS) do |batch|
   end
 end
 
-# 5. Scores.
+# 5. Appeal failed follows against the skill text, then score.
+appeal_all(skills, results)
 out = {}
 skills.each do |s|
   r = results[s["id"]]
-  routes = r["routes"]
-  picked = routes.count { |x| x["ok"] }
-  followed = r.dig("follow", "ok") ? 1 : 0
-  out[s["id"]] = {
-    "score" => ((picked + 2 * followed) * 100.0 / (routes.size + 2)).round,
-    "picked" => picked, "picked_of" => routes.size,
-    "followed" => followed, "followed_of" => 1,
-    "routes" => routes, "follow" => r["follow"]
-  }
+  out[s["id"]] = score_of(r).merge("routes" => r["routes"], "follow" => r["follow"])
 end
 
 printf("%d calls, $%.2f\n", $calls, $cost)

@@ -1002,8 +1002,69 @@
     Object.keys(ALIAS).forEach(function (k) { if (BY_ID[ALIAS[k]]) NAME_INDEX[norm(k)] = ALIAS[k]; });
     return NAME_INDEX;
   }
+  // Words in a question that point at a checklist item, so "for laptops" or "new hires" change the ranking.
+  var NEEDS = [
+    [/laptop|ram|memory|lightweight|light\b|battery|slow machine/, "dx", "light"],
+    [/onboard|new hire|junior|day one|beginner|learn/, "dx", "docs"],
+    [/onboard|new hire|zero.?config|quick setup|easy setup/, "dx", "zero-config"],
+    [/windows|cross.?platform|mixed team/, "dx", "cross-platform"],
+    [/hot reload|live reload|fast feedback|inner loop|iterate/, "dx", "fast-feedback"],
+    [/\bui\b|dashboard|visual/, "dx", "ui"],
+    [/offline|no account|air.?gap|privacy/, "dx", "offline"],
+    [/\bmcp\b|ai can drive|agent.?ready|for (my |our )?(coding )?agents? to use|drive it with (an )?ai/, "dx", "agent-ready"],
+    [/kubernetes|k8s|helm|cluster/, "parity", "k8s"],
+    [/microservice|many services|multi.?service/, "parity", "multi-service"],
+    [/database|postgres|mysql|queue|state|durable/, "parity", "state"],
+    [/\baws\b|gcp|azure|cloud/, "parity", "cloud-apis"],
+    [/secret|config|compliance/, "parity", "config-secrets"],
+    [/observab|tracing|metrics|logs\b/, "parity", "observability"],
+    [/big team|large team|enterprise|\d{2,} (engineers|devs|developers|people)|org\b|organization/, "parity", "team-scale"]
+  ];
+  function needsOf(q) {
+    var t = " " + String(q || "").toLowerCase() + " ", out = [];
+    NEEDS.forEach(function (n) {
+      if (n[0].test(t) && !out.some(function (o) { return o.id === n[2]; })) {
+        var c = D.rubric[n[1]].criteria.filter(function (x) { return x.id === n[2]; })[0];
+        if (c) out.push({ axis: n[1], id: n[2], label: c.label });
+      }
+    });
+    return out;
+  }
+  function has(t, need) {
+    return (need.axis === "dx" ? t.dx : t.parity).indexOf(need.id) !== -1;
+  }
+
+  // Edit distance, for typos like "scaffol" or "terrafrom".
+  function lev(a, b) {
+    if (Math.abs(a.length - b.length) > 2) return 9;
+    var d = [];
+    for (var i = 0; i <= a.length; i++) { d[i] = [i]; }
+    for (var j = 1; j <= b.length; j++) d[0][j] = j;
+    for (i = 1; i <= a.length; i++) for (j = 1; j <= b.length; j++)
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    return d[a.length][b.length];
+  }
+  function fuzzy(word) {
+    if (word.length < 4 || STOP.test(word)) return null;
+    var idx = nameIndex(), limit = word.length <= 5 ? 1 : 2, best = null, bd = limit + 1;
+    Object.keys(idx).forEach(function (k) {
+      if (k.indexOf(" ") !== -1 || k.length < 3) return;
+      var d = lev(word, k);
+      if (d < bd) { bd = d; best = idx[k]; }
+    });
+    return bd <= limit ? best : null;
+  }
+
   // Longest match first: "docker compose watch" beats "docker compose" beats "docker".
+  // Words after "for" are context ("for k8s dev", "for our monorepo"), not more tools to compare.
   function findTools(text) {
+    var main = text;
+    var m = /^(.*?\S)\s+(?:for|on|in|with|at)\s+(.+)$/i.exec(text);
+    if (m && scan(m[1], false).length >= 1) main = m[1];
+    var found = scan(main, true);
+    return found;
+  }
+  function scan(text, allowFuzzy) {
     var words = norm(text).split(" ").filter(Boolean), idx = nameIndex(), found = [];
     for (var i = 0; i < words.length;) {
       var hit = null, len = 0;
@@ -1011,11 +1072,12 @@
         var key = words.slice(i, i + n).join(" ");
         if (idx[key] && !(n === 1 && STOP.test(key))) { hit = idx[key]; len = n; break; }
       }
+      if (!hit && allowFuzzy) { hit = fuzzy(words[i]); len = 1; }
       if (hit) { if (found.indexOf(hit) === -1) found.push(hit); i += len; } else i++;
     }
     return found;
   }
-  // "package manager", "agent framework": match a category (singular or plural).
+  // "package manager", "local kubernetes", "agent framework": match a category (singular or plural).
   function findCategory(text) {
     var q = " " + norm(text) + " ", best = null;
     D.families.forEach(function (f) {
@@ -1026,40 +1088,100 @@
         }
       });
     });
-    if (!best && /many services|multi.?service|microservice/.test(q)) best = { fam: FAM["inner-loop"], cat: "Live-update loops" };
+    if (!best && /many services|multi.?service|microservice/.test(q)) best = { fam: FAM["inner-loop"], cat: "Live-update loops", n: "" };
+    if (!best && /\bmcp\b/.test(q)) best = { fam: FAM.agents, cat: "Agent tools and MCP", n: "" };
+    if (!best && /coding (agent|assistant)|ai (coding|editor)/.test(q)) best = { fam: FAM.agents, cat: "Coding agents", n: "" };
     return best;
   }
-  function rank(t) {
+  function rank(t, needs) {
     var ring = { adopt: 30, trial: 15, assess: 5, hold: -40 }[t.ring] || 0;
-    return t.x + t.y + ring;
+    var fit = (needs || []).filter(function (n) { return has(t, n); }).length * 25;
+    return t.x + t.y + ring + fit - (t.reference ? 1000 : 0);
   }
 
+  // Verdict cards that say who wins, or who is tied and at what.
   function verdicts(tools) {
     function top(key, label, fmt) {
-      var best = tools.slice().sort(function (a, b) { return key(b) - key(a); })[0];
-      var tie = tools.filter(function (t) { return key(t) === key(best); }).length > 1;
-      return "<li><span>" + label + "</span><b>" + (tie ? "tie" : esc(best.name)) + "</b> <span class=\"muted\">" + (tie ? "" : fmt(best)) + "</span></li>";
+      var vals = tools.map(key), best = Math.max.apply(null, vals);
+      var winners = tools.filter(function (t) { return key(t) === best; });
+      var who = winners.length === tools.length ? (tools.length === 2 ? "Both" : "All " + tools.length) : winners.map(function (t) { return esc(t.name); }).join(" = ");
+      return "<li><span>" + label + "</span><b>" + who + "</b> <span class=\"muted\">" + fmt(winners[0]) + (winners.length > 1 ? " each" : "") + "</span></li>";
     }
     var ringOrder = { adopt: 3, trial: 2, assess: 1, hold: 0 };
     var out = [
       top(function (t) { return t.x; }, "Easiest to use", function (t) { return t.x + "/100"; }),
       top(function (t) { return t.y; }, "Made for the biggest systems", function (t) { return t.y + "/100"; }),
-      top(function (t) { return ringOrder[t.ring] || 0; }, "Safest to adopt", function (t) { return ringOf(t.ring).label; })
+      top(function (t) { return ringOrder[t.ring] || 0; }, "Safest to adopt", function (t) { return ringOf(t.ring).label + ": " + ringWord(t.ring); })
     ];
     if (tools.every(gh)) out.push(top(function (t) { return gh(t).stars; }, "Most GitHub stars", function (t) { return "★ " + fmtStars(gh(t).stars); }));
-    var held = tools.filter(function (t) { return t.ring === "hold"; });
-    if (held.length) out.push('<li class="warn"><span>Careful</span><b>' + held.map(function (t) { return esc(t.name); }).join(", ") + "</b> <span class=\"muted\">in Hold: avoid for now</span></li>");
     return '<ul class="ask-verdicts">' + out.join("") + "</ul>";
   }
+  function ringWord(r) {
+    return { adopt: "use it", trial: "try it", assess: "watch it", hold: "avoid for now" }[r] || "";
+  }
+  function labelsOf(t, axis, ids) {
+    return D.rubric[axis].criteria.filter(function (c) { return ids.indexOf(c.id) !== -1; }).map(function (c) { return c.label; });
+  }
+  // What only this tool has, among the ones shown: the honest "pick it if".
+  function edges(t, tools) {
+    var others = tools.filter(function (o) { return o !== t; });
+    var only = function (axis, list) {
+      return list.filter(function (id) { return others.every(function (o) { return (axis === "dx" ? o.dx : o.parity).indexOf(id) === -1; }); });
+    };
+    return labelsOf(t, "dx", only("dx", t.dx)).concat(labelsOf(t, "parity", only("parity", t.parity)));
+  }
+  function watchOut(t) {
+    var w = [];
+    if (t.ring === "hold") w.push("in Hold: avoid for now");
+    if (t.license === "paid") w.push("paid");
+    else if (t.license === "freemium") w.push("free tier, paid plans");
+    var g = gh(t);
+    if (g && g.archived) w.push("repo archived on GitHub");
+    return w;
+  }
 
-  function aiPrompt(question, tools) {
+  // The bottom line: a best match for the question when it names a need, then one line per tool.
+  function bottomLine(tools, needs, question) {
+    var html = '<div class="ask-bottom"><h3>Bottom line</h3>';
+    if (needs.length) {
+      var scored = tools.map(function (t) { return { t: t, n: needs.filter(function (n) { return has(t, n); }).length }; });
+      var max = Math.max.apply(null, scored.map(function (x) { return x.n; }));
+      var best = scored.filter(function (x) { return x.n === max; }).map(function (x) { return x.t; }).sort(function (a, b) { return rank(b) - rank(a); });
+      html += '<p class="ask-fit">You asked about <b>' + needs.map(function (n) { return esc(n.label.toLowerCase()); }).join(", ") + "</b>. " +
+        (max === 0 ? "None of these tools checks that box." :
+          "Best fit: <b>" + esc(best[0].name) + "</b>" + (best.length > 1 ? " (tied with " + best.slice(1).map(function (t) { return esc(t.name); }).join(", ") + ", ahead on overall score)" : "") + ", " + max + " of " + needs.length + ".") + "</p>";
+    }
+    html += '<ul class="ask-picks">' + tools.map(function (t) {
+      var e = edges(t, tools), w = watchOut(t);
+      return '<li><b>' + esc(t.name) + '</b> <span class="tt-ring ring-' + esc(t.ring) + '">' + ringOf(t.ring).label + "</span> " +
+        (e.length ? "Pick it if you want: " + e.slice(0, 4).map(esc).join(", ") + "." : '<span class="muted">Nothing on the checklist that the others lack.</span>') +
+        (w.length ? ' <span class="ask-warn">Watch out: ' + w.map(esc).join(", ") + ".</span>" : "") +
+        (t.note ? ' <span class="muted">' + esc(t.note) + "</span>" : "") + "</li>";
+    }).join("") + "</ul>";
+    html += '<p class="ask-legend">Scores are out of 100: 10 points per check, from a public checklist. Adopt = use it, Trial = try it, Assess = watch it, Hold = avoid for now. ' +
+      "Not covered here: pricing, benchmarks, migration effort. Ask your AI below with this data for those.</p></div>";
+    return html;
+  }
+
+  // "Should we move from A to B": what you gain and what you lose.
+  function switchView(from, to) {
+    var gain = labelsOf(to, "dx", to.dx.filter(function (id) { return from.dx.indexOf(id) === -1; }))
+      .concat(labelsOf(to, "parity", to.parity.filter(function (id) { return from.parity.indexOf(id) === -1; })));
+    var lose = labelsOf(from, "dx", from.dx.filter(function (id) { return to.dx.indexOf(id) === -1; }))
+      .concat(labelsOf(from, "parity", from.parity.filter(function (id) { return to.parity.indexOf(id) === -1; })));
+    var li = function (x) { return "<li>" + esc(x) + "</li>"; };
+    return '<div class="ask-switch"><div class="gain"><h3>You gain</h3><ul>' + (gain.length ? gain.map(li).join("") : "<li class=\"muted\">Nothing new on the checklist</li>") + "</ul></div>" +
+      '<div class="lose"><h3>You lose</h3><ul>' + (lose.length ? lose.map(li).join("") : "<li class=\"muted\">Nothing on the checklist</li>") + "</ul></div></div>" +
+      (to.note ? '<p class="ask-legend"><b>' + esc(to.name) + ":</b> " + esc(to.note) + "</p>" : "");
+  }
+
+  function aiPrompt(question, tools, needs) {
     var lines = tools.map(function (t) {
-      var dx = D.rubric.dx.criteria.filter(function (c) { return t.dx.indexOf(c.id) !== -1; }).map(function (c) { return c.label; });
-      var pa = D.rubric.parity.criteria.filter(function (c) { return t.parity.indexOf(c.id) !== -1; }).map(function (c) { return c.label; });
-      return "- " + t.name + ": " + t.tagline + ". Ring: " + ringOf(t.ring).label + ". Easy to use " + t.x + "/100 (" + dx.join(", ") + "). Made for big, real systems " + t.y + "/100 (" + pa.join(", ") + ")." + (t.note ? " Caveat: " + t.note : "");
+      return "- " + t.name + ": " + t.tagline + ". Ring: " + ringOf(t.ring).label + ". Easy to use " + t.x + "/100 (" + labelsOf(t, "dx", t.dx).join(", ") + "). Made for big, real systems " + t.y + "/100 (" + labelsOf(t, "parity", t.parity).join(", ") + ")." + (t.note ? " Caveat: " + t.note : "");
     });
     return question + "\n\nData from roadmap.flisk.si (community-edited, checklist scores):\n" + lines.join("\n") +
-      "\n\nAs a tech lead, which should my team pick, and why? Ask me about our team size, stack and constraints if it changes the answer.";
+      (needs && needs.length ? "\nWhat I care about: " + needs.map(function (n) { return n.label; }).join(", ") + "." : "") +
+      "\n\nAs a tech lead, which should my team pick, and why? Cover what this data does not: pricing, performance, migration effort. Ask me about our team size, stack and constraints if it changes the answer.";
   }
   function aiRow(prompt) {
     return '<div class="ask-ai"><span>Want an opinion? Ask your AI:</span>' +
@@ -1073,8 +1195,12 @@
     if (!box) return;
     question = String(question || "").trim();
     if (!question) { box.innerHTML = ""; return; }
+    var needs = needsOf(question);
     var ids = findTools(question);
-    var html = "";
+    var cat = findCategory(question);
+    // "best local kubernetes": a category asked as a question beats one tool that happens to match a word of it.
+    if (ids.length === 1 && cat && /\b(best|top|which|good|recommend|pick)\b/i.test(question)) ids = [];
+    var isSwitch = ids.length === 2 && /\b(from|move|moving|migrate|migrating|switch|switching|replace|leave)\b/i.test(question);
     var cmdLink = function (list) {
       var u = cmdUrl(list);
       return u ? '<a class="btn" target="_blank" rel="noopener" href="' + esc(u) + '">Compare their commands ↗</a>' : "";
@@ -1082,40 +1208,37 @@
     var compassLink = function (list) {
       return '<a class="btn" href="' + base + "/compass/?compare=" + list.map(encodeURIComponent).join(",") + '">See them on the Compass</a>';
     };
+    var tools, head, sub = "";
     if (ids.length >= 2) {
-      var picked = ids.slice(0, 5), tools = picked.map(function (id) { return BY_ID[id]; });
-      html += '<h2 class="ask-title">' + tools.map(function (t) { return esc(t.name); }).join(" <span>vs</span> ") + "</h2>";
-      if (ids.length > 5) html += '<p class="muted">Showing the first 5 tools you named.</p>';
-      html += verdicts(tools);
-      html += '<div class="ask-actions">' + compassLink(picked) + cmdLink(picked) + "</div>";
-      html += '<div class="cmp-scroll ask-table">' + panelTable(tools) + "</div>";
-      html += aiRow(aiPrompt(question, tools));
+      tools = ids.slice(0, 5).map(function (id) { return BY_ID[id]; });
+      head = isSwitch ? "Moving from " + esc(tools[0].name) + " to " + esc(tools[1].name)
+        : tools.map(function (t) { return esc(t.name); }).join(" <span>vs</span> ");
+      if (ids.length > 5) sub = "Showing the first 5 tools you named.";
     } else if (ids.length === 1) {
-      var t = BY_ID[ids[0]];
-      var alts = TOOLS.filter(function (x) { return x.cat === t.cat && x.id !== t.id; }).sort(function (a, b) { return rank(b) - rank(a); }).slice(0, 4);
-      var set = [t].concat(alts);
-      html += '<h2 class="ask-title">' + esc(t.name) + " <span>and its closest alternatives</span></h2>";
-      html += '<p class="muted">Same category: ' + esc(t.cat) + ". Name two or more tools to compare only those.</p>";
-      html += verdicts(set);
-      html += '<div class="ask-actions">' + compassLink(set.map(function (x) { return x.id; })) + cmdLink(set.map(function (x) { return x.id; })) + "</div>";
-      html += '<div class="cmp-scroll ask-table">' + panelTable(set) + "</div>";
-      html += aiRow(aiPrompt(question, set));
+      var t0 = BY_ID[ids[0]];
+      tools = [t0].concat(TOOLS.filter(function (x) { return x.cat === t0.cat && x.id !== t0.id; }).sort(function (a, b) { return rank(b, needs) - rank(a, needs); }).slice(0, 4));
+      head = esc(t0.name) + " <span>and its closest alternatives</span>";
+      sub = "Same category: " + esc(t0.cat) + ". Name two or more tools to compare only those.";
+    } else if (cat) {
+      tools = TOOLS.filter(function (x) { return x.cat === cat.cat; }).sort(function (a, b) { return rank(b, needs) - rank(a, needs); }).slice(0, 5);
+      head = "Top " + esc(cat.cat.toLowerCase());
+      sub = "Ranked by easy to use + made for big systems, plus a bonus for Adopt" + (needs.length ? " and for " + needs.map(function (n) { return esc(n.label.toLowerCase()); }).join(", ") : "") + ". Tools in Hold sink.";
     } else {
-      var hit = findCategory(question);
-      if (hit) {
-        var best = TOOLS.filter(function (x) { return x.cat === hit.cat; }).sort(function (a, b) { return rank(b) - rank(a); }).slice(0, 5);
-        html += '<h2 class="ask-title">Top ' + esc(hit.cat.toLowerCase()) + "</h2>";
-        html += '<p class="muted">Ranked by easy to use + made for big systems, plus a bonus for Adopt. Tools in Hold sink.</p>';
-        html += verdicts(best);
-        html += '<div class="ask-actions">' + compassLink(best.map(function (x) { return x.id; })) + "</div>";
-        html += '<div class="cmp-scroll ask-table">' + panelTable(best) + "</div>";
-        html += aiRow(aiPrompt(question, best));
-      } else {
-        html += '<p class="ask-none">No tools found in that. Name them, like <b>yarn vs npm</b>, or a kind of tool, like <b>agent framework</b>.</p>';
-      }
+      box.innerHTML = '<p class="ask-none">No tools found in that. Name them, like <b>yarn vs npm</b>, or a kind of tool, like <b>agent framework</b>.</p>';
+      return;
     }
+    var list = tools.map(function (t) { return t.id; });
+    var html = '<h2 class="ask-title">' + head + "</h2>" + (sub ? '<p class="muted">' + sub + "</p>" : "");
+    html += isSwitch ? switchView(tools[0], tools[1]) : "";
+    html += verdicts(tools) + bottomLine(tools, needs, question);
+    html += '<div class="ask-actions">' + compassLink(list) + cmdLink(list) +
+      '<label class="cmp-diff"><input type="checkbox" id="ask-all"> Show every check, not only differences</label></div>';
+    html += '<div class="cmp-scroll ask-table only-diff" id="ask-table">' + panelTable(tools) + "</div>";
+    html += aiRow(aiPrompt(question, tools, needs));
     box.innerHTML = html;
     box.querySelectorAll(".cmp-rm").forEach(function (b) { b.remove(); });
+    var all = box.querySelector("#ask-all");
+    if (all) all.addEventListener("change", function () { box.querySelector("#ask-table").classList.toggle("only-diff", !all.checked); });
   }
 
   function typewriter(input, phrases) {
@@ -1327,7 +1450,7 @@
       row("Last release", tools.map(function (t) { var g = gh(t); return cell(g && g.release ? ago(g.release) + (g.version ? " <span class=\"muted\">" + esc(g.version) + "</span>" : "") : '<span class="muted">none on GitHub</span>'); }), false);
     }
     row("Ring", tools.map(function (t) {
-      return cell('<span class="tt-ring ring-' + esc(t.ring) + '" title="' + esc(ringOf(t.ring).help || "") + '">' + esc(ringOf(t.ring).label) + "</span>");
+      return cell('<span class="tt-ring ring-' + esc(t.ring) + '" title="' + esc(ringOf(t.ring).help || "") + '">' + esc(ringOf(t.ring).label) + '</span> <span class="muted">' + ringWord(t.ring) + "</span>");
     }), allSame(tools.map(function (t) { return t.ring; })));
 
     [["dx", "Easy to use?", "x"], ["parity", "Made for big, real systems?", "y"]].forEach(function (ax) {
