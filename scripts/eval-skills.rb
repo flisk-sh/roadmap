@@ -23,6 +23,7 @@
 #   ruby scripts/eval-skills.rb                     all skills, results file rewritten
 #   ruby scripts/eval-skills.rb --limit 5           smoke test on 5 skills, writes nothing
 #   ruby scripts/eval-skills.rb --only gstack-ship  one skill, merged into the results file
+#   ruby scripts/eval-skills.rb --source flisk-sh/flisk-skills,flisk-sh/flisk   only these repos, merged
 #   ruby scripts/eval-skills.rb --jobs 8            parallel calls (default 6)
 #   ruby scripts/eval-skills.rb --regrade           only rerun the appeal on failed follows in the results file
 require "json"
@@ -39,6 +40,7 @@ args = ARGV.dup
 opt = ->(name) { i = args.index(name); i ? args[i + 1] : nil }
 LIMIT = opt.("--limit")&.to_i
 ONLY = opt.("--only")
+SOURCES = opt.("--source")&.split(",")
 REGRADE = args.include?("--regrade")
 JOBS = (opt.("--jobs") || 6).to_i
 CHUNK = 40
@@ -144,6 +146,7 @@ end
 
 skills = Dir[File.join(ROOT, "_data/skills/*.yml")].sort.flat_map { |f| YAML.load_file(f) || [] }
 skills = skills.select { |s| s["id"] == ONLY } if ONLY
+skills = skills.select { |s| SOURCES.include?(s["source"]) } if SOURCES
 skills = skills.first(LIMIT) if LIMIT
 abort "no skills to test" if skills.empty?
 
@@ -253,13 +256,14 @@ if LIMIT
 end
 
 prev = File.exist?(OUT) ? JSON.parse(File.read(OUT)) : {}
-merged = ONLY ? (prev["skills"] || {}).merge(out) : out
-File.write(OUT, JSON.pretty_generate({
-  "model" => $model_id || MODEL,
-  "ran" => Time.now.utc.iso8601,
-  "calls" => $calls,
-  "cost_usd" => $cost.round(2),
+merged = ONLY || SOURCES ? (prev["skills"] || {}).merge(out) : out
+partial = ONLY || SOURCES
+File.write(OUT, JSON.pretty_generate(prev.merge(
+  "model" => $model_id || prev["model"] || MODEL,
+  "ran" => partial ? prev["ran"] || Time.now.utc.iso8601 : Time.now.utc.iso8601,
+  "calls" => (partial ? prev["calls"].to_i : 0) + $calls,
+  "cost_usd" => ((partial ? prev["cost_usd"].to_f : 0) + $cost).round(2),
   "skills" => merged
-}) + "\n")
+)) + "\n")
 avg = merged.values.sum { |v| v["score"] } / [merged.size, 1].max
 puts "Wrote #{OUT}: #{merged.size} skills, average score #{avg}"

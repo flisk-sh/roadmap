@@ -852,3 +852,5 @@ body.cmp-open { overflow: hidden; }
 .ask-switch ul { margin: 0; padding-left: 1.1rem; font-size: 0.85rem; }
 /* The tool names stay on screen while you scroll the checks. */
 @media (min-width: 900px) { .ask-table { overflow: visible; } .ask-table thead th { top: 0; } }
+
+.ask-overall { margin: 0 0 0.5rem; font-size: 0.95rem; }

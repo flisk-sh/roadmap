@@ -1,5 +1,5 @@
 {
-  "fetched": "2026-10-28T11:57:59Z",
+  "fetched": "2026-10-28T12:45:16Z",
   "tools": {
     "npm": {
       "stars": 10224,
@@ -11,7 +11,7 @@
     "pnpm": {
       "stars": 36939,
       "archived": false,
-      "pushed": "2026-10-28T11:40:40Z",
+      "pushed": "2026-10-28T12:26:28Z",
       "release": "2026-10-21T11:16:52Z",
       "version": "v12.15.0"
     },
@@ -23,9 +23,9 @@
       "version": "@yarnpkg/cli/4.18.1"
     },
     "bun": {
-      "stars": 96446,
+      "stars": 96445,
       "archived": false,
-      "pushed": "2026-10-28T11:49:24Z",
+      "pushed": "2026-10-28T12:39:25Z",
       "release": "2026-10-22T10:11:32Z",
       "version": "bun-v1.4.4"
     },
@@ -37,7 +37,7 @@
       "version": "v2.9.8"
     },
     "uv": {
-      "stars": 91283,
+      "stars": 91288,
       "archived": false,
       "pushed": "2026-10-28T06:25:39Z",
       "release": "2026-10-27T00:47:49Z",
@@ -51,7 +51,7 @@
       "version": null
     },
     "poetry": {
-      "stars": 34324,
+      "stars": 34325,
       "archived": false,
       "pushed": "2026-10-28T04:02:20Z",
       "release": "2026-09-20T07:16:50Z",
@@ -72,7 +72,7 @@
       "version": "hatch-v1.18.2"
     },
     "pipenv": {
-      "stars": 25020,
+      "stars": 25021,
       "archived": false,
       "pushed": "2026-10-28T08:11:56Z",
       "release": "2026-10-25T12:12:04Z",
@@ -95,7 +95,7 @@
     "pixi": {
       "stars": 7916,
       "archived": false,
-      "pushed": "2026-10-28T10:40:10Z",
+      "pushed": "2026-10-28T12:28:33Z",
       "release": "2026-10-22T16:17:15Z",
       "version": "v0.83.0"
     },
@@ -163,7 +163,7 @@
       "version": "swift-6.4.0-RELEASE"
     },
     "mise": {
-      "stars": 35481,
+      "stars": 35483,
       "archived": false,
       "pushed": "2026-10-28T11:06:39Z",
       "release": "2026-10-27T10:23:17Z",
@@ -184,7 +184,7 @@
       "version": "v0.40.8"
     },
     "fnm": {
-      "stars": 27222,
+      "stars": 27223,
       "archived": false,
       "pushed": "2026-10-26T16:28:14Z",
       "release": "2026-03-06T15:23:47Z",
@@ -219,7 +219,7 @@
       "version": null
     },
     "sdkman": {
-      "stars": 6874,
+      "stars": 6875,
       "archived": false,
       "pushed": "2026-10-24T12:10:34Z",
       "release": "2026-10-24T12:10:35Z",
@@ -249,28 +249,28 @@
     "rspack": {
       "stars": 12960,
       "archived": false,
-      "pushed": "2026-10-28T10:59:11Z",
+      "pushed": "2026-10-28T12:39:10Z",
       "release": "2026-10-13T08:50:05Z",
       "version": "v2.2.9"
     },
     "rolldown": {
-      "stars": 13986,
+      "stars": 13987,
       "archived": false,
-      "pushed": "2026-10-28T11:35:41Z",
+      "pushed": "2026-10-28T12:01:18Z",
       "release": "2026-10-21T13:12:08Z",
       "version": "v1.2.15"
     },
     "turbopack": {
-      "stars": 143176,
+      "stars": 143177,
       "archived": false,
-      "pushed": "2026-10-28T11:20:37Z",
+      "pushed": "2026-10-28T12:37:48Z",
       "release": "2026-10-23T13:32:31Z",
       "version": "v16.4.3"
     },
     "webpack": {
       "stars": 65972,
       "archived": false,
-      "pushed": "2026-10-28T11:49:30Z",
+      "pushed": "2026-10-28T12:34:47Z",
       "release": "2026-10-23T12:13:00Z",
       "version": "v5.112.2"
     },
@@ -289,7 +289,7 @@
       "version": "v2.16.4"
     },
     "swc": {
-      "stars": 34204,
+      "stars": 34203,
       "archived": false,
       "pushed": "2026-10-28T08:16:42Z",
       "release": "2026-10-22T11:42:08Z",
@@ -305,14 +305,14 @@
     "bazel": {
       "stars": 26007,
       "archived": false,
-      "pushed": "2026-10-28T11:52:06Z",
+      "pushed": "2026-10-28T12:35:11Z",
       "release": "2026-10-21T02:23:16Z",
       "version": "9.3.1"
     },
     "buck2": {
-      "stars": 4501,
+      "stars": 4502,
       "archived": false,
-      "pushed": "2026-10-28T11:39:07Z",
+      "pushed": "2026-10-28T12:33:59Z",
       "release": null,
       "version": null
     },
@@ -331,7 +331,7 @@
       "version": "v0.8.16"
     },
     "dagger": {
-      "stars": 16528,
+      "stars": 16527,
       "archived": false,
       "pushed": "2026-10-28T10:14:24Z",
       "release": "2026-10-21T22:50:26Z",
@@ -375,7 +375,7 @@
     "flox": {
       "stars": 4188,
       "archived": false,
-      "pushed": "2026-10-28T09:17:09Z",
+      "pushed": "2026-10-28T12:39:38Z",
       "release": "2026-10-27T12:06:07Z",
       "version": "v1.19.2"
     },
@@ -424,7 +424,7 @@
     "coder": {
       "stars": 17210,
       "archived": false,
-      "pushed": "2026-10-28T11:52:46Z",
+      "pushed": "2026-10-28T12:38:56Z",
       "release": "2026-10-27T00:43:13Z",
       "version": "v2.37.7"
     },
@@ -436,7 +436,7 @@
       "version": "7.124.0"
     },
     "code-server": {
-      "stars": 79720,
+      "stars": 79721,
       "archived": false,
       "pushed": "2026-10-27T21:05:57Z",
       "release": "2026-10-23T23:04:54Z",
@@ -508,7 +508,7 @@
     "devspace": {
       "stars": 5213,
       "archived": false,
-      "pushed": "2026-10-28T11:26:42Z",
+      "pushed": "2026-10-28T12:23:21Z",
       "release": "2026-04-22T19:03:12Z",
       "version": "v6.3.21"
     },
@@ -541,7 +541,7 @@
       "version": "v2.83.0"
     },
     "helm": {
-      "stars": 30380,
+      "stars": 30379,
       "archived": false,
       "pushed": "2026-10-28T10:27:22Z",
       "release": "2026-10-15T01:08:37Z",
@@ -667,7 +667,7 @@
       "version": "1.0.20240109.1"
     },
     "k9s": {
-      "stars": 34888,
+      "stars": 34889,
       "archived": false,
       "pushed": "2026-10-27T20:40:04Z",
       "release": "2026-06-06T14:13:12Z",
@@ -723,7 +723,7 @@
       "version": "v7.1.1"
     },
     "process-compose": {
-      "stars": 2903,
+      "stars": 2904,
       "archived": false,
       "pushed": "2026-10-26T23:41:15Z",
       "release": "2026-10-26T23:45:18Z",
@@ -772,7 +772,7 @@
       "version": "v10.0.6"
     },
     "mprocs": {
-      "stars": 2778,
+      "stars": 2779,
       "archived": false,
       "pushed": "2026-10-25T21:42:41Z",
       "release": "2026-10-25T21:43:26Z",
@@ -786,7 +786,7 @@
       "version": "v3.1.14"
     },
     "air": {
-      "stars": 24099,
+      "stars": 24098,
       "archived": false,
       "pushed": "2026-08-27T02:41:09Z",
       "release": "2026-08-01T14:40:15Z",
@@ -828,16 +828,16 @@
       "version": "v0.3.2"
     },
     "docker-engine": {
-      "stars": 72218,
+      "stars": 72219,
       "archived": false,
-      "pushed": "2026-10-28T11:46:02Z",
+      "pushed": "2026-10-28T11:57:09Z",
       "release": "2026-10-20T20:51:17Z",
       "version": "docker-v29.9.2"
     },
     "podman": {
-      "stars": 33140,
+      "stars": 33141,
       "archived": false,
-      "pushed": "2026-10-28T11:41:43Z",
+      "pushed": "2026-10-28T12:01:51Z",
       "release": "2026-10-12T20:59:46Z",
       "version": "v6.1.4"
     },
@@ -856,7 +856,7 @@
       "version": "v1.24.0"
     },
     "colima": {
-      "stars": 31427,
+      "stars": 31428,
       "archived": false,
       "pushed": "2026-10-13T21:49:45Z",
       "release": "2026-06-04T17:14:15Z",
@@ -870,14 +870,14 @@
       "version": "v2.2.1"
     },
     "containerd": {
-      "stars": 21445,
+      "stars": 21446,
       "archived": false,
       "pushed": "2026-10-27T22:22:03Z",
       "release": "2026-10-13T22:35:06Z",
       "version": "v2.4.2"
     },
     "nerdctl": {
-      "stars": 10457,
+      "stars": 10458,
       "archived": false,
       "pushed": "2026-10-28T06:37:35Z",
       "release": "2026-10-02T22:07:27Z",
@@ -891,7 +891,7 @@
       "version": "v1.19.0"
     },
     "apple-container": {
-      "stars": 50942,
+      "stars": 50944,
       "archived": false,
       "pushed": "2026-10-28T03:34:16Z",
       "release": "2026-10-23T23:26:12Z",
@@ -940,7 +940,7 @@
       "version": "v5.9.0"
     },
     "k3s": {
-      "stars": 34268,
+      "stars": 34270,
       "archived": false,
       "pushed": "2026-10-28T08:19:09Z",
       "release": "2026-09-30T16:10:38Z",
@@ -970,14 +970,14 @@
     "vcluster": {
       "stars": 11366,
       "archived": false,
-      "pushed": "2026-10-27T13:32:09Z",
+      "pushed": "2026-10-28T12:40:09Z",
       "release": "2026-10-20T21:33:55Z",
       "version": "v0.37.4"
     },
     "kubernetes": {
-      "stars": 128582,
+      "stars": 128584,
       "archived": false,
-      "pushed": "2026-10-28T11:31:44Z",
+      "pushed": "2026-10-28T12:37:45Z",
       "release": "2026-10-28T04:37:53Z",
       "version": "v1.37.2"
     },
@@ -1045,7 +1045,7 @@
       "version": "v2.103.4"
     },
     "portainer": {
-      "stars": 38736,
+      "stars": 38735,
       "archived": false,
       "pushed": "2026-10-27T13:06:39Z",
       "release": "2026-10-21T23:20:29Z",
@@ -1094,14 +1094,14 @@
       "version": "v15.34.1"
     },
     "miniflare": {
-      "stars": 4673,
+      "stars": 4674,
       "archived": false,
-      "pushed": "2026-10-28T11:42:22Z",
+      "pushed": "2026-10-28T12:33:11Z",
       "release": "2026-10-27T17:14:48Z",
       "version": "@cloudflare/vitest-plugin@1.4.9"
     },
     "fake-gcs-server": {
-      "stars": 1490,
+      "stars": 1491,
       "archived": false,
       "pushed": "2026-10-27T18:22:51Z",
       "release": "2026-08-24T03:52:45Z",
@@ -1110,19 +1110,19 @@
     "supabase-cli": {
       "stars": 2445,
       "archived": false,
-      "pushed": "2026-10-28T11:43:53Z",
+      "pushed": "2026-10-28T12:39:00Z",
       "release": "2026-10-23T11:00:22Z",
       "version": "v2.122.0"
     },
     "appwrite": {
-      "stars": 57787,
+      "stars": 57786,
       "archived": false,
-      "pushed": "2026-10-28T11:43:57Z",
+      "pushed": "2026-10-28T12:42:22Z",
       "release": "2026-10-24T13:40:08Z",
       "version": "2.6.2"
     },
     "convex": {
-      "stars": 12764,
+      "stars": 12765,
       "archived": false,
       "pushed": "2026-10-28T02:21:37Z",
       "release": "2026-10-10T01:03:51Z",
@@ -1152,7 +1152,7 @@
     "mockoon": {
       "stars": 8463,
       "archived": false,
-      "pushed": "2026-10-28T10:05:22Z",
+      "pushed": "2026-10-28T12:03:14Z",
       "release": "2026-09-16T08:00:31Z",
       "version": "v9.9.0"
     },
@@ -1171,7 +1171,7 @@
       "version": "v3.0.3"
     },
     "mailpit": {
-      "stars": 10778,
+      "stars": 10779,
       "archived": false,
       "pushed": "2026-10-28T03:50:43Z",
       "release": "2026-10-22T22:04:42Z",
@@ -1241,7 +1241,7 @@
       "version": "7.10.1"
     },
     "drizzle": {
-      "stars": 36169,
+      "stars": 36171,
       "archived": false,
       "pushed": "2026-10-28T09:21:30Z",
       "release": "2026-10-08T10:47:32Z",
@@ -1297,28 +1297,28 @@
       "version": "rel_1_20_1"
     },
     "kysely": {
-      "stars": 14309,
+      "stars": 14311,
       "archived": false,
       "pushed": "2026-10-28T07:45:15Z",
       "release": "2026-10-17T15:52:22Z",
       "version": "v0.29.7"
     },
     "typeorm": {
-      "stars": 36664,
+      "stars": 36663,
       "archived": false,
       "pushed": "2026-10-25T18:37:08Z",
       "release": "2026-10-08T07:21:48Z",
       "version": "1.1.2"
     },
     "sequelize": {
-      "stars": 30347,
+      "stars": 30348,
       "archived": false,
       "pushed": "2026-10-28T08:14:53Z",
       "release": "2026-03-07T18:44:44Z",
       "version": "v6.37.8"
     },
     "sqlalchemy": {
-      "stars": 12268,
+      "stars": 12269,
       "archived": false,
       "pushed": "2026-10-27T22:56:07Z",
       "release": "2026-10-21T16:25:11Z",
@@ -1339,7 +1339,7 @@
       "version": "v1.31.1"
     },
     "mikro-orm": {
-      "stars": 9263,
+      "stars": 9264,
       "archived": false,
       "pushed": "2026-10-28T11:45:27Z",
       "release": "2026-10-09T12:30:43Z",
@@ -1355,7 +1355,7 @@
     "nx": {
       "stars": 29435,
       "archived": false,
-      "pushed": "2026-10-28T11:49:03Z",
+      "pushed": "2026-10-28T12:34:11Z",
       "release": "2026-10-26T19:49:02Z",
       "version": "24.0.2"
     },
@@ -1395,7 +1395,7 @@
       "version": null
     },
     "changesets": {
-      "stars": 12535,
+      "stars": 12536,
       "archived": false,
       "pushed": "2026-10-26T07:22:21Z",
       "release": "2026-09-14T15:27:19Z",
@@ -1404,12 +1404,12 @@
     "aspire": {
       "stars": 6388,
       "archived": false,
-      "pushed": "2026-10-28T11:35:04Z",
+      "pushed": "2026-10-28T11:56:19Z",
       "release": "2026-10-24T11:45:13Z",
       "version": "v13.6.4"
     },
     "encore": {
-      "stars": 12642,
+      "stars": 12644,
       "archived": false,
       "pushed": "2026-10-26T17:00:25Z",
       "release": "2026-10-20T19:18:07Z",
@@ -1418,19 +1418,19 @@
     "dapr": {
       "stars": 26165,
       "archived": false,
-      "pushed": "2026-10-28T11:38:47Z",
+      "pushed": "2026-10-28T12:32:15Z",
       "release": "2026-10-22T13:54:07Z",
       "version": "v1.19.0"
     },
     "wasp": {
       "stars": 18792,
       "archived": false,
-      "pushed": "2026-10-28T11:44:01Z",
+      "pushed": "2026-10-28T12:22:11Z",
       "release": "2026-10-23T18:28:00Z",
       "version": "v0.26.1"
     },
     "redwoodjs": {
-      "stars": 17589,
+      "stars": 17590,
       "archived": false,
       "pushed": "2026-10-25T02:41:33Z",
       "release": "2025-10-21T10:06:32Z",
@@ -1446,7 +1446,7 @@
     "quarkus": {
       "stars": 15969,
       "archived": false,
-      "pushed": "2026-10-28T11:11:22Z",
+      "pushed": "2026-10-28T12:42:45Z",
       "release": "2026-10-19T14:15:59Z",
       "version": "3.40.1.1"
     },
@@ -1465,9 +1465,9 @@
       "version": "v5.2.20"
     },
     "rails": {
-      "stars": 58856,
+      "stars": 58857,
       "archived": false,
-      "pushed": "2026-10-28T06:19:05Z",
+      "pushed": "2026-10-28T11:58:30Z",
       "release": "2026-09-24T14:19:52Z",
       "version": "v8.1.4"
     },
@@ -1479,16 +1479,16 @@
       "version": "v13.39.0"
     },
     "django": {
-      "stars": 91530,
+      "stars": 91531,
       "archived": false,
-      "pushed": "2026-10-28T07:57:38Z",
+      "pushed": "2026-10-28T12:07:33Z",
       "release": null,
       "version": null
     },
     "nextjs": {
-      "stars": 143176,
+      "stars": 143177,
       "archived": false,
-      "pushed": "2026-10-28T11:20:37Z",
+      "pushed": "2026-10-28T12:37:48Z",
       "release": "2026-10-23T13:32:31Z",
       "version": "v16.4.3"
     },
@@ -1500,28 +1500,28 @@
       "version": "react-router@8.5.1"
     },
     "astro": {
-      "stars": 63545,
+      "stars": 63547,
       "archived": false,
-      "pushed": "2026-10-28T11:42:15Z",
+      "pushed": "2026-10-28T12:28:15Z",
       "release": "2026-10-21T14:14:11Z",
       "version": "@astrojs/vue@7.1.2"
     },
     "nestjs": {
-      "stars": 76930,
+      "stars": 76932,
       "archived": false,
       "pushed": "2026-10-28T08:02:51Z",
       "release": "2026-10-28T11:41:13Z",
       "version": "v12.3.0"
     },
     "hono": {
-      "stars": 32735,
+      "stars": 32736,
       "archived": false,
-      "pushed": "2026-10-28T10:44:03Z",
+      "pushed": "2026-10-28T12:21:08Z",
       "release": "2026-10-25T07:19:38Z",
       "version": "v4.13.14"
     },
     "fastapi": {
-      "stars": 104234,
+      "stars": 104237,
       "archived": false,
       "pushed": "2026-10-27T04:56:28Z",
       "release": "2026-10-23T18:47:17Z",
@@ -1535,7 +1535,7 @@
       "version": "v4.17.2"
     },
     "serverless-framework": {
-      "stars": 46923,
+      "stars": 46924,
       "archived": false,
       "pushed": "2026-10-27T18:13:34Z",
       "release": "2026-10-20T21:37:17Z",
@@ -1556,14 +1556,14 @@
       "version": "v5.8.6"
     },
     "wrangler": {
-      "stars": 4673,
+      "stars": 4674,
       "archived": false,
-      "pushed": "2026-10-28T11:42:22Z",
+      "pushed": "2026-10-28T12:33:11Z",
       "release": "2026-10-27T17:14:48Z",
       "version": "@cloudflare/vitest-plugin@1.4.9"
     },
     "vercel-cli": {
-      "stars": 16461,
+      "stars": 16462,
       "archived": false,
       "pushed": "2026-10-28T05:23:48Z",
       "release": "2026-07-30T20:36:49Z",
@@ -1607,12 +1607,12 @@
     "jhipster": {
       "stars": 22461,
       "archived": false,
-      "pushed": "2026-10-28T08:03:56Z",
+      "pushed": "2026-10-28T12:23:06Z",
       "release": "2026-09-18T02:04:52Z",
       "version": "v9.4.0"
     },
     "cookiecutter": {
-      "stars": 25170,
+      "stars": 25171,
       "archived": false,
       "pushed": "2026-04-01T17:46:44Z",
       "release": "2026-03-04T04:16:14Z",
@@ -1635,7 +1635,7 @@
     "terraform": {
       "stars": 50082,
       "archived": false,
-      "pushed": "2026-10-28T10:57:16Z",
+      "pushed": "2026-10-28T12:05:23Z",
       "release": "2026-10-21T17:32:54Z",
       "version": "v1.17.0"
     },
@@ -1654,7 +1654,7 @@
       "version": "v3.272.0"
     },
     "aws-cdk": {
-      "stars": 12955,
+      "stars": 12956,
       "archived": false,
       "pushed": "2026-10-28T11:05:32Z",
       "release": "2026-10-26T19:26:26Z",
@@ -1677,7 +1677,7 @@
     "terragrunt": {
       "stars": 9902,
       "archived": false,
-      "pushed": "2026-10-28T02:43:47Z",
+      "pushed": "2026-10-28T12:15:53Z",
       "release": "2026-10-23T18:53:21Z",
       "version": "v1.2.1"
     },
@@ -1696,16 +1696,16 @@
       "version": "v0.21.0"
     },
     "backstage": {
-      "stars": 34729,
+      "stars": 34731,
       "archived": false,
-      "pushed": "2026-10-28T11:42:53Z",
+      "pushed": "2026-10-28T12:33:57Z",
       "release": "2026-10-22T13:10:25Z",
       "version": "v1.56.2"
     },
     "port": {
       "stars": 194,
       "archived": false,
-      "pushed": "2026-10-28T11:08:08Z",
+      "pushed": "2026-10-28T12:28:30Z",
       "release": "2026-10-26T14:38:45Z",
       "version": "v0.56.2"
     },
@@ -1733,7 +1733,7 @@
     "kratix": {
       "stars": 785,
       "archived": false,
-      "pushed": "2026-10-28T11:39:54Z",
+      "pushed": "2026-10-28T12:25:23Z",
       "release": "2026-10-28T10:16:11Z",
       "version": "latest"
     },
@@ -1766,7 +1766,7 @@
       "version": "v4.8.1"
     },
     "act": {
-      "stars": 72473,
+      "stars": 72472,
       "archived": false,
       "pushed": "2026-10-28T07:03:02Z",
       "release": "2026-06-01T03:22:22Z",
@@ -1808,9 +1808,9 @@
       "version": "v0.164.0"
     },
     "grafana": {
-      "stars": 77565,
+      "stars": 77566,
       "archived": false,
-      "pushed": "2026-10-28T11:52:54Z",
+      "pushed": "2026-10-28T12:38:27Z",
       "release": "2026-10-27T11:08:50Z",
       "version": "v13.3.0"
     },
@@ -1836,30 +1836,30 @@
       "version": "v0.38.1"
     },
     "signoz": {
-      "stars": 32473,
+      "stars": 32472,
       "archived": false,
-      "pushed": "2026-10-28T11:55:28Z",
+      "pushed": "2026-10-28T12:41:23Z",
       "release": "2026-10-28T06:44:35Z",
       "version": "v0.148.0"
     },
     "sentry": {
-      "stars": 45666,
+      "stars": 45665,
       "archived": false,
-      "pushed": "2026-10-28T11:51:15Z",
+      "pushed": "2026-10-28T12:27:57Z",
       "release": "2026-10-16T00:55:43Z",
       "version": "26.10.0"
     },
     "loki": {
       "stars": 29085,
       "archived": false,
-      "pushed": "2026-10-28T11:53:57Z",
+      "pushed": "2026-10-28T12:26:59Z",
       "release": "2026-10-20T22:53:57Z",
       "version": "v3.7.9"
     },
     "datadog": {
       "stars": 3770,
       "archived": false,
-      "pushed": "2026-10-28T11:56:15Z",
+      "pushed": "2026-10-28T12:42:01Z",
       "release": "2026-10-24T03:30:50Z",
       "version": "7.84.6"
     },
@@ -1871,7 +1871,7 @@
       "version": "v2.2.1"
     },
     "openbao": {
-      "stars": 8744,
+      "stars": 8745,
       "archived": false,
       "pushed": "2026-10-27T22:13:38Z",
       "release": "2026-10-26T20:24:37Z",
@@ -1885,9 +1885,9 @@
       "version": "3.77.1"
     },
     "infisical": {
-      "stars": 30067,
+      "stars": 30070,
       "archived": false,
-      "pushed": "2026-10-28T11:00:29Z",
+      "pushed": "2026-10-28T12:39:31Z",
       "release": "2026-10-26T20:03:31Z",
       "version": "v0.167.4"
     },
@@ -1908,7 +1908,7 @@
     "renovate": {
       "stars": 22937,
       "archived": false,
-      "pushed": "2026-10-28T11:54:01Z",
+      "pushed": "2026-10-28T12:43:49Z",
       "release": "2026-10-28T09:07:42Z",
       "version": "44.190.2"
     },
@@ -1920,7 +1920,7 @@
       "version": "v0.402.0"
     },
     "trivy": {
-      "stars": 38804,
+      "stars": 38806,
       "archived": false,
       "pushed": "2026-10-28T10:51:46Z",
       "release": "2026-10-21T11:18:34Z",
@@ -1962,14 +1962,14 @@
       "version": "v1.1308.3"
     },
     "langgraph": {
-      "stars": 44042,
+      "stars": 44043,
       "archived": false,
       "pushed": "2026-10-28T11:46:43Z",
       "release": "2026-10-26T20:04:45Z",
       "version": "1.2.18"
     },
     "langchain": {
-      "stars": 148610,
+      "stars": 148609,
       "archived": false,
       "pushed": "2026-10-28T08:58:08Z",
       "release": "2026-10-22T17:47:38Z",
@@ -1999,7 +1999,7 @@
     "microsoft-agent-framework": {
       "stars": 14354,
       "archived": false,
-      "pushed": "2026-10-28T06:35:06Z",
+      "pushed": "2026-10-28T12:26:52Z",
       "release": "2026-10-23T14:32:13Z",
       "version": "dotnet-1.26.0"
     },
@@ -2013,7 +2013,7 @@
     "mastra": {
       "stars": 29145,
       "archived": false,
-      "pushed": "2026-10-28T11:57:11Z",
+      "pushed": "2026-10-28T12:44:03Z",
       "release": "2026-10-21T12:28:33Z",
       "version": "@mastra/core@1.79.0"
     },
@@ -2034,12 +2034,12 @@
     "google-adk": {
       "stars": 22027,
       "archived": false,
-      "pushed": "2026-10-28T10:34:00Z",
+      "pushed": "2026-10-28T11:58:59Z",
       "release": "2026-10-23T18:08:23Z",
       "version": "v2.13.0"
     },
     "pydantic-ai": {
-      "stars": 20924,
+      "stars": 20925,
       "archived": false,
       "pushed": "2026-10-28T08:47:59Z",
       "release": "2026-10-28T00:55:47Z",
@@ -2055,7 +2055,7 @@
     "haystack": {
       "stars": 26867,
       "archived": false,
-      "pushed": "2026-10-28T11:56:20Z",
+      "pushed": "2026-10-28T12:24:46Z",
       "release": "2026-10-21T19:10:58Z",
       "version": "v3.4.1"
     },
@@ -2067,23 +2067,23 @@
       "version": "3.4.1"
     },
     "vercel-ai-sdk": {
-      "stars": 27561,
+      "stars": 27562,
       "archived": false,
       "pushed": "2026-10-28T04:56:13Z",
       "release": "2026-10-27T23:12:56Z",
       "version": "@ai-sdk/xai@3.0.146"
     },
     "smolagents": {
-      "stars": 30117,
+      "stars": 30118,
       "archived": false,
       "pushed": "2026-10-22T13:55:07Z",
       "release": "2026-05-29T05:09:47Z",
       "version": "v1.26.0"
     },
     "agno": {
-      "stars": 42931,
+      "stars": 42932,
       "archived": false,
-      "pushed": "2026-10-28T11:43:50Z",
+      "pushed": "2026-10-28T12:35:31Z",
       "release": "2026-10-27T19:28:44Z",
       "version": "v3.1.11"
     },
@@ -2095,7 +2095,7 @@
       "version": "0.16.8"
     },
     "temporal": {
-      "stars": 24036,
+      "stars": 24037,
       "archived": false,
       "pushed": "2026-10-28T11:51:14Z",
       "release": "2026-10-08T21:56:07Z",
@@ -2104,26 +2104,26 @@
     "inngest": {
       "stars": 5997,
       "archived": false,
-      "pushed": "2026-10-28T11:27:14Z",
+      "pushed": "2026-10-28T12:34:51Z",
       "release": "2026-10-23T18:33:37Z",
       "version": "v1.49.0"
     },
     "restate": {
-      "stars": 4615,
+      "stars": 4616,
       "archived": false,
-      "pushed": "2026-10-28T11:20:45Z",
+      "pushed": "2026-10-28T12:44:26Z",
       "release": "2026-10-21T12:31:17Z",
       "version": "v1.8.1"
     },
     "model-context-protocol": {
-      "stars": 9551,
+      "stars": 9552,
       "archived": false,
       "pushed": "2026-10-27T17:10:08Z",
       "release": "2026-07-28T16:47:49Z",
       "version": "2026-07-28"
     },
     "mcp-inspector": {
-      "stars": 11176,
+      "stars": 11177,
       "archived": false,
       "pushed": "2026-10-25T05:56:31Z",
       "release": "2026-10-21T18:13:42Z",
@@ -2144,28 +2144,28 @@
       "version": "v1.2.0"
     },
     "mcp-registry": {
-      "stars": 7414,
+      "stars": 7415,
       "archived": false,
-      "pushed": "2026-10-28T11:30:33Z",
+      "pushed": "2026-10-28T12:01:05Z",
       "release": "2026-10-27T14:42:37Z",
       "version": "v1.8.6"
     },
     "fastmcp": {
       "stars": 28222,
       "archived": false,
-      "pushed": "2026-10-28T11:40:22Z",
+      "pushed": "2026-10-28T12:44:28Z",
       "release": "2026-10-26T06:23:37Z",
       "version": "v4.1.4"
     },
     "composio": {
-      "stars": 30782,
+      "stars": 30783,
       "archived": false,
-      "pushed": "2026-10-28T11:04:26Z",
+      "pushed": "2026-10-28T12:29:07Z",
       "release": "2026-10-22T12:44:10Z",
       "version": "@composio/anthropic@0.11.6"
     },
     "skills-sh": {
-      "stars": 36951,
+      "stars": 36956,
       "archived": false,
       "pushed": "2026-10-28T04:18:52Z",
       "release": "2026-10-19T20:34:33Z",
@@ -2179,7 +2179,7 @@
       "version": "stagehand-server-v3/v3.7.7"
     },
     "playwright-mcp": {
-      "stars": 38750,
+      "stars": 38751,
       "archived": false,
       "pushed": "2026-10-22T17:43:26Z",
       "release": "2026-09-28T23:17:11Z",
@@ -2193,28 +2193,28 @@
       "version": "@e2b/cli@2.23.0"
     },
     "claude-code": {
-      "stars": 153676,
+      "stars": 153680,
       "archived": false,
       "pushed": "2026-10-27T22:22:38Z",
       "release": "2026-10-27T20:24:20Z",
       "version": "v2.1.312"
     },
     "codex": {
-      "stars": 131383,
+      "stars": 131387,
       "archived": false,
-      "pushed": "2026-10-28T11:48:20Z",
+      "pushed": "2026-10-28T12:31:42Z",
       "release": "2026-10-27T20:09:38Z",
       "version": "rust-v0.165.0"
     },
     "gemini-cli": {
-      "stars": 108591,
+      "stars": 108592,
       "archived": false,
       "pushed": "2026-10-28T02:26:41Z",
       "release": "2026-10-27T20:26:28Z",
       "version": "v0.66.0"
     },
     "cline": {
-      "stars": 70967,
+      "stars": 70970,
       "archived": false,
       "pushed": "2026-10-28T11:17:53Z",
       "release": "2026-10-26T09:06:50Z",
@@ -2228,23 +2228,23 @@
       "version": "v3.54.0"
     },
     "aider": {
-      "stars": 49789,
+      "stars": 49791,
       "archived": false,
       "pushed": "2026-05-22T14:02:20Z",
       "release": "2025-08-09T17:42:19Z",
       "version": "v0.86.0"
     },
     "continue": {
-      "stars": 36353,
+      "stars": 36354,
       "archived": false,
       "pushed": "2026-10-27T15:39:03Z",
       "release": "2026-06-19T00:24:01Z",
       "version": "v2.0.0-vscode"
     },
     "zed": {
-      "stars": 92333,
+      "stars": 92334,
       "archived": false,
-      "pushed": "2026-10-28T09:18:03Z",
+      "pushed": "2026-10-28T12:41:49Z",
       "release": "2026-10-23T13:45:48Z",
       "version": "v1.25.3"
     },
@@ -2256,14 +2256,14 @@
       "version": "v0.2026.06.03.09.49.stable_00"
     },
     "opencode": {
-      "stars": 222582,
+      "stars": 222592,
       "archived": false,
-      "pushed": "2026-10-28T11:31:13Z",
+      "pushed": "2026-10-28T12:37:44Z",
       "release": "2026-10-28T06:17:49Z",
       "version": "v1.19.5"
     },
     "goose": {
-      "stars": 55849,
+      "stars": 55852,
       "archived": false,
       "pushed": "2026-10-28T11:26:22Z",
       "release": "2026-10-23T15:49:34Z",
@@ -2277,23 +2277,23 @@
       "version": "desktop-v2.0.0"
     },
     "ollama": {
-      "stars": 185089,
+      "stars": 185090,
       "archived": false,
       "pushed": "2026-10-28T01:56:22Z",
       "release": "2026-10-27T00:07:12Z",
       "version": "v0.40.12"
     },
     "llama-cpp": {
-      "stars": 132609,
+      "stars": 132615,
       "archived": false,
-      "pushed": "2026-10-28T11:48:46Z",
+      "pushed": "2026-10-28T12:37:48Z",
       "release": "2026-10-15T17:13:19Z",
       "version": "v0.7.0"
     },
     "vllm": {
-      "stars": 95756,
+      "stars": 95755,
       "archived": false,
-      "pushed": "2026-10-28T11:47:42Z",
+      "pushed": "2026-10-28T12:44:44Z",
       "release": "2026-10-18T06:50:48Z",
       "version": "v0.32.0"
     },
@@ -2319,16 +2319,16 @@
       "version": "v0.8.8"
     },
     "mlx-lm": {
-      "stars": 7492,
+      "stars": 7493,
       "archived": false,
       "pushed": "2026-10-28T08:04:33Z",
       "release": "2026-10-16T02:49:02Z",
       "version": "v0.32.2"
     },
     "langfuse": {
-      "stars": 36634,
+      "stars": 36635,
       "archived": false,
-      "pushed": "2026-10-28T11:50:34Z",
+      "pushed": "2026-10-28T12:44:51Z",
       "release": "2026-10-27T15:03:06Z",
       "version": "v4.71.0"
     },
@@ -2361,16 +2361,16 @@
       "version": "braintrust@3.40.0"
     },
     "promptfoo": {
-      "stars": 26544,
+      "stars": 26545,
       "archived": false,
       "pushed": "2026-10-28T08:26:35Z",
       "release": "2026-10-25T01:53:11Z",
       "version": "0.125.1"
     },
     "opik": {
-      "stars": 22984,
+      "stars": 22985,
       "archived": false,
-      "pushed": "2026-10-28T11:52:32Z",
+      "pushed": "2026-10-28T12:45:03Z",
       "release": "2026-10-28T11:20:08Z",
       "version": "2.2.129"
     }

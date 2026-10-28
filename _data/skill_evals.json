@@ -1,8 +1,8 @@
 {
   "model": "claude-haiku-4-5-20251001",
   "ran": "2026-10-28T12:12:59Z",
-  "calls": 636,
-  "cost_usd": 8.59,
+  "calls": 731,
+  "cost_usd": 9.6,
   "skills": {
     "anthropics-claude-api": {
       "score": 100,
@@ -11386,6 +11386,1773 @@
         "ok": false,
         "appealed": true,
         "why": "Skill requires detecting available browser tools (playwright-cli, Playwright MCP, or Chrome MCP) first, before proceeding to request the URL."
+      }
+    },
+    "flisk-agents": {
+      "score": 40,
+      "picked": 2,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "set up a local stack with my chat agent and an MCP tools server so I can test sessions",
+          "expect": "this",
+          "got": "flisk-ai-agent-build",
+          "ok": false
+        },
+        {
+          "prompt": "I want my agent's conversation state to survive restarts while I develop locally",
+          "expect": "this",
+          "got": "flisk-agents",
+          "ok": true
+        },
+        {
+          "prompt": "ship my finished agent to Fly.io",
+          "expect": "not",
+          "got": "flisk-deploy-fly",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will first check if a Flisk project is already initialized in `/Users/san4osq/tdk-pr-work/roadmap` using `project_info`, and initialize one if needed.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill workflow immediately prescribes 'Scaffold' with flisk resource commands; project initialization is not mentioned."
+      }
+    },
+    "flisk-ai-agent-build": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "start an agent app next to my backend with flisk, with an MCP server for its tools",
+          "expect": "this",
+          "got": "flisk-ai-agent-build",
+          "ok": true
+        },
+        {
+          "prompt": "scaffold the agent, the tools server and the stack in one go",
+          "expect": "this",
+          "got": "flisk-ai-agent-build",
+          "ok": true
+        },
+        {
+          "prompt": "add a Python API with Postgres to my existing stack",
+          "expect": "not",
+          "got": "flisk-python",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will first check the current project status to identify existing stacks and resources.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's workflow shows creating the bot resource first (flisk resource bot --type agent...), not checking project status."
+      }
+    },
+    "flisk-benchmark": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "how many services can my 16 GB laptop run with flisk before it chokes?",
+          "expect": "this",
+          "got": "flisk-benchmark",
+          "ok": true
+        },
+        {
+          "prompt": "my flisk up takes forever, find the slow generator step",
+          "expect": "not",
+          "got": "flisk-starlark-perf",
+          "ok": true
+        },
+        {
+          "prompt": "measure idle memory per container for my stack, docker stats looks too low",
+          "expect": "this",
+          "got": "flisk-benchmark",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll verify your Flisk project is configured and the benchmark tools are available by checking the project info and runtime.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's first workflow step is 'Prefer the verified tools in flisk', not project verification."
+      }
+    },
+    "flisk-build-runtimes": {
+      "score": 80,
+      "picked": 2,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "add a Svelte frontend to my shop stack",
+          "expect": "this",
+          "got": "flisk-frontend",
+          "ok": false
+        },
+        {
+          "prompt": "which language and framework should my new Flisk backend use, I like Fastify",
+          "expect": "this",
+          "got": "flisk-build-runtimes",
+          "ok": true
+        },
+        {
+          "prompt": "I already have a Dockerfile for this service, wire it in",
+          "expect": "not",
+          "got": "flisk-import-any",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will scaffold a Svelte frontend resource in the shop stack using `flisk resource web --type frontend --framework svelte --stack shop --yes`.",
+        "ok": true
+      }
+    },
+    "flisk-byo": {
+      "score": 20,
+      "picked": 1,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "I have a legacy mailer with its own Dockerfile, run it next to my flisk services",
+          "expect": "this",
+          "got": "flisk-import-any",
+          "ok": false
+        },
+        {
+          "prompt": "turn my docker-compose.yml with six services into a Flisk project",
+          "expect": "not",
+          "got": "flisk-import-compose",
+          "ok": true
+        },
+        {
+          "prompt": "bring this vendor image into my stack without scaffolding anything",
+          "expect": "this",
+          "got": "flisk-import-any",
+          "ok": false
+        }
+      ],
+      "follow": {
+        "answer": "I'll check your existing Flisk stacks with `flisk stack_list` to determine where to place the legacy mailer service.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's workflow step 1 explicitly lists creating a directory under services/<stack>/<name>/, not checking existing stacks first."
+      }
+    },
+    "flisk-contributing": {
+      "score": 80,
+      "picked": 2,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "I changed a skill in flisk-skills, how does it get into the flisk checkout?",
+          "expect": "this",
+          "got": "flisk-contributing",
+          "ok": true
+        },
+        {
+          "prompt": "I want to fix a bug in the flisk engine generators, how do I work in this repo?",
+          "expect": "this",
+          "got": "flisk-contributing",
+          "ok": true
+        },
+        {
+          "prompt": "write a new end-to-end suite for a new resource type",
+          "expect": "not",
+          "got": "flisk-contributing",
+          "ok": false
+        }
+      ],
+      "follow": {
+        "answer": "Read `rules/AGENTS.cli-core.md` from the flisk repository and copy it as the root AGENTS.md in your working directory before making any engine or generator edits.",
+        "ok": true
+      }
+    },
+    "flisk-data": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "wipe my local database and start clean, flisk down did not reset it",
+          "expect": "this",
+          "got": "flisk-data",
+          "ok": true
+        },
+        {
+          "prompt": "save a snapshot of the dev data before I try a risky migration",
+          "expect": "this",
+          "got": "flisk-data",
+          "ok": true
+        },
+        {
+          "prompt": "add Drizzle to my orders API and write the first migration",
+          "expect": "not",
+          "got": "flisk-databases",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll check the project status to identify the Postgres volume name that needs to be removed.",
+        "ok": true
+      }
+    },
+    "flisk-databases": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "my backend needs a database, add Postgres and set up Prisma",
+          "expect": "this",
+          "got": "flisk-databases",
+          "ok": true
+        },
+        {
+          "prompt": "reset the dev database to a clean seed",
+          "expect": "not",
+          "got": "flisk-data",
+          "ok": true
+        },
+        {
+          "prompt": "migrations fail on flisk up, help me get Drizzle talking to the local Postgres",
+          "expect": "this",
+          "got": "flisk-databases",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will list the project's resources to identify the existing backend service that needs the database configuration.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill prescribes 'Add a Postgres dependency in service.json or scaffold a service that needs one' as step 1, not listing resources first."
+      }
+    },
+    "flisk-deploy-alongside": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "push my flisk stack to AWS",
+          "expect": "not",
+          "got": "flisk-deploy-aws",
+          "ok": true
+        },
+        {
+          "prompt": "what carries from service.json into our production pipeline?",
+          "expect": "this",
+          "got": "flisk-deploy-alongside",
+          "ok": true
+        },
+        {
+          "prompt": "we deploy with Argo CD, can we still use flisk for local dev?",
+          "expect": "this",
+          "got": "flisk-deploy-alongside",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "Check whether this directory has a Flisk project configured using `project_info`.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's Workflow specifies 'Develop and test with `flisk up`' as the first step, not checking project configuration with project_info."
+      }
+    },
+    "flisk-deploy-aws": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "my flisk stack works locally, get it running on AWS",
+          "expect": "this",
+          "got": "flisk-deploy-aws",
+          "ok": true
+        },
+        {
+          "prompt": "deploy these services to ECS Fargate and keep the DB password in Secrets Manager",
+          "expect": "this",
+          "got": "flisk-deploy-aws",
+          "ok": true
+        },
+        {
+          "prompt": "deploy my React frontend to Cloudflare Pages",
+          "expect": "not",
+          "got": "flisk-deploy-cloudflare",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll run `flisk doctor` to verify your stack is healthy and production-ready before proceeding with the AWS deployment plan.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's first step requires both `flisk doctor && flisk up <stack>`, but the agent only mentioned running `flisk doctor`."
+      }
+    },
+    "flisk-deploy-azure": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "push the images to ACR and deploy with Bicep",
+          "expect": "this",
+          "got": "flisk-deploy-azure",
+          "ok": true
+        },
+        {
+          "prompt": "deploy to Google Cloud Run",
+          "expect": "not",
+          "got": "flisk-deploy-gcp",
+          "ok": true
+        },
+        {
+          "prompt": "ship my flisk stack to Azure Container Apps",
+          "expect": "this",
+          "got": "flisk-deploy-azure",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will run `flisk doctor` and verify your local Flisk stack is healthy and running before proceeding with the Azure deployment.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill requires step 1 to be 'flisk doctor && flisk up <stack>', but the agent only mentioned running 'flisk doctor' without the 'flisk up' command."
+      }
+    },
+    "flisk-deploy-cloudflare": {
+      "score": 80,
+      "picked": 2,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "can the frontend of this stack run on Workers?",
+          "expect": "this",
+          "got": "flisk-deploy-cloudflare",
+          "ok": true
+        },
+        {
+          "prompt": "put my flisk Vite storefront on Cloudflare Pages",
+          "expect": "this",
+          "got": "flisk-deploy-cloudflare",
+          "ok": true
+        },
+        {
+          "prompt": "deploy the Postgres-backed orders API to Cloudflare",
+          "expect": "not",
+          "got": "flisk-deploy-cloudflare",
+          "ok": false
+        }
+      ],
+      "follow": {
+        "answer": "I'll confirm your Flisk frontend is running locally by executing `flisk up`.",
+        "ok": true
+      }
+    },
+    "flisk-deploy-digitalocean": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "I want my stack on a Droplet, how do I get it there?",
+          "expect": "this",
+          "got": "flisk-deploy-digitalocean",
+          "ok": true
+        },
+        {
+          "prompt": "deploy to Heroku with a Procfile",
+          "expect": "not",
+          "got": "flisk-deploy-heroku",
+          "ok": true
+        },
+        {
+          "prompt": "deploy my flisk project to DigitalOcean App Platform",
+          "expect": "this",
+          "got": "flisk-deploy-digitalocean",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will run `flisk doctor` to verify your local Flisk stack is healthy and ready before proceeding with DigitalOcean deployment.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill requires step 1 to be 'flisk doctor && flisk up <stack>' (both commands), but the agent only planned flisk doctor."
+      }
+    },
+    "flisk-deploy-fly": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "write the fly.toml files for my two services and set the secrets",
+          "expect": "this",
+          "got": "flisk-deploy-fly",
+          "ok": true
+        },
+        {
+          "prompt": "run my existing Dockerfile service locally under flisk",
+          "expect": "not",
+          "got": "flisk-import-any",
+          "ok": true
+        },
+        {
+          "prompt": "get my flisk stack running on Fly.io",
+          "expect": "this",
+          "got": "flisk-deploy-fly",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll first run `flisk doctor` to verify your local Flisk stack is healthy and ready before deploying to Fly.io.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill requires step 1 to be `flisk doctor && flisk up <stack>`, but the agent only mentioned running `flisk doctor` without the `flisk up` part."
+      }
+    },
+    "flisk-deploy-gcp": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "deploy to Azure Container Apps",
+          "expect": "not",
+          "got": "flisk-deploy-azure",
+          "ok": true
+        },
+        {
+          "prompt": "push images to Artifact Registry and wire secrets from Secret Manager",
+          "expect": "this",
+          "got": "flisk-deploy-gcp",
+          "ok": true
+        },
+        {
+          "prompt": "deploy my flisk services to Cloud Run",
+          "expect": "this",
+          "got": "flisk-deploy-gcp",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll first run `flisk doctor` to verify that your local Flisk stack is healthy and ready for deployment.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's first step requires 'flisk doctor && flisk up <stack>' but the agent only proposed running flisk doctor without starting the stack."
+      }
+    },
+    "flisk-deploy-heroku": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "set up a Heroku app for the API and move my .env values to config vars",
+          "expect": "this",
+          "got": "flisk-deploy-heroku",
+          "ok": true
+        },
+        {
+          "prompt": "turn my Procfile into a local flisk stack",
+          "expect": "not",
+          "got": "flisk-import-procfile",
+          "ok": true
+        },
+        {
+          "prompt": "deploy my flisk project to Heroku",
+          "expect": "this",
+          "got": "flisk-deploy-heroku",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll first check that your local Flisk stack is working properly by running `flisk doctor` to verify your environment can support it.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill explicitly requires `flisk doctor && flisk up <stack>` as the first step, but the agent only mentioned running `flisk doctor` without the `flisk up` part."
+      }
+    },
+    "flisk-deploy-railway": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "connect the repo to Railway and set the env vars for each service",
+          "expect": "this",
+          "got": "flisk-deploy-railway",
+          "ok": true
+        },
+        {
+          "prompt": "put my flisk stack on Railway",
+          "expect": "this",
+          "got": "flisk-deploy-railway",
+          "ok": true
+        },
+        {
+          "prompt": "deploy to Render with a render.yaml",
+          "expect": "not",
+          "got": "flisk-deploy-render",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will first verify your Flisk stack works locally by running `flisk doctor` to check the environment and `flisk status` to see the current state of your project.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill requires 'flisk doctor && flisk up <stack>' but the agent planned 'flisk doctor' and 'flisk status' instead of 'flisk up'."
+      }
+    },
+    "flisk-deploy-render": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "write a render.yaml for the web and the API",
+          "expect": "this",
+          "got": "flisk-deploy-render",
+          "ok": true
+        },
+        {
+          "prompt": "deploy to Railway",
+          "expect": "not",
+          "got": "flisk-deploy-railway",
+          "ok": true
+        },
+        {
+          "prompt": "deploy my flisk services to Render",
+          "expect": "this",
+          "got": "flisk-deploy-render",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll run `flisk doctor` to verify your local Flisk stack is healthy and ready for deployment.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's first step requires running both `flisk doctor && flisk up <stack>`, but the agent only mentioned `flisk doctor`."
+      }
+    },
+    "flisk-deploy-vercel": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "deploy the whole multi-service stack with Postgres to Vercel",
+          "expect": "not",
+          "got": "none",
+          "ok": true
+        },
+        {
+          "prompt": "set up vercel.json for the frontend folder and fix the API base URL for prod",
+          "expect": "this",
+          "got": "flisk-deploy-vercel",
+          "ok": true
+        },
+        {
+          "prompt": "deploy the storefront from my flisk stack to Vercel",
+          "expect": "this",
+          "got": "flisk-deploy-vercel",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will list the Flisk project's resources to identify the storefront frontend service.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill requires step 1 to be confirming the frontend works locally with 'flisk up' first, not listing resources."
+      }
+    },
+    "flisk-doctor": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "I just cloned this flisk project, is my machine ready?",
+          "expect": "this",
+          "got": "flisk-doctor",
+          "ok": true
+        },
+        {
+          "prompt": "docker is hanging and the whole machine is slow with 100 containers",
+          "expect": "not",
+          "got": "flisk-troubleshoot",
+          "ok": true
+        },
+        {
+          "prompt": "flisk up won't start and I don't know why, check my setup",
+          "expect": "this",
+          "got": "flisk-doctor",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will run `flisk doctor` from your project root to check your environment and project configuration.",
+        "ok": true
+      }
+    },
+    "flisk-doctor-verbose": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "flisk doctor says fine but up still fails, get more detail",
+          "expect": "this",
+          "got": "flisk-doctor-verbose",
+          "ok": true
+        },
+        {
+          "prompt": "I need the debug output of doctor to find a generated-file problem",
+          "expect": "this",
+          "got": "flisk-doctor-verbose",
+          "ok": true
+        },
+        {
+          "prompt": "my Postgres container keeps restarting with an uninitialized password error",
+          "expect": "not",
+          "got": "flisk-troubleshoot",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will run `flisk logs` to capture the actual error message from the failed `up` attempt, since the logs will show what `up` encountered that doctor missed.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill requires step 1: run `flisk doctor` and capture the full output; the agent jumped directly to `flisk logs` instead."
+      }
+    },
+    "flisk-dry-run": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "in CI, check the URLs for the shop stack without launching Docker",
+          "expect": "this",
+          "got": "flisk-dry-run",
+          "ok": true
+        },
+        {
+          "prompt": "show me what flisk up shop would start before you run it",
+          "expect": "this",
+          "got": "flisk-dry-run",
+          "ok": true
+        },
+        {
+          "prompt": "the stack is up, are all services healthy?",
+          "expect": "not",
+          "got": "flisk-ui",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will run `flisk doctor` to verify the project configuration is valid before running the dry-run preview.",
+        "ok": true,
+        "appealed": true,
+        "why": "The skill's Guardrails state that `flisk doctor` is required first to validate the project configuration."
+      }
+    },
+    "flisk-examples": {
+      "score": 80,
+      "picked": 2,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "build me a custom online shop from scratch",
+          "expect": "not",
+          "got": "flisk-examples",
+          "ok": false
+        },
+        {
+          "prompt": "give me the smallest Python backend example for flisk",
+          "expect": "this",
+          "got": "flisk-examples",
+          "ok": true
+        },
+        {
+          "prompt": "show me a working flisk example I can learn from",
+          "expect": "this",
+          "got": "flisk-examples",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll clone the official \"example\" Flisk template which provides a working, runnable multi-service project you can study and learn from.",
+        "ok": true
+      }
+    },
+    "flisk-frontend": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "where does the generated vite config and API client for my frontend live?",
+          "expect": "this",
+          "got": "flisk-frontend",
+          "ok": true
+        },
+        {
+          "prompt": "deploy my frontend to Vercel",
+          "expect": "not",
+          "got": "flisk-deploy-vercel",
+          "ok": true
+        },
+        {
+          "prompt": "add a storefront web app to my shop stack",
+          "expect": "this",
+          "got": "flisk-frontend",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will check the current Flisk project configuration to verify the shop stack exists before scaffolding the new frontend resource.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's workflow prescribes running `flisk resource storefront-web --type frontend --stack shop --yes` as step 1, not verifying the stack exists first."
+      }
+    },
+    "flisk-generated-files": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "flisk says generated files drifted from service.json, what now?",
+          "expect": "this",
+          "got": "flisk-generated-files",
+          "ok": true
+        },
+        {
+          "prompt": "add a new health check path to a service",
+          "expect": "not",
+          "got": "flisk-service-json",
+          "ok": true
+        },
+        {
+          "prompt": "my generated Dockerfile looks wrong, should I just edit it?",
+          "expect": "this",
+          "got": "flisk-generated-files",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "Run `flisk doctor` to check for drift, because generated files like Dockerfiles are overwritten and you must fix your `service.json` instead.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's workflow starts with 'Edit only service.json' (step 1) before running flisk doctor (step 2), but the agent jumped directly to flisk doctor without mentioning the edit-first step."
+      }
+    },
+    "flisk-helm": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "wrap my existing Dockerfile as a local flisk service",
+          "expect": "not",
+          "got": "flisk-import-any",
+          "ok": true
+        },
+        {
+          "prompt": "how do flisk and our Helm values live side by side?",
+          "expect": "this",
+          "got": "flisk-helm",
+          "ok": true
+        },
+        {
+          "prompt": "we ship with Helm, can flisk generate the chart from service.json?",
+          "expect": "this",
+          "got": "flisk-helm",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll clarify that Flisk is a local development-only tool and explicitly does not generate Helm charts or Kubernetes manifests—production deployment remains your responsibility with Helm.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill prescribes Workflow step 1 as 'Develop and test locally with flisk up', not lead with boundary clarification."
+      }
+    },
+    "flisk-import-any": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "run this ghcr image locally behind flisk's proxy, it's a one-shot migration job",
+          "expect": "this",
+          "got": "flisk-import-any",
+          "ok": true
+        },
+        {
+          "prompt": "I have a docker-compose.yml in the repo root",
+          "expect": "not",
+          "got": "flisk-import-compose",
+          "ok": true
+        },
+        {
+          "prompt": "I have a Dockerfile for my worker and no compose file, add it to flisk",
+          "expect": "this",
+          "got": "flisk-import-any",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will check your Flisk project's status and available stacks to determine where to add the worker resource.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's first step is 'Choose the path', but the agent skipped it to check project status instead, without explicitly identifying the case as BYO."
+      }
+    },
+    "flisk-import-compose": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "I only have a Procfile",
+          "expect": "not",
+          "got": "flisk-import-procfile",
+          "ok": true
+        },
+        {
+          "prompt": "what does flisk import drop from my compose file?",
+          "expect": "this",
+          "got": "flisk-import-compose",
+          "ok": true
+        },
+        {
+          "prompt": "my repo has a docker-compose.yml, move it onto flisk up",
+          "expect": "this",
+          "got": "flisk-import-compose",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll run `flisk import . --dry-run` from your repo root to see the plan of what will be imported from your docker-compose.yml.",
+        "ok": true
+      }
+    },
+    "flisk-import-helm": {
+      "score": 40,
+      "picked": 2,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "our service has a Helm chart, set it up for local dev with flisk without touching the chart",
+          "expect": "this",
+          "got": "flisk-import-helm",
+          "ok": true
+        },
+        {
+          "prompt": "convert my chart into a docker-compose file",
+          "expect": "not",
+          "got": "none",
+          "ok": true
+        },
+        {
+          "prompt": "map flisk service.json fields to what Helm already has",
+          "expect": "this",
+          "got": "flisk-helm",
+          "ok": false
+        }
+      ],
+      "follow": {
+        "answer": "I will run `flisk project_info` to check if Flisk is already initialized in this directory, and if not, initialize it with `flisk project_init`.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's workflow starts with keeping the chart untouched and then scaffolding/wrapping a resource, not with initializing a Flisk project."
+      }
+    },
+    "flisk-import-procfile": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "how do I run the release step of my Procfile locally?",
+          "expect": "this",
+          "got": "flisk-import-procfile",
+          "ok": true
+        },
+        {
+          "prompt": "import my docker-compose.yml",
+          "expect": "not",
+          "got": "flisk-import-compose",
+          "ok": true
+        },
+        {
+          "prompt": "my Heroku app has a Procfile with web and worker, run it with flisk",
+          "expect": "this",
+          "got": "flisk-import-procfile",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will read your Procfile to identify the web and worker process commands.",
+        "ok": true
+      }
+    },
+    "flisk-layout": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "add one more backend to my shop stack",
+          "expect": "not",
+          "got": "flisk-scaffold",
+          "ok": true
+        },
+        {
+          "prompt": "two teams both have a service called api, how do we avoid the clash?",
+          "expect": "this",
+          "got": "flisk-layout",
+          "ok": true
+        },
+        {
+          "prompt": "we have 20 services across 4 repos, how should we lay out flisk?",
+          "expect": "this",
+          "got": "flisk-layout",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "Read the Flisk documentation's 20-service layout pattern in `docs/layout.md` to understand the recommended multi-repo structure for your scenario.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill requires step 1 to decide the layout based on team size before consulting patterns; the agent skipped this decision step."
+      }
+    },
+    "flisk-networks": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "port 80 is taken and my services are unreachable",
+          "expect": "not",
+          "got": "flisk-ports",
+          "ok": true
+        },
+        {
+          "prompt": "list everything flisk has routed so I can hit each service",
+          "expect": "this",
+          "got": "flisk-networks",
+          "ok": true
+        },
+        {
+          "prompt": "what URL is my orders API served on?",
+          "expect": "this",
+          "got": "flisk-networks",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll run `flisk network_list` from the project root to inspect the routed URLs and find your orders API endpoint.",
+        "ok": true
+      }
+    },
+    "flisk-ports": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "I need to open the app from my phone on the same wifi",
+          "expect": "this",
+          "got": "flisk-ports",
+          "ok": true
+        },
+        {
+          "prompt": "my flisk services are unreachable on localhost, what port are they on?",
+          "expect": "this",
+          "got": "flisk-ports",
+          "ok": true
+        },
+        {
+          "prompt": "list all the routed URLs in my stack",
+          "expect": "not",
+          "got": "flisk-networks",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will run `flisk networks` (via the network_list tool) to see the exact URLs, ports, and Traefik routing for your services.",
+        "ok": true,
+        "appealed": true,
+        "why": "The skill's Workflow step 1 explicitly states 'Always use the URLs printed by `flisk up` (or `flisk networks`)' — the agent correctly chose to run `flisk networks` as the first action for this exact s"
+      }
+    },
+    "flisk-pr-review-buttons": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "how do those AI review buttons on flisk PRs work?",
+          "expect": "this",
+          "got": "flisk-pr-review-buttons",
+          "ok": true
+        },
+        {
+          "prompt": "add the Review this PR in Grok, Claude and Codex buttons to our repo",
+          "expect": "this",
+          "got": "flisk-pr-review-buttons",
+          "ok": true
+        },
+        {
+          "prompt": "label my pull requests by size",
+          "expect": "not",
+          "got": "none",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll verify that the repository has valid GitHub credentials and a clean working tree by running `gh auth status` and `git status --short`.",
+        "ok": true
+      }
+    },
+    "flisk-python": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "add a FastAPI service to my flisk project",
+          "expect": "this",
+          "got": "flisk-python",
+          "ok": true
+        },
+        {
+          "prompt": "I want my new backend in Python instead of Bun",
+          "expect": "this",
+          "got": "flisk-python",
+          "ok": true
+        },
+        {
+          "prompt": "add a Go service",
+          "expect": "not",
+          "got": "flisk-build-runtimes",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will check the current project structure using `flisk project info` to see which stacks exist before scaffolding the new FastAPI service.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's step 1 explicitly requires scaffolding with type/stack flags, not first checking the project structure."
+      }
+    },
+    "flisk-scaffold": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "add a new orders API to my shop stack",
+          "expect": "this",
+          "got": "flisk-scaffold",
+          "ok": true
+        },
+        {
+          "prompt": "start a new flisk project with a frontend and a backend",
+          "expect": "this",
+          "got": "flisk-scaffold",
+          "ok": true
+        },
+        {
+          "prompt": "bring my existing Dockerfile service in",
+          "expect": "not",
+          "got": "flisk-import-any",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will scaffold a new backend resource named `orders-api` in your shop stack using the `flisk resource` command with `--type backend --stack shop --yes`.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's workflow requires step 1 (decide the stack name) first; the agent skipped to step 3 (scaffold resource) without following the prescribed order."
+      }
+    },
+    "flisk-secrets": {
+      "score": 40,
+      "picked": 2,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "my service needs an API key, where do I put it in flisk?",
+          "expect": "this",
+          "got": "flisk-secrets",
+          "ok": true
+        },
+        {
+          "prompt": "store the production key in AWS Secrets Manager",
+          "expect": "not",
+          "got": "flisk-deploy-aws",
+          "ok": true
+        },
+        {
+          "prompt": "is .flisk/.project-id safe to commit?",
+          "expect": "this",
+          "got": "none",
+          "ok": false
+        }
+      ],
+      "follow": {
+        "answer": "I'll call `project_info` to check the current Flisk project structure and resources.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill starts with the workflow directly and should immediately advise using the gitignored .env or params/secrets mechanism, not check project state first."
+      }
+    },
+    "flisk-service-json": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "change the port and health path of my billing service",
+          "expect": "this",
+          "got": "flisk-service-json",
+          "ok": true
+        },
+        {
+          "prompt": "my generated nginx config is wrong",
+          "expect": "not",
+          "got": "flisk-frontend",
+          "ok": true
+        },
+        {
+          "prompt": "add a dependency on the database to this service's service.json",
+          "expect": "this",
+          "got": "flisk-service-json",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will list the project's resources to locate the billing service and identify its service.json file location.",
+        "ok": true
+      }
+    },
+    "flisk-starlark-perf": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "service discovery is slow on our big monorepo, make it faster",
+          "expect": "this",
+          "got": "flisk-starlark-perf",
+          "ok": true
+        },
+        {
+          "prompt": "how much memory does each container use idle?",
+          "expect": "not",
+          "got": "flisk-benchmark",
+          "ok": true
+        },
+        {
+          "prompt": "flisk up takes minutes before anything builds, why?",
+          "expect": "this",
+          "got": "flisk-starlark-perf",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll run `flisk doctor` to establish a baseline and identify where time is being spent in your Flisk configuration.",
+        "ok": true
+      }
+    },
+    "flisk-troubleshoot": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "Tilt shows pull access denied for my l4-backend golden image",
+          "expect": "this",
+          "got": "flisk-troubleshoot",
+          "ok": true
+        },
+        {
+          "prompt": "flisk down says Docker daemon is not responding",
+          "expect": "this",
+          "got": "flisk-troubleshoot",
+          "ok": true
+        },
+        {
+          "prompt": "set up a brand new flisk project",
+          "expect": "not",
+          "got": "flisk-scaffold",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I run the triage commands to check machine load and Docker responsiveness: `sysctl -n vm.loadavg; top -l 1 -n 0 | grep -E \"CPU usage|PhysMem\"; time docker ps -q | wc -l; pgrep -fl \"tilt up\"; docker info --format 'CPUs={{.NCPU}} MemTotal={{.",
+        "ok": true
+      }
+    },
+    "flisk-ui": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "give me the routed URLs as plain text for a script",
+          "expect": "not",
+          "got": "flisk-networks",
+          "ok": true
+        },
+        {
+          "prompt": "open the flisk dashboard and show me the resources",
+          "expect": "this",
+          "got": "flisk-ui",
+          "ok": true
+        },
+        {
+          "prompt": "is there a TUI to watch my running flisk services?",
+          "expect": "this",
+          "got": "flisk-ui",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I would run `flisk ui` to open the interactive dashboard for inspecting your running services.",
+        "ok": true
+      }
+    },
+    "flisk-upgrade": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "cut a new release of the flisk CLI",
+          "expect": "not",
+          "got": "none",
+          "ok": true
+        },
+        {
+          "prompt": "doctor complains about a version mismatch after I upgraded",
+          "expect": "this",
+          "got": "flisk-upgrade",
+          "ok": true
+        },
+        {
+          "prompt": "update flisk to the latest version and make sure my projects still work",
+          "expect": "this",
+          "got": "flisk-upgrade",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will first check the current Flisk version by running `flisk --version` to see what version you're currently on.",
+        "ok": true
+      }
+    },
+    "flisk-layer-autoresearch": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "measure how many services fit on my laptop right now",
+          "expect": "not",
+          "got": "flisk-benchmark",
+          "ok": true
+        },
+        {
+          "prompt": "experiment with the L4 backend layer and keep only changes that lower mem_per_service_mib",
+          "expect": "this",
+          "got": "flisk-layer-autoresearch",
+          "ok": true
+        },
+        {
+          "prompt": "run autoresearch on the flisk docker layers to cut memory per service",
+          "expect": "this",
+          "got": "flisk-layer-autoresearch",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will propose a run tag (e.g., `oct28`) and walk you through the setup checklist including confirming you've paused any external auto-commit tools before we begin the autoresearch loop.",
+        "ok": false,
+        "appealed": true,
+        "why": "The agent proposed discussing setup but didn't commit to executing the branch creation—the skill requires the first step to actually run `git checkout -b autoresearch/<tag>`, not just walk through the"
+      }
+    },
+    "flisk-cli-agent-ops": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "write the Dockerfile for my service by hand",
+          "expect": "not",
+          "got": "none",
+          "ok": true
+        },
+        {
+          "prompt": "I'm adding a new worker service to this repo with Claude Code, how should it go about it?",
+          "expect": "this",
+          "got": "flisk-cli-agent-ops",
+          "ok": true
+        },
+        {
+          "prompt": "which flisk commands should an agent use to check status and logs of the stack?",
+          "expect": "this",
+          "got": "flisk-cli-agent-ops",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "Run `flisk resource <name> --type worker` using the `resource_create` MCP tool to scaffold the new worker service instead of hand-writing a Dockerfile or Compose manifest.",
+        "ok": true
+      }
+    },
+    "flisk-cli-build": {
+      "score": 40,
+      "picked": 2,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "make an API and a website for tracking my reading list, run it locally",
+          "expect": "this",
+          "got": "flisk-cli-build",
+          "ok": true
+        },
+        {
+          "prompt": "deploy my finished app to AWS",
+          "expect": "not",
+          "got": "none",
+          "ok": true
+        },
+        {
+          "prompt": "build me a small online shop I can run on my laptop",
+          "expect": "this",
+          "got": "flisk-cli-recipe-shop",
+          "ok": false
+        }
+      ],
+      "follow": {
+        "answer": "I'll run `flisk doctor` to check that your machine is ready to build and run the app with Docker and Tilt.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill requires deciding the Docker path first, before any Workflow steps. The agent should have determined that a shop with data needs Docker + Tilt before running flisk doctor."
+      }
+    },
+    "flisk-cli-e2e-author": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "write an e2e suite for the new restart command that talks to a running stack",
+          "expect": "this",
+          "got": "flisk-cli-e2e-author",
+          "ok": true
+        },
+        {
+          "prompt": "I added a new resource type to the CLI, do I need an e2e test?",
+          "expect": "this",
+          "got": "flisk-cli-e2e-author",
+          "ok": true
+        },
+        {
+          "prompt": "add a unit test for a CLI flag parser",
+          "expect": "not",
+          "got": "none",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "Yes, an e2e test is required for a resource type addition; my first concrete action is to examine `cli/src/utils/constants.ts` to identify which resource type you added.",
+        "ok": true
+      }
+    },
+    "flisk-cli-recipe-ai-agent": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "I need a chatbot service plus an MCP server that reads and writes notes",
+          "expect": "this",
+          "got": "flisk-cli-recipe-ai-agent",
+          "ok": true
+        },
+        {
+          "prompt": "build me a blog with an admin API",
+          "expect": "not",
+          "got": "flisk-cli-recipe-blog",
+          "ok": true
+        },
+        {
+          "prompt": "build me an AI assistant with tools and a database, running locally",
+          "expect": "this",
+          "got": "flisk-cli-recipe-ai-agent",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll run `flisk doctor` to verify that your machine has Docker, Tilt, and the Flisk CLI installed and ready.",
+        "ok": true
+      }
+    },
+    "flisk-cli-recipe-blog": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "I want a little news site with an editor login, locally",
+          "expect": "this",
+          "got": "flisk-cli-recipe-blog",
+          "ok": true
+        },
+        {
+          "prompt": "build me a shop with products and orders",
+          "expect": "not",
+          "got": "flisk-cli-recipe-shop",
+          "ok": true
+        },
+        {
+          "prompt": "build me a blog where I can add posts through an admin API",
+          "expect": "this",
+          "got": "flisk-cli-recipe-blog",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll run `flisk doctor` to verify that your machine has Docker, Tilt, and the Flisk CLI ready.",
+        "ok": true
+      }
+    },
+    "flisk-cli-recipe-saas": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "start from the ready-made SaaS starter template",
+          "expect": "not",
+          "got": "flisk-cli-recipe-starters",
+          "ok": true
+        },
+        {
+          "prompt": "build me a SaaS with sign-up, login and subscription plans",
+          "expect": "this",
+          "got": "flisk-cli-recipe-saas",
+          "ok": true
+        },
+        {
+          "prompt": "I need a members area with billing, run it on my machine",
+          "expect": "this",
+          "got": "flisk-cli-recipe-saas",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will run `flisk doctor` to verify your machine can run the Flisk stack.",
+        "ok": true
+      }
+    },
+    "flisk-cli-recipe-shop": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "set up a store with a catalogue page and an order button, locally",
+          "expect": "this",
+          "got": "flisk-cli-recipe-shop",
+          "ok": true
+        },
+        {
+          "prompt": "use the ecommerce starter template",
+          "expect": "not",
+          "got": "flisk-cli-recipe-starters",
+          "ok": true
+        },
+        {
+          "prompt": "build me a small online shop with a product list and orders",
+          "expect": "this",
+          "got": "flisk-cli-recipe-shop",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will run `flisk doctor` to check that your machine can run the Flisk stack.",
+        "ok": true
+      }
+    },
+    "flisk-cli-recipe-starters": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "I need a restaurant reservation system, is there a starter?",
+          "expect": "this",
+          "got": "flisk-cli-recipe-starters",
+          "ok": true
+        },
+        {
+          "prompt": "start me from a working SaaS app with billing and checkout, then I'll change it",
+          "expect": "this",
+          "got": "flisk-cli-recipe-starters",
+          "ok": true
+        },
+        {
+          "prompt": "build a tiny blog from nothing",
+          "expect": "not",
+          "got": "flisk-cli-recipe-blog",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll run `flisk doctor` to check your system is ready to clone and run the restaurant starter app from github.com/flisk-sh.",
+        "ok": true,
+        "appealed": true,
+        "why": "The skill's Steps section lists `flisk doctor` as the first command, and the agent correctly matched the restaurant request to the template before planning this action."
+      }
+    },
+    "flisk-cli-release": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "the Release Binaries run is red and the version is on npm but the GitHub release is a draft",
+          "expect": "this",
+          "got": "flisk-cli-release",
+          "ok": true
+        },
+        {
+          "prompt": "publish my own unrelated npm package",
+          "expect": "not",
+          "got": "none",
+          "ok": true
+        },
+        {
+          "prompt": "release the next flisk version",
+          "expect": "this",
+          "got": "flisk-cli-release",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I check the state of recent release runs and npm to ensure we're not in a half-finished release state.",
+        "ok": true
+      }
+    },
+    "flisk-cli-resource": {
+      "score": 60,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 0,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "create an MCP tools server called tools-mcp in the ai stack",
+          "expect": "this",
+          "got": "flisk-cli-resource",
+          "ok": true
+        },
+        {
+          "prompt": "show me which services are healthy",
+          "expect": "not",
+          "got": "flisk-cli-status",
+          "ok": true
+        },
+        {
+          "prompt": "add a background worker to my shop stack",
+          "expect": "this",
+          "got": "flisk-cli-resource",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I ask you for a name for the background worker resource so I can create it in your shop stack.",
+        "ok": false,
+        "appealed": true,
+        "why": "The skill's first step is to choose the type, but the agent skipped explicitly confirming the type is 'worker' and asked directly for a resource name."
+      }
+    },
+    "flisk-cli-status": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "what is running right now and is it healthy?",
+          "expect": "this",
+          "got": "flisk-cli-status",
+          "ok": true
+        },
+        {
+          "prompt": "show me the session history of my assistant agent",
+          "expect": "this",
+          "got": "flisk-cli-status",
+          "ok": true
+        },
+        {
+          "prompt": "start my shop stack",
+          "expect": "not",
+          "got": "flisk-cli-up",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I'll run `flisk status` to check what services are running and their health status.",
+        "ok": true
+      }
+    },
+    "flisk-cli-up": {
+      "score": 100,
+      "picked": 3,
+      "picked_of": 3,
+      "followed": 1,
+      "followed_of": 1,
+      "routes": [
+        {
+          "prompt": "stop everything and clean up the networks",
+          "expect": "not",
+          "got": "none",
+          "ok": true
+        },
+        {
+          "prompt": "I changed a service.json, bring the services back up and tell me the URLs",
+          "expect": "this",
+          "got": "flisk-cli-up",
+          "ok": true
+        },
+        {
+          "prompt": "start my shop stack",
+          "expect": "this",
+          "got": "flisk-cli-up",
+          "ok": true
+        }
+      ],
+      "follow": {
+        "answer": "I will run `flisk doctor` to verify the machine is ready to start the services.",
+        "ok": true
       }
     }
   },

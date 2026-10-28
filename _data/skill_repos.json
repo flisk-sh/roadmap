@@ -1,8 +1,8 @@
 {
-  "fetched": "2026-10-28T11:58:17Z",
+  "fetched": "2026-10-28T12:45:36Z",
   "repos": {
     "vercel-labs/agent-skills": {
-      "stars": 33141,
+      "stars": 33143,
       "archived": false,
       "pushed": "2026-10-27T21:40:24Z"
     },
@@ -37,12 +37,12 @@
       "pushed": "2026-10-02T12:34:51Z"
     },
     "stripe/ai": {
-      "stars": 1979,
+      "stars": 1980,
       "archived": false,
       "pushed": "2026-10-28T00:36:55Z"
     },
     "openai/skills": {
-      "stars": 28358,
+      "stars": 28359,
       "archived": false,
       "pushed": "2026-09-08T20:35:26Z"
     },
@@ -52,12 +52,12 @@
       "pushed": "2026-10-27T19:06:34Z"
     },
     "expo/skills": {
-      "stars": 3353,
+      "stars": 3370,
       "archived": false,
       "pushed": "2026-10-28T11:10:15Z"
     },
     "callstackincubator/agent-skills": {
-      "stars": 1685,
+      "stars": 1686,
       "archived": false,
       "pushed": "2026-10-08T19:06:40Z"
     },
@@ -97,12 +97,12 @@
       "pushed": "2026-10-13T17:41:39Z"
     },
     "google/agents-cli": {
-      "stars": 6198,
+      "stars": 6199,
       "archived": false,
       "pushed": "2026-10-27T10:30:55Z"
     },
     "shadcn-ui/ui": {
-      "stars": 126788,
+      "stars": 126789,
       "archived": false,
       "pushed": "2026-10-27T12:59:03Z"
     },
@@ -111,23 +111,33 @@
       "archived": false,
       "pushed": "2026-10-23T09:08:05Z"
     },
+    "flisk-sh/flisk-skills": {
+      "stars": 2,
+      "archived": false,
+      "pushed": "2026-10-27T12:32:29Z"
+    },
+    "flisk-sh/flisk": {
+      "stars": 27,
+      "archived": false,
+      "pushed": "2026-10-28T11:48:01Z"
+    },
     "wshobson/agents": {
       "stars": 41906,
       "archived": false,
       "pushed": "2026-10-26T01:08:14Z"
     },
     "alirezarezvani/claude-skills": {
-      "stars": 28875,
+      "stars": 28879,
       "archived": false,
       "pushed": "2026-10-27T09:44:05Z"
     },
     "Jeffallan/claude-skills": {
-      "stars": 12105,
+      "stars": 12107,
       "archived": false,
       "pushed": "2026-10-28T08:35:54Z"
     },
     "affaan-m/everything-claude-code": {
-      "stars": 291333,
+      "stars": 291360,
       "archived": false,
       "pushed": "2026-10-26T04:56:56Z"
     },
@@ -142,12 +152,12 @@
       "pushed": "2026-10-12T02:06:40Z"
     },
     "nextlevelbuilder/ui-ux-pro-max-skill": {
-      "stars": 141841,
+      "stars": 141862,
       "archived": false,
       "pushed": "2026-10-26T10:07:28Z"
     },
     "Leonxlnx/taste-skill": {
-      "stars": 104001,
+      "stars": 104030,
       "archived": false,
       "pushed": "2026-10-28T06:03:44Z"
     },
@@ -167,22 +177,22 @@
       "pushed": "2026-10-09T11:36:46Z"
     },
     "anthropics/skills": {
-      "stars": 184393,
+      "stars": 184398,
       "archived": false,
       "pushed": "2026-10-09T18:45:52Z"
     },
     "obra/superpowers": {
-      "stars": 306924,
+      "stars": 306959,
       "archived": false,
       "pushed": "2026-10-23T03:48:57Z"
     },
     "garrytan/gstack": {
-      "stars": 138012,
+      "stars": 138018,
       "archived": false,
-      "pushed": "2026-10-28T11:15:19Z"
+      "pushed": "2026-10-28T12:40:39Z"
     },
     "mattpocock/skills": {
-      "stars": 305291,
+      "stars": 305327,
       "archived": false,
       "pushed": "2026-10-27T07:44:25Z"
     },

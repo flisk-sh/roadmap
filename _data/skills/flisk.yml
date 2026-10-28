@@ -1,0 +1,774 @@
+# Skills catalog: Flisk's own skills, from flisk-sh/flisk-skills (43) and flisk-sh/flisk .claude/skills (12).
+# Allowed `cat` ids come from _data/skill_categories.yml.
+
+# ---------------------------------------------------------------- flisk-sh/flisk-skills
+- id: flisk-agents
+  name: flisk-agents
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-agents/SKILL.md
+  cat: data
+  what: "Run an AI agent, MCP tools server, database and queue in one local Flisk stack with sticky sessions."
+  license: MIT
+  eval:
+    should:
+      - "set up a local stack with my chat agent and an MCP tools server so I can test sessions"
+      - "I want my agent's conversation state to survive restarts while I develop locally"
+    near: "ship my finished agent to Fly.io"
+    first_step: "Scaffold with flisk resource bot --type agent --stack shop --yes, then flisk resource tools-mcp --type mcp."
+
+- id: flisk-ai-agent-build
+  name: flisk-ai-agent-build
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-ai-agent-build/SKILL.md
+  cat: data
+  what: "Same job as flisk-agents: scaffold agent plus MCP tools plus database in one stack. Near copy, shorter."
+  license: MIT
+  eval:
+    should:
+      - "start an agent app next to my backend with flisk, with an MCP server for its tools"
+      - "scaffold the agent, the tools server and the stack in one go"
+    near: "add a Python API with Postgres to my existing stack"
+    first_step: "Run flisk resource bot --type agent --stack shop --yes, then add the mcp resource and flisk up shop."
+
+- id: flisk-benchmark
+  name: flisk-benchmark
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-benchmark/SKILL.md
+  cat: ops
+  what: "Measure real idle memory, boot time and image size per service. Say what was measured, not guessed."
+  license: MIT
+  eval:
+    should:
+      - "how many services can my 16 GB laptop run with flisk before it chokes?"
+      - "measure idle memory per container for my stack, docker stats looks too low"
+    near: "my flisk up takes forever, find the slow generator step"
+    first_step: "Use the verified tools: scripts/benchmark/container-scale.ts and scripts/autoresearch/layer-eval.sh."
+
+- id: flisk-build-runtimes
+  name: flisk-build-runtimes
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-build-runtimes/SKILL.md
+  cat: code
+  what: "Pick the right Flisk resource type and runtime for a new service: Bun, Python, React, Vue, Fastify and more."
+  license: MIT
+  eval:
+    should:
+      - "add a Svelte frontend to my shop stack"
+      - "which language and framework should my new Flisk backend use, I like Fastify"
+    near: "I already have a Dockerfile for this service, wire it in"
+    first_step: "Pick the type and framework, e.g. flisk resource api --type backend --stack shop --yes."
+
+- id: flisk-byo
+  name: flisk-byo
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-byo/SKILL.md
+  cat: ops
+  what: "Plug an existing Dockerfile or image into a Flisk stack with a hand-written service.json."
+  license: MIT
+  eval:
+    should:
+      - "I have a legacy mailer with its own Dockerfile, run it next to my flisk services"
+      - "bring this vendor image into my stack without scaffolding anything"
+    near: "turn my docker-compose.yml with six services into a Flisk project"
+    first_step: "Create the directory services/<stack>/<name>/ for the existing service."
+
+- id: flisk-contributing
+  name: flisk-contributing
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-contributing/SKILL.md
+  cat: code
+  what: "Rules for editing the flisk repo itself: engine, CLI, generators, tests, and keeping the skills mirror synced."
+  license: MIT
+  eval:
+    should:
+      - "I want to fix a bug in the flisk engine generators, how do I work in this repo?"
+      - "I changed a skill in flisk-skills, how does it get into the flisk checkout?"
+    near: "write a new end-to-end suite for a new resource type"
+    first_step: "Read rules/AGENTS.cli-core.md and copy it as the root AGENTS.md when working in core."
+
+- id: flisk-data
+  name: flisk-data
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-data/SKILL.md
+  cat: data
+  what: "Reset, seed and snapshot the local Postgres volumes of a Flisk stack without hand-editing them."
+  license: MIT
+  eval:
+    should:
+      - "wipe my local database and start clean, flisk down did not reset it"
+      - "save a snapshot of the dev data before I try a risky migration"
+    near: "add Drizzle to my orders API and write the first migration"
+    first_step: "Identify the project Postgres container (usually named after the project)."
+
+- id: flisk-databases
+  name: flisk-databases
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-databases/SKILL.md
+  cat: data
+  what: "Add Postgres to a Flisk service and use Prisma, Drizzle, Atlas or Dbmate for migrations."
+  license: MIT
+  eval:
+    should:
+      - "my backend needs a database, add Postgres and set up Prisma"
+      - "migrations fail on flisk up, help me get Drizzle talking to the local Postgres"
+    near: "reset the dev database to a clean seed"
+    first_step: "Add a Postgres dependency in service.json or scaffold a service that needs one."
+
+- id: flisk-deploy-alongside
+  name: flisk-deploy-alongside
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-deploy-alongside/SKILL.md
+  cat: ops
+  what: "Explain how Flisk stays local while Helm, Argo or Kustomize own production. No manifests from Flisk."
+  license: MIT
+  eval:
+    should:
+      - "we deploy with Argo CD, can we still use flisk for local dev?"
+      - "what carries from service.json into our production pipeline?"
+    near: "push my flisk stack to AWS"
+    first_step: "Develop and test locally with flisk up; treat service.json as the contract, not the generated files."
+
+- id: flisk-deploy-aws
+  name: flisk-deploy-aws
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-deploy-aws/SKILL.md
+  cat: ops
+  what: "Take a working local Flisk stack to AWS: ECS, EKS, App Runner or Lambda, with secrets in AWS stores."
+  license: MIT
+  eval:
+    should:
+      - "my flisk stack works locally, get it running on AWS"
+      - "deploy these services to ECS Fargate and keep the DB password in Secrets Manager"
+    near: "deploy my React frontend to Cloudflare Pages"
+    first_step: "Confirm the stack works locally with flisk doctor && flisk up <stack>."
+
+- id: flisk-deploy-azure
+  name: flisk-deploy-azure
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-deploy-azure/SKILL.md
+  cat: ops
+  what: "Take a working local Flisk stack to Azure Container Apps or AKS, secrets in Key Vault."
+  license: MIT
+  eval:
+    should:
+      - "ship my flisk stack to Azure Container Apps"
+      - "push the images to ACR and deploy with Bicep"
+    near: "deploy to Google Cloud Run"
+    first_step: "Confirm the stack works locally with flisk doctor && flisk up <stack>."
+
+- id: flisk-deploy-cloudflare
+  name: flisk-deploy-cloudflare
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-deploy-cloudflare/SKILL.md
+  cat: ops
+  what: "Ship the Flisk frontend or edge parts to Cloudflare Pages or Workers. Full Docker stacks stay local."
+  license: MIT
+  eval:
+    should:
+      - "put my flisk Vite storefront on Cloudflare Pages"
+      - "can the frontend of this stack run on Workers?"
+    near: "deploy the Postgres-backed orders API to Cloudflare"
+    first_step: "Confirm the frontend works locally with flisk up."
+
+- id: flisk-deploy-digitalocean
+  name: flisk-deploy-digitalocean
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-deploy-digitalocean/SKILL.md
+  cat: ops
+  what: "Take a working local Flisk stack to DigitalOcean App Platform, Droplets or Kubernetes."
+  license: MIT
+  eval:
+    should:
+      - "deploy my flisk project to DigitalOcean App Platform"
+      - "I want my stack on a Droplet, how do I get it there?"
+    near: "deploy to Heroku with a Procfile"
+    first_step: "Confirm the stack works locally with flisk doctor && flisk up <stack>."
+
+- id: flisk-deploy-fly
+  name: flisk-deploy-fly
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-deploy-fly/SKILL.md
+  cat: ops
+  what: "Take a working local Flisk stack to Fly.io with a fly.toml per service and fly secrets."
+  license: MIT
+  eval:
+    should:
+      - "get my flisk stack running on Fly.io"
+      - "write the fly.toml files for my two services and set the secrets"
+    near: "run my existing Dockerfile service locally under flisk"
+    first_step: "Confirm the stack works locally with flisk doctor && flisk up <stack>."
+
+- id: flisk-deploy-gcp
+  name: flisk-deploy-gcp
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-deploy-gcp/SKILL.md
+  cat: ops
+  what: "Take a working local Flisk stack to Google Cloud Run or GKE, images in Artifact Registry."
+  license: MIT
+  eval:
+    should:
+      - "deploy my flisk services to Cloud Run"
+      - "push images to Artifact Registry and wire secrets from Secret Manager"
+    near: "deploy to Azure Container Apps"
+    first_step: "Confirm the stack works locally with flisk doctor && flisk up <stack>."
+
+- id: flisk-deploy-heroku
+  name: flisk-deploy-heroku
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-deploy-heroku/SKILL.md
+  cat: ops
+  what: "Take a working local Flisk stack to Heroku with config vars and a Procfile or container registry."
+  license: MIT
+  eval:
+    should:
+      - "deploy my flisk project to Heroku"
+      - "set up a Heroku app for the API and move my .env values to config vars"
+    near: "turn my Procfile into a local flisk stack"
+    first_step: "Confirm the stack works locally with flisk doctor && flisk up <stack>."
+
+- id: flisk-deploy-railway
+  name: flisk-deploy-railway
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-deploy-railway/SKILL.md
+  cat: ops
+  what: "Take a working local Flisk stack to Railway through the repo link or the Railway CLI."
+  license: MIT
+  eval:
+    should:
+      - "put my flisk stack on Railway"
+      - "connect the repo to Railway and set the env vars for each service"
+    near: "deploy to Render with a render.yaml"
+    first_step: "Confirm the stack works locally with flisk doctor && flisk up <stack>."
+
+- id: flisk-deploy-render
+  name: flisk-deploy-render
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-deploy-render/SKILL.md
+  cat: ops
+  what: "Take a working local Flisk stack to Render using a render.yaml or the dashboard."
+  license: MIT
+  eval:
+    should:
+      - "deploy my flisk services to Render"
+      - "write a render.yaml for the web and the API"
+    near: "deploy to Railway"
+    first_step: "Confirm the stack works locally with flisk doctor && flisk up <stack>."
+
+- id: flisk-deploy-vercel
+  name: flisk-deploy-vercel
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-deploy-vercel/SKILL.md
+  cat: ops
+  what: "Ship a Flisk React, Vue or Svelte frontend to Vercel. Point it at a backend hosted elsewhere."
+  license: MIT
+  eval:
+    should:
+      - "deploy the storefront from my flisk stack to Vercel"
+      - "set up vercel.json for the frontend folder and fix the API base URL for prod"
+    near: "deploy the whole multi-service stack with Postgres to Vercel"
+    first_step: "Confirm the frontend works locally with flisk up."
+
+- id: flisk-doctor
+  name: flisk-doctor
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-doctor/SKILL.md
+  cat: debug
+  what: "Run flisk doctor, split host problems from project problems, fix the source, run it again."
+  license: MIT
+  eval:
+    should:
+      - "flisk up won't start and I don't know why, check my setup"
+      - "I just cloned this flisk project, is my machine ready?"
+    near: "docker is hanging and the whole machine is slow with 100 containers"
+    first_step: "Run flisk doctor from the Flisk project root."
+
+- id: flisk-doctor-verbose
+  name: flisk-doctor-verbose
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-doctor-verbose/SKILL.md
+  cat: debug
+  what: "Re-run flisk doctor with FLISK_DEBUG=1 when the plain output does not explain the failure."
+  license: MIT
+  eval:
+    should:
+      - "flisk doctor says fine but up still fails, get more detail"
+      - "I need the debug output of doctor to find a generated-file problem"
+    near: "my Postgres container keeps restarting with an uninitialized password error"
+    first_step: "Run flisk doctor and capture the full output."
+
+- id: flisk-dry-run
+  name: flisk-dry-run
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-dry-run/SKILL.md
+  cat: ops
+  what: "Preview what flisk up would start, with ports and URLs, before any container runs."
+  license: MIT
+  eval:
+    should:
+      - "show me what flisk up shop would start before you run it"
+      - "in CI, check the URLs for the shop stack without launching Docker"
+    near: "the stack is up, are all services healthy?"
+    first_step: "Run flisk up shop --dry-run from the project root."
+
+- id: flisk-examples
+  name: flisk-examples
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-examples/SKILL.md
+  cat: code
+  what: "Start from the official runnable Flisk examples: one-backend, Python, Helm, BYO, full multi-service."
+  license: MIT
+  eval:
+    should:
+      - "show me a working flisk example I can learn from"
+      - "give me the smallest Python backend example for flisk"
+    near: "build me a custom online shop from scratch"
+    first_step: "Run flisk project example to fetch a working example."
+
+- id: flisk-frontend
+  name: flisk-frontend
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-frontend/SKILL.md
+  cat: frontend
+  what: "Scaffold a React, Vue or Svelte frontend in Flisk and know which nginx and Vite files it generates."
+  license: MIT
+  eval:
+    should:
+      - "add a storefront web app to my shop stack"
+      - "where does the generated vite config and API client for my frontend live?"
+    near: "deploy my frontend to Vercel"
+    first_step: "Run flisk resource storefront-web --type frontend --stack shop --yes."
+
+- id: flisk-generated-files
+  name: flisk-generated-files
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-generated-files/SKILL.md
+  cat: code
+  what: "Handle files Flisk writes under .autogenerated/: spot drift, regenerate from service.json, never hand-edit."
+  license: MIT
+  eval:
+    should:
+      - "my generated Dockerfile looks wrong, should I just edit it?"
+      - "flisk says generated files drifted from service.json, what now?"
+    near: "add a new health check path to a service"
+    first_step: "Edit only service.json (and your application code), then run flisk doctor to see drift."
+
+- id: flisk-helm
+  name: flisk-helm
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-helm/SKILL.md
+  cat: ops
+  what: "Use Flisk for local dev next to an existing Helm chart. Flisk does not export or replace Helm."
+  license: MIT
+  eval:
+    should:
+      - "we ship with Helm, can flisk generate the chart from service.json?"
+      - "how do flisk and our Helm values live side by side?"
+    near: "wrap my existing Dockerfile as a local flisk service"
+    first_step: "Develop and test locally with flisk up; keep the existing chart and values untouched."
+
+- id: flisk-import-any
+  name: flisk-import-any
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-import-any/SKILL.md
+  cat: ops
+  what: "Bring any existing service, Dockerfile or image into a Flisk stack as a bring-your-own resource."
+  license: MIT
+  eval:
+    should:
+      - "I have a Dockerfile for my worker and no compose file, add it to flisk"
+      - "run this ghcr image locally behind flisk's proxy, it's a one-shot migration job"
+    near: "I have a docker-compose.yml in the repo root"
+    first_step: "Choose the path: root docker-compose.yml means import; a Dockerfile or image means the BYO command."
+
+- id: flisk-import-compose
+  name: flisk-import-compose
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-import-compose/SKILL.md
+  cat: ops
+  what: "Turn a root docker-compose.yml into Flisk bring-your-own resources with flisk import."
+  license: MIT
+  eval:
+    should:
+      - "my repo has a docker-compose.yml, move it onto flisk up"
+      - "what does flisk import drop from my compose file?"
+    near: "I only have a Procfile"
+    first_step: "From the repo root run flisk import . --dry-run to see the plan."
+
+- id: flisk-import-helm
+  name: flisk-import-helm
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-import-helm/SKILL.md
+  cat: ops
+  what: "Run a service locally in Flisk while its Helm chart keeps serving production. Near copy of flisk-helm."
+  license: MIT
+  eval:
+    should:
+      - "our service has a Helm chart, set it up for local dev with flisk without touching the chart"
+      - "map flisk service.json fields to what Helm already has"
+    near: "convert my chart into a docker-compose file"
+    first_step: "Keep the existing chart and values untouched, then scaffold or wrap a matching local resource."
+
+- id: flisk-import-procfile
+  name: flisk-import-procfile
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-import-procfile/SKILL.md
+  cat: ops
+  what: "Run Procfile web, worker and release processes locally by wrapping each as a bring-your-own resource."
+  license: MIT
+  eval:
+    should:
+      - "my Heroku app has a Procfile with web and worker, run it with flisk"
+      - "how do I run the release step of my Procfile locally?"
+    near: "import my docker-compose.yml"
+    first_step: "List the processes in the Procfile (web, worker, release, etc.)."
+
+- id: flisk-layout
+  name: flisk-layout
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-layout/SKILL.md
+  cat: plan
+  what: "Plan how Flisk projects and services are split across repos, with CODEOWNERS and name-clash handling."
+  license: MIT
+  eval:
+    should:
+      - "we have 20 services across 4 repos, how should we lay out flisk?"
+      - "two teams both have a service called api, how do we avoid the clash?"
+    near: "add one more backend to my shop stack"
+    first_step: "Decide the layout (single monorepo vs multi-repo) based on team size."
+
+- id: flisk-networks
+  name: flisk-networks
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-networks/SKILL.md
+  cat: ops
+  what: "Use flisk networks to list routed URLs and Traefik routes of the local topology."
+  license: MIT
+  eval:
+    should:
+      - "what URL is my orders API served on?"
+      - "list everything flisk has routed so I can hit each service"
+    near: "port 80 is taken and my services are unreachable"
+    first_step: "Run flisk networks from the project root."
+
+- id: flisk-ports
+  name: flisk-ports
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-ports/SKILL.md
+  cat: debug
+  what: "Explain Flisk port choice (80 or 8080-8180), Traefik URLs and the FLISK_HTTP_PORT and bind overrides."
+  license: MIT
+  eval:
+    should:
+      - "my flisk services are unreachable on localhost, what port are they on?"
+      - "I need to open the app from my phone on the same wifi"
+    near: "list all the routed URLs in my stack"
+    first_step: "Use the URLs printed by flisk up (or flisk networks) instead of guessing ports."
+
+- id: flisk-pr-review-buttons
+  name: flisk-pr-review-buttons
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-pr-review-buttons/SKILL.md
+  cat: git
+  what: "Add Grok, Claude, Codex review buttons to PR bodies via script and workflow. Copy of gh-pr-review-buttons."
+  license: MIT
+  eval:
+    should:
+      - "add the Review this PR in Grok, Claude and Codex buttons to our repo"
+      - "how do those AI review buttons on flisk PRs work?"
+    near: "label my pull requests by size"
+    first_step: "Confirm gh auth status is OK and the working tree is clean, then branch add-ai-review-buttons."
+
+- id: flisk-python
+  name: flisk-python
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-python/SKILL.md
+  cat: code
+  what: "Scaffold and run a Python backend in Flisk. Short pointer to the one-backend-python example."
+  license: MIT
+  eval:
+    should:
+      - "add a FastAPI service to my flisk project"
+      - "I want my new backend in Python instead of Bun"
+    near: "add a Go service"
+    first_step: "Use the Python backend example or scaffold with the right type and stack flags."
+
+- id: flisk-scaffold
+  name: flisk-scaffold
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-scaffold/SKILL.md
+  cat: code
+  what: "Create Flisk projects and resources (backend, frontend, agent, MCP) with the CLI, not by hand."
+  license: MIT
+  eval:
+    should:
+      - "add a new orders API to my shop stack"
+      - "start a new flisk project with a frontend and a backend"
+    near: "bring my existing Dockerfile service in"
+    first_step: "From the project root, decide the stack name (e.g. shop, identity)."
+
+- id: flisk-secrets
+  name: flisk-secrets
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-secrets/SKILL.md
+  cat: security
+  what: "Keep .env, params and secrets out of git for Flisk stacks. Do not edit generated env files."
+  license: MIT
+  eval:
+    should:
+      - "my service needs an API key, where do I put it in flisk?"
+      - "is .flisk/.project-id safe to commit?"
+    near: "store the production key in AWS Secrets Manager"
+    first_step: "Keep secrets out of git: use the gitignored project .env or the documented params mechanism."
+
+- id: flisk-service-json
+  name: flisk-service-json
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-service-json/SKILL.md
+  cat: code
+  what: "Edit and validate service.json, the contract behind each Flisk service: ports, deps, health, features."
+  license: MIT
+  eval:
+    should:
+      - "change the port and health path of my billing service"
+      - "add a dependency on the database to this service's service.json"
+    near: "my generated nginx config is wrong"
+    first_step: "Locate the file under services/<stack>/<name>/service.json."
+
+- id: flisk-starlark-perf
+  name: flisk-starlark-perf
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-starlark-perf/SKILL.md
+  cat: ops
+  what: "Speed up slow flisk up and Tilt startup: time each phase, narrow discovery paths, trim dependsOn chains."
+  license: MIT
+  eval:
+    should:
+      - "flisk up takes minutes before anything builds, why?"
+      - "service discovery is slow on our big monorepo, make it faster"
+    near: "how much memory does each container use idle?"
+    first_step: "Run flisk doctor (the skill lists it twice) to get a baseline, then time flisk up."
+
+- id: flisk-troubleshoot
+  name: flisk-troubleshoot
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-troubleshoot/SKILL.md
+  cat: debug
+  what: "Fix measured Flisk and Tilt failures: hung Docker, red golden images, Postgres loops, overload, benchmarks."
+  license: MIT
+  eval:
+    should:
+      - "flisk down says Docker daemon is not responding"
+      - "Tilt shows pull access denied for my l4-backend golden image"
+    near: "set up a brand new flisk project"
+    first_step: "Run triage: sysctl -n vm.loadavg, top for CPU and memory, time docker ps, pgrep tilt up."
+
+- id: flisk-ui
+  name: flisk-ui
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-ui/SKILL.md
+  cat: ops
+  what: "Open the flisk ui terminal dashboard to look at running stacks, with key bindings and search."
+  license: MIT
+  eval:
+    should:
+      - "is there a TUI to watch my running flisk services?"
+      - "open the flisk dashboard and show me the resources"
+    near: "give me the routed URLs as plain text for a script"
+    first_step: "With a project present, run flisk ui."
+
+- id: flisk-upgrade
+  name: flisk-upgrade
+  source: flisk-sh/flisk-skills
+  path: skills/flisk-upgrade/SKILL.md
+  cat: ops
+  what: "Upgrade the Flisk CLI, pin versions, and fix generated-file drift after the upgrade."
+  license: MIT
+  eval:
+    should:
+      - "update flisk to the latest version and make sure my projects still work"
+      - "doctor complains about a version mismatch after I upgraded"
+    near: "cut a new release of the flisk CLI"
+    first_step: "Check the current version with flisk --version."
+
+- id: flisk-layer-autoresearch
+  name: layer-autoresearch
+  source: flisk-sh/flisk-skills
+  path: skills/layer-autoresearch/SKILL.md
+  cat: ops
+  what: "Loop of change, benchmark, keep or discard to shrink Flisk Docker layers. Goal: 100 services on 16 GB."
+  license: MIT
+  eval:
+    should:
+      - "run autoresearch on the flisk docker layers to cut memory per service"
+      - "experiment with the L4 backend layer and keep only changes that lower mem_per_service_mib"
+    near: "measure how many services fit on my laptop right now"
+    first_step: "Agree a run tag and create a new branch autoresearch/<tag> from main."
+
+# ---------------------------------------------------------------- flisk-sh/flisk (.claude/skills)
+- id: flisk-cli-agent-ops
+  name: flisk-agent-ops
+  source: flisk-sh/flisk
+  path: .claude/skills/flisk-agent-ops/SKILL.md
+  cat: meta
+  what: "Tell coding agents to scaffold and run services through Flisk CLI and MCP, not hand-made Dockerfiles."
+  license: MIT
+  eval:
+    should:
+      - "I'm adding a new worker service to this repo with Claude Code, how should it go about it?"
+      - "which flisk commands should an agent use to check status and logs of the stack?"
+    near: "write the Dockerfile for my service by hand"
+    first_step: "Scaffold with flisk resource <name> --type agent|mcp|backend|worker|frontend; never hand-write Dockerfiles."
+
+- id: flisk-cli-build
+  name: flisk-build
+  source: flisk-sh/flisk
+  path: .claude/skills/flisk-build/SKILL.md
+  cat: code
+  what: "Turn 'build me a shop or SaaS or agent' into Flisk resources, write app code, check every URL is healthy."
+  license: MIT
+  eval:
+    should:
+      - "build me a small online shop I can run on my laptop"
+      - "make an API and a website for tracking my reading list, run it locally"
+    near: "deploy my finished app to AWS"
+    first_step: "Decide the path: no-Docker command services for a simple app, or Docker + Tilt if it needs Postgres."
+
+- id: flisk-cli-e2e-author
+  name: flisk-e2e-author
+  source: flisk-sh/flisk
+  path: .claude/skills/flisk-e2e-author/SKILL.md
+  cat: test
+  what: "Add or change a Flisk end-to-end test: decide if needed, scaffold from the agent suite, show pass and break."
+  license: MIT
+  eval:
+    should:
+      - "I added a new resource type to the CLI, do I need an e2e test?"
+      - "write an e2e suite for the new restart command that talks to a running stack"
+    near: "add a unit test for a CLI flag parser"
+    first_step: "Decide whether an e2e is required and say which case applies before writing anything."
+
+- id: flisk-cli-recipe-ai-agent
+  name: flisk-recipe-ai-agent
+  source: flisk-sh/flisk
+  path: .claude/skills/flisk-recipe-ai-agent/SKILL.md
+  cat: data
+  what: "Recipe: agent with sessions, MCP tools and a notes API with Postgres in one stack, then check each URL."
+  license: MIT
+  eval:
+    should:
+      - "build me an AI assistant with tools and a database, running locally"
+      - "I need a chatbot service plus an MCP server that reads and writes notes"
+    near: "build me a blog with an admin API"
+    first_step: "Run flisk doctor, then flisk project --yes in an empty folder."
+
+- id: flisk-cli-recipe-blog
+  name: flisk-recipe-blog
+  source: flisk-sh/flisk
+  path: .claude/skills/flisk-recipe-blog/SKILL.md
+  cat: code
+  what: "Recipe: public blog site plus posts API with Postgres and token-protected admin routes in one stack."
+  license: MIT
+  eval:
+    should:
+      - "build me a blog where I can add posts through an admin API"
+      - "I want a little news site with an editor login, locally"
+    near: "build me a shop with products and orders"
+    first_step: "Run flisk doctor, then flisk project --yes in an empty folder."
+
+- id: flisk-cli-recipe-saas
+  name: flisk-recipe-saas
+  source: flisk-sh/flisk
+  path: .claude/skills/flisk-recipe-saas/SKILL.md
+  cat: code
+  what: "Recipe: web app, accounts API for signup and login, billing API for plans, all with Postgres in one stack."
+  license: MIT
+  eval:
+    should:
+      - "build me a SaaS with sign-up, login and subscription plans"
+      - "I need a members area with billing, run it on my machine"
+    near: "start from the ready-made SaaS starter template"
+    first_step: "Run flisk doctor, then flisk project --yes in an empty folder."
+
+- id: flisk-cli-recipe-shop
+  name: flisk-recipe-shop
+  source: flisk-sh/flisk
+  path: .claude/skills/flisk-recipe-shop/SKILL.md
+  cat: code
+  what: "Recipe: storefront site plus orders API with products and orders tables, started and checked URL by URL."
+  license: MIT
+  eval:
+    should:
+      - "build me a small online shop with a product list and orders"
+      - "set up a store with a catalogue page and an order button, locally"
+    near: "use the ecommerce starter template"
+    first_step: "Run flisk doctor, then flisk project --yes in an empty folder."
+
+- id: flisk-cli-recipe-starters
+  name: flisk-recipe-starters
+  source: flisk-sh/flisk
+  path: .claude/skills/flisk-recipe-starters/SKILL.md
+  cat: code
+  what: "Clone a ready-made Flisk starter (restaurant, SaaS, store, agent stack, user mgmt) not a blank project."
+  license: MIT
+  eval:
+    should:
+      - "I need a restaurant reservation system, is there a starter?"
+      - "start me from a working SaaS app with billing and checkout, then I'll change it"
+    near: "build a tiny blog from nothing"
+    first_step: "Match the request to a template in the table, then run flisk doctor."
+
+- id: flisk-cli-release
+  name: flisk-release
+  source: flisk-sh/flisk
+  path: .claude/skills/flisk-release/SKILL.md
+  cat: git
+  what: "Cut a Flisk CLI release: candidate run, release workflow, npm, GitHub releases, verify and repair channels."
+  license: MIT
+  eval:
+    should:
+      - "release the next flisk version"
+      - "the Release Binaries run is red and the version is on npm but the GitHub release is a draft"
+    near: "publish my own unrelated npm package"
+    first_step: "Check state: gh run list for release-binaries.yml and release-candidate.yml, gh release list, npm dist-tags."
+
+- id: flisk-cli-resource
+  name: flisk-resource
+  source: flisk-sh/flisk
+  path: .claude/skills/flisk-resource/SKILL.md
+  cat: code
+  what: "Create a Flisk service with flisk resource --type agent, backend, worker or mcp, or register an existing one."
+  license: MIT
+  eval:
+    should:
+      - "add a background worker to my shop stack"
+      - "create an MCP tools server called tools-mcp in the ai stack"
+    near: "show me which services are healthy"
+    first_step: "Choose the type: agent, backend, worker or mcp."
+
+- id: flisk-cli-status
+  name: flisk-status
+  source: flisk-sh/flisk
+  path: .claude/skills/flisk-status/SKILL.md
+  cat: ops
+  what: "Report which Flisk stacks and services run and are healthy, from flisk status --json, not from guesses."
+  license: MIT
+  eval:
+    should:
+      - "what is running right now and is it healthy?"
+      - "show me the session history of my assistant agent"
+    near: "start my shop stack"
+    first_step: "Run flisk status --json from the project root."
+
+- id: flisk-cli-up
+  name: flisk-up
+  source: flisk-sh/flisk
+  path: .claude/skills/flisk-up/SKILL.md
+  cat: ops
+  what: "Start a Flisk stack: doctor, dry-run preview, flisk up, confirm health. Also runs services without Docker."
+  license: MIT
+  eval:
+    should:
+      - "start my shop stack"
+      - "I changed a service.json, bring the services back up and tell me the URLs"
+    near: "stop everything and clean up the networks"
+    first_step: "Run flisk doctor if the machine has not been checked yet; stop on unresolved errors."

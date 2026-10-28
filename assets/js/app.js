@@ -910,7 +910,7 @@
     sv("text", { x: W - right, y: 16, class: "axis-name", "text-anchor": "end", text: "Haiku used it right more often →" }, svg);
     var someUntested = all.some(function (sk) { return skillScore(sk) == null; });
     if (tested && someUntested) sv("text", { x: noneX, y: 16, class: "axis-name", "text-anchor": "middle", text: "not tested" }, svg);
-    else sv("text", { x: (x0 + x1) / 2, y: top + cats.length * laneH / 2, class: "swarm-wait", "text-anchor": "middle", text: "Scores are on their way: the Haiku test is running." }, svg);
+    if (!tested) sv("text", { x: (x0 + x1) / 2, y: top + cats.length * laneH / 2, class: "swarm-wait", "text-anchor": "middle", text: "Scores are on their way: the Haiku test is running." }, svg);
 
     var dots = sv("g", { class: "dots" }, svg), n = 0;
     cats.forEach(function (c, li) {
@@ -956,7 +956,9 @@
       el("b", { text: k === "none" ? "Not tested" : k }, h);
       el("span", { text: k === "none" ? "" : "/100 · " + by[k].length }, h);
       var list = el("div", { class: "board-list" }, col);
-      by[k].forEach(function (sk) {
+      // While searching, matches go to the top of each column so you don't have to scroll for them.
+      var rows = state.q ? by[k].filter(skillMatches).concat(by[k].filter(function (sk) { return !skillMatches(sk); })) : by[k];
+      rows.forEach(function (sk) {
         var on = skillMatches(sk);
         var chip = el("div", { class: "skill-chip" + (on ? "" : " is-dim"), "data-tip": "skill", "data-skill": sk.id, "data-id": "skill:" + sk.id, tabindex: 0 }, list);
         el("strong", { text: sk.name }, chip);
@@ -1143,6 +1145,14 @@
   // The bottom line: a best match for the question when it names a need, then one line per tool.
   function bottomLine(tools, needs, question) {
     var html = '<div class="ask-bottom"><h3>Bottom line</h3>';
+    // Overall on the checklist: who leads, and by how much, so a 5-point lead does not read like a 50-point one.
+    var total = function (t) { return t.x + t.y; };
+    var byTotal = tools.slice().sort(function (a, b) { return total(b) - total(a); });
+    var lead = total(byTotal[0]) - total(byTotal[1] || byTotal[0]);
+    html += '<p class="ask-overall">' + (tools.length < 2 ? "" : lead === 0
+      ? "On the checklist, <b>" + esc(byTotal[0].name) + "</b> and <b>" + esc(byTotal[1].name) + "</b> are level at " + total(byTotal[0]) + " of 200. Decide on the lines below."
+      : "On the checklist, <b>" + esc(byTotal[0].name) + "</b> leads with " + total(byTotal[0]) + " of 200, " + lead + " ahead of " + esc(byTotal[1].name) +
+        (lead <= 10 ? ": a close call, so the lines below matter more than the score." : lead <= 30 ? ": a clear but not huge lead." : ": a big lead.")) + "</p>";
     if (needs.length) {
       var scored = tools.map(function (t) { return { t: t, n: needs.filter(function (n) { return has(t, n); }).length }; });
       var max = Math.max.apply(null, scored.map(function (x) { return x.n; }));
