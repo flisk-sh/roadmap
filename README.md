@@ -1,6 +1,6 @@
 # DevEx Roadmap
 
-**[roadmap.flisk.si](https://roadmap.flisk.si)**: a community-edited map of 372 developer tools, 44 roles and 400 agent skills, drawn eight ways. Live GitHub numbers, a public checklist, and a [Findings](https://roadmap.flisk.si/findings/) page of what the data says.
+**[roadmap.flisk.si](https://roadmap.flisk.si)**: a community-edited map of 374 developer tools, 44 roles and 400 agent skills, drawn eight ways. Live GitHub numbers, a public checklist, and a [Findings](https://roadmap.flisk.si/findings/) page of what the data says.
 
 | View | What it shows | Sub-tabs |
 | --- | --- | --- |
