@@ -8,9 +8,15 @@ This map is a wiki in a Git repo. Fixes are welcome from anyone, including the m
 2. Change what is wrong. To move a dot on the Compass, add or remove criterion ids in `dx` (easy to use?) or `parity` (made for big, real systems?). To change its ring, change `ring` and `evidence`.
 3. Say why in the pull request, with a link: docs, a release page, a changelog.
 
+## What counts as a DevEx tool
+
+This map is about developer experience, not every developer tool. A tool belongs here if it sits in a developer's own loop (you run it, or it runs for you, while you build, test, debug or ship a project from your machine) and is worth considering for local development in a real project. In practice: it can be judged on the `dx` and `parity` criteria in `_data/rubric.yml`, such as how it starts, how fast it gives feedback, what its docs and diagnostics are like.
+
+Frameworks and ORMs count when they come with that loop: a dev server, a CLI, migrations or a studio. A library you import into product code (an RPC layer, an effect system) does not count by itself, however popular.
+
 ## Add a tool
 
-Add it to the family file it fits best. It has to be worth considering for local development in a real project, not just exist.
+Add it to the family file it fits best, and check it against the section above first.
 
 ```yaml
 - id: tilt                 # kebab-case, unique across all files
