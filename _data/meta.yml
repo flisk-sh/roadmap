@@ -11,7 +11,7 @@ views:
   - id: compass
     name: Compass
     title: The DevEx Compass
-    blurb: Left is hard to use, right is easy. Bottom runs one thing, top runs your whole app. A checklist puts every dot, not a person.
+    blurb: "Left: hard to use. Right: easy. Bottom: starts 1 piece of your app on your laptop. Top: starts the whole app. A checklist puts every dot, not a person."
     subtabs: families
   - id: radar
     name: Adoption Radar
