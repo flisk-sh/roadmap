@@ -818,3 +818,20 @@ body.cmp-open { overflow: hidden; }
 .findings h2 small { font-family: var(--font-mono); font-size: 0.75rem; color: var(--faint); font-weight: 400; margin-left: 0.3rem; }
 .find-list { padding-left: 1.2rem; columns: 2 18rem; column-gap: 2rem; }
 .find-list li { break-inside: avoid; margin-bottom: 0.3rem; }
+
+/* Skills: tidy clusters per score, and a leaderboard for one category */
+.swarm-wait { font-size: 14px; fill: var(--faint); }
+.board { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(12rem, 1fr); gap: 0.6rem; overflow-x: auto; padding-bottom: 0.3rem; }
+.board-col { border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); padding: 0.55rem; animation: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) var(--d, 0ms) both; }
+.board-col h3 { display: flex; align-items: baseline; gap: 0.35rem; margin: 0 0 0.45rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--faint); }
+.board-col h3 b { font-size: 1.4rem; font-weight: 900; }
+.board-col h3 span { font-size: 0.72rem; color: var(--faint); font-family: var(--font-mono); }
+.board-col.sc-good h3 { border-color: var(--adopt); } .board-col.sc-good h3 b { color: var(--adopt); }
+.board-col.sc-mid h3 { border-color: var(--assess); } .board-col.sc-mid h3 b { color: var(--assess); }
+.board-col.sc-bad h3 { border-color: var(--hold); } .board-col.sc-bad h3 b { color: var(--hold); }
+.board-list { display: grid; gap: 0.3rem; max-height: var(--radar-max, 60vh); overflow-y: auto; }
+.skill-chip { padding: 0.35rem 0.5rem; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); cursor: default; outline: none; transition: border-color 0.15s, opacity 0.2s; }
+.skill-chip strong { display: block; font-size: 0.8rem; font-weight: 600; overflow-wrap: anywhere; }
+.skill-chip span { font-size: 0.68rem; color: var(--faint); font-family: var(--font-mono); }
+.skill-chip.is-hot, .skill-chip:focus-visible { border-color: var(--accent); }
+.skill-chip.is-dim { opacity: 0.3; }

@@ -878,78 +878,91 @@
     return out;
   }
 
+  // Scores come in steps (points out of 5), so skills are drawn as tidy groups per score,
+  // not a loose swarm: dot clusters per lane for all skills, a leaderboard for one category.
+  function scoreBuckets(list) {
+    var by = {};
+    list.forEach(function (sk) { var k = skillScore(sk); k = k == null ? "none" : String(k); (by[k] = by[k] || []).push(sk); });
+    Object.keys(by).forEach(function (k) {
+      by[k].sort(function (a, b) { return ((b.repo_info && b.repo_info.stars) || 0) - ((a.repo_info && a.repo_info.stars) || 0) || (a.name < b.name ? -1 : 1); });
+    });
+    return by;
+  }
+
   function renderSkills() {
-    var cats = (D.skill_categories || []).filter(function (c) { return !state.sub || c.id === state.sub; });
     var all = (D.skills || []).filter(function (sk) { return !state.sub || sk.cat === state.sub; });
-    var focus = !!state.sub;
-    var W = 1000, left = focus ? 20 : 150, right = 30, top = 34;
-    var laneH = focus ? Math.max(260, Math.min(520, all.length * 9)) : 58;
-    var H = top + cats.length * laneH + 34;
-    var sx = function (v) { return left + 60 + (v / 100) * (W - left - right - 60); };
-    var untestedX = left + 18;
-    var svg = sv("svg", { viewBox: "0 0 " + W + " " + H, class: "swarm" + (focus ? " swarm-focus" : "") }, stage);
+    if (!all.length) { el("p", { class: "stage-error", text: "No skills here yet." }, stage); return; }
+    if (state.sub) { renderSkillBoard(all); return; }
+
+    var cats = D.skill_categories || [];
+    var tested = all.some(function (sk) { return skillScore(sk) != null; });
+    var W = 1000, left = 150, right = 24, top = 30, laneH = 52, r = 4.2, step = 2 * r + 2.2;
+    var H = top + cats.length * laneH + 30;
+    var x0 = left + (tested ? 70 : 0), x1 = W - right - 40;
+    var sx = function (v) { return x0 + (v / 100) * (x1 - x0); };
+    var noneX = left + 30;
+    var svg = sv("svg", { viewBox: "0 0 " + W + " " + H, class: "swarm" }, stage);
 
     for (var g = 0; g <= 100; g += 20) {
-      sv("line", { x1: sx(g), y1: top - 6, x2: sx(g), y2: H - 26, class: "grid" + (g % 50 ? "" : " grid-strong") }, svg);
-      sv("text", { x: sx(g), y: H - 10, class: "tick", "text-anchor": "middle", text: g }, svg);
+      sv("line", { x1: sx(g), y1: top - 4, x2: sx(g), y2: H - 24, class: "grid" + (g % 100 ? "" : " grid-strong") }, svg);
+      sv("text", { x: sx(g), y: H - 8, class: "tick", "text-anchor": "middle", text: g }, svg);
     }
-    sv("text", { x: untestedX, y: H - 10, class: "tick", "text-anchor": "middle", text: "?" }, svg);
-    sv("text", { x: W - right, y: 18, class: "axis-name", "text-anchor": "end", text: "Haiku used it right more often →" }, svg);
-    sv("text", { x: untestedX, y: 18, class: "axis-name", "text-anchor": "middle", text: "not tested" }, svg);
+    sv("text", { x: W - right, y: 16, class: "axis-name", "text-anchor": "end", text: "Haiku used it right more often →" }, svg);
+    var someUntested = all.some(function (sk) { return skillScore(sk) == null; });
+    if (tested && someUntested) sv("text", { x: noneX, y: 16, class: "axis-name", "text-anchor": "middle", text: "not tested" }, svg);
+    else sv("text", { x: (x0 + x1) / 2, y: top + cats.length * laneH / 2, class: "swarm-wait", "text-anchor": "middle", text: "Scores are on their way: the Haiku test is running." }, svg);
 
-    var placed = [];
+    var dots = sv("g", { class: "dots" }, svg), n = 0;
     cats.forEach(function (c, li) {
-      var y0 = top + li * laneH, mid = y0 + laneH / 2;
+      var y0 = top + li * laneH, rows = Math.max(1, Math.floor((laneH - 8) / step));
       sv("rect", { x: 0, y: y0, width: W, height: laneH, class: "lane" + (li % 2 ? " lane-alt" : "") }, svg);
-      if (!focus) {
-        var lab = sv("text", { x: 10, y: mid + 4, class: "lane-label", style: "--c:" + c.color }, svg);
-        lab.textContent = c.name;
-        var cnt = all.filter(function (sk) { return sk.cat === c.id; }).length;
-        sv("text", { x: left - 6, y: mid + 4, class: "tick", "text-anchor": "end", text: cnt }, svg);
-      }
-      // Beeswarm: sort by score, then drop each dot at the nearest free height in the lane.
-      var mine = all.filter(function (sk) { return sk.cat === c.id; }).map(function (sk) {
-        var v = skillScore(sk), stars = (sk.repo_info && sk.repo_info.stars) || 0;
-        return { sk: sk, x: v == null ? untestedX : sx(v), r: Math.min(focus ? 11 : 7, (focus ? 4 : 2.6) + Math.log10(stars + 1) * (focus ? 1.4 : 0.9)) };
-      }).sort(function (a, b) { return a.x - b.x; });
-      var done = [];
-      mine.forEach(function (p) {
-        for (var k = 0; k < 400; k++) {
-          var off = Math.ceil(k / 2) * 3 * (k % 2 ? 1 : -1);
-          var y = mid + off;
-          if (Math.abs(off) > laneH / 2 - p.r - 2) { y = mid + (Math.random() - 0.5) * (laneH - 2 * p.r - 4); }
-          var hit = done.some(function (q) { var dx = q.x - p.x, dy = q.y - y; return dx * dx + dy * dy < (q.r + p.r + 1) * (q.r + p.r + 1); });
-          if (!hit || Math.abs(off) > laneH / 2 - p.r - 2) { p.y = y; break; }
-        }
-        if (p.y == null) p.y = mid;
-        done.push(p);
-        placed.push(p);
+      var mine = all.filter(function (sk) { return sk.cat === c.id; });
+      var lab = sv("text", { x: 10, y: y0 + laneH / 2 + 4, class: "lane-label", style: "--c:" + c.color }, svg);
+      lab.textContent = c.name;
+      sv("text", { x: left - 8, y: y0 + laneH / 2 + 4, class: "tick", "text-anchor": "end", text: mine.length }, svg);
+      if (!tested) return;
+      var by = scoreBuckets(mine);
+      Object.keys(by).forEach(function (k) {
+        var list = by[k], cx = k === "none" ? noneX : sx(+k);
+        var cols = Math.ceil(list.length / rows), usedRows = Math.min(rows, list.length);
+        list.forEach(function (sk, i) {
+          var col = Math.floor(i / rows), row = i % rows;
+          var x = cx + (col - (cols - 1) / 2) * step;
+          var y = y0 + laneH / 2 + (row - (usedRows - 1) / 2) * step;
+          var on = skillMatches(sk);
+          var gEl = sv("g", {
+            class: "dot sdot " + scoreClass(skillScore(sk)) + (on ? "" : " is-dim"),
+            "data-tip": "skill", "data-skill": sk.id, "data-id": "skill:" + sk.id, tabindex: on ? 0 : -1,
+            "aria-label": sk.name + ", score " + (skillScore(sk) == null ? "not tested" : skillScore(sk)),
+            style: "--c:" + c.color + ";--d:" + Math.min(n++ * 2, 700) + "ms"
+          }, dots);
+          gEl.style.transform = "translate(" + x + "px," + y + "px)";
+          sv("circle", { r: r + 2.5, class: "hit" }, gEl);
+          sv("circle", { r: r, class: "core" }, gEl);
+        });
+        if (list.length > 2 && k !== "none") sv("text", { x: cx + (cols / 2) * step + 6, y: y0 + laneH / 2 + 4, class: "tick", text: list.length }, svg);
       });
     });
+  }
 
-    var dots = sv("g", { class: "dots" }, svg);
-    placed.forEach(function (p, i) {
-      var sk = p.sk, on = skillMatches(sk);
-      var cat = (D.skill_categories || []).filter(function (c) { return c.id === sk.cat; })[0];
-      var gEl = sv("g", {
-        class: "dot sdot " + scoreClass(skillScore(sk)) + (on ? "" : " is-dim"),
-        "data-tip": "skill", "data-skill": sk.id, "data-id": "skill:" + sk.id, tabindex: on ? 0 : -1,
-        "aria-label": sk.name + ", score " + (skillScore(sk) == null ? "not tested" : skillScore(sk)),
-        style: "--c:" + (cat ? cat.color : "var(--accent)") + ";--d:" + Math.min(i * 2, 600) + "ms"
-      }, dots);
-      gEl.style.transform = "translate(" + p.x + "px," + p.y + "px)";
-      sv("circle", { r: p.r + 5, class: "hit" }, gEl);
-      sv("circle", { r: p.r, class: "core" }, gEl);
-    });
-    if (focus || state.q) {
-      var labeler2 = labeler();
-      placed.forEach(function (p) {
-        if (!skillMatches(p.sk)) return;
-        var spot = labeler2(p.x, p.y, p.sk.name, 11);
-        if (spot) sv("text", { x: spot.x, y: spot.y, class: "dot-label", text: p.sk.name }, svg);
+  // One category: a column per score, best first, each skill a readable chip.
+  function renderSkillBoard(all) {
+    var by = scoreBuckets(all);
+    var keys = Object.keys(by).sort(function (a, b) { return (b === "none" ? -1 : +b) - (a === "none" ? -1 : +a); });
+    var board = el("div", { class: "board" }, stage);
+    keys.forEach(function (k, ci) {
+      var col = el("section", { class: "board-col " + scoreClass(k === "none" ? null : +k), style: "--d:" + ci * 60 + "ms" }, board);
+      var h = el("h3", null, col);
+      el("b", { text: k === "none" ? "Not tested" : k }, h);
+      el("span", { text: k === "none" ? "" : "/100 · " + by[k].length }, h);
+      var list = el("div", { class: "board-list" }, col);
+      by[k].forEach(function (sk) {
+        var on = skillMatches(sk);
+        var chip = el("div", { class: "skill-chip" + (on ? "" : " is-dim"), "data-tip": "skill", "data-skill": sk.id, "data-id": "skill:" + sk.id, tabindex: 0 }, list);
+        el("strong", { text: sk.name }, chip);
+        el("span", { text: sk.source.split("/")[0] + (sk.repo_info && sk.repo_info.stars ? " · ★ " + fmtStars(sk.repo_info.stars) : "") }, chip);
       });
-    }
-    if (!all.length) el("p", { class: "stage-error", text: "No skills here yet." }, stage);
+    });
   }
 
   // ---------- Ask: type a question, get a comparison from the data ----------
@@ -1397,7 +1410,7 @@
     stage.style.setProperty("--radar-max", Math.max(320, Math.round(room)) + "px");
   }
   window.addEventListener("resize", function () {
-    if (state.view === "radar" || state.view === "compass") fitRadar();
+    if (state.view === "radar" || state.view === "compass" || state.view === "skills") fitRadar();
     if (state.view === "lab") fitLab();
     var lw = stage.querySelector(".radar-list-wrap");
     if (lw) lw.open = window.matchMedia("(min-width: 900px)").matches;
@@ -1407,7 +1420,7 @@
     hideNow();
     stage.innerHTML = "";
     stage.classList.remove("is-in");
-    if (state.view === "radar" || state.view === "compass") fitRadar();
+    if (state.view === "radar" || state.view === "compass" || state.view === "skills") fitRadar();
     if (state.view === "compass") renderCompass();
     else if (state.view === "radar") renderRadar();
     else if (state.view === "lab") renderLab();
