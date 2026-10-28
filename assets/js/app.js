@@ -662,10 +662,11 @@
       var side = Math.min((w - (c - 1) * gap) / c, (h - (rows - 1) * gap) / rows);
       if (side > best.s) best = { s: side, c: c };
     }
-    var size = Math.max(28, Math.min(120, Math.floor(best.s)));
+    // Capped so a small family does not blow up into huge tiles.
+    var size = Math.max(28, Math.min(64, Math.floor(best.s)));
     lab.style.setProperty("--tile", size + "px");
     lab.style.gridTemplateColumns = "repeat(" + best.c + ", " + size + "px)";
-    lab.className = "lab " + (size < 46 ? "lab-xs" : size < 66 ? "lab-sm" : size < 92 ? "lab-md" : "lab-lg");
+    lab.className = "lab " + (size < 42 ? "lab-xs" : size < 56 ? "lab-sm" : "lab-md");
   }
 
   // ---------- Journeys ----------
