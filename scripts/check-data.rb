@@ -49,6 +49,12 @@ families.each do |fam|
     %w[url evidence].each do |k|
       errors << "#{at}: #{k} must start with https://" unless t[k].to_s.start_with?("https://")
     end
+    # The Liquid pages print these values unescaped (href="{{ t.url }}", {{ t.tagline }}), so a
+    # community edit must not be able to carry markup or close an attribute.
+    %w[url evidence].each do |k|
+      errors << "#{at}: #{k} must not contain quotes, < > or spaces" if t[k].to_s.match?(/["'<>\s]/)
+    end
+    t.each { |k, v| errors << "#{at}: #{k} must not contain < or >" if v.is_a?(String) && v.match?(/[<>]/) }
     errors << "#{at}: repo must look like owner/name" if t["repo"] && !t["repo"].match?(%r{\A[\w.-]+/[\w.-]+\z})
     errors << "#{at}: license must be one of #{licenses.join(', ')}" unless licenses.include?(t["license"])
     errors << "#{at}: ring must be one of #{rings.join(', ')}" unless rings.include?(t["ring"])
@@ -98,6 +104,8 @@ Dir[File.join(ROOT, "_data/skills/*.yml")].sort.each do |f|
     skill_ids[sk["id"]] = true
     errors << "#{at}: unknown category #{sk['cat']}" unless cat_ids.include?(sk["cat"])
     errors << "#{at}: source must look like owner/name" unless sk["source"].to_s.match?(%r{\A[\w.-]+/[\w.-]+\z})
+    errors << "#{at}: path must not contain quotes, < > or spaces" if sk["path"].to_s.match?(/["'<>\s]/)
+    sk.each { |k, v| errors << "#{at}: #{k} must not contain < or >" if v.is_a?(String) && v.match?(/[<>]/) }
     e = sk["eval"] || {}
     errors << "#{at}: eval needs 2 should, 1 near and a first_step" unless Array(e["should"]).size == 2 && e["near"] && e["first_step"]
   end
