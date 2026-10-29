@@ -954,12 +954,17 @@ body.cmp-open { overflow: hidden; }
 .pf-experts { margin: 0; font-size: 0.85rem; }
 .pf-count { font-family: var(--font-mono); font-size: 0.72rem; color: var(--faint); margin: 0.6rem 0 0; }
 .pf-actions { display: grid; gap: 0.35rem; margin-top: 0.7rem; }
+.pf-main { width: 100%; padding: 0.65rem 1rem; font-size: 0.95rem; }
+.pf-links { display: flex; flex-wrap: wrap; gap: 0.2rem 0.9rem; }
+.pf-link { font: inherit; font-size: 0.78rem; color: var(--muted); background: none; border: 0; padding: 0.1rem 0; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.pf-link:hover { color: var(--text); }
+.pf-scan > summary { cursor: pointer; font-size: 0.8rem; font-weight: 600; color: var(--accent-text); }
 .pf-actions .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
 .pf-msg { margin: 0.4rem 0 0; font-size: 0.78rem; color: var(--accent-text); min-height: 1em; }
 .view-icon-portfolio { border: 2px solid currentColor; border-radius: 3px; }
 .view-icon-portfolio::after { content: ""; position: absolute; left: 3px; right: 3px; top: 3px; height: 4px; background: var(--accent); border-radius: 1px; }
 
-.pf-scan { margin-top: 0.7rem; display: grid; gap: 0.35rem; }
+.pf-scan { margin-top: 0.8rem; padding-top: 0.6rem; border-top: 1px solid var(--line); display: grid; gap: 0.35rem; }
 .pf-scanrow { display: flex; gap: 0.4rem; flex-wrap: wrap; }
 .pf-scanrow input { flex: 1 1 10rem; min-width: 0; font: inherit; font-size: 0.85rem; color: var(--text); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 7px; padding: 0.3rem 0.5rem; }
 .pf-found { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }

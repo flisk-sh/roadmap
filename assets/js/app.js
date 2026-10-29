@@ -1518,22 +1518,25 @@
     html += '<h3 class="pf-sub">Your skill shape</h3>' + spiderSvg(shape, 280);
     if (experts.length) html += '<p class="pf-sub">Expert in</p><p class="pf-experts">' + experts.map(function (t) { return esc(t.name); }).join(" · ") + "</p>";
     html += '<p class="pf-count">' + rated + " tools rated</p>";
-    html += '<div class="pf-scan"><p class="pf-sub">Fill it in from GitHub</p>' +
-      '<p class="pf-note">Reads the file names and dependency lists of your newest public repos, from this page. Nothing is sent to us, nothing is run, and you choose what to keep.</p>' +
-      '<div class="pf-scanrow"><input id="pf-ghuser" type="text" maxlength="39" autocomplete="off" spellcheck="false" placeholder="GitHub username" value="' + esc(GH ? GH.login : SCAN_USER) + '">' +
-      '<button type="button" class="btn" data-pf="scan">Scan my repos</button></div>' +
-      '<div id="pf-scanout" role="status"></div></div>' +
-      '<div class="pf-actions">' +
-      '<button type="button" class="ask-go" data-pf="copy">Copy my page link</button>' +
+    // One CV per GitHub account: publishing needs the sign-in. Signed out, the big button signs in.
+    var label = GH ? (GH_SAVED ? "Update my CV at @" + esc(GH.login) : "Publish my CV as @" + esc(GH.login)) : "Sign in with GitHub to publish";
+    html += '<div class="pf-actions">' +
       (PAGES_LIVE
-        ? '<div class="pf-publish"><button type="button" class="btn" data-pf="publish">' + (GH ? (GH_SAVED ? "Update my CV at @" + esc(GH.login) : "Publish my CV as @" + esc(GH.login)) : ME_PUB ? "Update my CV on pages.flisk.si" : "Publish my CV to pages.flisk.si") + '</button>' +
+        ? '<button type="button" class="ask-go pf-main" data-pf="publish">' + label + '</button>' +
           '<p class="pf-url" id="pf-url"></p>' +
           (GH
-            ? '<p class="pf-note">Signed in as @' + esc(GH.login) + '. Your CV is public at pages.flisk.si/@' + esc(GH.login) + '/cv/ and goes live in about a minute. <a href="#" data-pf="signout">Sign out</a></p>'
-            : '<p class="pf-note">No account needed. Your CV is public; it goes live in about a minute. Or <a href="' + esc(signInUrl()) + '" data-pf-signin>sign in with GitHub</a> to publish under your own name. We read only your public login.</p>') + '</div>'
-        : '<button type="button" class="btn" disabled title="Publishing to pages.flisk.si is almost ready">Publish to pages.flisk.si: coming soon</button>') +
-      '<button type="button" class="btn" data-pf="download">Download as a web page</button>' +
-      '<button type="button" class="btn" data-pf="clear">Start over</button></div><p class="pf-msg" id="pf-msg" role="status"></p>';
+            ? '<p class="pf-note">Public at pages.flisk.si/@' + esc(GH.login) + '/cv/ · <a href="#" data-pf="signout">Sign out</a></p>'
+            : '<p class="pf-note">One CV per GitHub account, at pages.flisk.si/@you/cv/. We read only your public login.</p>')
+        : '<button type="button" class="btn" disabled title="Publishing to pages.flisk.si is almost ready">Publish: coming soon</button>') +
+      '<div class="pf-links"><button type="button" class="pf-link" data-pf="copy">Copy link</button>' +
+      '<button type="button" class="pf-link" data-pf="download">Download</button>' +
+      '<button type="button" class="pf-link" data-pf="clear">Start over</button></div>' +
+      '<p class="pf-msg" id="pf-msg" role="status"></p></div>' +
+      '<details class="pf-scan"><summary>Fill it in from GitHub</summary>' +
+      '<p class="pf-note">Reads file names and dependency lists of your newest public repos, in this page. Nothing is sent to us or run; you choose what to keep.</p>' +
+      '<div class="pf-scanrow"><input id="pf-ghuser" type="text" maxlength="39" autocomplete="off" spellcheck="false" placeholder="GitHub username" value="' + esc(GH ? GH.login : SCAN_USER) + '" aria-label="GitHub username">' +
+      '<button type="button" class="btn" data-pf="scan">Scan</button></div>' +
+      '<div id="pf-scanout" role="status"></div></details>';
     card.innerHTML = html;
     showPagesUrl();
   }
@@ -1702,12 +1705,13 @@
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
       pfMsg("Saved as a single web page. Put it anywhere: it needs nothing else.");
     } else if (act === "publish" && PAGES_LIVE) {
+      if (!GH) { location.href = signInUrl(); return; }
       if (b.disabled) return;
       b.disabled = true;
       pfMsg("Publishing…");
       publishPage(cvRequest()).then(function (updated) {
         b.disabled = false;
-        b.textContent = GH ? "Update my CV at @" + GH.login : "Update my CV on pages.flisk.si";
+        b.textContent = GH ? "Update my CV at @" + GH.login : "Update my CV";
         showPagesUrl();
         pfMsg(updated ? "Updated. The new version is live in about a minute." : "Published. Building your page now, usually about a minute.");
       }, function (err) {
