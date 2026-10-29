@@ -190,7 +190,17 @@
     });
   }
 
-  var api = { detect: detect, tally: tally, suggestLevel: suggestLevel, scanUser: scanUser, MAX_REPOS: MAX_REPOS };
+  /** Ratings as roadmap writes them in ?me=: "bun3,helm2". Unknown tools (when `has` is given), levels outside 1-3 and junk are dropped. */
+  function parseMe(raw, has) {
+    var out = {};
+    String(raw || "").split(",").forEach(function (pair) {
+      var m = /^([a-z0-9-]+?)([1-3])$/.exec(pair.trim());
+      if (m && (!has || has(m[1]))) out[m[1]] = +m[2];
+    });
+    return out;
+  }
+
+  var api = { parseMe: parseMe, detect: detect, tally: tally, suggestLevel: suggestLevel, scanUser: scanUser, MAX_REPOS: MAX_REPOS };
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.RoadmapScan = api;
 })(typeof window !== "undefined" ? window : this);
