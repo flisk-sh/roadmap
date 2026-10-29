@@ -812,6 +812,9 @@ body.cmp-open { overflow: hidden; }
 .tok.is-hot, .tok:focus-visible { background: var(--c); color: #0b0b10; transform: translateY(-1px); }
 .tok.is-hot b, .tok.is-hot .logo { color: #0b0b10; }
 .tok.is-picked { box-shadow: 0 0 0 2px var(--accent); }
+.tok.is-key { border-color: var(--c); }
+.tok-key { font-style: normal; font-size: 0.6rem; color: var(--c); margin-left: -0.1rem; }
+.tok.is-hot .tok-key { color: #0b0b10; }
 
 /* Skills: the swarm */
 .stage svg.swarm { max-height: none; }

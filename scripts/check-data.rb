@@ -92,6 +92,12 @@ Array(roles["roles"]).each do |r|
   (Array(r["core"]) + Array(r["daily"]) + Array(r["nice"])).each do |tid|
     errors << "roles #{r['id']}: unknown tool id #{tid}" unless ids[tid]
   end
+  # Key tools set the role apart in the portfolio's role fit, so each one must be in the role's own loadout.
+  loadout = Array(r["core"]) + Array(r["daily"]) + Array(r["nice"])
+  errors << "roles #{r['id']}: no key tools" if Array(r["key"]).empty?
+  Array(r["key"]).each do |tid|
+    errors << "roles #{r['id']}: key tool #{tid} is not in its core, daily or nice list" unless loadout.include?(tid)
+  end
 end
 
 # Skills: unique ids, known categories, and a full test for each (2 should, 1 near, a first step).

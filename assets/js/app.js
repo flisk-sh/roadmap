@@ -833,9 +833,11 @@
         ids.forEach(function (id) {
           var t = BY_ID[id];
           if (!t) return;
-          var tok = el("span", { class: "tok" + (matches(t) ? "" : " is-dim"), "data-id": t.id, "data-tip": "tool", tabindex: 0, style: "--c:" + FAM[t.fam].color }, list);
+          var key = (r.key || []).indexOf(id) !== -1;
+          var tok = el("span", { class: "tok" + (key ? " is-key" : "") + (matches(t) ? "" : " is-dim"), "data-id": t.id, "data-tip": "tool", tabindex: 0, style: "--c:" + FAM[t.fam].color }, list);
           if (LOGO[t.id]) tok.innerHTML = logoSpan(t.id); else el("b", { text: t.sym }, tok);
           el("span", { text: t.name }, tok);
+          if (key) el("i", { class: "tok-key", title: "Key tool for this role", text: "★" }, tok);
         });
       });
     });
@@ -1393,21 +1395,10 @@
     return location.origin + base + "/portfolio/?" + qs.join("&");
   }
 
-  // How well your ratings fit each role: must have counts 3, every day 2, good to know 1,
-  // each scaled by your level out of 3.
+  // How well your ratings fit each role (assets/js/rolefit.js): must have counts 3, every day 2, good to know 1,
+  // each scaled by your level out of 3, halved when you rated none of the role's key tools.
   function roleFit() {
-    return ((D.roles && D.roles.roles) || []).map(function (r) {
-      var got = 0, max = 0, gaps = [];
-      [["core", 3], ["daily", 2], ["nice", 1]].forEach(function (k) {
-        (r[k[0]] || []).forEach(function (id) {
-          if (!BY_ID[id]) return;
-          max += k[1] * 3;
-          got += k[1] * (ME[id] || 0);
-          if (k[0] === "core" && !ME[id]) gaps.push(id);
-        });
-      });
-      return { r: r, pct: max ? Math.round((got / max) * 100) : 0, gaps: gaps };
-    }).sort(function (a, b) { return b.pct - a.pct; });
+    return RoadmapRoleFit.score((D.roles && D.roles.roles) || [], ME, function (id) { return !!BY_ID[id]; });
   }
   function familyShape() {
     return D.families.map(function (f) {
@@ -1511,6 +1502,7 @@
     html += '<p class="pf-role"><b>' + esc(top.r.name) + "</b> <span>" + top.pct + "% match</span></p>";
     html += '<p class="pf-role-what">' + esc(top.r.what) + "</p>";
     html += '<ol class="pf-roles">' + fit.slice(1, 4).map(function (x) { return "<li>" + esc(x.r.name) + " <span>" + x.pct + "%</span></li>"; }).join("") + "</ol>";
+    if (top.noKey) html += '<p class="pf-sub">None of your tools are key tools for ' + esc(top.r.name) + ", so this match is halved. Rate more tools for a sharper fit.</p>";
     if (top.gaps.length) {
       html += '<p class="pf-sub">Must-haves to learn for ' + esc(top.r.name) + ":</p><div class=\"pf-gaps\">" +
         top.gaps.map(function (id) { return '<span class="tok" data-id="' + esc(id) + '" data-tip="tool" tabindex="0" style="--c:' + esc(FAM[BY_ID[id].fam].color) + '">' + (LOGO[id] ? logoSpan(id) : "<b>" + esc(BY_ID[id].sym) + "</b>") + "<span>" + esc(BY_ID[id].name) + "</span></span>"; }).join("") + "</div>";

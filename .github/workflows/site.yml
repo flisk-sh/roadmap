@@ -27,6 +27,8 @@ jobs:
           bundler-cache: true
       - name: Test the GitHub scanner
         run: node --test scripts/scan.test.mjs
+      - name: Test the role fit
+        run: node --test scripts/rolefit.test.mjs
       - name: Check the data
         run: ruby scripts/check-data.rb
       - name: Fetch live GitHub signals
