@@ -1518,14 +1518,15 @@
     html += '<h3 class="pf-sub">Your skill shape</h3>' + spiderSvg(shape, 280);
     if (experts.length) html += '<p class="pf-sub">Expert in</p><p class="pf-experts">' + experts.map(function (t) { return esc(t.name); }).join(" · ") + "</p>";
     html += '<p class="pf-count">' + rated + " tools rated</p>";
-    var label = GH ? (GH_SAVED ? "Update my CV at @" + esc(GH.login) : "Publish my CV as @" + esc(GH.login)) : ME_PUB ? "Update my CV" : "Publish my CV";
+    // One CV per GitHub account: publishing needs the sign-in. Signed out, the big button signs in.
+    var label = GH ? (GH_SAVED ? "Update my CV at @" + esc(GH.login) : "Publish my CV as @" + esc(GH.login)) : "Sign in with GitHub to publish";
     html += '<div class="pf-actions">' +
       (PAGES_LIVE
         ? '<button type="button" class="ask-go pf-main" data-pf="publish">' + label + '</button>' +
           '<p class="pf-url" id="pf-url"></p>' +
           (GH
             ? '<p class="pf-note">Public at pages.flisk.si/@' + esc(GH.login) + '/cv/ · <a href="#" data-pf="signout">Sign out</a></p>'
-            : '<p class="pf-note">Public, no account needed. Or <a href="' + esc(signInUrl()) + '" data-pf-signin>sign in with GitHub</a> to publish as you.</p>')
+            : '<p class="pf-note">One CV per GitHub account, at pages.flisk.si/@you/cv/. We read only your public login.</p>')
         : '<button type="button" class="btn" disabled title="Publishing to pages.flisk.si is almost ready">Publish: coming soon</button>') +
       '<div class="pf-links"><button type="button" class="pf-link" data-pf="copy">Copy link</button>' +
       '<button type="button" class="pf-link" data-pf="download">Download</button>' +
@@ -1704,6 +1705,7 @@
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
       pfMsg("Saved as a single web page. Put it anywhere: it needs nothing else.");
     } else if (act === "publish" && PAGES_LIVE) {
+      if (!GH) { location.href = signInUrl(); return; }
       if (b.disabled) return;
       b.disabled = true;
       pfMsg("Publishing…");
