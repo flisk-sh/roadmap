@@ -31,18 +31,29 @@
     var nav = document.querySelector(".site-header .nav");
     if (!nav) return;
     var login = readSession();
-    var el = document.createElement(login ? "button" : "a");
-    el.className = "gh-btn" + (login ? " on" : "");
-    el.id = "gh-btn";
+    var el;
     if (login) {
-      el.type = "button";
-      el.innerHTML = ICON + "<span>@" + login + "</span><small>Sign out</small>";
-      el.title = "Signed in with GitHub as @" + login + ". Click to sign out.";
-      el.addEventListener("click", function () {
+      // Signed in: the name opens a small menu. Nothing signs out until "Sign out" is clicked.
+      el = document.createElement("details");
+      el.className = "gh-menu";
+      el.id = "gh-btn";
+      var cv = "https://pages.flisk.si/@" + login + "/cv/";
+      el.innerHTML = '<summary class="gh-btn on" title="Signed in with GitHub as @' + login + '">' + ICON + "<span>@" + login + '</span><i aria-hidden="true">&#9662;</i></summary>' +
+        '<div class="gh-pop" role="menu">' +
+        '<a role="menuitem" href="' + cv + '" rel="noopener">My CV <small>pages.flisk.si/@' + login + '/cv</small></a>' +
+        '<a role="menuitem" href="' + location.origin + '/portfolio/">My portfolio</a>' +
+        '<a role="menuitem" href="https://github.com/' + login + '" rel="noopener">My GitHub profile</a>' +
+        '<button type="button" role="menuitem" id="gh-out">Sign out</button></div>';
+      el.querySelector("#gh-out").addEventListener("click", function () {
         try { sessionStorage.removeItem(KEY); } catch (e) {}
         location.reload();
       });
+      document.addEventListener("click", function (e) { if (!el.contains(e.target)) el.removeAttribute("open"); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") el.removeAttribute("open"); });
     } else {
+      el = document.createElement("a");
+      el.className = "gh-btn";
+      el.id = "gh-btn";
       el.href = API + "/auth/github?return=" + encodeURIComponent(location.origin + location.pathname + location.search);
       el.innerHTML = ICON + "<span>Sign in with GitHub</span>";
       el.title = "Optional. We only read your public GitHub login.";
