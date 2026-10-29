@@ -120,6 +120,7 @@
   }
 
   function matches(t) {
+    if (state.mine && !ME[t.id]) return false;
     if (!state.q) return true;
     var q = state.q.toLowerCase();
     return (t.name + " " + t.id + " " + t.cat + " " + (t.tagline || "")).toLowerCase().indexOf(q) !== -1;
@@ -452,7 +453,7 @@
         var on = (!focus || t.fam === focus) && matches(t);
         var p = pos[t.id];
         var gEl = sv("g", {
-          class: "dot" + (on ? "" : " is-dim") + (focus && t.fam === focus ? " is-focus" : ""),
+          class: "dot" + (on ? "" : " is-dim") + (focus && t.fam === focus ? " is-focus" : "") + (ME[t.id] ? " mine mine-" + ME[t.id] : ""),
           "data-id": t.id,
           "data-tip": "tool",
           tabindex: on ? 0 : -1,
@@ -462,6 +463,7 @@
         gEl.style.transform = firstPaint ? "translate(" + cx + "px," + cy + "px) scale(0.2)" : "translate(" + p[0] + "px," + p[1] + "px)";
         sv("circle", { r: 13, class: "hit" }, gEl);
         sv("circle", { r: 6, class: "core" }, gEl);
+        if (ME[t.id]) sv("circle", { r: 10, class: "mine-ring" }, gEl);
         if (firstPaint) {
           requestAnimationFrame(function () {
             requestAnimationFrame(function () { gEl.style.transform = "translate(" + p[0] + "px," + p[1] + "px)"; });
@@ -598,16 +600,17 @@
       var t = pt.t, f = FAM[t.fam];
       var on = matches(t);
       var g = sv("g", {
-        class: "dot" + (on ? "" : " is-dim"),
+        class: "dot" + (on ? "" : " is-dim") + (ME[t.id] ? " mine mine-" + ME[t.id] : ""),
         "data-id": t.id,
         "data-tip": "tool",
         tabindex: on ? 0 : -1,
-        "aria-label": t.name + ", " + ringOf(t.ring).label,
+        "aria-label": t.name + ", " + ringOf(t.ring).label + (ME[t.id] ? ", in your tools: " + LEVELS[ME[t.id]] : ""),
         style: "--c:" + f.color + ";--d:" + Math.min(i * 3, 700) + "ms"
       }, dots);
       g.style.transform = "translate(" + pt.x + "px," + pt.y + "px)";
       sv("circle", { r: dotSize + 6, class: "hit" }, g);
       shape(t, dotSize, g);
+      if (ME[t.id]) sv("circle", { r: dotSize + 4, class: "mine-ring" }, g);
     });
     if (focus || state.q) {
       var lab = labeler();
@@ -639,7 +642,7 @@
         .sort(function (a, b) { return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1; })
         .forEach(function (t) {
           var chip = el("li", {
-            class: "chip" + (matches(t) ? "" : " is-dim"),
+            class: "chip" + (matches(t) ? "" : " is-dim") + (ME[t.id] ? " mine mine-" + ME[t.id] : ""),
             "data-id": t.id,
             "data-tip": "tool",
             tabindex: 0,
@@ -1358,10 +1361,7 @@
     var fromUrl = p && p.get("me");
     var raw = fromUrl;
     if (!raw) { try { raw = localStorage.getItem("roadmap-me") || ""; } catch (e) { raw = ""; } }
-    String(raw || "").split(",").forEach(function (pair) {
-      var m = /^([a-z0-9-]+?)([1-3])$/.exec(pair.trim());
-      if (m && BY_ID[m[1]]) ME[m[1]] = +m[2];
-    });
+    ME = RoadmapScan.parseMe(raw, function (id) { return !!BY_ID[id]; });
     ME_NAME = (p && p.get("name")) || (function () { try { return localStorage.getItem("roadmap-me-name") || ""; } catch (e) { return ""; } })();
     try {
       var pub = JSON.parse(localStorage.getItem("roadmap-me-pub") || "null");
@@ -1984,7 +1984,31 @@
     if (lw) lw.open = window.matchMedia("(min-width: 900px)").matches;
   });
 
+  // The tools from ?me= (or this browser's saved ratings) show on the compass and the radar: a ring around each dot,
+  // thicker for a higher level, and the bar above says what the ring means. "Only my tools" hides the rest.
+  function ensureMe() { if (!meLoaded) { loadMe(); meLoaded = true; } }
+  function meBar() {
+    var old = document.getElementById("me-bar");
+    if (old) old.remove();
+    var n = Object.keys(ME).length;
+    var on = n && (state.view === "compass" || state.view === "radar");
+    stage.classList.toggle("has-me", !!on);
+    stage.classList.toggle("only-mine", !!(on && state.mine));
+    if (!on) { state.mine = false; return; }
+    var bar = document.createElement("div");
+    bar.id = "me-bar";
+    bar.className = "me-bar";
+    bar.innerHTML = '<span class="me-title">' + (ME_NAME ? esc(ME_NAME) + "'s tools" : "Your tools") + " <b>" + n + '</b></span>' +
+      '<span class="me-key"><i class="mine-sw l1"></i>used it <i class="mine-sw l2"></i>use often <i class="mine-sw l3"></i>expert</span>' +
+      '<button type="button" class="me-only" aria-pressed="' + (state.mine ? "true" : "false") + '">' + (state.mine ? "Show all tools" : "Only my tools") + '</button>' +
+      '<a href="' + esc(location.origin + "/portfolio/?me=" + encodeURIComponent(meString()) + (ME_NAME ? "&name=" + encodeURIComponent(ME_NAME) : "")) + '">Edit</a>';
+    stage.parentNode.insertBefore(bar, stage);
+    bar.querySelector(".me-only").addEventListener("click", function () { state.mine = !state.mine; render(); });
+  }
+
   function render() {
+    ensureMe();
+    meBar();
     hideNow();
     stage.innerHTML = "";
     stage.classList.remove("is-in");

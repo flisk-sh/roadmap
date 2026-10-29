@@ -261,6 +261,23 @@ code { font-family: var(--font-mono); font-size: 0.9em; }
   transition: transform 0.2s, filter 0.2s;
 }
 .dot.is-dim { opacity: 0.12; }
+/* The tools you rated: a ring around the dot, thicker for a higher level. The rest step back a little. */
+.dot .mine-ring { fill: none; stroke: var(--accent); stroke-width: 1.5; pointer-events: none; }
+.dot.mine-2 .mine-ring { stroke-width: 2.5; }
+.dot.mine-3 .mine-ring { stroke-width: 3.5; filter: drop-shadow(0 0 4px var(--accent)); }
+.stage.has-me .dot:not(.mine):not(.is-dim):not(.is-hot) { opacity: 0.45; }
+.chip.mine { box-shadow: inset 0 0 0 1px var(--accent); font-weight: 700; }
+.chip.mine-3 { box-shadow: inset 0 0 0 2px var(--accent); }
+.me-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; margin: 0.6rem 0 0.3rem; font-size: 0.8rem; color: var(--muted); }
+.me-bar .me-title { color: var(--text); font-weight: 700; }
+.me-bar .me-title b { color: var(--accent-text); margin-left: 0.25rem; }
+.me-bar .me-key { display: inline-flex; align-items: center; gap: 0.35rem; }
+.mine-sw { display: inline-block; width: 0.8rem; height: 0.8rem; border-radius: 50%; border: 0 solid var(--accent); box-sizing: border-box; margin-left: 0.4rem; }
+.mine-sw.l1 { border-width: 1.5px; } .mine-sw.l2 { border-width: 2.5px; } .mine-sw.l3 { border-width: 3.5px; }
+.me-bar .me-only { font: inherit; font-size: 0.75rem; font-weight: 600; color: var(--text); background: transparent; border: 1px solid var(--line-strong); border-radius: var(--r-pill); padding: 0.15rem 0.7rem; cursor: pointer; }
+.me-bar .me-only[aria-pressed="true"] { background: var(--accent-tint); border-color: var(--accent); }
+.me-bar a { color: var(--accent-text); text-decoration: none; }
+
 .dot.is-focus .core { transform: scale(1.25); }
 .stage.has-hot .dot:not(.is-hot) { opacity: 0.35; }
 .stage.has-hot .dot.is-dim:not(.is-hot) { opacity: 0.08; }
