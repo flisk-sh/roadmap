@@ -1518,7 +1518,12 @@
     html += '<h3 class="pf-sub">Your skill shape</h3>' + spiderSvg(shape, 280);
     if (experts.length) html += '<p class="pf-sub">Expert in</p><p class="pf-experts">' + experts.map(function (t) { return esc(t.name); }).join(" · ") + "</p>";
     html += '<p class="pf-count">' + rated + " tools rated</p>";
-    html += '<div class="pf-actions">' +
+    html += '<div class="pf-scan"><p class="pf-sub">Fill it in from GitHub</p>' +
+      '<p class="pf-note">Reads the file names and dependency lists of your newest public repos, from this page. Nothing is sent to us, nothing is run, and you choose what to keep.</p>' +
+      '<div class="pf-scanrow"><input id="pf-ghuser" type="text" maxlength="39" autocomplete="off" spellcheck="false" placeholder="GitHub username" value="' + esc(GH ? GH.login : SCAN_USER) + '">' +
+      '<button type="button" class="btn" data-pf="scan">Scan my repos</button></div>' +
+      '<div id="pf-scanout" role="status"></div></div>' +
+      '<div class="pf-actions">' +
       '<button type="button" class="ask-go" data-pf="copy">Copy my page link</button>' +
       (PAGES_LIVE
         ? '<div class="pf-publish"><button type="button" class="btn" data-pf="publish">' + (GH ? (GH_SAVED ? "Update my CV at @" + esc(GH.login) : "Publish my CV as @" + esc(GH.login)) : ME_PUB ? "Update my CV on pages.flisk.si" : "Publish my CV to pages.flisk.si") + '</button>' +
@@ -1634,6 +1639,42 @@
     });
   }
 
+  // ---- Fill it in from GitHub: scan.js reads public repos; the person keeps what is right ----
+  var SCAN_USER = "";
+  var SCAN_LEVEL_LABEL = ["Not mine", "Used it", "Use it often", "Expert"];
+  function ghJson(url) {
+    return fetch(url, { headers: { accept: "application/vnd.github+json" } }).then(function (r) {
+      if (r.status === 403 || r.status === 429) throw new Error("GitHub's limit for reading without a login is used up; try again in an hour.");
+      if (r.status === 404) throw new Error("No GitHub user with that name.");
+      if (!r.ok) throw new Error("GitHub answered " + r.status + ".");
+      return r.json();
+    });
+  }
+  function rawText(url) {
+    return fetch(url).then(function (r) { return r.ok ? r.text() : ""; }, function () { return ""; });
+  }
+  var lastScan = null;
+  function showScan(out) {
+    var box = document.getElementById("pf-scanout");
+    if (!box) return;
+    var ids = Object.keys(out.tools).filter(function (id) { return BY_ID[id] && !ME[id]; })
+      .sort(function (a, b) { return out.tools[b].length - out.tools[a].length || (BY_ID[a].name < BY_ID[b].name ? -1 : 1); });
+    var had = Object.keys(out.tools).filter(function (id) { return BY_ID[id] && ME[id]; }).length;
+    if (!ids.length) {
+      box.innerHTML = '<p class="pf-note">' + (had ? "Nothing new: all " + had + " tools found are already rated." : "Found no tools from the map in " + esc(out.login) + "'s newest public repos.") + "</p>";
+      return;
+    }
+    lastScan = out;
+    box.innerHTML = '<p class="pf-note">Found in ' + out.repos.length + " repos" + (out.truncated ? " (a very large repo was only partly read)" : "") + ". Untick what is not yours, and set the level you honestly have.</p>" +
+      '<ul class="pf-found">' + ids.map(function (id) {
+        var t = BY_ID[id], repos = out.tools[id], lv = RoadmapScan.suggestLevel(repos.length);
+        return '<li><label><input type="checkbox" data-scan-id="' + esc(id) + '" checked> <b>' + esc(t.name) + "</b></label>" +
+          '<select data-scan-lv="' + esc(id) + '" aria-label="Level for ' + esc(t.name) + '">' +
+          [1, 2, 3].map(function (n) { return '<option value="' + n + '"' + (n === lv ? " selected" : "") + ">" + SCAN_LEVEL_LABEL[n] + "</option>"; }).join("") + "</select>" +
+          '<small>in ' + repos.slice(0, 3).map(esc).join(", ") + (repos.length > 3 ? " +" + (repos.length - 3) : "") + "</small></li>";
+      }).join("") + '</ul><button type="button" class="ask-go" data-pf="scan-apply">Add the ticked tools to my ratings</button>';
+  }
+
   function pfMsg(t) { var m = document.getElementById("pf-msg"); if (m) m.textContent = t; }
 
   stage.addEventListener("input", function (e) {
@@ -1673,6 +1714,27 @@
         b.disabled = false;
         pfMsg("Could not publish: " + err.message);
       });
+    } else if (act === "scan") {
+      var user = (document.getElementById("pf-ghuser").value || "").trim().replace(/^@/, "");
+      if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$/.test(user)) { pfMsg("That does not look like a GitHub username."); return; }
+      if (b.disabled) return;
+      SCAN_USER = user;
+      b.disabled = true;
+      pfMsg("Reading @" + user + "'s public repos…");
+      RoadmapScan.scanUser(user, { json: ghJson, text: rawText }).then(function (out) {
+        b.disabled = false; pfMsg(""); showScan(out);
+      }, function (err) { b.disabled = false; pfMsg(err.message); });
+    } else if (act === "scan-apply") {
+      var added = 0;
+      Array.prototype.forEach.call(stage.querySelectorAll("[data-scan-id]"), function (c) {
+        var id = c.getAttribute("data-scan-id");
+        if (!c.checked || !BY_ID[id] || ME[id]) return;
+        var sel = stage.querySelector('[data-scan-lv="' + id + '"]');
+        var lv = sel ? +sel.value : 1;
+        if (lv >= 1 && lv <= 3) { ME[id] = lv; added++; }
+      });
+      saveMe(); render();
+      pfMsg(added ? "Added " + added + " tools. Check the levels, then publish." : "Nothing ticked.");
     } else if (act === "signout") {
       e.preventDefault();
       GH = null; GH_SAVED = false;

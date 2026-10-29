@@ -911,6 +911,14 @@ body.cmp-open { overflow: hidden; }
 .view-icon-portfolio { border: 2px solid currentColor; border-radius: 3px; }
 .view-icon-portfolio::after { content: ""; position: absolute; left: 3px; right: 3px; top: 3px; height: 4px; background: var(--accent); border-radius: 1px; }
 
+.pf-scan { margin-top: 0.7rem; display: grid; gap: 0.35rem; }
+.pf-scanrow { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.pf-scanrow input { flex: 1 1 10rem; min-width: 0; font: inherit; font-size: 0.85rem; color: var(--text); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 7px; padding: 0.3rem 0.5rem; }
+.pf-found { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.3rem; }
+.pf-found li { display: flex; flex-wrap: wrap; align-items: center; gap: 0.2rem 0.5rem; font-size: 0.8rem; }
+.pf-found label { flex: 1 1 8rem; min-width: 0; overflow-wrap: anywhere; }
+.pf-found select { font: inherit; font-size: 0.75rem; color: var(--text); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 6px; }
+.pf-found small { flex-basis: 100%; color: var(--faint); font-size: 0.7rem; overflow-wrap: anywhere; }
 .pf-publish { display: grid; gap: 0.35rem; padding: 0.55rem; border-radius: 10px; border: 1px dashed var(--line-strong); }
 .pf-publish label { display: grid; gap: 0.15rem; font-size: 0.7rem; color: var(--faint); }
 .pf-publish input { font: inherit; font-size: 0.85rem; color: var(--text); background: var(--surface); border: 1px solid var(--line-strong); border-radius: 7px; padding: 0.3rem 0.5rem; }
