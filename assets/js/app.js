@@ -1326,6 +1326,30 @@
   var PAGES_LIVE = true;
   var PUBLISH_API = "https://publish.flisk.si";
   var ME_PUB = null;    // {id, url, token, manage} from the last publish in this browser
+  // Optional sign-in with GitHub (publish.flisk.si/auth/github): it sends the visitor back here with #gh=<session>, a
+  // signed one-hour session that holds only their login. It is kept for this tab only (sessionStorage), never put in
+  // the page link, and lets the CV live at pages.flisk.si/@<login>/cv/ instead of an anonymous link.
+  var GH = null;        // {token, login}
+  var GH_SAVED = false; // the CV was saved under the login in this tab
+  (function loadGh() {
+    var token = "";
+    var m = /^#gh=(gh1\.[\w-]+\.[\w-]+)$/.exec(location.hash);
+    if (m) {
+      token = m[1];
+      try { sessionStorage.setItem("roadmap-gh", token); } catch (e) {}
+      try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+    } else {
+      try { token = sessionStorage.getItem("roadmap-gh") || ""; } catch (e) { token = ""; }
+    }
+    try {
+      var payload = JSON.parse(atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+      if (/^[a-z0-9](?:[a-z0-9-]{0,38})$/.test(payload.login) && payload.exp > Date.now() / 1000) GH = { token: token, login: payload.login };
+    } catch (e) { GH = null; }
+    if (!GH) { try { sessionStorage.removeItem("roadmap-gh"); } catch (e) {} }
+  })();
+  function signInUrl() {
+    return PUBLISH_API + "/auth/github?return=" + encodeURIComponent(location.origin + location.pathname + location.search);
+  }
 
   function loadMe() {
     var p;
@@ -1497,9 +1521,11 @@
     html += '<div class="pf-actions">' +
       '<button type="button" class="ask-go" data-pf="copy">Copy my page link</button>' +
       (PAGES_LIVE
-        ? '<div class="pf-publish"><button type="button" class="btn" data-pf="publish">' + (ME_PUB ? "Update my CV on pages.flisk.si" : "Publish my CV to pages.flisk.si") + '</button>' +
+        ? '<div class="pf-publish"><button type="button" class="btn" data-pf="publish">' + (GH ? (GH_SAVED ? "Update my CV at @" + esc(GH.login) : "Publish my CV as @" + esc(GH.login)) : ME_PUB ? "Update my CV on pages.flisk.si" : "Publish my CV to pages.flisk.si") + '</button>' +
           '<p class="pf-url" id="pf-url"></p>' +
-          '<p class="pf-note">No account needed. Your CV is public; it goes live in about a minute.</p></div>'
+          (GH
+            ? '<p class="pf-note">Signed in as @' + esc(GH.login) + '. Your CV is public at pages.flisk.si/@' + esc(GH.login) + '/cv/ and goes live in about a minute. <a href="#" data-pf="signout">Sign out</a></p>'
+            : '<p class="pf-note">No account needed. Your CV is public; it goes live in about a minute. Or <a href="' + esc(signInUrl()) + '" data-pf-signin>sign in with GitHub</a> to publish under your own name. We read only your public login.</p>') + '</div>'
         : '<button type="button" class="btn" disabled title="Publishing to pages.flisk.si is almost ready">Publish to pages.flisk.si: coming soon</button>') +
       '<button type="button" class="btn" data-pf="download">Download as a web page</button>' +
       '<button type="button" class="btn" data-pf="clear">Start over</button></div><p class="pf-msg" id="pf-msg" role="status"></p>';
@@ -1538,6 +1564,10 @@
   function showPagesUrl() {
     var u = document.getElementById("pf-url");
     if (!u) return;
+    if (GH) {
+      u.innerHTML = GH_SAVED ? 'Your CV: <a href="https://pages.flisk.si/@' + esc(GH.login) + '/cv/" target="_blank" rel="noopener">pages.flisk.si/@' + esc(GH.login) + '/cv/</a> (live in about a minute)' : "";
+      return;
+    }
     if (ME_PUB && !ME_PUB.live) waitLive();
     var manage = ME_PUB ? '<br><a href="' + esc(ME_PUB.manage) + '" target="_blank" rel="noopener">Delete it</a> · keep this link: it holds the key' : "";
     u.innerHTML = !ME_PUB ? ""
@@ -1570,7 +1600,23 @@
     };
     waitTimer = setTimeout(check, 4000);
   }
+  function publishAsGithub(cv) {
+    return fetch(PUBLISH_API + "/v1/me/space", {
+      method: "PUT",
+      headers: { "content-type": "application/json", authorization: "Bearer " + GH.token },
+      body: JSON.stringify({ cv: cv })
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (body) {
+        if (r.status === 401) { GH = null; try { sessionStorage.removeItem("roadmap-gh"); } catch (e) {} throw new Error("your sign-in ended; sign in again"); }
+        if (!r.ok) throw new Error(body.error || "publish failed (" + r.status + ")");
+        var updated = GH_SAVED;
+        GH_SAVED = true;
+        return updated;
+      });
+    });
+  }
   function publishPage(cv) {
+    if (GH) return publishAsGithub(cv);
     var update = !!ME_PUB;
     var headers = { "content-type": "application/json" };
     if (update) headers.authorization = "Bearer " + ME_PUB.token;
@@ -1620,13 +1666,18 @@
       pfMsg("Publishing…");
       publishPage(cvRequest()).then(function (updated) {
         b.disabled = false;
-        b.textContent = "Update my CV on pages.flisk.si";
+        b.textContent = GH ? "Update my CV at @" + GH.login : "Update my CV on pages.flisk.si";
         showPagesUrl();
         pfMsg(updated ? "Updated. The new version is live in about a minute." : "Published. Building your page now, usually about a minute.");
       }, function (err) {
         b.disabled = false;
         pfMsg("Could not publish: " + err.message);
       });
+    } else if (act === "signout") {
+      e.preventDefault();
+      GH = null; GH_SAVED = false;
+      try { sessionStorage.removeItem("roadmap-gh"); } catch (er) {}
+      render();
     } else if (act === "clear") {
       ME = {}; saveMe(); render();
     }
