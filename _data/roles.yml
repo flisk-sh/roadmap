@@ -32,6 +32,7 @@ roles:
     core: [docker-desktop, docker-compose, testcontainers, flyway, sqlalchemy]
     daily: [compose-watch, wiremock, github-actions, sentry, direnv, prisma]
     nice: [flisk, tilt, localstack, minio, pact]
+    key: [testcontainers, flyway, sqlalchemy, prisma, wiremock]
 
   - id: frontend-engineer
     name: Frontend Engineer
@@ -44,6 +45,7 @@ roles:
     core: [vite, pnpm, nextjs, msw, nvm]
     daily: [esbuild, turborepo, npm, vitest, github-actions, sentry, rollup]
     nice: [astro, playwright-mcp, netlify-cli, vercel-cli]
+    key: [vite, nextjs, msw, vitest, esbuild]
 
   - id: fullstack-engineer
     name: Full-stack Engineer
@@ -56,6 +58,7 @@ roles:
     core: [nextjs, pnpm, docker-compose, prisma, vite]
     daily: [docker-desktop, drizzle, msw, vitest, github-actions, sentry, supabase-cli]
     nice: [flisk, mailpit, ngrok, create-t3-app, vercel-cli]
+    key: [nextjs, prisma, drizzle, supabase-cli]
 
   - id: mobile-engineer
     name: Mobile Engineer
@@ -68,6 +71,7 @@ roles:
     core: [swiftpm, gradle, msw, mockoon, ngrok]
     daily: [expo, wiremock, firebase-emulators, github-actions, homebrew, sentry]
     nice: [mailpit, toxiproxy, convex, cloudflare-tunnel]
+    key: [swiftpm, gradle, expo, firebase-emulators]
 
   - id: java-engineer
     name: Java / JVM Engineer
@@ -80,6 +84,7 @@ roles:
     core: [spring-boot, maven, gradle, sdkman, testcontainers]
     daily: [quarkus, docker-compose, flyway, liquibase, jib, github-actions]
     nice: [micronaut, buildpacks, dive]
+    key: [spring-boot, maven, gradle, quarkus]
 
   - id: python-engineer
     name: Python Backend Engineer
@@ -92,6 +97,7 @@ roles:
     core: [uv, fastapi, django, sqlalchemy, alembic]
     daily: [pyenv, docker-compose, testcontainers, moto, pydantic-ai, github-actions]
     nice: [poetry, pixi, mailpit, just]
+    key: [uv, fastapi, django, sqlalchemy, alembic]
 
   - id: dotnet-engineer
     name: .NET Engineer
@@ -104,6 +110,7 @@ roles:
     core: [ef-core, nuget, aspire, docker-desktop, azurite]
     daily: [docker-compose, testcontainers, azure-functions-core-tools, github-actions, bicep]
     nice: [dapr, semantic-kernel, microsoft-agent-framework, tye]
+    key: [ef-core, nuget, aspire, azurite]
 
   - id: php-engineer
     name: PHP / WordPress Developer
@@ -116,6 +123,7 @@ roles:
     core: [laravel, laravel-sail, composer, ddev, local-wp]
     daily: [lando, laravel-herd, docker-compose, mailpit, github-actions]
     nice: [docksal, ngrok, nvm, vite]
+    key: [laravel, composer, ddev, local-wp]
 
   - id: ruby-engineer
     name: Ruby / Rails Engineer
@@ -128,6 +136,7 @@ roles:
     core: [rails, bundler, rbenv, docker-compose, foreman]
     daily: [overmind, mailpit, github-actions, sentry, dependabot, testcontainers]
     nice: [mise, ngrok, kompose]
+    key: [rails, bundler, rbenv, foreman]
 
   - id: serverless-engineer
     name: Serverless / Cloud App Engineer
@@ -140,6 +149,7 @@ roles:
     core: [sst, aws-sam, localstack, serverless-framework, wrangler]
     daily: [aws-cdk, moto, miniflare, minio, github-actions, firebase-emulators]
     nice: [architect, nitric, encore, netlify-cli, vercel-cli]
+    key: [sst, aws-sam, serverless-framework, wrangler, localstack]
 
   - id: student-junior
     name: Student / Junior Developer
@@ -152,6 +162,7 @@ roles:
     core: [homebrew, nvm, pip, docker-desktop, replit]
     daily: [codespaces, cursor, github-copilot, vite, npm]
     nice: [uv, claude-code, create-vite, stackblitz, ollama]
+    key: [replit, stackblitz, codespaces, pip]
 
   - id: indie-hacker
     name: Indie Hacker / Solo Founder
@@ -164,6 +175,7 @@ roles:
     core: [nextjs, supabase-cli, pocketbase, vercel-cli, cursor]
     daily: [claude-code, docker-compose, pnpm, sentry, ngrok, github-actions]
     nice: [flisk, convex, wrangler, mailpit, ollama]
+    key: [supabase-cli, pocketbase, vercel-cli, convex]
 
   - id: founding-engineer
     name: Founding Engineer
@@ -176,6 +188,7 @@ roles:
     core: [docker-compose, github-actions, nextjs, terraform, sentry]
     daily: [claude-code, pnpm, supabase-cli, vercel-cli, doppler, tilt]
     nice: [flisk, opentofu, pulumi, grafana, localstack]
+    key: [nextjs, sentry, supabase-cli, vercel-cli, doppler]
 
   # ---------------------------------------------------------------- run
   - id: platform-engineer
@@ -189,6 +202,7 @@ roles:
     core: [backstage, terraform, kubernetes, argo-cd, github-actions]
     daily: [crossplane, helm, humanitec, port, opentelemetry, dev-containers]
     nice: [flisk, tilt, kratix, coder, copier]
+    key: [backstage, crossplane, argo-cd, kubernetes, humanitec]
 
   - id: sre
     name: Site Reliability Engineer (SRE)
@@ -201,6 +215,7 @@ roles:
     core: [prometheus, grafana, kubectl, opentelemetry, terraform]
     daily: [loki, jaeger, k9s, stern, argo-cd, helm]
     nice: [datadog, sentry, toxiproxy, kubectx, signoz]
+    key: [prometheus, grafana, loki, jaeger, stern]
 
   - id: devops-engineer
     name: DevOps Engineer
@@ -213,6 +228,7 @@ roles:
     core: [github-actions, terraform, docker-engine, ansible, kubectl]
     daily: [gitlab-ci, jenkins, helm, argo-cd, vault, grafana]
     nice: [act, dagger, opentofu, trivy, flisk]
+    key: [github-actions, terraform, ansible, jenkins, gitlab-ci]
 
   - id: infra-cloud-engineer
     name: Infrastructure / Cloud Engineer
@@ -225,6 +241,7 @@ roles:
     core: [terraform, opentofu, aws-cdk, kubernetes, ansible]
     daily: [terragrunt, pulumi, cloudformation, bicep, vault, kubectl]
     nice: [crossplane, sops, localstack, k3s, nix]
+    key: [terraform, opentofu, aws-cdk, terragrunt, pulumi]
 
   - id: kubernetes-engineer
     name: Kubernetes / Cluster Engineer
@@ -237,6 +254,7 @@ roles:
     core: [kubectl, helm, kustomize, k9s, argo-cd]
     daily: [flux, helmfile, stern, kubectx, external-secrets, lens]
     nice: [kind, vcluster, krew, kubefwd, telepresence]
+    key: [kubectl, helm, kustomize, k9s, flux]
 
   - id: release-engineer
     name: Release Engineer
@@ -249,6 +267,7 @@ roles:
     core: [github-actions, changesets, cosign, buildkit]
     daily: [syft, renovate, gitlab-ci, argo-cd, grype]
     nice: [kargo, dagger, lerna, helm]
+    key: [changesets, cosign, syft, buildkit]
 
   - id: devprod-engineer
     name: Build / Developer Productivity Engineer
@@ -261,6 +280,7 @@ roles:
     core: [bazel, nx, turborepo, buildkit, mise]
     daily: [pants, earthly, dagger, nix, devenv, just]
     nice: [flisk, depot, buck2, watchman, direnv]
+    key: [bazel, nx, turborepo, buildkit, mise]
 
   - id: observability-engineer
     name: Observability Engineer
@@ -273,6 +293,7 @@ roles:
     core: [opentelemetry, prometheus, grafana, loki, jaeger]
     daily: [otel-lgtm, signoz, sentry, datadog, kubectl]
     nice: [openllmetry, langfuse, stern, helm]
+    key: [opentelemetry, loki, jaeger, otel-lgtm, signoz]
 
   # ---------------------------------------------------------------- data-ai
   - id: data-engineer
@@ -286,6 +307,7 @@ roles:
     core: [uv, docker-compose, minio, sqlalchemy, atlas]
     daily: [conda, pixi, testcontainers, localstack, temporal, terraform]
     nice: [flyway, dbmate, moto, gcloud-emulators, dagger]
+    key: [minio, sqlalchemy, atlas, temporal]
 
   - id: ml-engineer
     name: ML Engineer
@@ -298,6 +320,7 @@ roles:
     core: [uv, conda, docker-desktop, vllm, fastapi]
     daily: [pixi, mlx-lm, ollama, llama-cpp, langfuse, docker-compose]
     nice: [github-actions, nix, podman]
+    key: [vllm, conda, mlx-lm, llama-cpp, pixi]
 
   - id: mlops-engineer
     name: MLOps Engineer
@@ -310,6 +333,7 @@ roles:
     core: [kubernetes, vllm, docker-engine, terraform, github-actions]
     daily: [helm, argo-cd, prometheus, grafana, buildkit, temporal]
     nice: [langfuse, opentelemetry, kubectl, k9s]
+    key: [vllm, langfuse, temporal]
 
   - id: ai-agent-engineer
     name: AI / Agent Engineer
@@ -322,6 +346,7 @@ roles:
     core: [langgraph, claude-agent-sdk, model-context-protocol, langfuse, ollama]
     daily: [openai-agents-sdk, pydantic-ai, mcp-inspector, fastmcp, temporal, docker-compose]
     nice: [flisk, mastra, e2b, promptfoo, docker-mcp-toolkit]
+    key: [langgraph, claude-agent-sdk, model-context-protocol, openai-agents-sdk, pydantic-ai, mastra]
 
   - id: prompt-eval-engineer
     name: Prompt / Eval Engineer
@@ -334,6 +359,7 @@ roles:
     core: [promptfoo, langfuse, braintrust, langsmith, arize-phoenix]
     daily: [opik, dspy, helicone, openllmetry, ollama]
     nice: [github-actions, claude-code, mcp-inspector, docker-compose]
+    key: [promptfoo, langfuse, braintrust, langsmith, arize-phoenix]
 
   - id: llm-inference-engineer
     name: LLM Inference / Local Models Engineer
@@ -346,6 +372,7 @@ roles:
     core: [vllm, llama-cpp, ollama, docker-model-runner, kubernetes]
     daily: [lm-studio, mlx-lm, localai, prometheus, grafana]
     nice: [jan, helm, docker-desktop, opentelemetry]
+    key: [vllm, llama-cpp, ollama, docker-model-runner, lm-studio]
 
   - id: mcp-tools-engineer
     name: MCP / Agent Tooling Engineer
@@ -358,6 +385,7 @@ roles:
     core: [model-context-protocol, fastmcp, mcp-inspector, claude-code, docker-mcp-toolkit]
     daily: [playwright-mcp, smithery, mcp-registry, composio, e2b, skills-sh]
     nice: [stagehand, flisk, uv, wrangler]
+    key: [model-context-protocol, fastmcp, mcp-inspector, docker-mcp-toolkit]
 
   # ---------------------------------------------------------------- quality
   - id: qa-automation-engineer
@@ -371,6 +399,7 @@ roles:
     core: [playwright-mcp, testcontainers, wiremock, docker-compose, github-actions]
     daily: [msw, mockoon, mailpit, pact, act, stagehand]
     nice: [flisk, microcks, toxiproxy, localstack]
+    key: [playwright-mcp, testcontainers, wiremock, msw, mockoon]
 
   - id: benchmark-engineer
     name: Benchmark / Performance Engineer
@@ -383,6 +412,7 @@ roles:
     core: [docker-compose, prometheus, grafana, opentelemetry, jaeger]
     daily: [toxiproxy, vllm, testcontainers, nix, hatch, github-actions]
     nice: [wiremock, signoz, k9s, just]
+    key: [toxiproxy, jaeger, vllm]
 
   - id: sdet-contract
     name: Contract / Integration Test Engineer
@@ -395,6 +425,7 @@ roles:
     core: [pact, microcks, wiremock, prism, testcontainers]
     daily: [mockoon, msw, docker-compose, github-actions, toxiproxy]
     nice: [flisk, localstack, tilt, moto]
+    key: [pact, microcks, prism, wiremock]
 
   - id: security-engineer
     name: Security Engineer (AppSec)
@@ -407,6 +438,7 @@ roles:
     core: [trivy, gitleaks, snyk, vault, dependabot]
     daily: [grype, syft, cosign, sops, renovate, github-actions]
     nice: [openbao, infisical, external-secrets, toxiproxy]
+    key: [trivy, gitleaks, snyk, grype, vault]
 
   - id: devsecops-engineer
     name: DevSecOps Engineer
@@ -419,6 +451,7 @@ roles:
     core: [github-actions, trivy, cosign, vault, terraform]
     daily: [syft, grype, gitleaks, snyk, renovate, kubectl]
     nice: [openbao, external-secrets, argo-cd, sops, kustomize]
+    key: [trivy, cosign, syft, grype, gitleaks]
 
   - id: chaos-reliability-tester
     name: Resilience / Chaos Test Engineer
@@ -431,6 +464,7 @@ roles:
     core: [toxiproxy, docker-compose, kubernetes, kubectl, prometheus]
     daily: [testcontainers, grafana, k9s, kind, stern]
     nice: [opentelemetry, localstack, tilt, jaeger]
+    key: [toxiproxy, kind, stern]
 
   # ---------------------------------------------------------------- field
   - id: forward-deployed-engineer
@@ -444,6 +478,7 @@ roles:
     core: [docker-desktop, docker-compose, ngrok, claude-code, kubectl]
     daily: [cursor, mockoon, wiremock, terraform, vault, helm]
     nice: [flisk, tilt, ollama, localstack, tailscale-funnel]
+    key: [ngrok, tailscale-funnel, mockoon, wiremock]
 
   - id: solutions-engineer
     name: Solutions Engineer
@@ -456,6 +491,7 @@ roles:
     core: [docker-desktop, docker-compose, ngrok, mockoon, vercel-cli]
     daily: [claude-code, cursor, codespaces, wiremock, supabase-cli]
     nice: [flisk, cloudflare-tunnel, replit, stackblitz]
+    key: [ngrok, mockoon, cloudflare-tunnel, stackblitz]
 
   - id: developer-advocate
     name: Developer Advocate / DevRel
@@ -468,6 +504,7 @@ roles:
     core: [codespaces, docker-desktop, vite, stackblitz, claude-code]
     daily: [dev-containers, replit, cursor, ngrok, github-actions, create-vite]
     nice: [flisk, codesandbox, cookiecutter, copier, ollama]
+    key: [codespaces, stackblitz, replit, codesandbox, create-vite]
 
   - id: support-engineer
     name: Support Engineer
@@ -480,6 +517,7 @@ roles:
     core: [docker-desktop, docker-compose, sentry, kubectl, stern]
     daily: [wiremock, ngrok, grafana, loki, k9s, devbox]
     nice: [flisk, mailpit, codespaces, jaeger]
+    key: [sentry, stern, loki, devbox]
 
   - id: integration-engineer
     name: Integration Engineer
@@ -492,6 +530,7 @@ roles:
     core: [ngrok, wiremock, mockoon, prism, docker-compose]
     daily: [microcks, msw, localtunnel, cloudflare-tunnel, mailpit, temporal]
     nice: [flisk, inngest, composio, pact]
+    key: [ngrok, wiremock, mockoon, prism, microcks]
 
   # ---------------------------------------------------------------- lead
   - id: tech-lead
@@ -505,6 +544,7 @@ roles:
     core: [github-actions, docker-compose, claude-code, renovate, sentry]
     daily: [turborepo, nx, changesets, dev-containers, mise, backstage]
     nice: [flisk, tilt, dependabot, grafana, just]
+    key: [renovate, changesets, turborepo, nx, dependabot]
 
   - id: staff-engineer
     name: Staff Engineer
@@ -517,6 +557,7 @@ roles:
     core: [kubernetes, terraform, opentelemetry, github-actions, bazel]
     daily: [backstage, dapr, temporal, nx, docker-compose, grafana]
     nice: [flisk, tilt, crossplane, nix, claude-code]
+    key: [bazel, backstage, dapr, temporal]
 
   - id: software-architect
     name: Software Architect
@@ -529,6 +570,7 @@ roles:
     core: [kubernetes, terraform, opentelemetry, dapr, temporal]
     daily: [backstage, nx, spring-boot, nestjs, docker-compose, pact]
     nice: [flisk, aspire, encore, microcks, restate]
+    key: [dapr, temporal, backstage, pact]
 
   - id: engineering-manager
     name: Engineering Manager
@@ -541,6 +583,7 @@ roles:
     core: [github-actions, backstage, grafana, sentry, renovate]
     daily: [port, cortex, opslevel, datadog, dependabot]
     nice: [claude-code, github-copilot, cursor, codespaces]
+    key: [backstage, port, cortex, opslevel]
 
   - id: oss-maintainer
     name: Open-source Maintainer
@@ -553,3 +596,4 @@ roles:
     core: [github-actions, changesets, renovate, dev-containers, codespaces]
     daily: [dependabot, act, cosign, just, gitleaks, claude-code]
     nice: [flisk, copier, cookiecutter, nix, syft]
+    key: [changesets, renovate, dependabot, cosign]
