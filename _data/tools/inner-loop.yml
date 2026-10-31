@@ -14,7 +14,7 @@
   evidence: https://github.com/flisk-sh/flisk/releases
   dx: [one-command, zero-config, fast-feedback, clear-errors, ui, docs, offline, agent-ready]
   parity: [containers, multi-service, networking, state, team-scale]
-  note: First released October 2026. Local only by design, no Kubernetes manifests. Runs on Docker and Tilt.
+  note: "Released Oct 2026. Local only, no Kubernetes manifests. Docker optional: simple services run as local processes."
 
 - id: tilt
   name: Tilt
