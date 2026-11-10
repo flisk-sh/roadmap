@@ -154,7 +154,7 @@
       "</p>"
     );
   }
-  // cmd.flisk.sh compares the commands of tools side by side. Its Pick page keeps Flisk first and
+  // cmd.flisk.si compares the commands of tools side by side. Its Pick page keeps Flisk first and
   // takes the rest from ?tools=, so a link there is "these tools, command by command".
   function cmdIds(ids) {
     var map = (D.cmd && D.cmd.tools) || {};
