@@ -1,0 +1,9 @@
+{%- comment -%}The view tabs (Compass, Adoption Radar, Lab ...). Used by the view pages and by pages like /badges/
+so every page has the same way back to the views. Pass current=<view id> to mark the open one.{%- endcomment %}
+    <nav class="views" aria-label="Views">
+      {%- for v in site.data.meta.views %}
+      <a class="view-tab view-tab-{{ v.id }}" data-view="{{ v.id }}" href="{{ '/' | append: v.id | append: '/' | relative_url }}"{% if v.id == include.current %} aria-current="page"{% endif %}>
+        <span class="view-icon view-icon-{{ v.id }}" aria-hidden="true"></span>{{ v.name }}
+      </a>
+      {%- endfor %}
+    </nav>

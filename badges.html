@@ -4,6 +4,10 @@ title: Badges
 permalink: /badges/
 ---
 {%- assign rings = "adopt,trial,assess" | split: "," -%}
+<div class="topbar">
+{%- include view-tabs.html current="" %}
+</div>
+
 <section class="prose badges-intro">
   <h1>Badges</h1>
   <p>Every tool in Adopt, Trial or Assess on the <a href="{{ '/radar/' | relative_url }}">Adoption Radar</a> gets a badge. Nobody buys one and nobody hands one out: the ring comes from the <a href="{{ '/about/' | relative_url }}">public rubric</a>, and each tool links its evidence.</p>
