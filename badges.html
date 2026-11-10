@@ -1,0 +1,53 @@
+---
+layout: default
+title: Badges
+permalink: /badges/
+---
+{%- assign rings = "adopt,trial,assess" | split: "," -%}
+<section class="prose badges-intro">
+  <h1>Badges</h1>
+  <p>Every tool in Adopt, Trial or Assess on the <a href="{{ '/radar/' | relative_url }}">Adoption Radar</a> gets a badge. Nobody buys one and nobody hands one out: the ring comes from the <a href="{{ '/about/' | relative_url }}">public rubric</a>, and each tool links its evidence.</p>
+  <p>Made one of these tools? Put its badge in your README or on your site. It is a live image, so it shows your tool's ring today. If the data moves your tool, the badge changes on the next build. Hold is not an award, so Hold tools get no badge.</p>
+</section>
+
+{%- for ring_id in rings -%}
+  {%- assign ring = site.data.rubric.rings | where: "id", ring_id | first -%}
+  {%- assign count = 0 -%}
+  {%- for fam in site.data.families -%}{%- assign n = site.data.tools[fam.id] | where: "ring", ring_id | size -%}{%- assign count = count | plus: n -%}{%- endfor %}
+<section class="badge-ring" id="ring-{{ ring_id }}">
+  <h2><span class="tt-ring ring-{{ ring_id }}">{{ ring.label }}</span> {{ count }} tools <small>{{ ring.help }}</small></h2>
+  <ul class="badge-grid">
+    {%- for fam in site.data.families -%}
+      {%- assign fam_tools = site.data.tools[fam.id] | where: "ring", ring_id | sort: "name" -%}
+      {%- for t in fam_tools %}
+    <li class="badge-card" id="{{ t.id }}">
+      <img src="{{ '/badges/' | append: t.id | append: '.svg' | relative_url }}" alt="{{ t.name }}: {{ ring.label }} on the DevEx Roadmap" width="120" height="138" loading="lazy">
+      <strong>{{ t.name }}</strong>
+      <button type="button" class="badge-copy" data-id="{{ t.id }}" data-name="{{ t.name | escape }}" data-ring="{{ ring.label }}">Copy embed</button>
+    </li>
+      {%- endfor -%}
+    {%- endfor %}
+  </ul>
+</section>
+{%- endfor %}
+
+<script>
+  (function () {
+    var base = {{ site.url | jsonify }};
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest(".badge-copy");
+      if (!b) return;
+      var id = b.getAttribute("data-id");
+      var alt = b.getAttribute("data-name") + ": " + b.getAttribute("data-ring") + " on the DevEx Roadmap";
+      var html = '<a href="' + base + '/badges/#' + id + '"><img src="' + base + '/badges/' + id + '.svg" alt="' + alt + '" width="160" height="184"></a>';
+      var done = function (ok) {
+        b.textContent = ok ? "Copied" : "Copy failed";
+        setTimeout(function () { b.textContent = "Copy embed"; }, 1600);
+      };
+      if (navigator.clipboard) navigator.clipboard.writeText(html).then(function () { done(true); }, function () { done(false); });
+      else done(false);
+    });
+    var hit = location.hash && document.getElementById(location.hash.slice(1));
+    if (hit && hit.classList.contains("badge-card")) hit.classList.add("is-target");
+  })();
+</script>
