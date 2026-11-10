@@ -3,7 +3,19 @@ layout: default
 title: Badges
 permalink: /badges/
 ---
-{%- assign rings = "adopt,trial,assess" | split: "," -%}
+{%- comment -%}
+One card per Adopt, Trial or Assess tool (the SVGs come from _plugins/badges.rb). The cards are rendered as one
+flat A-Z list, so the page works without JavaScript; the script below adds search, ring and family filters and
+grouping, and keeps them in the address bar (?q=&ring=&fam=&group=) so a filtered view can be shared.
+{%- endcomment -%}
+{%- assign award_rings = "adopt,trial,assess" | split: "," -%}
+{%- assign cards = "" | split: "" -%}
+{%- for fam in site.data.families -%}
+  {%- for t in site.data.tools[fam.id] -%}
+    {%- if award_rings contains t.ring -%}{%- assign cards = cards | push: t -%}{%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+{%- assign cards = cards | sort_natural: "name" -%}
 <div class="topbar">
 {%- include view-tabs.html current="" %}
 </div>
@@ -11,39 +23,77 @@ permalink: /badges/
 <section class="prose badges-intro">
   <h1>Badges</h1>
   <p>Every tool in Adopt, Trial or Assess on the <a href="{{ '/radar/' | relative_url }}">Adoption Radar</a> gets a badge. Nobody buys one and nobody hands one out: the ring comes from the <a href="{{ '/about/' | relative_url }}">public rubric</a>, and each tool links its evidence.</p>
-  <p>Made one of these tools? Put its badge in your README or on your site. It is a live image, so it shows your tool's ring today. If the data moves your tool, the badge changes on the next build. Hold is not an award, so Hold tools get no badge.</p>
+  <p>Made one of these tools? Find it below and copy its badge into your README. It is a live image: if the data moves your tool, the badge changes on the next build. Hold is not an award, so Hold tools get no badge.</p>
 </section>
 
-{%- for ring_id in rings -%}
-  {%- assign ring = site.data.rubric.rings | where: "id", ring_id | first -%}
-  {%- assign count = 0 -%}
-  {%- for fam in site.data.families -%}{%- assign n = site.data.tools[fam.id] | where: "ring", ring_id | size -%}{%- assign count = count | plus: n -%}{%- endfor %}
-<section class="badge-ring" id="ring-{{ ring_id }}">
-  <h2><span class="tt-ring ring-{{ ring_id }}">{{ ring.label }}</span> {{ count }} tools <small>{{ ring.help }}</small></h2>
-  <ul class="badge-grid">
+<div class="badge-tools js-only" id="badge-tools" hidden>
+  <div class="badge-search">
+    <input id="bq" type="search" placeholder="Find a tool, category or family…" aria-label="Find a tool" autocomplete="off" spellcheck="false">
+    <label class="badge-group">Group by
+      <select id="bgroup">
+        <option value="ring">Ring</option>
+        <option value="fam">Family</option>
+        <option value="cat">Category</option>
+        <option value="none">Nothing (A–Z)</option>
+      </select>
+    </label>
+  </div>
+  <div class="badge-filter" role="group" aria-label="Ring">
+    <span class="badge-filter-label">Ring</span>
+    <button type="button" class="subtab" data-ring="" aria-pressed="true"><span class="sw sw-all" aria-hidden="true"></span>All <small>{{ cards | size }}</small></button>
+    {%- for ring_id in award_rings -%}
+    {%- assign ring = site.data.rubric.rings | where: "id", ring_id | first -%}
+    {%- assign n = cards | where: "ring", ring_id | size %}
+    <button type="button" class="subtab" data-ring="{{ ring_id }}" aria-pressed="false" title="{{ ring.help | escape }}" style="--c: var(--{{ ring_id }})"><span class="sw" aria-hidden="true"></span>{{ ring.label }} <small>{{ n }}</small></button>
+    {%- endfor %}
+  </div>
+  <div class="badge-filter" role="group" aria-label="Family">
+    <span class="badge-filter-label">Family</span>
+    <button type="button" class="subtab" data-fam="" aria-pressed="true"><span class="sw sw-all" aria-hidden="true"></span>All</button>
     {%- for fam in site.data.families -%}
-      {%- assign fam_tools = site.data.tools[fam.id] | where: "ring", ring_id | sort: "name" -%}
-      {%- for t in fam_tools %}
-    <li class="badge-card" id="{{ t.id }}">
+    {%- assign n = 0 -%}{%- for t in site.data.tools[fam.id] -%}{%- if award_rings contains t.ring -%}{%- assign n = n | plus: 1 -%}{%- endif -%}{%- endfor %}
+    <button type="button" class="subtab" data-fam="{{ fam.id }}" aria-pressed="false" style="--c: {{ fam.color }}"><span class="sw" aria-hidden="true"></span>{{ fam.name }} <small>{{ n }}</small></button>
+    {%- endfor %}
+  </div>
+  <p class="view-count" id="bcount" aria-live="polite"></p>
+</div>
+
+<div id="badge-groups">
+  <ul class="badge-grid" id="badge-all">
+    {%- for t in cards -%}
+    {%- assign ring = site.data.rubric.rings | where: "id", t.ring | first -%}
+    <li class="badge-card" id="{{ t.id }}" data-name="{{ t.name | escape }}" data-ring="{{ t.ring }}" data-cat="{{ t.cat | escape }}" data-search="{{ t.name | append: ' ' | append: t.id | append: ' ' | append: t.cat | append: ' ' | append: t.tagline | downcase | escape }}">
       <img src="{{ '/badges/' | append: t.id | append: '.svg' | relative_url }}" alt="{{ t.name }}: {{ ring.label }} on the DevEx Roadmap" width="120" height="138" loading="lazy">
       <strong>{{ t.name }}</strong>
+      <span class="badge-tag">{{ t.tagline }}</span>
       <button type="button" class="badge-copy" data-id="{{ t.id }}" data-name="{{ t.name | escape }}" data-ring="{{ ring.label }}">Copy embed</button>
     </li>
-      {%- endfor -%}
     {%- endfor %}
   </ul>
-</section>
-{%- endfor %}
+</div>
+<p class="badge-empty" id="bempty" hidden>No badge matches. Tools in Hold have none; <a href="{{ '/radar/' | relative_url }}">find them on the Radar</a>.</p>
 
 <script>
   (function () {
     var base = {{ site.url | jsonify }};
+    var RINGS = {{ site.data.rubric.rings | jsonify }};
+    var FAMS = {{ site.data.families | jsonify }};
+    var FAM_OF = {};
+    {%- for fam in site.data.families %}
+    {{ site.data.tools[fam.id] | map: "id" | jsonify }}.forEach(function (id) { FAM_OF[id] = {{ fam.id | jsonify }}; });
+    {%- endfor %}
+
+    function esc(s) {
+      return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+    }
+
+    // Copy embed: the badge links back to its own card on this page.
     document.addEventListener("click", function (e) {
       var b = e.target.closest(".badge-copy");
       if (!b) return;
       var id = b.getAttribute("data-id");
       var alt = b.getAttribute("data-name") + ": " + b.getAttribute("data-ring") + " on the DevEx Roadmap";
-      var html = '<a href="' + base + '/badges/#' + id + '"><img src="' + base + '/badges/' + id + '.svg" alt="' + alt + '" width="160" height="184"></a>';
+      var html = '<a href="' + base + '/badges/#' + id + '"><img src="' + base + '/badges/' + id + '.svg" alt="' + esc(alt) + '" width="160" height="184"></a>';
       var done = function (ok) {
         b.textContent = ok ? "Copied" : "Copy failed";
         setTimeout(function () { b.textContent = "Copy embed"; }, 1600);
@@ -51,7 +101,114 @@ permalink: /badges/
       if (navigator.clipboard) navigator.clipboard.writeText(html).then(function () { done(true); }, function () { done(false); });
       else done(false);
     });
-    var hit = location.hash && document.getElementById(location.hash.slice(1));
-    if (hit && hit.classList.contains("badge-card")) hit.classList.add("is-target");
+
+    var tools = document.getElementById("badge-tools");
+    var groupsEl = document.getElementById("badge-groups");
+    var q = document.getElementById("bq");
+    var groupSel = document.getElementById("bgroup");
+    var countEl = document.getElementById("bcount");
+    var empty = document.getElementById("bempty");
+    var cards = [].slice.call(document.querySelectorAll(".badge-card"));
+    cards.forEach(function (c) { c.setAttribute("data-fam", FAM_OF[c.id] || ""); });
+    tools.hidden = false;
+
+    var params = new URLSearchParams(location.search);
+    var state = {
+      q: params.get("q") || "",
+      ring: params.get("ring") || "",
+      fam: params.get("fam") || "",
+      group: params.get("group") || "ring"
+    };
+    // A shared link to one tool's card (#bun) must show that card, whatever the filters were.
+    var target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target && !target.classList.contains("badge-card")) target = null;
+    if (target) { state.q = ""; state.ring = ""; state.fam = ""; }
+    if (["ring", "fam", "cat", "none"].indexOf(state.group) < 0) state.group = "ring";
+    q.value = state.q;
+    groupSel.value = state.group;
+
+    function ringLabel(id) { var r = RINGS.filter(function (x) { return x.id === id; })[0]; return r ? r.label : id; }
+    function famOf(id) { return FAMS.filter(function (f) { return f.id === id; })[0] || { name: id, color: "" }; }
+
+    function groupsFor(list) {
+      var keys = [], by = {};
+      function add(key, head, card) {
+        if (!by[key]) { by[key] = { head: head, cards: [] }; keys.push(key); }
+        by[key].cards.push(card);
+      }
+      list.forEach(function (c) {
+        var ring = c.getAttribute("data-ring"), fam = c.getAttribute("data-fam"), cat = c.getAttribute("data-cat");
+        if (state.group === "ring") add(ring, '<span class="tt-ring ring-' + esc(ring) + '">' + esc(ringLabel(ring)) + "</span>", c);
+        else if (state.group === "fam") add(fam, '<span class="sw" style="--c:' + esc(famOf(fam).color) + '" aria-hidden="true"></span>' + esc(famOf(fam).name), c);
+        else if (state.group === "cat") add(fam + "/" + cat, '<span class="sw" style="--c:' + esc(famOf(fam).color) + '" aria-hidden="true"></span>' + esc(cat) + ' <small>' + esc(famOf(fam).name) + "</small>", c);
+        else add("all", "", c);
+      });
+      // Rings keep the rubric order, families the families.yml order; categories go A-Z inside their family.
+      var order = state.group === "ring" ? RINGS.map(function (r) { return r.id; })
+        : state.group === "fam" ? FAMS.map(function (f) { return f.id; }) : null;
+      if (order) keys.sort(function (a, b) { return order.indexOf(a) - order.indexOf(b); });
+      else if (state.group === "cat") keys.sort(function (a, b) {
+        var fa = a.split("/")[0], fb = b.split("/")[0];
+        var oa = FAMS.findIndex(function (f) { return f.id === fa; }), ob = FAMS.findIndex(function (f) { return f.id === fb; });
+        return oa - ob || a.localeCompare(b);
+      });
+      return keys.map(function (k) { return by[k]; });
+    }
+
+    function render() {
+      var words = state.q.toLowerCase().split(/\s+/).filter(Boolean);
+      var shown = cards.filter(function (c) {
+        if (state.ring && c.getAttribute("data-ring") !== state.ring) return false;
+        if (state.fam && c.getAttribute("data-fam") !== state.fam) return false;
+        var hay = c.getAttribute("data-search") + " " + famOf(c.getAttribute("data-fam")).name.toLowerCase();
+        return words.every(function (w) { return hay.indexOf(w) >= 0; });
+      });
+      groupsEl.textContent = "";
+      groupsFor(shown).forEach(function (g) {
+        var sec = document.createElement("section");
+        sec.className = "badge-ring";
+        if (g.head) {
+          var h = document.createElement("h2");
+          h.innerHTML = g.head + ' <span class="badge-n">' + g.cards.length + "</span>";
+          sec.appendChild(h);
+        }
+        var ul = document.createElement("ul");
+        ul.className = "badge-grid";
+        g.cards.forEach(function (c) { ul.appendChild(c); });
+        sec.appendChild(ul);
+        groupsEl.appendChild(sec);
+      });
+      countEl.innerHTML = "<strong>" + shown.length + "</strong> of " + cards.length + " badges";
+      empty.hidden = shown.length > 0;
+      [].forEach.call(tools.querySelectorAll("[data-ring]"), function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-ring") === state.ring)); });
+      [].forEach.call(tools.querySelectorAll("[data-fam]"), function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-fam") === state.fam)); });
+      var p = new URLSearchParams();
+      if (state.q) p.set("q", state.q);
+      if (state.ring) p.set("ring", state.ring);
+      if (state.fam) p.set("fam", state.fam);
+      if (state.group !== "ring") p.set("group", state.group);
+      var qs = p.toString();
+      try { history.replaceState(null, "", location.pathname + (qs ? "?" + qs : "") + location.hash); } catch (e) {}
+    }
+
+    q.addEventListener("input", function () { state.q = q.value.trim(); render(); });
+    groupSel.addEventListener("change", function () { state.group = groupSel.value; render(); });
+    tools.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-ring], button[data-fam]");
+      if (!b) return;
+      if (b.hasAttribute("data-ring")) state.ring = b.getAttribute("data-ring");
+      else state.fam = b.getAttribute("data-fam");
+      render();
+    });
+    // "/" jumps to the search box, like the views.
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "/" && document.activeElement !== q && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); q.focus(); }
+    });
+
+    render();
+    if (target) {
+      target.classList.add("is-target");
+      target.scrollIntoView({ block: "center" });
+    }
   })();
 </script>
