@@ -171,6 +171,10 @@
   function editUrl(t) {
     return repo + "/edit/main/_data/tools/" + t.fam + ".yml";
   }
+  // Adopt, Trial and Assess tools have an award badge (_plugins/badges.rb); Hold has none.
+  function badgeUrl(t) {
+    return t.ring === "hold" ? "" : "https://roadmap.flisk.si/badges/#" + encodeURIComponent(t.id);
+  }
   function reportUrl(t) {
     return repo + "/issues/new?labels=data&title=" + encodeURIComponent("Data: " + t.name + " (" + t.id + ")");
   }
@@ -220,7 +224,7 @@
       ghLine(t) +
       '<p class="tt-meta">#' + t.n + " · " + esc(D.rubric.licenses[t.license] || t.license) + (t.repo ? " · " + esc(t.repo) : "") + "</p>" +
       pickLine(t) +
-      links([["Site", t.url], ["Evidence", t.evidence], ["Commands", cmdUrl([t.id])], ["Edit", editUrl(t)], ["Report", reportUrl(t)]])
+      links([["Site", t.url], ["Evidence", t.evidence], ["Commands", cmdUrl([t.id])], ["Badge", badgeUrl(t)], ["Edit", editUrl(t)], ["Report", reportUrl(t)]])
     );
   }
 
