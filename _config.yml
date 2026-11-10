@@ -1,6 +1,8 @@
 # Site settings. Jekyll does not reload this file during `jekyll serve`,
 # so restart the server after editing it.
 title: DevEx Roadmap
+# The home page <title>, og:title and twitter:title: "<title>: <what it does>". Other pages use "<page> | <title>".
+home_title: "DevEx Roadmap: a community-edited map of local developer tools, scored by a checklist"
 tagline: A community map of local developer tools
 description: >-
   300+ developer tools on four views: the Compass (easy to use vs. made for big, real systems), the Adoption Radar,
