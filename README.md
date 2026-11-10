@@ -4,8 +4,8 @@
 
 | View | What it shows | Sub-tabs |
 | --- | --- | --- |
-| **[Compass](https://roadmap.flisk.si/compass/)** | Easy to use (left → right) against whether it is made for small, simple setups or big, real systems (bottom → top) | One per family |
 | **[Adoption Radar](https://roadmap.flisk.si/radar/)** | Adopt, Trial, Assess or Hold, from release and maturity signals | One per family; a family splits into its categories |
+| **[Compass](https://roadmap.flisk.si/compass/)** | Easy to use (left → right) against whether it is made for small, simple setups or big, real systems (bottom → top) | One per family |
 | **[Lab](https://roadmap.flisk.si/lab/)** | Every tool as an element in a periodic table | One per family |
 | **[Journeys](https://roadmap.flisk.si/journeys/)** | Seven levels from Package Wrangler to Platform Architect, as a metro line | Backend, AI & agents, Platform |
 | **[Roles](https://roadmap.flisk.si/roles/)** | 44 jobs (SRE, Platform, Forward Deployed, Benchmark Engineer…) and the tools each one needs: must have, every day, good to know | One per group of jobs |

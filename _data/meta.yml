@@ -10,15 +10,15 @@ publisher: Flisk
 publisher_url: https://flisk.sh
 seeded: "October 2026, with AI-assisted research"
 views:
-  - id: compass
-    name: Compass
-    title: The DevEx Compass
-    blurb: "Left: hard to use. Right: easy. Bottom: made for small, simple setups. Top: made for big, real systems. A checklist puts every dot, not a person."
-    subtabs: families
   - id: radar
     name: Adoption Radar
     title: Adoption Radar
     blurb: Adopt means use it. Trial means try it. Assess means watch it. Hold means avoid for now. Each tool links the proof.
+    subtabs: families
+  - id: compass
+    name: Compass
+    title: The DevEx Compass
+    blurb: "Left: hard to use. Right: easy. Bottom: made for small, simple setups. Top: made for big, real systems. A checklist puts every dot, not a person."
     subtabs: families
   - id: lab
     name: Lab
