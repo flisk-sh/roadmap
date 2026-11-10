@@ -1,6 +1,6 @@
-# Tools that also have a column on cmd.flisk.sh: our tool id -> the id used there.
-# A mapped tool gets a "Commands" link, and picked tools open on cmd.flisk.sh/pick/ side by side.
-site: https://cmd.flisk.sh
+# Tools that also have a column on cmd.flisk.si: our tool id -> the id used there.
+# A mapped tool gets a "Commands" link, and picked tools open on cmd.flisk.si/pick/ side by side.
+site: https://cmd.flisk.si
 tools:
   aspire: aspire
   atlas: atlas

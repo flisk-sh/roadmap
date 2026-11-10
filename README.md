@@ -49,7 +49,7 @@ docker run --rm -p 4000:4000 -v "$PWD:/site" -w /site ruby:3.3 sh -c "bundle ins
 
 ## How it is built
 
-Jekyll on GitHub Pages, from the [flisk-sh/comparer](https://github.com/flisk-sh/comparer) template that also powers [cmd.flisk.sh](https://cmd.flisk.sh).
+Jekyll on GitHub Pages, from the [flisk-sh/comparer](https://github.com/flisk-sh/comparer) template that also powers [cmd.flisk.si](https://cmd.flisk.si).
 
 | Path | What it holds |
 | --- | --- |
