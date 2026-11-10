@@ -17,13 +17,7 @@ layout: default
 <div id="app" data-view="{{ view_id }}" data-sub="{{ sub }}" data-base="{{ '' | relative_url }}" data-repo="{{ site.repo_url }}" data-v="{{ site.time | date: '%s' }}">
 
   <div class="topbar">
-    <nav class="views" aria-label="Views">
-      {%- for v in site.data.meta.views %}
-      <a class="view-tab view-tab-{{ v.id }}" data-view="{{ v.id }}" href="{{ '/' | append: v.id | append: '/' | relative_url }}"{% if v.id == view_id %} aria-current="page"{% endif %}>
-        <span class="view-icon view-icon-{{ v.id }}" aria-hidden="true"></span>{{ v.name }}
-      </a>
-      {%- endfor %}
-    </nav>
+    {%- include view-tabs.html current=view_id %}
     {%- unless view_id == "ask" %}
     <div class="toolbar js-only" hidden>
       <input id="q" type="search" placeholder="Find a {% if view_id == 'roles' %}role or tool{% elsif view_id == 'skills' %}skill{% else %}tool{% endif %}…" aria-label="Find" autocomplete="off" spellcheck="false">
