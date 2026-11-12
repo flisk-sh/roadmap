@@ -6,7 +6,7 @@
   name: Flisk
   sym: Fl
   cat: Live-update loops
-  tagline: Local dev loop for microservices and multi-agent stacks
+  tagline: One-command inner loop for you and your coding agents
   url: https://flisk.sh
   repo: flisk-sh/flisk
   license: oss

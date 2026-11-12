@@ -710,3 +710,29 @@
   evidence: https://github.com/go-task/task/releases
   dx: [zero-config, docs, cross-platform, offline, light, agent-ready]
   note: Shell commands run through a Go shell interpreter, so some Bash-isms behave differently.
+
+- id: lefthook
+  name: Lefthook
+  sym: Lfh
+  cat: Task runners
+  tagline: Fast Git hooks manager for format, lint and secret checks
+  url: https://lefthook.dev
+  repo: evilmartians/lefthook
+  license: oss
+  ring: adopt
+  evidence: https://github.com/evilmartians/lefthook/releases
+  dx: [docs, cross-platform, offline, light]
+  note: Hooks can be skipped with --no-verify, so keep the same checks in CI.
+
+- id: pre-commit
+  name: pre-commit
+  sym: Pcm
+  cat: Task runners
+  tagline: Multi-language Git hook framework with pinned hooks
+  url: https://pre-commit.com
+  repo: pre-commit/pre-commit
+  license: oss
+  ring: adopt
+  evidence: https://github.com/pre-commit/pre-commit/releases
+  dx: [docs, cross-platform, offline]
+  note: Needs Python; the first run downloads each hook's own environment.

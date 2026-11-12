@@ -67,6 +67,14 @@ levels:
       status: "yes"
       text: Flisk has an agent resource type with health, readiness and stored sessions, an MCP server and an agent-stack starter.
   - n: 7
+    id: harness-engineer
+    name: Harness Engineer
+    goal: Ship features with coding agents from intent to merge, with checks that keep them honest.
+    skills: [Intent, spec and plan, AGENTS.md and repo memory, Hooks and permissions, Parallel worktrees, AI code review]
+    flisk:
+      status: partial
+      text: "Flisk gives each coding agent a running stack it can drive over MCP and `--json`, and checks generated config. One stack per git worktree and one test command are tracked in flisk-sh/flisk#4046 and #4049."
+  - n: 8
     id: platform-architect
     name: Platform Architect
     goal: Give every team golden paths, a portal and infrastructure as code.
@@ -104,6 +112,10 @@ tracks:
         main: [vercel-ai-sdk, model-context-protocol, ollama]
         side: [langgraph, mastra, langfuse, claude-code]
         tip: Treat the agent like another service with health checks and logs.
+      harness-engineer:
+        main: [claude-code, lefthook, gitleaks]
+        side: [codex, spec-kit, playwright-mcp, claude-code-action]
+        tip: Give the agent one command that runs every check, and run it again in a hook before each commit.
       platform-architect:
         main: [terraform, github-actions, opentelemetry]
         side: [opentofu, pulumi, argo-cd, backstage]
@@ -137,6 +149,10 @@ tracks:
         main: [langgraph, model-context-protocol, ollama, langfuse]
         side: [mastra, crewai, openai-agents-sdk, claude-agent-sdk, pydantic-ai, mcp-inspector, vllm, arize-phoenix, promptfoo]
         tip: Persist checkpoints outside the process so a restart does not lose a session.
+      harness-engineer:
+        main: [claude-code, promptfoo, gitleaks]
+        side: [superpowers, openspec, litellm, claude-code-action]
+        tip: Test your agent against a prompt injection hidden in a tool result before you ship it.
       platform-architect:
         main: [backstage, opentelemetry, github-actions]
         side: [terraform, infisical, temporal]
@@ -170,7 +186,48 @@ tracks:
         main: [model-context-protocol, claude-code, github-copilot]
         side: [docker-mcp-toolkit, cursor, codex, mcp-registry]
         tip: Ship MCP servers for your internal tools so agents use the same golden paths.
+      harness-engineer:
+        main: [claude-code-action, github-actions, trufflehog]
+        side: [aidlc, litellm, lefthook, superpowers]
+        tip: "Ship the harness as a template: permissions, hooks, review rules and CI every team starts with."
       platform-architect:
         main: [backstage, terraform, argo-cd, opentelemetry]
         side: [port, crossplane, flux, vault, renovate, humanitec]
         tip: A portal is only as good as the templates and docs behind it.
+
+  - id: ai-native
+    name: AI-native SDLC
+    blurb: Ship features with coding agents through intent, spec, plan, build, test and review.
+    stops:
+      package-wrangler:
+        main: [uv, pnpm, mise]
+        side: [bun, npm]
+        tip: Pin runtimes so every agent and every worktree installs the same versions.
+      build-master:
+        main: [just, make]
+        side: [vite, turborepo]
+        tip: "One `check` command for format, lint, types and tests: agents run it before they say done."
+      container-crafter:
+        main: [docker-compose, dev-containers]
+        side: [orbstack, podman]
+        tip: Containers keep what agents install off your laptop's global state.
+      inner-loop-runner:
+        main: [flisk, tilt, compose-watch]
+        side: [process-compose]
+        tip: Give each agent a running stack it can reach, with health checks and JSON status.
+      cluster-tamer:
+        main: [kind]
+        side: [k3d]
+        tip: Skip this unless production runs Kubernetes; agents work faster against a local stack.
+      agent-wrangler:
+        main: [claude-code, codex, model-context-protocol, playwright-mcp]
+        side: [cursor, opencode, pi, github-copilot, gemini-cli]
+        tip: Pick the harness and the model separately, and test both on your own task.
+      harness-engineer:
+        main: [spec-kit, superpowers, lefthook, gitleaks]
+        side: [openspec, aidlc, trufflehog, claude-code-action]
+        tip: Write intent, spec and plan before code, and turn every repeated agent mistake into a check.
+      platform-architect:
+        main: [claude-code-action, github-actions, litellm]
+        side: [backstage, infisical, opentelemetry]
+        tip: Every cloud agent needs a human owner, a spending limit and least-privilege keys.

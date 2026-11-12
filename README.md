@@ -7,7 +7,7 @@
 | **[Adoption Radar](https://roadmap.flisk.si/radar/)** | Adopt, Trial, Assess or Hold, from release and maturity signals | One per family; a family splits into its categories |
 | **[Compass](https://roadmap.flisk.si/compass/)** | Easy to use (left → right) against whether it is made for small, simple setups or big, real systems (bottom → top) | One per family |
 | **[Lab](https://roadmap.flisk.si/lab/)** | Every tool as an element in a periodic table | One per family |
-| **[Journeys](https://roadmap.flisk.si/journeys/)** | Seven levels from Package Wrangler to Platform Architect, as a metro line | Backend, AI & agents, Platform |
+| **[Journeys](https://roadmap.flisk.si/journeys/)** | Eight levels from Package Wrangler to Platform Architect, as a metro line | Backend, AI & agents, Platform, AI-native SDLC |
 | **[Roles](https://roadmap.flisk.si/roles/)** | 44 jobs (SRE, Platform, Forward Deployed, Benchmark Engineer…) and the tools each one needs: must have, every day, good to know | One per group of jobs |
 | **[Skills](https://roadmap.flisk.si/skills/)** | 400 free AI agent skills from GitHub, each tested by Haiku: does it get picked for the right request, and is it followed right | One per kind of skill |
 | **[Portfolio](https://roadmap.flisk.si/portfolio/)** | Rate the tools you know 0–3: get your best-fit role, your skill shape and a page to share (a link, a download, or pages.flisk.si) | One per family |
