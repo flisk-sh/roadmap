@@ -628,3 +628,17 @@
   dx: [clear-errors, cross-platform, offline, light]
   parity: [state, prod-artifacts]
   note: Still 0.x with breaking changes between minor versions.
+
+- id: qdrant
+  name: Qdrant
+  sym: Qd
+  cat: Local backends
+  tagline: Vector database for semantic search and agentic RAG
+  url: https://qdrant.tech
+  repo: qdrant/qdrant
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/qdrant/qdrant/releases
+  dx: [one-command, zero-config, ui, docs, cross-platform, offline, light, agent-ready]
+  parity: [containers, state, prod-artifacts]
+  note: Open source; the managed Qdrant Cloud is paid beyond its free cluster.

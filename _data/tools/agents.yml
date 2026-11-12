@@ -1070,3 +1070,87 @@
   dx: [one-command, zero-config, fast-feedback, ui, docs, cross-platform, light, agent-ready]
   parity: []
   note: Small core you extend yourself; bring your own model provider.
+
+- id: deep-agents
+  name: Deep Agents
+  sym: Dpa
+  cat: Agent frameworks
+  tagline: LangChain harness with to-dos, sub-agents and a file system
+  url: https://docs.langchain.com/deepagents
+  repo: langchain-ai/deepagents
+  license: oss
+  ring: trial
+  evidence: https://github.com/langchain-ai/deepagents/releases
+  dx: [zero-config, docs, cross-platform, offline, agent-ready]
+  parity: [state]
+  note: Still 0.x and changes often; runs on LangGraph, so checkpoints work the same way.
+
+- id: qdrant-mcp
+  name: Qdrant MCP server
+  sym: Qdm
+  cat: Agent tools and MCP
+  tagline: Long-term agent memory in Qdrant over MCP
+  url: https://github.com/qdrant/mcp-server-qdrant
+  repo: qdrant/mcp-server-qdrant
+  license: oss
+  ring: trial
+  evidence: https://github.com/qdrant/mcp-server-qdrant/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline, agent-ready]
+  parity: [state]
+  note: 0.x and no release since Dec 2025; two tools only, so filtering and namespaces are up to you.
+
+- id: mem0
+  name: Mem0
+  sym: Mem
+  cat: Agent tools and MCP
+  tagline: Memory layer for agents with per-user facts and search
+  url: https://mem0.ai
+  repo: mem0ai/mem0
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/mem0ai/mem0/releases
+  dx: [zero-config, docs, cross-platform, agent-ready]
+  parity: [state]
+  note: Open-source library plus a paid hosted platform; self-hosting needs a vector store and an LLM key.
+
+- id: context7
+  name: Context7
+  sym: Cxt
+  cat: Agent tools and MCP
+  tagline: Up-to-date library docs for coding agents over MCP
+  url: https://context7.com
+  repo: upstash/context7
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/upstash/context7/releases
+  dx: [one-command, zero-config, docs, cross-platform, agent-ready]
+  parity: []
+  note: Remote service; heavier use needs an API key.
+
+- id: agentcore-cli
+  name: AgentCore CLI
+  sym: Acc
+  cat: Agent frameworks
+  tagline: Run agents locally, then deploy to AWS AgentCore
+  url: https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/agentcore-get-started-cli.html
+  repo: aws/agentcore-cli
+  license: oss
+  ring: assess
+  evidence: https://github.com/aws/agentcore-cli/releases
+  dx: [one-command, docs, cross-platform, agent-ready]
+  parity: [containers, cloud-apis, config-secrets, observability]
+  note: Less than a year old; `agentcore dev` runs locally, but Runtime, Gateway and Memory are paid AWS services.
+
+- id: llmfit
+  name: llmfit
+  sym: Lfi
+  cat: Local models
+  tagline: Shows which local LLMs fit your machine's memory
+  url: https://github.com/AlexsJones/llmfit
+  repo: AlexsJones/llmfit
+  license: oss
+  ring: assess
+  evidence: https://github.com/AlexsJones/llmfit/releases
+  dx: [one-command, zero-config, ui, docs, cross-platform, offline, light]
+  parity: []
+  note: Less than a year old; a sizing guide, not a benchmark of answer quality.
