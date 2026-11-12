@@ -60,6 +60,32 @@ roles:
     nice: [flisk, mailpit, ngrok, create-t3-app, vercel-cli]
     key: [nextjs, prisma, drizzle, supabase-cli]
 
+  - id: ai-native-engineer
+    name: AI-Native Software Engineer
+    group: build
+    what: Ships features with coding agents and stays accountable for intent, judgment, taste and quality.
+    day:
+      - Writes the intent and approves the agent's spec and plan
+      - Runs several agents at once, each in its own git worktree
+      - Reviews, tests and merges what the agents built
+    core: [claude-code, codex, github-copilot, playwright-mcp, github-actions]
+    daily: [cursor, opencode, spec-kit, openspec, superpowers, lefthook, gitleaks]
+    nice: [flisk, pi, aidlc, claude-code-action, trufflehog]
+    key: [spec-kit, superpowers, lefthook, playwright-mcp, codex]
+
+  - id: product-engineer
+    name: Product Engineer
+    group: build
+    what: Owns a feature from the customer's problem to the shipped screen, API and data, with coding agents filling the gaps.
+    day:
+      - Talks to users and writes the intent
+      - Builds the screen, API and database with a coding agent
+      - Checks the result against the intent before shipping
+    core: [claude-code, nextjs, supabase-cli, playwright-mcp, vercel-cli]
+    daily: [cursor, prisma, vitest, github-actions, spec-kit]
+    nice: [flisk, superpowers, opencode]
+    key: [spec-kit, supabase-cli, nextjs, playwright-mcp]
+
   - id: mobile-engineer
     name: Mobile Engineer
     group: build
@@ -545,6 +571,32 @@ roles:
     daily: [turborepo, nx, changesets, dev-containers, mise, backstage]
     nice: [flisk, tilt, dependabot, grafana, just]
     key: [renovate, changesets, turborepo, nx, dependabot]
+
+  - id: integration-lead
+    name: Integration Lead
+    group: lead
+    what: Prepares shared code before parallel agent work starts and merges the branches back together.
+    day:
+      - Splits intents into workstreams that can run in parallel
+      - Moves shared code first and gives each worktree its own ports and data
+      - Merges branches and runs every check after each merge
+    core: [github-actions, claude-code, lefthook, gitleaks]
+    daily: [codex, openspec, aidlc, claude-code-action, turborepo]
+    nice: [flisk, trufflehog, renovate]
+    key: [aidlc, openspec, claude-code-action, lefthook]
+
+  - id: ai-engineering-lead
+    name: AI-Native Engineering Lead
+    group: lead
+    what: Rolls coding agents out to a team with a shared harness, review rules and measures of speed and quality.
+    day:
+      - Sets shared AGENTS.md, skills, hooks and review rules
+      - Decides how many human reviewers each risk level needs
+      - Keeps model spend, keys and agent permissions under control
+    core: [claude-code, github-copilot, github-actions, claude-code-action, litellm]
+    daily: [codex, cursor, lefthook, gitleaks, trufflehog, superpowers]
+    nice: [flisk, aidlc, spec-kit, langfuse]
+    key: [litellm, claude-code-action, superpowers, trufflehog]
 
   - id: staff-engineer
     name: Staff Engineer

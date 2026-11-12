@@ -986,3 +986,87 @@
   dx: [one-command, ui, docs, cross-platform, offline, agent-ready]
   parity: [containers, multi-service, state, k8s, observability]
   note: Self-hosting runs several containers, including ClickHouse and MySQL.
+
+- id: spec-kit
+  name: Spec Kit
+  sym: Spk
+  cat: Agent tools and MCP
+  tagline: Spec, plan and tasks before code, for any coding agent
+  url: https://github.github.com/spec-kit/
+  repo: github/spec-kit
+  license: oss
+  ring: adopt
+  evidence: https://github.com/github/spec-kit/releases
+  dx: [zero-config, docs, cross-platform, offline, agent-ready]
+  parity: []
+  note: Writes templates and slash commands; your coding agent does the writing and the build.
+
+- id: openspec
+  name: OpenSpec
+  sym: Osp
+  cat: Agent tools and MCP
+  tagline: Spec-driven changes for coding agents, with living specs
+  url: https://openspec.dev
+  repo: Fission-AI/OpenSpec
+  license: oss
+  ring: adopt
+  evidence: https://github.com/Fission-AI/OpenSpec/releases
+  dx: [zero-config, docs, cross-platform, offline, agent-ready]
+  parity: []
+  note: Finished changes must be archived, or the living specs drift from the code.
+
+- id: superpowers
+  name: Superpowers
+  sym: Spw
+  cat: Agent tools and MCP
+  tagline: Skills library for brainstorm, plan, TDD and review
+  url: https://github.com/obra/superpowers
+  repo: obra/superpowers
+  license: oss
+  ring: adopt
+  evidence: https://github.com/obra/superpowers/releases
+  dx: [zero-config, docs, cross-platform, offline, agent-ready]
+  parity: []
+  note: Opinionated workflow; built for Claude Code first, other agents through their skills support.
+
+- id: aidlc
+  name: AWS AI-DLC
+  sym: Adl
+  cat: Agent tools and MCP
+  tagline: AWS AI-DLC v2 phases, gates and agent personas
+  url: https://github.com/awslabs/aidlc-workflows
+  repo: awslabs/aidlc-workflows
+  license: oss
+  ring: assess
+  evidence: https://github.com/awslabs/aidlc-workflows/releases
+  dx: [docs, cross-platform, offline, agent-ready]
+  parity: [team-scale]
+  note: Heavy process with many new terms; less than a year old.
+
+- id: litellm
+  name: LiteLLM
+  sym: Lit
+  cat: Agent tools and MCP
+  tagline: LLM gateway with virtual keys, budgets and fallbacks
+  url: https://docs.litellm.ai
+  repo: BerriAI/litellm
+  license: freemium
+  ring: adopt
+  evidence: https://github.com/BerriAI/litellm/releases
+  dx: [one-command, ui, docs, cross-platform, offline, agent-ready]
+  parity: [containers, config-secrets, observability, team-scale]
+  note: Open-source proxy; SSO and some admin features are in the paid enterprise edition.
+
+- id: pi
+  name: Pi
+  sym: Pia
+  cat: Coding agents
+  tagline: Minimal, extensible terminal coding agent
+  url: https://github.com/earendil-works/pi
+  repo: earendil-works/pi
+  license: oss
+  ring: adopt
+  evidence: https://github.com/earendil-works/pi/releases
+  dx: [one-command, zero-config, fast-feedback, ui, docs, cross-platform, light, agent-ready]
+  parity: []
+  note: Small core you extend yourself; bring your own model provider.

@@ -28,7 +28,7 @@ views:
   - id: journeys
     name: Journeys
     title: Journeys
-    blurb: Seven levels from your first lockfile to platform architect. Pick a track.
+    blurb: Eight levels from your first lockfile to platform architect, including building with coding agents. Pick a track.
     subtabs: tracks
   - id: roles
     name: Roles

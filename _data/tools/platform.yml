@@ -710,3 +710,31 @@
   dx: [clear-errors, ui, docs, cross-platform, agent-ready]
   parity: [containers, prod-artifacts, k8s, team-scale]
   note: The CLI needs a Snyk account and sends dependency data to Snyk for analysis.
+
+- id: claude-code-action
+  name: Claude Code Action
+  sym: Cca
+  cat: CI/CD
+  tagline: Claude Code on issues and PRs in GitHub Actions
+  url: https://github.com/anthropics/claude-code-action
+  repo: anthropics/claude-code-action
+  license: oss
+  ring: adopt
+  evidence: https://github.com/anthropics/claude-code-action/releases
+  dx: [zero-config, docs, agent-ready]
+  parity: [config-secrets, team-scale]
+  note: The base of an issue-to-PR software factory; every run spends model tokens.
+
+- id: trufflehog
+  name: TruffleHog
+  sym: Th
+  cat: Secrets and supply chain
+  tagline: Find leaked secrets and check if they still work
+  url: https://trufflesecurity.com/trufflehog
+  repo: trufflesecurity/trufflehog
+  license: oss
+  ring: adopt
+  evidence: https://github.com/trufflesecurity/trufflehog/releases
+  dx: [one-command, zero-config, docs, cross-platform, offline, agent-ready]
+  parity: [config-secrets]
+  note: AGPL; verifying a found key calls the provider's API.
