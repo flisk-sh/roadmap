@@ -147,7 +147,7 @@ tracks:
         tip: Agents rarely need Kubernetes locally; skip ahead if production does not use it.
       agent-wrangler:
         main: [langgraph, model-context-protocol, ollama, langfuse]
-        side: [mastra, crewai, openai-agents-sdk, claude-agent-sdk, pydantic-ai, mcp-inspector, vllm, arize-phoenix, promptfoo]
+        side: [deep-agents, qdrant, mem0, mastra, crewai, openai-agents-sdk, claude-agent-sdk, pydantic-ai, mcp-inspector, vllm, arize-phoenix, promptfoo, llmfit]
         tip: Persist checkpoints outside the process so a restart does not lose a session.
       harness-engineer:
         main: [claude-code, promptfoo, gitleaks]

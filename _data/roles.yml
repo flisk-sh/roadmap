@@ -374,6 +374,19 @@ roles:
     nice: [flisk, mastra, e2b, promptfoo, docker-mcp-toolkit]
     key: [langgraph, claude-agent-sdk, model-context-protocol, openai-agents-sdk, pydantic-ai, mastra]
 
+  - id: ai-architect
+    name: AI / Agent Architect
+    group: data-ai
+    what: Designs agent systems around measurable results, starting with evals, then gateways, memory, context and runtime.
+    day:
+      - Decides when a task needs an agent, a sub-agent or plain code
+      - Sets up evals, traces and the cost of each kind of mistake
+      - Chooses models, gateways, memory and where the agent runs
+    core: [langgraph, langfuse, litellm, model-context-protocol, claude-agent-sdk]
+    daily: [deep-agents, qdrant, mem0, promptfoo, ollama, vllm]
+    nice: [flisk, agentcore-cli, llmfit, qdrant-mcp, context7]
+    key: [langfuse, litellm, deep-agents, qdrant, mem0]
+
   - id: prompt-eval-engineer
     name: Prompt / Eval Engineer
     group: data-ai
@@ -496,15 +509,15 @@ roles:
   - id: forward-deployed-engineer
     name: Forward Deployed Engineer
     group: field
-    what: Sits with a customer and ships working software inside their setup, fast.
+    what: Sits with a customer and ships working software and AI agents inside their setup, measured against their business results.
     day:
-      - Gets a customer's stack running locally
-      - Builds the demo or integration
-      - Fixes what breaks in their environment
-    core: [docker-desktop, docker-compose, ngrok, claude-code, kubectl]
-    daily: [cursor, mockoon, wiremock, terraform, vault, helm]
-    nice: [flisk, tilt, ollama, localstack, tailscale-funnel]
-    key: [ngrok, tailscale-funnel, mockoon, wiremock]
+      - Turns the customer's problem into success criteria and evals
+      - Builds the agent with durable state and human approval where money moves
+      - Hands it over so it keeps running without them
+    core: [docker-compose, claude-code, langgraph, langfuse, ngrok]
+    daily: [cursor, ollama, litellm, supabase-cli, mockoon, terraform, kubectl]
+    nice: [flisk, qdrant, deep-agents, agentcore-cli, tailscale-funnel]
+    key: [langgraph, langfuse, litellm, ngrok, mockoon]
 
   - id: solutions-engineer
     name: Solutions Engineer
