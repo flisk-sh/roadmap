@@ -493,6 +493,9 @@ code { font-family: var(--font-mono); font-size: 0.9em; }
 .pill-flisk.fl-partial { border: 2px solid var(--assess); background: color-mix(in srgb, var(--assess) 12%, transparent); }
 .pill-flisk.fl-soon { border: 2px dashed var(--line-strong); background: transparent; color: var(--muted); }
 .pill-flisk.fl-soon b { background: var(--surface-3); color: var(--muted); }
+.line-learn { margin-top: 0.5rem; }
+.pill-learn { padding: 0.18rem 0.7rem; border: 1px solid var(--line-strong); color: inherit; text-decoration: none; cursor: pointer; }
+.pill-learn:hover { border-color: var(--accent); background: var(--accent-tint); }
 .track-tip { margin: 0.7rem 0 0; padding-left: 0.7rem; border-left: 3px solid var(--c); color: var(--muted); font-size: 0.85rem; }
 .metro-end { display: grid; grid-template-columns: 3.5rem minmax(0, 1fr); gap: 0 1rem; align-items: center; }
 .metro-end .node { margin: 0 auto; background: var(--c); color: #0b0b10; }
