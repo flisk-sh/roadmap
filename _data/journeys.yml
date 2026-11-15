@@ -66,11 +66,11 @@ levels:
     skills: [Agent frameworks, MCP servers, Checkpoints and sessions, Local models, LLM tracing]
     learn:
       - label: "Learn AI part 1: talk to a model"
-        url: https://flisk-sh.github.io/flisk-labs/#models
+        url: https://practice.flisk.si/#models
       - label: "Part 2: give it knowledge"
-        url: https://flisk-sh.github.io/flisk-labs/#knowledge
+        url: https://practice.flisk.si/#knowledge
       - label: "Part 4: make it reliable"
-        url: https://flisk-sh.github.io/flisk-labs/#reliable
+        url: https://practice.flisk.si/#reliable
     flisk:
       status: "yes"
       text: Flisk has an agent resource type with health, readiness and stored sessions, an MCP server and an agent-stack starter.
@@ -81,9 +81,9 @@ levels:
     skills: [Intent, spec and plan, AGENTS.md and repo memory, Hooks and permissions, Parallel worktrees, AI code review]
     learn:
       - label: "Learn AI part 3: build the harness"
-        url: https://flisk-sh.github.io/flisk-labs/#harness
+        url: https://practice.flisk.si/#harness
       - label: "Part 5: deliver to a customer"
-        url: https://flisk-sh.github.io/flisk-labs/#deliver
+        url: https://practice.flisk.si/#deliver
     flisk:
       status: partial
       text: "Flisk gives each coding agent a running stack it can drive over MCP and `--json`, and checks generated config. One stack per git worktree and one test command are tracked in flisk-sh/flisk#4046 and #4049."
