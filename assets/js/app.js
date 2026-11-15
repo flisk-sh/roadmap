@@ -236,7 +236,8 @@
       '<div class="tt-head"><span class="tt-sym tt-lvl">' + lv.n + "</span><div><strong>" + esc(lv.name) +
       "</strong><span>Level " + lv.n + " of " + D.journeys.levels.length + "</span></div></div>" +
       '<p class="tt-tag">' + esc(lv.goal) + "</p>" +
-      '<ul class="tt-crit">' + (lv.skills || []).map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ul>"
+      '<ul class="tt-crit">' + (lv.skills || []).map(function (s) { return "<li>" + esc(s) + "</li>"; }).join("") + "</ul>" +
+      (lv.learn && lv.learn.length ? links(lv.learn.map(function (l) { return [esc(l.label), l.url]; })) : "")
     );
   }
   var FL_LABEL = { yes: "Does it today", partial: "Partly", soon: "Coming soon" };
@@ -771,6 +772,13 @@
         var side = el("div", { class: "line line-side" }, body);
         el("span", { class: "line-label", text: "Branches" }, side);
         stop.side.forEach(function (id) { if (id !== "flisk") pill(id, "side", side); });
+      }
+      if (lv.learn && lv.learn.length) {
+        var learn = el("div", { class: "line line-learn" }, body);
+        el("span", { class: "line-label", text: "Free labs" }, learn);
+        lv.learn.forEach(function (l) {
+          if (safeUrl(l.url)) el("a", { class: "pill pill-learn", href: l.url, target: "_blank", rel: "noopener", text: l.label + " ↗" }, learn);
+        });
       }
       if (stop.tip) el("p", { class: "track-tip", text: stop.tip }, body);
     });

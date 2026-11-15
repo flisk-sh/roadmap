@@ -75,6 +75,12 @@ journeys["levels"].each do |l|
   st = l.dig("flisk", "status")
   errors << "journeys level #{l['id']}: flisk.status must be yes, partial or soon" unless %w[yes partial soon].include?(st)
 end
+journeys["levels"].each do |l|
+  Array(l["learn"]).each do |item|
+    errors << "journeys level #{l['id']}: each learn entry needs a label" if item["label"].to_s.strip.empty?
+    errors << "journeys level #{l['id']}: learn url must start with https:// and hold no quotes, < > or spaces" unless item["url"].to_s.match?(%r{\Ahttps://[^"'<>\s]+\z})
+  end
+end
 journeys["tracks"].each do |tr|
   (tr["stops"] || {}).each do |lid, stop|
     errors << "journeys #{tr['id']}: unknown level #{lid}" unless level_ids.include?(lid)
