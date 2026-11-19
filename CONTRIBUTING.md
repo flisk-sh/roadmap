@@ -48,6 +48,11 @@ ruby scripts/check-data.rb
 
 It checks ids, symbols, categories, criteria, rings, URLs and that every tool a journey names exists. CI runs the same check on every pull request.
 
+For a page or collection document with a known content update date, set
+`last_modified_at: 2026-01-15` in its front matter using the actual date in
+`YYYY-MM-DD` format. Leave the field unset when the date is unknown. Run
+`bundle exec ruby scripts/check-sitemap.rb` when changing the sitemap template.
+
 ## Change the rules
 
 Changes to `_data/rubric.yml` move many dots at once, so open an issue first.

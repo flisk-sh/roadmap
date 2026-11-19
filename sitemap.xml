@@ -5,9 +5,9 @@ sitemap: false
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {%- for p in site.html_pages %}{% unless p.sitemap == false or p.url contains '404' %}
-  <url><loc>{{ site.url }}{{ p.url | replace: 'index.html', '' }}</loc><lastmod>{{ site.time | date: '%Y-%m-%d' }}</lastmod></url>
+  <url><loc>{{ site.url }}{{ p.url | replace: 'index.html', '' }}</loc>{% include sitemap-lastmod.xml entry=p %}</url>
 {%- endunless %}{% endfor %}
 {%- for c in site.collections %}{% if c.output %}{% for d in c.docs %}{% unless d.sitemap == false %}
-  <url><loc>{{ site.url }}{{ d.url }}</loc><lastmod>{{ site.time | date: '%Y-%m-%d' }}</lastmod></url>
+  <url><loc>{{ site.url }}{{ d.url }}</loc>{% include sitemap-lastmod.xml entry=d %}</url>
 {%- endunless %}{% endfor %}{% endif %}{% endfor %}
 </urlset>
