@@ -144,12 +144,26 @@
       (crit ? '<ul class="tt-crit">' + crit + "</ul>" : "")
     );
   }
+  // Small line icons for the link row (they take the text colour); the GitHub one is the filled mark.
+  var LI = {
+    Site: '<path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/><circle cx="12" cy="12" r="9"/>',
+    Evidence: '<path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/>',
+    Commands: '<path d="M4 6l5 5-5 5M12 18h8"/>',
+    Badge: '<path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.3 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/>',
+    Edit: '<path d="M4 20h4L19 9l-4-4L4 16z"/>',
+    Report: '<path d="M5 21V4M5 4h12l-2 4 2 4H5"/>'
+  };
+  var GHI = '<svg class="ti f" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.5 7.5 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>';
+  function linkIcon(label) {
+    if (label === "GitHub") return GHI;
+    return LI[label] ? '<svg class="ti" viewBox="0 0 24 24" aria-hidden="true">' + LI[label] + "</svg>" : "";
+  }
   function links(pairs) {
     return (
       '<p class="tt-links">' +
       pairs
         .filter(function (p) { return safeUrl(p[1]); })
-        .map(function (p) { return '<a href="' + esc(p[1]) + '" target="_blank" rel="noopener">' + p[0] + " ↗</a>"; })
+        .map(function (p) { return '<a href="' + esc(p[1]) + '" target="_blank" rel="noopener">' + linkIcon(p[0]) + p[0] + " ↗</a>"; })
         .join("") +
       "</p>"
     );
@@ -224,7 +238,7 @@
       ghLine(t) +
       '<p class="tt-meta">#' + t.n + " · " + esc(D.rubric.licenses[t.license] || t.license) + (t.repo ? " · " + esc(t.repo) : "") + "</p>" +
       pickLine(t) +
-      links([["Site", t.url], ["Evidence", t.evidence], ["Commands", cmdUrl([t.id])], ["Badge", badgeUrl(t)], ["Edit", editUrl(t)], ["Report", reportUrl(t)]])
+      links([["Site", t.url], ["GitHub", /^[\w.-]+\/[\w.-]+$/.test(t.repo || "") ? "https://github.com/" + t.repo : ""], ["Evidence", t.evidence], ["Commands", cmdUrl([t.id])], ["Badge", badgeUrl(t)], ["Edit", editUrl(t)], ["Report", reportUrl(t)]])
     );
   }
 
@@ -1923,8 +1937,9 @@
     row("Caveat", tools.map(function (t) { return cell(t.note ? esc(t.note) : '<span class="muted">None noted</span>'); }), false);
     row("Links", tools.map(function (t) {
       var out = [];
-      if (safeUrl(t.url)) out.push('<a href="' + esc(t.url) + '" target="_blank" rel="noopener">Site ↗</a>');
-      if (safeUrl(t.evidence)) out.push('<a href="' + esc(t.evidence) + '" target="_blank" rel="noopener">Evidence ↗</a>');
+      if (safeUrl(t.url)) out.push('<a href="' + esc(t.url) + '" target="_blank" rel="noopener">' + linkIcon("Site") + 'Site ↗</a>');
+      if (/^[\w.-]+\/[\w.-]+$/.test(t.repo || "")) out.push('<a href="https://github.com/' + esc(t.repo) + '" target="_blank" rel="noopener">' + GHI + 'GitHub ↗</a>');
+      if (safeUrl(t.evidence)) out.push('<a href="' + esc(t.evidence) + '" target="_blank" rel="noopener">' + linkIcon("Evidence") + 'Evidence ↗</a>');
       return cell(out.join(" "));
     }), false);
 
