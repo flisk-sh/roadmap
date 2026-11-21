@@ -1,0 +1,4 @@
+{%- assign modified = include.entry.last_modified_at -%}
+{%- if modified and modified != empty -%}
+  <lastmod>{{ modified | date: '%Y-%m-%d' | escape }}</lastmod>
+{%- endif -%}
