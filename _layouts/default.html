@@ -106,7 +106,7 @@
     })();
   </script>
   {%- comment -%}The Flisk bar and the Sign in button are on every page; the view scripts only on view pages.{%- endcomment %}
-  <script src="https://flisk.si/assets/bar.js" defer></script>
+  <script src="https://flisk.si/assets/bar.js" data-product="DevEx Roadmap" data-icon="devex-roadmap" data-accent="#22c55e" data-text="A community map of local developer tools, scored by a checklist." defer></script>
   <script src="{{ '/assets/js/signin.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
   {%- if cur_view %}
   <script src="{{ '/assets/js/scan.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
