@@ -1045,3 +1045,5 @@ body.cmp-open { overflow: hidden; }
 /* Paint only the tiles that are on screen: the grid holds 372 of them, each with a masked logo. */
 .pf-tile { content-visibility: auto; contain-intrinsic-size: auto 4.4rem; }
 .lab .tile, .tok, .skill-chip { contain: layout paint; }
+.ti-w{position:relative;display:inline-flex;width:.9rem;height:.9rem;flex:none}.ti-w .ti{position:absolute;inset:0}.ti-i{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:2px;background:var(--bg,#fff)}
+.site-footer a.fl{display:inline-flex;align-items:center;gap:.3rem;vertical-align:baseline}.site-footer a.fl img{border-radius:2px}
