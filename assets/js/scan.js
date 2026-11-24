@@ -140,11 +140,15 @@
       var names = {};
       py.split(/\r?\n/).forEach(function (line) {
         var m = /^\s*["']?([A-Za-z0-9][A-Za-z0-9._-]*)["']?\s*(?:[<>=!~\[;,@]|$)/.exec(line.split("#")[0]);
-        if (m) names[m[1].toLowerCase().replace(/_/g, "-")] = true;
+        if (m) names[m[1]] = true;
         var dep = /["']([A-Za-z0-9][A-Za-z0-9._-]*)\s*(?:[<>=!~\[;]|["'])/g, d;
-        while ((d = dep.exec(line.split("#")[0]))) names[d[1].toLowerCase().replace(/_/g, "-")] = true;
+        while ((d = dep.exec(line.split("#")[0]))) names[d[1]] = true;
       });
-      Object.keys(names).forEach(function (n) { if (Object.prototype.hasOwnProperty.call(PY, n)) found[PY[n]] = true; });
+      Object.keys(names).forEach(function (n) {
+        // Python package indexes treat runs of punctuation as a single hyphen.
+        var key = n.toLowerCase().replace(/[-_.]+/g, "-");
+        if (Object.prototype.hasOwnProperty.call(PY, key)) found[PY[key]] = true;
+      });
       if (/\[tool\.poetry\]/.test(py)) found.poetry = true;
       if (/\[tool\.uv\]/.test(py)) found.uv = true;
     }

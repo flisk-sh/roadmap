@@ -32,6 +32,14 @@ test("Python dependency lists count, from requirements and pyproject", () => {
   assert.ok(!ids.includes("django"));
 });
 
+test("Python dependency names normalize runs of dots, hyphens and underscores", () => {
+  const ids = scan.detect([], {
+    requirements: "Llama.Index>=0.12",
+    pyproject: '[project]\ndependencies = ["pydantic__AI>=1", "pydantic..ai>=1", "sentry-_.sdk>=2"]'
+  });
+  assert.deepEqual(ids.sort(), ["llamaindex", "pydantic-ai", "sentry"]);
+});
+
 test("levels are used or use-often, never expert", () => {
   assert.equal(scan.suggestLevel(1), 1);
   assert.equal(scan.suggestLevel(2), 2);
